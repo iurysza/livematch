@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">HackerNews</string>
+    <string name="post_screen_error_no_internet">No internet connection</string>
+    <string name="post_screen_error_default">Something went wrong</string>
+    <string name="post_error_author_not_found">Author Not Found</string>
+    <string name="posts">Posts</string>
+    <string name="posts_detail">Post Detail</string>
+    <string name="icon_description">Back</string>
+</resources>
