@@ -1,4 +1,4 @@
-# HackerNews App
+# LiveMatch App
 
 This project uses a minimal architecture due to the time limitation of the task and the overall simplicity of the feature-set. Some naming conventions are not _ideal_.
 
