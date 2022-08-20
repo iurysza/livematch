@@ -1,4 +1,5 @@
 import com.android.build.gradle.ProguardFiles.getDefaultProguardFile
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -6,7 +7,7 @@ plugins {
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("kotlin-parcelize")
-
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 group = "com.example.myproduct"
@@ -16,7 +17,7 @@ android {
 
     defaultConfig {
         applicationId = "com.iurysouza.livematch"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 32
         versionCode = 1
         versionName = "1.0"
@@ -27,23 +28,6 @@ android {
         }
     }
 
-    buildTypes {
-        val API_URL: String by project
-        val USE_MOCK_URL: String by project
-        val MOCK_API_URL: String by project
-
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro")
-            buildConfigField("String", "API_URL", API_URL)
-        }
-        getByName("debug") {
-            buildConfigField("String",
-                "API_URL",
-                if (USE_MOCK_URL.toBoolean()) MOCK_API_URL else API_URL)
-        }
-    }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
         // Treat all Kotlin warnings as errors (disabled by default)
