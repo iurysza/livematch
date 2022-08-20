@@ -71,7 +71,6 @@ android {
 }
 
 dependencies {
-    testImplementation(platform("com.example.platform:test-platform"))
 
     implementation(kotlin("stdlib"))
     implementation("androidx.compose.material:material:1.1.1")
