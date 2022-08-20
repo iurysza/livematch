@@ -12,6 +12,7 @@ import dev.iurysouza.livematch.BuildConfig
 import dev.iurysouza.livematch.DefaultDispatcherProvider
 import dev.iurysouza.livematch.DispatcherProvider
 import dev.iurysouza.livematch.data.PlaceHolderApi
+import dev.iurysouza.livematch.data.RedditApi
 import dev.iurysouza.livematch.util.AndroidResourceProvider
 import dev.iurysouza.livematch.util.JsonParser
 import dev.iurysouza.livematch.util.MoshiJsonParser
@@ -35,9 +36,15 @@ class AppModule {
     @Singleton
     internal fun provideRetrofitBuilder(okHttpClient: OkHttpClient, factory: Converter.Factory) =
         Retrofit.Builder()
-            .baseUrl(API_URL)
+            .baseUrl("https://www.reddit.com/")
             .addConverterFactory(factory)
             .client(okHttpClient)
+
+    @Provides
+    @Singleton
+    fun provideRedditApi(builder: Retrofit.Builder): RedditApi {
+        return builder.build().create(RedditApi::class.java)
+    }
 
     @Provides
     @Singleton
@@ -54,7 +61,7 @@ class AppModule {
     @Singleton
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        @Named("clientId") clientId: String,
+        @Named("BasicAuthCredentials") credentials: String,
     ): OkHttpClient =
         OkHttpClient.Builder()
             .dispatcher(Dispatcher().apply { maxRequestsPerHost = MAX_REQUESTS })
@@ -64,7 +71,7 @@ class AppModule {
                 chain.proceed(
                     chain.request()
                         .newBuilder()
-                        .addHeader("Authorization", "Basic $clientId").build()
+                        .addHeader("Authorization", credentials).build()
                 )
             }
             .addInterceptor(loggingInterceptor).build()
@@ -105,11 +112,13 @@ class AppModule {
 
 
     @Provides
-    @Named("clientId")
-    internal fun provideClientId(): String {
+    @Named("BasicAuthCredentials")
+    internal fun provideEncodedBasicAuthCredentials(): String {
+        val username = BuildConfig.CLIENT_ID
+        val password = ""
         return "Basic ${
             Base64.getEncoder().encodeToString(
-                "${BuildConfig.CLIENT_ID}:".toByteArray()
+                "$username:$password".toByteArray()
             )
         }"
     }

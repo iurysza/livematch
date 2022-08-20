@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.iurysouza.livematch.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.iurysouza.livematch.data.RedditApi
 import dev.iurysouza.livematch.data.models.PostEntity
 import dev.iurysouza.livematch.data.repo.Repository
 import dev.iurysouza.livematch.util.ResourceProvider
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 class PostsViewModel @Inject constructor(
     private val resourceProvider: ResourceProvider,
     private val repository: Repository,
+    private val redditApi: RedditApi,
 ) : ViewModel() {
 
     val state = MutableStateFlow<PostScreenState>(PostScreenState.Loading)
@@ -25,6 +27,8 @@ class PostsViewModel @Inject constructor(
     }
 
     private fun getPostList() = viewModelScope.launch {
+        val accessToken = redditApi.getAccessToken()
+        println(accessToken)
         state.emit(PostScreenState.Loading)
         repository.getPosts().collect { response ->
             state.emit(
