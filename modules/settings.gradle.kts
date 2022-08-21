@@ -1,3 +1,4 @@
+enableFeaturePreview("VERSION_CATALOGS")
 // == Define locations for build logic ==
 pluginManagement {
     repositories {
@@ -9,6 +10,11 @@ pluginManagement {
 
 // == Define locations for components ==
 dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            from(files("../libs.versions.toml"))
+        }
+    }
     repositories {
         mavenCentral()
         google()
