@@ -29,7 +29,7 @@ android {
 dependencies {
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.compose.ui.tooling.preview)
-    debugImplementation(libs.androidx.compose.ui.ui)
+    debugImplementation(libs.androidx.compose.ui)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.retrofit.core)
@@ -42,19 +42,21 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.21.5-rc")
-    implementation(("com.google.accompanist:accompanist-systemuicontroller:0.21.5-rc"))
-    implementation(("com.squareup.moshi:moshi-kotlin:1.12.0"))
-    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.13.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+    implementation(libs.google.acompanist.systemuicontroller)
+    implementation(libs.google.acompanist.navigation.animation)
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+    implementation((libs.squareup.moshi.kotlin))
+    kapt(libs.squareup.moshi.kotlin.codegen)
 
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.1.1")
+    implementation(libs.squareup.retrofit.moshi.converter)
+    implementation(libs.squareup.okhttp.loggingInterceptor)
 
-    testImplementation("androidx.test:runner:1.4.0")
+    implementation(libs.androidx.lifecycle.runtimeKtx)
+    implementation(libs.androidx.lifecycle.viewModelKtx)
+
+    androidTestImplementation(libs.androidx.compose.ui.testJunit4)
+
+    testImplementation(libs.androidx.test.runner)
     testImplementation("io.mockk:mockk:1.12.1")
     testImplementation("io.mockk:mockk-android:1.12.1")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")

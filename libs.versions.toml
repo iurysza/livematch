@@ -1,22 +1,25 @@
 [versions]
+androidGradlePlugin = "7.2.1"
 androidxCompose = "1.1.1"
 androidxComposeCompiler = "1.2.0"
 secrets = "2.0.1"
 retrofit = "2.9.0"
-okhttp = "4.10.0"
+okhttp = "4.9.3"
 hilt = "2.42"
-androidGradlePlugin = "7.2.1"
 androidxActivity = "1.4.0"
 androidxAppCompat = "1.4.2"
 androidxCore = "1.8.0"
-accompanist = "0.24.8-beta"
 androidxHiltNavigationCompose = "1.0.0"
 androidxLifecycle = "2.6.0-alpha01"
 androidxNavigation = "2.5.0"
 kotlinxCoroutines = "1.6.3"
 kotlin = "1.7.10"
-# validating
-
+accompanist = "0.21.5-rc"
+moshiKotlinCodegen = "1.13.0"
+moshiConverter = "2.9.0"
+moshiKotlin = "1.12.0"
+testJunit4 = "1.1.1"
+androidxTestRunner = "1.4.0"
 [libraries]
 secrets-gradlePlugin = { group = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", name = "secrets-gradle-plugin", version.ref = "secrets" }
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -25,22 +28,30 @@ kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-pl
 
 androidx-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "androidxCompose" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "androidxCompose" }
-androidx-compose-ui-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "androidxCompose" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "androidxCompose" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "androidxCompose" }
-
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
+androidx-compose-ui-testJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "testJunit4" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
 
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+google-acompanist-navigation-animation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist" }
+google-acompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 
-androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
-androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-runtimeKtx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewModelKtx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
+
+squareup-okhttp-loggingInterceptor = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshiKotlinCodegen" }
+squareup-moshi-kotlin-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshiKotlinCodegen" }
+squareup-retrofit-moshi-converter = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "moshiConverter" }
+squareup-moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshiKotlin" }
 
