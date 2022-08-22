@@ -29,3 +29,9 @@ class Repository @Inject constructor(
     }.flowOn(dispatchers.io())
         .catch { emit(NetworkResponse.error(it, null)) }
 }
+
+sealed interface DomainError
+
+object NetworkError : DomainError
+object KeyNotFound : DomainError
+object FailedToSave : DomainError
