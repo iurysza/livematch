@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
 import okhttp3.Dispatcher
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
@@ -34,99 +35,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    internal fun provideRetrofitBuilder(okHttpClient: OkHttpClient, factory: Converter.Factory) =
-        Retrofit.Builder()
-            .baseUrl("https://www.reddit.com/")
-            .addConverterFactory(factory)
-            .client(okHttpClient)
-
-    @Provides
-    @Singleton
-    fun provideRedditApi(builder: Retrofit.Builder): RedditApi {
-        return builder.build().create(RedditApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideRetrofitApi(builder: Retrofit.Builder): PlaceHolderApi {
-        return builder.build().create(PlaceHolderApi::class.java)
-    }
-
-    @Provides
-    fun provideCoroutineContextProvider(): DispatcherProvider {
-        return DefaultDispatcherProvider()
-    }
-
-    @Provides
-    @Singleton
-    fun provideOkHttpClient(
-        loggingInterceptor: HttpLoggingInterceptor,
-        @Named("BasicAuthCredentials") credentials: String,
-    ): OkHttpClient =
-        OkHttpClient.Builder()
-            .dispatcher(Dispatcher().apply { maxRequestsPerHost = MAX_REQUESTS })
-            .connectTimeout(HTTP_CONNECTION_TIMEOUT.toLong(), TimeUnit.SECONDS)
-            .readTimeout(HTTP_CONNECTION_TIMEOUT.toLong(), TimeUnit.SECONDS)
-            .addInterceptor { chain ->
-                chain.proceed(
-                    chain.request()
-                        .newBuilder()
-                        .addHeader("Authorization", credentials).build()
-                )
-            }
-            .addInterceptor(loggingInterceptor).build()
-
-    @Provides
-    @Singleton
     internal fun provideContext(@ApplicationContext appContext: Context): ResourceProvider {
         return AndroidResourceProvider(appContext)
-    }
-
-    @Provides
-    @Singleton
-    internal fun provideMoshi(): Moshi = Moshi.Builder().apply {
-        add(KotlinJsonAdapterFactory())
-    }.build()
-
-
-    @Provides
-    @Singleton
-    internal fun providesJsonParse(moshi: Moshi): JsonParser {
-        return MoshiJsonParser(moshi)
-    }
-
-    @Provides
-    @Singleton
-    internal fun provideConverterFactory(moshi: Moshi): Converter.Factory {
-        return MoshiConverterFactory.create(moshi)
-    }
-
-
-    @Provides
-    @Singleton
-    internal fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.BODY
-        return logging
-    }
-
-
-    @Provides
-    @Named("BasicAuthCredentials")
-    internal fun provideEncodedBasicAuthCredentials(): String {
-        val username = BuildConfig.CLIENT_ID
-        val password = ""
-        return "Basic ${
-            Base64.getEncoder().encodeToString(
-                "$username:$password".toByteArray()
-            )
-        }"
-    }
-
-    companion object {
-        private const val MAX_REQUESTS = 10
-        private const val HTTP_CONNECTION_TIMEOUT = 60
-
-        private const val API_URL = BuildConfig.API_URL
     }
 }

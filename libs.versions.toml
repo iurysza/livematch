@@ -21,7 +21,7 @@ moshiKotlin = "1.12.0"
 testJunit4 = "1.1.1"
 androidxTestRunner = "1.4.0"
 arrow = "1.1.3-alpha.46"
-kotest = "4.6.3"
+kotest = "5.4.2"
 kotest-arrow = "1.2.5"
 kotest-mockServer = "1.2.1"
 mockk = "1.12.1"
@@ -54,6 +54,7 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-lifecycle-runtimeKtx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewModelKtx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
 
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }

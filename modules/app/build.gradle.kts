@@ -26,6 +26,11 @@ android {
         }
     }
 }
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+}
+
 dependencies {
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.compose.ui.tooling.preview)
@@ -63,8 +68,6 @@ dependencies {
     testImplementation(libs.squareup.okhttp.mockwebserver)
     testImplementation(libs.bundles.kotest)
     testImplementation(libs.androidx.test.runner)
-    testImplementation(libs.mockk)
-    testImplementation(libs.mockk.android)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotest.assertions.core)
 }
