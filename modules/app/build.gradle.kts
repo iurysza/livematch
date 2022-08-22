@@ -54,11 +54,17 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtimeKtx)
     implementation(libs.androidx.lifecycle.viewModelKtx)
 
+
+    implementation(libs.bundles.arrow)
+
     androidTestImplementation(libs.androidx.compose.ui.testJunit4)
 
+    testImplementation(libs.kotest.extensions.mockserver)
+    testImplementation(libs.squareup.okhttp.mockwebserver)
+    testImplementation(libs.bundles.kotest)
     testImplementation(libs.androidx.test.runner)
-    testImplementation("io.mockk:mockk:1.12.1")
-    testImplementation("io.mockk:mockk-android:1.12.1")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
-    testImplementation("io.kotest:kotest-assertions-core:4.6.3")
+    testImplementation(libs.mockk)
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.kotest.assertions.core)
 }
