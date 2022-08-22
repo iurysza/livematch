@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.data.repo
+package dev.iurysouza.livematch.fakes
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -9,7 +9,6 @@ import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockWebServer
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-
 
 object FakeRedditApi {
     fun createWith(mockWebServer: MockWebServer): RedditApi {

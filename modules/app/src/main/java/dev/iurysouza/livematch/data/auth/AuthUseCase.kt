@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.auth
+package dev.iurysouza.livematch.data.auth
 
 import arrow.core.Either
 import arrow.core.continuations.either
@@ -19,10 +19,10 @@ class AuthUseCase(
             }
     }
 
-    private suspend fun fetchAccessToken(): Either<DomainError, DomainAccessToken> =
+    private suspend fun fetchAccessToken(): Either<DomainError, AuthToken> =
         Either.catch {
             val (accessToken, expiresIn) = redditApi.getAccessToken()
-            DomainAccessToken(accessToken, expiresIn)
+            AuthToken(accessToken, expiresIn)
         }.mapLeft {
             NetworkError
         }

@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.auth
+package dev.iurysouza.livematch.data.auth
 
 import arrow.core.Either
 import dev.iurysouza.livematch.data.repo.DomainError

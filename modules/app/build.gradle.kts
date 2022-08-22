@@ -35,34 +35,26 @@ dependencies {
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.compose.ui.tooling.preview)
     debugImplementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.retrofit.core)
-
     implementation(libs.androidx.activity.compose)
-
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
-
+    implementation(libs.androidx.lifecycle.runtimeKtx)
+    implementation(libs.androidx.lifecycle.viewModelKtx)
+    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
     implementation(libs.google.acompanist.systemuicontroller)
     implementation(libs.google.acompanist.navigation.animation)
 
+    implementation(libs.retrofit.core)
+    implementation(libs.squareup.retrofit.moshi.converter)
+    implementation(libs.squareup.okhttp.loggingInterceptor)
     implementation((libs.squareup.moshi.kotlin))
     kapt(libs.squareup.moshi.kotlin.codegen)
 
-    implementation(libs.squareup.retrofit.moshi.converter)
-    implementation(libs.squareup.okhttp.loggingInterceptor)
-
-    implementation(libs.androidx.lifecycle.runtimeKtx)
-    implementation(libs.androidx.lifecycle.viewModelKtx)
-
-
     implementation(libs.bundles.arrow)
-
-    androidTestImplementation(libs.androidx.compose.ui.testJunit4)
 
     testImplementation(libs.kotest.extensions.mockserver)
     testImplementation(libs.squareup.okhttp.mockwebserver)

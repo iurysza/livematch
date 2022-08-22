@@ -8,7 +8,7 @@ interface KeyValueStorage {
     fun putString(key: String, value: String)
 }
 
-class AndroidSimpleStorage(
+class SystemStorage(
     activity: Activity,
 ) : KeyValueStorage {
 

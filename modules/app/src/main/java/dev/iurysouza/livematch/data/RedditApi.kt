@@ -1,6 +1,6 @@
 package dev.iurysouza.livematch.data
 
-import dev.iurysouza.livematch.auth.AccessTokenResponse
+import dev.iurysouza.livematch.data.auth.AccessTokenResponse
 import retrofit2.http.POST
 import retrofit2.http.Query
 

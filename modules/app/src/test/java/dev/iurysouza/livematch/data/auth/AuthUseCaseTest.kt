@@ -1,15 +1,13 @@
-package dev.iurysouza.livematch.data.repo
+package dev.iurysouza.livematch.data.auth
 
-import dev.iurysouza.livematch.auth.AuthStorage
-import dev.iurysouza.livematch.auth.AuthUseCase
+import dev.iurysouza.livematch.data.Fixtures.authJsonResponse
 import dev.iurysouza.livematch.data.RedditApi
-import dev.iurysouza.livematch.data.repo.Fixtures.authJsonResponse
-import dev.iurysouza.livematch.data.storage.KeyValueStorage
+import dev.iurysouza.livematch.fakes.FakeRedditApi
+import dev.iurysouza.livematch.fakes.InMemoryKeyValueStorage
 import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.BehaviorSpec
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-
 
 class MyMockServerTest : BehaviorSpec({
     val mockWebServer = MockWebServer()
@@ -44,11 +42,3 @@ class MyMockServerTest : BehaviorSpec({
 })
 
 
-private class InMemoryKeyValueStorage(
-    private val map: MutableMap<String, String> = mutableMapOf(),
-) : KeyValueStorage {
-    override fun getString(key: String): String? = map[key]
-    override fun putString(key: String, value: String) {
-        map[key] = value
-    }
-}
