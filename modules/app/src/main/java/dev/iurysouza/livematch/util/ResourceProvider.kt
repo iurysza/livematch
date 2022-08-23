@@ -2,12 +2,15 @@ package dev.iurysouza.livematch.util
 
 import android.content.Context
 import androidx.annotation.StringRes
+import javax.inject.Inject
 
 interface ResourceProvider {
     fun getString(@StringRes id: Int): String
 }
 
-class SystemResourceProvider(private val context: Context) : ResourceProvider {
+class SystemResourceProvider @Inject constructor(
+    private val context: Context,
+) : ResourceProvider {
     override fun getString(@StringRes id: Int): String {
         return context.getString(id)
     }

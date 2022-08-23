@@ -8,7 +8,6 @@ import dev.iurysouza.livematch.data.storage.KeyValueStorage
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
 class AuthStorage @Inject constructor(
     private val storage: KeyValueStorage,
 ) {
