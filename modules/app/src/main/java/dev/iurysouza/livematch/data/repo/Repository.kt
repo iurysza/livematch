@@ -32,6 +32,7 @@ class Repository @Inject constructor(
 
 sealed interface DomainError
 
+object TokenExpired : DomainError
 object NetworkError : DomainError
 object KeyNotFound : DomainError
 object FailedToSave : DomainError
