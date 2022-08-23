@@ -1,8 +1,8 @@
-package dev.iurysouza.livematch.data.auth
+package dev.iurysouza.livematch.domain
 
 import com.squareup.moshi.Json
 
-data class AccessTokenResponse(
+data class AccessTokenEntity(
     @Json(name = "access_token") val accessToken: String,
     @Json(name = "expires_in") val expiresIn: Long,
     @Json(name = "device_id") val deviceId: String,

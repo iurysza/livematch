@@ -1,11 +1,11 @@
-package dev.iurysouza.livematch.data.auth
+package dev.iurysouza.livematch.domain.auth
 
 import arrow.core.Either
 import arrow.core.Either.Companion.catch
-import dev.iurysouza.livematch.data.repo.DomainError
-import dev.iurysouza.livematch.data.repo.FailedToSave
-import dev.iurysouza.livematch.data.repo.KeyNotFound
-import dev.iurysouza.livematch.data.storage.KeyValueStorage
+import dev.iurysouza.livematch.domain.DomainError
+import dev.iurysouza.livematch.domain.FailedToSave
+import dev.iurysouza.livematch.domain.TokenNotFound
+import dev.iurysouza.livematch.domain.adapters.KeyValueStorage
 import javax.inject.Inject
 
 class AuthStorage @Inject constructor(
@@ -18,7 +18,7 @@ class AuthStorage @Inject constructor(
             expirationDate = storage.getLong(EXPIRATION_DATE_KEY)!!
         )
     }.mapLeft {
-        KeyNotFound
+        TokenNotFound
     }
 
     fun putToken(token: AuthToken): Either<DomainError, Unit> = catch {

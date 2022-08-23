@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.data.repo
+package dev.iurysouza.livematch.domain.repo
 
 import dev.iurysouza.livematch.DispatcherProvider
 import dev.iurysouza.livematch.data.PlaceHolderApi
@@ -30,9 +30,3 @@ class Repository @Inject constructor(
         .catch { emit(NetworkResponse.error(it, null)) }
 }
 
-sealed interface DomainError
-
-object TokenExpired : DomainError
-object NetworkError : DomainError
-object KeyNotFound : DomainError
-object FailedToSave : DomainError

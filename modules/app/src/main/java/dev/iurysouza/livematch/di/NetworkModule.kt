@@ -10,9 +10,9 @@ import dev.iurysouza.livematch.BuildConfig
 import dev.iurysouza.livematch.DefaultDispatcherProvider
 import dev.iurysouza.livematch.DispatcherProvider
 import dev.iurysouza.livematch.data.PlaceHolderApi
-import dev.iurysouza.livematch.data.RedditApi
-import dev.iurysouza.livematch.util.JsonParser
-import dev.iurysouza.livematch.util.MoshiJsonParser
+import dev.iurysouza.livematch.data.network.RedditApi
+import dev.iurysouza.livematch.data.network.RedditNetworkDataSource
+import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
 import java.util.Base64
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
@@ -89,11 +89,6 @@ class NetworkModule {
         add(KotlinJsonAdapterFactory())
     }.build()
 
-    @Provides
-    @Singleton
-    internal fun providesJsonParse(moshi: Moshi): JsonParser {
-        return MoshiJsonParser(moshi)
-    }
 
     @Provides
     @Singleton
@@ -119,6 +114,12 @@ class NetworkModule {
                 "$username:$password".toByteArray()
             )
         }"
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideNetworkDataSource(redditApi: RedditApi): NetworkDataSource {
+        return RedditNetworkDataSource(redditApi)
     }
 }
 

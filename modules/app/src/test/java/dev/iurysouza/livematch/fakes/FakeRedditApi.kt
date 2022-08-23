@@ -3,7 +3,7 @@ package dev.iurysouza.livematch.fakes
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dev.iurysouza.livematch.BuildConfig
-import dev.iurysouza.livematch.data.RedditApi
+import dev.iurysouza.livematch.data.network.RedditApi
 import java.util.Base64
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockWebServer

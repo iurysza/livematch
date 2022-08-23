@@ -1,14 +1,8 @@
 package dev.iurysouza.livematch.data.storage
 
 import android.content.SharedPreferences
+import dev.iurysouza.livematch.domain.adapters.KeyValueStorage
 import javax.inject.Inject
-
-interface KeyValueStorage {
-    fun getLong(key: String): Long?
-    fun getString(key: String): String?
-    fun put(key: String, value: Long)
-    fun put(key: String, value: String)
-}
 
 class SystemStorage @Inject constructor(
     private val sharedPref: SharedPreferences,

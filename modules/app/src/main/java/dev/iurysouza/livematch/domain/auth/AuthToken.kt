@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.data.auth
+package dev.iurysouza.livematch.domain.auth
 
 data class AuthToken(
     val value: String,
