@@ -29,7 +29,7 @@ class MyMockServerTest : BehaviorSpec({
                 storage = AuthStorage(InMemoryKeyValueStorage())
             )
 
-            val result = sut.validateAccessToken()
+            val result = sut.refreshTokenIfNeeded()
             then("should return a success response") {
                 result shouldBeRight Unit
             }

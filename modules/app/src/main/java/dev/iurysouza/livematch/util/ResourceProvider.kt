@@ -7,7 +7,7 @@ interface ResourceProvider {
     fun getString(@StringRes id: Int): String
 }
 
-class AndroidResourceProvider(private val context: Context) : ResourceProvider {
+class SystemResourceProvider(private val context: Context) : ResourceProvider {
     override fun getString(@StringRes id: Int): String {
         return context.getString(id)
     }

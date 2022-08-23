@@ -1,24 +1,28 @@
 package dev.iurysouza.livematch.data.storage
 
-import android.app.Activity
-import android.content.Context
+import android.content.SharedPreferences
+import javax.inject.Inject
 
 interface KeyValueStorage {
+    fun getLong(key: String): Long?
     fun getString(key: String): String?
-    fun putString(key: String, value: String)
+    fun put(key: String, value: Long)
+    fun put(key: String, value: String)
 }
 
-class SystemStorage(
-    activity: Activity,
+class SystemStorage @Inject constructor(
+    private val sharedPref: SharedPreferences,
 ) : KeyValueStorage {
 
-    private val sharedPref = activity.getPreferences(Context.MODE_PRIVATE)
+    override fun getString(key: String): String? = sharedPref.getString(key, null)
 
-    override fun getString(key: String): String? {
-        return sharedPref.getString(key, null)
-    }
+    override fun getLong(key: String): Long = sharedPref.getLong(key, 0)
 
-    override fun putString(key: String, value: String) {
-        sharedPref.edit().putString(key, value).apply()
-    }
+    override fun put(key: String, value: Long) = sharedPref.update { putLong(key, value) }
+
+    override fun put(key: String, value: String) = sharedPref.update { putString(key, value) }
+
+    private fun SharedPreferences.update(
+        block: SharedPreferences.Editor.() -> Unit,
+    ) = edit().apply(block).apply()
 }
