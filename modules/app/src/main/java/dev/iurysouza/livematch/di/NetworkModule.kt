@@ -1,5 +1,8 @@
 package dev.iurysouza.livematch.di
 
+import android.util.Log
+import arrow.core.continuations.either
+import arrow.core.handleError
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -13,6 +16,7 @@ import dev.iurysouza.livematch.data.PlaceHolderApi
 import dev.iurysouza.livematch.data.network.RedditApi
 import dev.iurysouza.livematch.data.network.RedditNetworkDataSource
 import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
+import dev.iurysouza.livematch.domain.auth.AuthStorage
 import java.util.Base64
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
@@ -38,7 +42,7 @@ class NetworkModule {
         factory: Converter.Factory,
     ) =
         Retrofit.Builder()
-            .baseUrl("https://www.reddit.com/")
+            .baseUrl("https://www.oauth.reddit.com/")
             .addConverterFactory(factory)
             .callbackExecutor(dispatcherProvider.io().asExecutor())
             .client(okHttpClient)
@@ -78,15 +82,21 @@ class NetworkModule {
     @Singleton
     @Named(NAMED_AUTH_INTERCEPTOR)
     fun provideAuthInterceptor(
-        @Named(NAMED_BASIC_AUTH_CREDENTIALS) credentials: String,
-    ): Interceptor {
-        return Interceptor { chain ->
-            val request = chain.request()
-            val newRequest = request.newBuilder()
-                .addHeader("Authorization", credentials)
-                .build()
-            chain.proceed(newRequest)
+        authStorage: AuthStorage,
+    ): Interceptor = Interceptor { chain ->
+        var request = chain.request()
+        if (request.header("Authorization") == null) {
+            either.eager {
+                val (value) = authStorage.getToken().bind()
+                val credentials = Base64.getEncoder().encodeToString(value.toByteArray())
+                request = request.newBuilder()
+                    .addHeader("Bearer", credentials)
+                    .build()
+            }.handleError {
+                Log.e("LiveMatch", "No Bearer Token Available $it")
+            }
         }
+        chain.proceed(request)
     }
 
     @Provides
