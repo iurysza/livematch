@@ -26,11 +26,7 @@ class RedditNetworkDataSource @Inject constructor(
     private fun getAuthorizationHeader(): String {
         val username = BuildConfig.CLIENT_ID
         val password = ""
-        return "Basic ${
-            Base64.getEncoder().encodeToString(
-                "$username:$password".toByteArray()
-            )
-        }"
+        return "Basic ${Base64.getEncoder().encodeToString("$username:$password".toByteArray())}"
     }
 
 }

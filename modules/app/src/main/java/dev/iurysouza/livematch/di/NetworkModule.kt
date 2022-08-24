@@ -9,7 +9,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.iurysouza.livematch.BuildConfig
 import dev.iurysouza.livematch.DefaultDispatcherProvider
 import dev.iurysouza.livematch.DispatcherProvider
 import dev.iurysouza.livematch.data.PlaceHolderApi
@@ -40,12 +39,11 @@ class NetworkModule {
         dispatcherProvider: DispatcherProvider,
         okHttpClient: OkHttpClient,
         factory: Converter.Factory,
-    ) =
-        Retrofit.Builder()
-            .baseUrl("https://www.oauth.reddit.com/")
-            .addConverterFactory(factory)
-            .callbackExecutor(dispatcherProvider.io().asExecutor())
-            .client(okHttpClient)
+    ) = Retrofit.Builder()
+        .baseUrl("https://www.oauth.reddit.com/")
+        .addConverterFactory(factory)
+        .callbackExecutor(dispatcherProvider.io().asExecutor())
+        .client(okHttpClient)
 
     @Provides
     @Singleton
@@ -121,18 +119,6 @@ class NetworkModule {
     }
 
     @Provides
-    @Named("BasicAuthCredentials")
-    internal fun provideEncodedBasicAuthCredentials(): String {
-        val username = BuildConfig.CLIENT_ID
-        val password = ""
-        return "Basic ${
-            Base64.getEncoder().encodeToString(
-                "$username:$password".toByteArray()
-            )
-        }"
-    }
-
-    @Provides
     @Singleton
     internal fun provideNetworkDataSource(redditApi: RedditApi): NetworkDataSource {
         return RedditNetworkDataSource(redditApi)
@@ -141,6 +127,4 @@ class NetworkModule {
 
 private const val MAX_REQUESTS = 10
 private const val HTTP_CONNECTION_TIMEOUT = 60
-
-private const val NAMED_BASIC_AUTH_CREDENTIALS = "BasicAuthCredentials"
 private const val NAMED_AUTH_INTERCEPTOR = "AuthInterceptor"
