@@ -17,6 +17,7 @@ import java.util.Base64
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
+import kotlinx.coroutines.asExecutor
 import okhttp3.Dispatcher
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -31,10 +32,15 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    internal fun provideRetrofitBuilder(okHttpClient: OkHttpClient, factory: Converter.Factory) =
+    internal fun provideRetrofitBuilder(
+        dispatcherProvider: DispatcherProvider,
+        okHttpClient: OkHttpClient,
+        factory: Converter.Factory,
+    ) =
         Retrofit.Builder()
             .baseUrl("https://www.reddit.com/")
             .addConverterFactory(factory)
+            .callbackExecutor(dispatcherProvider.io().asExecutor())
             .client(okHttpClient)
 
     @Provides
