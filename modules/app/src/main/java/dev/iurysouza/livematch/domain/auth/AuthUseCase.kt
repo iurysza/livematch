@@ -11,7 +11,8 @@ import dev.iurysouza.livematch.domain.InvalidExpirationDate
 import dev.iurysouza.livematch.domain.TokenExpired
 import dev.iurysouza.livematch.domain.TokenNotFound
 import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
-import java.time.Instant
+import dev.iurysouza.livematch.util.isInTheFuture
+import dev.iurysouza.livematch.util.nowPlusMillis
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -22,20 +23,19 @@ class AuthUseCase @Inject constructor(
 ) {
 
     suspend fun refreshTokenIfNeeded(): Either<DomainError, Unit> = either {
+        println("${Thread.currentThread().name} - refreshTokenIfNeeded")
         val token = storage.getToken().bind()
         ensure(token.expirationDate.isInTheFuture()) {
             TokenExpired
         }
     }.handleErrorWith { error ->
         when (error) {
-            TokenExpired,
             is TokenNotFound,
+            TokenExpired,
             -> fetchNewTokenAndSaveIt()
             else -> error.left()
         }
     }
-
-    private fun Long.isInTheFuture() = Instant.ofEpochMilli(this).isAfter(Instant.now())
 
     private suspend fun fetchNewTokenAndSaveIt(): Either<DomainError, Unit> = either {
         networkDataSource.getAccessToken().bind()
@@ -43,7 +43,7 @@ class AuthUseCase @Inject constructor(
         catch {
             AuthToken(
                 accessToken,
-                expirationDate = Instant.now().plusMillis(expiresIn).toEpochMilli()
+                expirationDate = nowPlusMillis(expiresIn)
             )
         }.mapLeft { InvalidExpirationDate }
     }.map { storage.putToken(it) }

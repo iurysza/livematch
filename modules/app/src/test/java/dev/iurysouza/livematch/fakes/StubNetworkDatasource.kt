@@ -7,21 +7,27 @@ import dev.iurysouza.livematch.domain.NetworkError
 import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
 
 class StubNetworkDatasource(
-    var returnAccessToken: AccessTokenEntity? = fakeAccessTokenEntity,
-    var returnError: Throwable? = null,
+    var returnAccessToken: AccessTokenEntity? = anAccessTokenEntity(),
+    private var accessTokenError: Throwable? = null,
 ) : NetworkDataSource {
     override suspend fun getAccessToken(): Either<DomainError, AccessTokenEntity> {
         return Either.catch {
-            returnError?.let { throw it }
+            accessTokenError?.let { throw it }
             returnAccessToken!!
-        }.mapLeft { NetworkError(it.message ?: "") }
+        }.mapLeft { NetworkError(it.message) }
     }
 }
 
-val fakeAccessTokenEntity = AccessTokenEntity(
-    accessToken = "fakeAccessToken",
-    expiresIn = 8400,
-    deviceId = "fakeRefreshToken",
-    scope = "fakeScope",
-    tokenType = "fakeTokenType",
+fun anAccessTokenEntity(
+    accessToken: String = "accessToken",
+    expiresIn: Long = 8400,
+    tokenType: String = "tokenType",
+    scope: String = "scope",
+    deviceId: String = "deviceId",
+): AccessTokenEntity = AccessTokenEntity(
+    accessToken = accessToken,
+    expiresIn = expiresIn,
+    tokenType = tokenType,
+    scope = scope,
+    deviceId = deviceId
 )

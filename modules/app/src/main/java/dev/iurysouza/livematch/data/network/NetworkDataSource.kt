@@ -7,7 +7,6 @@ import dev.iurysouza.livematch.domain.DomainError
 import dev.iurysouza.livematch.domain.NetworkError
 import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class RedditNetworkDataSource @Inject constructor(
     private val redditApi: RedditApi,
@@ -15,7 +14,7 @@ class RedditNetworkDataSource @Inject constructor(
 
     override suspend fun getAccessToken(): Either<DomainError, AccessTokenEntity> =
         catch { redditApi.getAccessToken() }
-            .mapLeft { NetworkError(it.message ?: "Unknown") }
+            .mapLeft { NetworkError(it.message) }
             .map {
                 AccessTokenEntity(it.accessToken, it.expiresIn, it.deviceId, it.scope, it.tokenType)
             }

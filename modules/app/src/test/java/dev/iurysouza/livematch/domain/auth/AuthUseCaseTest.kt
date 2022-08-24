@@ -1,12 +1,12 @@
 package dev.iurysouza.livematch.domain.auth
 
-import arrow.core.Either
-import dev.iurysouza.livematch.domain.DomainError
+import dev.iurysouza.livematch.domain.NetworkError
 import dev.iurysouza.livematch.fakes.InMemoryKeyValueStorage
 import dev.iurysouza.livematch.fakes.StubNetworkDatasource
-import dev.iurysouza.livematch.fakes.fakeAccessTokenEntity
+import dev.iurysouza.livematch.fakes.anAccessTokenEntity
 import dev.iurysouza.livematch.util.secondsAgo
 import dev.iurysouza.livematch.util.secondsFromNow
+import io.kotest.assertions.arrow.core.shouldBeLeft
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.maps.shouldContain
 import io.kotest.matchers.shouldNotBe
@@ -15,14 +15,17 @@ class AuthUseCaseTest : BehaviorSpec({
 
     given("there's no token in the local storage") {
         val localStorage = mutableMapOf<String, Any?>()
+        val accessToken = "token"
         val sut = AuthUseCase(
-            networkDataSource = StubNetworkDatasource(returnAccessToken = fakeAccessTokenEntity),
+            networkDataSource = StubNetworkDatasource(
+                returnAccessToken = anAccessTokenEntity(accessToken)
+            ),
             storage = AuthStorage(InMemoryKeyValueStorage(localStorage))
         )
         `when`("the user tries to refresh the token") {
             sut.refreshTokenIfNeeded()
             then("the local storage should be updated with the token fetched from the network") {
-                localStorage shouldContain Pair("accessToken", fakeAccessTokenEntity.accessToken)
+                localStorage shouldContain ("accessToken" to accessToken)
             }
         }
     }
@@ -38,14 +41,7 @@ class AuthUseCaseTest : BehaviorSpec({
         )
 
         `when`("the user tries to refresh the token") {
-            val res = sut.refreshTokenIfNeeded()
-            when (res) {
-                is Either.Left -> {
-                    val value: DomainError = res.value
-                    println("====================error: $value")
-                }
-                is Either.Right -> println("====================success ")
-            }
+            sut.refreshTokenIfNeeded()
             then("the local storage token should be updated") {
                 localStorage["accessToken"] shouldNotBe expiredToken
             }
@@ -53,8 +49,9 @@ class AuthUseCaseTest : BehaviorSpec({
     }
 
     given("that the token in local storage is valid") {
+        val accessToken = "token"
         val localStorage = mutableMapOf<String, Any?>(
-            "accessToken" to fakeAccessTokenEntity.accessToken,
+            "accessToken" to accessToken,
             "expirationDate" to 60.secondsFromNow()
         )
         val sut = AuthUseCase(
@@ -65,7 +62,22 @@ class AuthUseCaseTest : BehaviorSpec({
         `when`("the user tries to refresh the token") {
             sut.refreshTokenIfNeeded()
             then("the token in storage should be the same") {
-                localStorage shouldContain Pair("accessToken", fakeAccessTokenEntity.accessToken)
+                localStorage shouldContain Pair("accessToken", accessToken)
+            }
+        }
+    }
+    given("that there is no token in the storage") {
+        and("we can't reach the network") {
+            val networkDataSource = StubNetworkDatasource(accessTokenError = Throwable())
+            `when`("the user tries to refresh the token") {
+                val sut = AuthUseCase(
+                    networkDataSource = networkDataSource,
+                    storage = AuthStorage(InMemoryKeyValueStorage())
+                )
+                val result = sut.refreshTokenIfNeeded()
+                then("the result should be a NetworkError") {
+                    result shouldBeLeft NetworkError()
+                }
             }
         }
     }
