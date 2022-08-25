@@ -40,7 +40,7 @@ class NetworkModule {
         okHttpClient: OkHttpClient,
         factory: Converter.Factory,
     ) = Retrofit.Builder()
-        .baseUrl("https://www.oauth.reddit.com/")
+        .baseUrl("https://oauth.reddit.com/")
         .addConverterFactory(factory)
         .callbackExecutor(dispatcherProvider.io().asExecutor())
         .client(okHttpClient)
@@ -83,13 +83,14 @@ class NetworkModule {
         authStorage: AuthStorage,
     ): Interceptor = Interceptor { chain ->
         var request = chain.request()
-        if (request.header("Authorization") == null) {
+        if (request.url.host.contains("oauth")) {
             either.eager {
                 val (value) = authStorage.getToken().bind()
                 val credentials = Base64.getEncoder().encodeToString(value.toByteArray())
-                request = request.newBuilder()
-                    .addHeader("Bearer", credentials)
-                    .build()
+                request = request.newBuilder().addHeader(
+                    "Authorization",
+                    "Bearer: $credentials"
+                ).build()
             }.handleError {
                 Log.e("LiveMatch", "No Bearer Token Available $it")
             }
