@@ -22,8 +22,7 @@ testJunit4 = "1.1.1"
 androidxTestRunner = "1.4.0"
 arrow = "1.1.3-alpha.46"
 kotest = "5.4.2"
-kotest-arrow = "1.2.5"
-kotest-mockServer = "1.2.1"
+kotestArrow = "1.2.5"
 mockk = "1.12.1"
 
 [libraries]
@@ -37,12 +36,14 @@ hilt-gradlePlugin = { group = "com.google.dagger", name = "hilt-android-gradle-p
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
 androidx-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "androidxCompose" }
-androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "androidxCompose" }
-androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "androidxCompose" }
-androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "androidxCompose" }
+
+androidx-compose-ui-uiToolingPreview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "androidxCompose" }
+androidx-compose-ui-uiTooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "androidxCompose" }
+androidx-compose-ui-core = { group = "androidx.compose.ui", name = "ui", version.ref = "androidxCompose" }
+androidx-compose-ui-testJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "testJunit4" }
+
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
-androidx-compose-ui-testJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "testJunit4" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
 
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
@@ -54,31 +55,30 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-lifecycle-runtimeKtx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewModelKtx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
 
-hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+google-dagger-hilt-androidTesting = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
+google-dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+google-dagger-hilt-androidCompiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
 
 squareup-okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp" }
 squareup-okhttp-loggingInterceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
-squareup-moshi-kotlin-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshiKotlinCodegen" }
+squareup-moshi-kotlinCodegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshiKotlinCodegen" }
 squareup-retrofit-moshi-converter = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "moshiConverter" }
 squareup-moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshiKotlin" }
 
 #mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 #mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
 
-kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
-kotest-extensions-arrow = { group = "io.kotest.extensions", name = "kotest-assertions-arrow", version.ref = "kotest-arrow" }
-kotest-extensions-mockserver = { group = "io.kotest.extensions", name = "kotest-extensions-mockserver", version.ref = "kotest-mockServer" }
-kotest-runnerJUnit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
+kotest-kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
+kotest-kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
+kotest-extensions-kotest-assertions-arrow = { group = "io.kotest.extensions", name = "kotest-assertions-arrow", version.ref = "kotestArrow" }
 
 [bundles]
 arrow = ["arrow-core"]
-kotest = [
-    "kotest-assertions-core",
-    "kotest-runnerJUnit5",
-    "kotest-extensions-arrow",
+kotestBundle = [
+    "kotest-kotest-assertions-core",
+    "kotest-kotest-runner-junit5",
+    "kotest-extensions-kotest-assertions-arrow",
 ]

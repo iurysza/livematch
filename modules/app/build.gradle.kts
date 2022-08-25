@@ -33,8 +33,8 @@ tasks.withType<Test>().configureEach {
 
 dependencies {
     implementation(libs.androidx.compose.material)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    debugImplementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.uiToolingPreview)
+    debugImplementation(libs.androidx.compose.ui.core)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
@@ -42,8 +42,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtimeKtx)
     implementation(libs.androidx.lifecycle.viewModelKtx)
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    implementation(libs.google.dagger.hilt.android)
+    kapt(libs.google.dagger.hilt.androidCompiler)
 
     implementation(libs.google.acompanist.systemuicontroller)
     implementation(libs.google.acompanist.navigation.animation)
@@ -52,14 +52,13 @@ dependencies {
     implementation(libs.squareup.retrofit.moshi.converter)
     implementation(libs.squareup.okhttp.loggingInterceptor)
     implementation((libs.squareup.moshi.kotlin))
-    kapt(libs.squareup.moshi.kotlin.codegen)
+    kapt(libs.squareup.moshi.kotlinCodegen)
 
     implementation(libs.bundles.arrow)
 
-    testImplementation(libs.kotest.extensions.mockserver)
     testImplementation(libs.squareup.okhttp.mockwebserver)
-    testImplementation(libs.bundles.kotest)
+    testImplementation ( "org.jetbrains.kotlin:kotlin-reflect:1.7.10" )
+    testImplementation(libs.bundles.kotestBundle)
     testImplementation(libs.androidx.test.runner)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.kotest.assertions.core)
 }
