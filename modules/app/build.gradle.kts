@@ -5,6 +5,11 @@ plugins {
 }
 
 android {
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
     buildTypes {
         val USE_MOCK_URL: String by project
         val API_URL: String by project
@@ -32,11 +37,12 @@ tasks.withType<Test>().configureEach {
 }
 
 dependencies {
+    implementation(libs.bundles.composeMinimal)
+    debugImplementation(libs.androidx.compose.ui.uiTooling)
     implementation(libs.androidx.compose.material)
-    implementation(libs.androidx.compose.ui.uiToolingPreview)
-    debugImplementation(libs.androidx.compose.ui.core)
+    implementation(libs.google.acompanist.systemuicontroller)
+    implementation(libs.google.acompanist.navigation.animation)
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtimeKtx)
@@ -44,9 +50,6 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.androidCompiler)
-
-    implementation(libs.google.acompanist.systemuicontroller)
-    implementation(libs.google.acompanist.navigation.animation)
 
     implementation(libs.retrofit.core)
     implementation(libs.squareup.retrofit.moshi.converter)
@@ -57,7 +60,7 @@ dependencies {
     implementation(libs.bundles.arrow)
 
     testImplementation(libs.squareup.okhttp.mockwebserver)
-    testImplementation ( "org.jetbrains.kotlin:kotlin-reflect:1.7.10" )
+    testImplementation (libs.kotlin.reflect)
     testImplementation(libs.bundles.kotestBundle)
     testImplementation(libs.androidx.test.runner)
     testImplementation(libs.kotlinx.coroutines.test)
