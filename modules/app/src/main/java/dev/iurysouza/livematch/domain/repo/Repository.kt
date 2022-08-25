@@ -2,9 +2,9 @@ package dev.iurysouza.livematch.domain.repo
 
 import dev.iurysouza.livematch.DispatcherProvider
 import dev.iurysouza.livematch.data.PlaceHolderApi
-import dev.iurysouza.livematch.data.models.NetworkResponse
-import dev.iurysouza.livematch.data.models.PostEntity
-import dev.iurysouza.livematch.data.models.UserEntity
+import dev.iurysouza.livematch.data.legacy.NetworkResponse
+import dev.iurysouza.livematch.data.legacy.PostEntity
+import dev.iurysouza.livematch.data.legacy.UserEntity
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow

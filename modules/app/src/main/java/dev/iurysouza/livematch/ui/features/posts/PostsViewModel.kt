@@ -1,11 +1,14 @@
 package dev.iurysouza.livematch.ui.features.posts
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dev.iurysouza.livematch.R
+import arrow.core.Either
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.iurysouza.livematch.R
+import dev.iurysouza.livematch.data.legacy.PostEntity
 import dev.iurysouza.livematch.domain.auth.AuthUseCase
-import dev.iurysouza.livematch.data.models.PostEntity
+import dev.iurysouza.livematch.domain.matchlist.MatchListUseCase
 import dev.iurysouza.livematch.domain.repo.Repository
 import dev.iurysouza.livematch.util.ResourceProvider
 import java.net.UnknownHostException
@@ -17,7 +20,8 @@ import kotlinx.coroutines.launch
 class PostsViewModel @Inject constructor(
     private val resourceProvider: ResourceProvider,
     private val repository: Repository,
-    private val redditApi: AuthUseCase,
+    private val matchListUseCase: MatchListUseCase,
+    private val authUseCase: AuthUseCase,
 ) : ViewModel() {
 
     val state = MutableStateFlow<PostScreenState>(PostScreenState.Loading)
@@ -27,7 +31,16 @@ class PostsViewModel @Inject constructor(
     }
 
     private fun getPostList() = viewModelScope.launch {
-        val accessToken = redditApi.refreshTokenIfNeeded()
+        val accessToken = authUseCase.refreshTokenIfNeeded()
+        val matchList = matchListUseCase.getMatches()
+        when (matchList) {
+            is Either.Left -> {
+                Log.e("PostsViewModel", "Error getting match list ${matchList.value}", )
+            }
+            is Either.Right -> {
+                Log.e("PostsViewModel", "matchList: ${matchList.value}")
+            }
+        }
         state.emit(PostScreenState.Loading)
         repository.getPosts().collect { response ->
             state.emit(

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.iurysouza.livematch.R
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.iurysouza.livematch.data.models.UserEntity
+import dev.iurysouza.livematch.data.legacy.UserEntity
 import dev.iurysouza.livematch.domain.repo.Repository
 import dev.iurysouza.livematch.ui.features.posts.Post
 import dev.iurysouza.livematch.util.ResourceProvider
