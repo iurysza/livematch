@@ -5,13 +5,13 @@ import dev.iurysouza.livematch.domain.auth.AccessTokenEntity
 import dev.iurysouza.livematch.domain.DomainError
 import dev.iurysouza.livematch.domain.NetworkError
 import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
-import dev.iurysouza.livematch.domain.matchlist.MatchThreadListEntity
+import dev.iurysouza.livematch.domain.matchlist.MatchThreadEntity
 
 class StubNetworkDatasource(
     var returnAccessToken: AccessTokenEntity? = anAccessTokenEntity(),
     private var accessTokenError: Throwable? = null,
 ) : NetworkDataSource {
-    override suspend fun getMachThreadList(): Either<DomainError, List<MatchThreadListEntity>> {
+    override suspend fun getMachThreadList(): Either<DomainError, List<MatchThreadEntity>> {
         TODO("Not yet implemented")
     }
 

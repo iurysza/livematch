@@ -1,6 +1,6 @@
 package dev.iurysouza.livematch.domain.matchlist
 
-data class MatchThreadListEntity(
+data class MatchThreadEntity(
     val title: String,
     val url: String,
     val score: Int,

@@ -60,9 +60,12 @@ dependencies {
     implementation(libs.bundles.arrow)
 
     testImplementation(libs.squareup.okhttp.mockwebserver)
-    testImplementation (libs.kotlin.reflect)
+    testImplementation(libs.kotlin.reflect)
     testImplementation(libs.bundles.kotestBundle)
     testImplementation(libs.androidx.test.runner)
     testImplementation(libs.kotlinx.coroutines.test)
-    implementation ( "com.squareup.moshi:moshi-adapters:1.12.0" )
+    implementation("com.squareup.moshi:moshi-adapters:1.12.0")
+
+    implementation("com.halilibo.compose-richtext:richtext-commonmark:0.13.0")
+
 }

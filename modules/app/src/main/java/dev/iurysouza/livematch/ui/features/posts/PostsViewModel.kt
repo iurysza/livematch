@@ -38,16 +38,16 @@ class PostsViewModel @Inject constructor(
                 Log.e("PostsViewModel", "Error getting match list ${matchList.value}", )
             }
             is Either.Right -> {
+        state.emit(PostScreenState.Success(matchList.value))
                 Log.e("PostsViewModel", "matchList: ${matchList.value}")
             }
         }
-        state.emit(PostScreenState.Loading)
-        repository.getPosts().collect { response ->
-            state.emit(
-                if (response.isSuccess()) PostScreenState.Success(mapToPost(response.data))
-                else PostScreenState.Error(mapErrorMsg(response.error))
-            )
-        }
+//        repository.getPosts().collect { response ->
+//            state.emit(
+//                if (response.isSuccess()) PostScreenState.Success(mapToPost(response.data))
+//                else PostScreenState.Error(mapErrorMsg(response.error))
+//            )
+//        }
     }
 
     private fun mapErrorMsg(error: Throwable?): String = when (error) {

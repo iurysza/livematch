@@ -1,3 +1,5 @@
+import java.net.URI.*
+
 enableFeaturePreview("VERSION_CATALOGS")
 // == Define locations for build logic ==
 pluginManagement {

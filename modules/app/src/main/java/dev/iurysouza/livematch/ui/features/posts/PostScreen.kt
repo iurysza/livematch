@@ -1,6 +1,7 @@
 package dev.iurysouza.livematch.ui.features.posts
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Scaffold
@@ -9,12 +10,18 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.halilibo.richtext.markdown.Markdown
+import com.halilibo.richtext.ui.RichText
 import dev.iurysouza.livematch.R
+import dev.iurysouza.livematch.domain.matchlist.MatchThreadEntity
 import dev.iurysouza.livematch.ui.components.ErrorScreen
 import dev.iurysouza.livematch.ui.components.FullScreenProgress
 
@@ -62,17 +69,19 @@ fun Posts(
 
 @Composable
 private fun PostList(
-    postList: List<Post>,
+    postList: List<MatchThreadEntity>,
     onClick: (Post) -> Unit,
 ) {
     LazyColumn {
         itemsIndexed(postList) { _, post ->
-            PostItem(
-                title = post.title,
-                body = post.body,
-                bgColor = post.bgColor
+            RichText(
+                modifier = Modifier.padding(16.dp)
             ) {
-                onClick(post)
+                Markdown(content = "#### ${post.title} \uD83D\uDFE8")
+                val content = post.contentHtml.replace("""<a href="#icon-yellow"></a>""", "\uD83D\uDFE8")
+//                val content = post.content.replace("""[](#icon-yellow)""", "\uD83D\uDFE8")
+                println(content)
+                Markdown(content)
             }
         }
     }
@@ -82,28 +91,20 @@ private fun PostList(
 @Composable
 private fun PostListPreview(
 ) {
-    PostList(postList = listOf(
-        Post(
-            body = "do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-            id = 0,
-            userId = 0,
-            title = "Lorem ipsum dolor sit amet",
-            bgColor = 0xFF33A369
-        ),
-        Post(
-            body = "ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-            id = 1,
-            userId = 2,
-            title = "Lorem ipsum dolor sit amet",
-            bgColor = 0xFF33A369
-        ),
-        Post(
-            body = "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-            id = 3,
-            userId = 3,
-            title = "Lorem ipsum dolor sit amet",
-            bgColor = 0xFF33A369
-        ),
-
-        ), onClick = {})
+    listOf(
+        MatchThreadEntity(
+            title = "Title",
+            content = "Content",
+            contentHtml = "ContentHtml",
+            createdAt = 8400,
+            numComments = 0,
+            score = 0,
+            url = "Url",
+        )
+    ).let {
+        PostList(
+            postList = it,
+            onClick = { }
+        )
+    }
 }

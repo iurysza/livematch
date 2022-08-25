@@ -12,7 +12,7 @@ class MatchListUseCase @Inject constructor(
     private val networkDataSource: NetworkDataSource,
 ) {
 
-    suspend fun getMatches(): Either<DomainError, List<MatchThreadListEntity>> = either {
+    suspend fun getMatches(): Either<DomainError, List<MatchThreadEntity>> = either {
         networkDataSource.getMachThreadList().bind()
     }
 

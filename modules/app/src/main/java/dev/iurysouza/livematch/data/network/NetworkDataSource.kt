@@ -7,7 +7,7 @@ import dev.iurysouza.livematch.domain.DomainError
 import dev.iurysouza.livematch.domain.NetworkError
 import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
 import dev.iurysouza.livematch.domain.auth.AccessTokenEntity
-import dev.iurysouza.livematch.domain.matchlist.MatchThreadListEntity
+import dev.iurysouza.livematch.domain.matchlist.MatchThreadEntity
 import java.util.Base64
 import javax.inject.Inject
 
@@ -15,13 +15,13 @@ class RedditNetworkDataSource @Inject constructor(
     private val redditApi: RedditApi,
 ) : NetworkDataSource {
 
-    override suspend fun getMachThreadList(): Either<NetworkError, List<MatchThreadListEntity>> =
+    override suspend fun getMachThreadList(): Either<NetworkError, List<MatchThreadEntity>> =
         catch {
             redditApi.getMatchThread()
         }.mapLeft { NetworkError(it.message) }
             .map { response ->
                 response.data.children.map { child ->
-                    MatchThreadListEntity(
+                    MatchThreadEntity(
                         title = child.data.title,
                         url = child.data.url,
                         score = child.data.score,
