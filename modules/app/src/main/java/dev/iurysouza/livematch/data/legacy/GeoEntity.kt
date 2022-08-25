@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.data.models
+package dev.iurysouza.livematch.data.legacy
 
 data class GeoEntity(
     val lat: String,

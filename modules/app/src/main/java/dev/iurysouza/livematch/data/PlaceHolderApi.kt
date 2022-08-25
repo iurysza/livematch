@@ -1,7 +1,7 @@
 package dev.iurysouza.livematch.data
 
-import dev.iurysouza.livematch.data.models.PostEntity
-import dev.iurysouza.livematch.data.models.UserEntity
+import dev.iurysouza.livematch.data.legacy.PostEntity
+import dev.iurysouza.livematch.data.legacy.UserEntity
 import retrofit2.http.GET
 
 interface PlaceHolderApi {

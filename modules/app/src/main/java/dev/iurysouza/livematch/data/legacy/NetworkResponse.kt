@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.data.models
+package dev.iurysouza.livematch.data.legacy
 
 data class NetworkResponse<out T>(val status: Status, val data: T?, val error: Throwable?) {
     companion object {
