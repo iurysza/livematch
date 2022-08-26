@@ -10,6 +10,7 @@ import dev.iurysouza.livematch.domain.DomainError
 import dev.iurysouza.livematch.domain.NetworkError
 import dev.iurysouza.livematch.domain.auth.AuthUseCase
 import dev.iurysouza.livematch.domain.matchlist.MatchListUseCase
+import dev.iurysouza.livematch.domain.matchlist.MatchThreadEntity
 import dev.iurysouza.livematch.util.ResourceProvider
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,14 +33,21 @@ class MatchThreadViewModel @Inject constructor(
         either {
             authUseCase.refreshTokenIfNeeded().bind()
             matchListUseCase.getMatches().bind()
-        }.fold({ error ->
-            Log.e("PostsViewModel", "error: $error")
-            state.emit(MatchListState.Error(mapErrorMsg(error)))
-        },
-            { matchList ->
-                Log.e("PostsViewModel", "Error getting match list $matchList")
+        }.map { it.parseText() }.fold(
+            ifLeft = { error ->
+                Log.e("PostsViewModel", "error: $error")
+                state.emit(MatchListState.Error(mapErrorMsg(error)))
+            },
+            ifRight = { matchList ->
                 state.emit(MatchListState.Success(matchList))
-            })
+            }
+        )
+    }
+
+    private fun List<MatchThreadEntity>.parseText() = map { match ->
+        val index = match.contentHtml.indexOf("<p><a href=\"#icon-net-big\"></a>")
+        val finalContent = match.contentHtml.take(index)
+        match.copy(contentHtml = finalContent)
     }
 
     private fun mapErrorMsg(error: DomainError?): String = when (error) {

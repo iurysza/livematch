@@ -26,7 +26,7 @@ fun MatchThreadScreen(
 ) {
     val viewModel = hiltViewModel<MatchThreadViewModel>()
     LaunchedEffect(Unit) {
-        //TODO: make request
+        viewModel.fetchCommentsFor(post)
     }
 
     when (val state = viewModel.state.collectAsState().value) {

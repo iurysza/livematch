@@ -37,7 +37,7 @@ fun MatchListScreen(openPostDetail: (Post) -> Unit) {
 @Composable
 fun Posts(
     viewModel: MatchThreadViewModel,
-    navigateToPostDetail: (Post) -> Unit,
+    navigateToMatchThread: (Post) -> Unit,
 ) {
     val state = viewModel.state.collectAsState().value
     val systemUiController = rememberSystemUiController()
@@ -56,9 +56,9 @@ fun Posts(
         Column {
             when (state) {
                 is MatchListState.Success -> {
-                    PostList(
+                    MatchList(
                         postList = state.matches,
-                        onClick = { navigateToPostDetail(it) }
+                        onClick = { navigateToMatchThread(it) }
                     )
                 }
                 MatchListState.Loading -> FullScreenProgress()
@@ -69,18 +69,17 @@ fun Posts(
 }
 
 @Composable
-private fun PostList(
+private fun MatchList(
     postList: List<MatchThreadEntity>,
     onClick: (Post) -> Unit,
 ) {
     LazyColumn {
-        itemsIndexed(postList.sortedBy { it.numComments }) { _, post ->
-            val index = post.contentHtml.indexOf("<p><a href=\"#icon-net-big\"></a>")
-            val finalContent = post.contentHtml.take(index)
+        itemsIndexed(postList.sortedBy { it.numComments }) { _, match ->
             AndroidView(
                 factory = { context ->
                     TextView(context).apply {
-                        text = HtmlCompat.fromHtml(finalContent, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                        text =
+                            HtmlCompat.fromHtml(match.contentHtml, HtmlCompat.FROM_HTML_MODE_LEGACY)
                     }
                 },
                 modifier = Modifier
@@ -88,10 +87,10 @@ private fun PostList(
                     .clickable {
                         onClick(
                             Post(
-                                body = finalContent,
-                                id = post.createdAt.toInt(),
-                                title = post.title,
-                                userId = post.createdAt.toInt(),
+                                body = match.title,
+                                id = match.createdAt.toInt(),
+                                title = match.title,
+                                userId = match.createdAt.toInt(),
                                 bgColor = 0
                             )
                         )
@@ -116,7 +115,7 @@ private fun PostListPreview(
             url = "Url",
         )
     ).let {
-        PostList(
+        MatchList(
             postList = it,
             onClick = { }
         )
