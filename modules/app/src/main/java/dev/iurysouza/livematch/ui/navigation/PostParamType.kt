@@ -1,8 +1,10 @@
 package dev.iurysouza.livematch.ui.navigation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.navigation.NavType
-import dev.iurysouza.livematch.ui.features.posts.Post
+import arrow.core.Either
+import dev.iurysouza.livematch.ui.features.matchlist.Post
 import dev.iurysouza.livematch.util.JsonParser
 import dev.iurysouza.livematch.util.fromJson
 
@@ -13,7 +15,13 @@ class PostParamType(private val jsonParser: JsonParser) : NavType<Post>(isNullab
     }
 
     override fun parseValue(value: String): Post {
-        return jsonParser.fromJson<Post>(value)!!
+        return when (val result = jsonParser.fromJson<Post>(value)) {
+            is Either.Left -> {
+                Log.e("LiveMatch", "${result.value.message}")
+                return Post(body = "", id = 0, title = "", userId = 0, bgColor = 0)
+            }
+            is Either.Right -> result.value
+        }
     }
 
     override fun put(bundle: Bundle, key: String, value: Post) {

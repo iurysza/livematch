@@ -2,17 +2,19 @@
 
 package dev.iurysouza.livematch.ui.navigation
 
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
+import arrow.core.continuations.either
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
-import dev.iurysouza.livematch.ui.features.postDetail.PostDetailScreen
-import dev.iurysouza.livematch.ui.features.posts.PostsScreen
+import dev.iurysouza.livematch.ui.features.matchlist.MatchListScreen
+import dev.iurysouza.livematch.ui.features.matchthread.MatchThreadScreen
 import dev.iurysouza.livematch.util.JsonParser
 
 
@@ -43,9 +45,10 @@ private fun NavGraphBuilder.addPostsTopLevel(
         route = Screen.Posts.route,
     ) {
         composable(route = startDestination) {
-            PostsScreen(openPostDetail = { post ->
-                navController.navigate(
-                    Screen.PostDetail.createRoute(Screen.Posts, jsonParser.toJson(post))
+            MatchListScreen(openPostDetail = { post ->
+                either.eager { jsonParser.toJson(post).bind() }.fold(
+                    { Log.e("LiveMatch", "$it") },
+                    { navController.navigate(Screen.PostDetail.createRoute(Screen.Posts, it)) }
                 )
             })
         }
@@ -69,7 +72,7 @@ private fun NavGraphBuilder.addPostsDetail(
                 },
             ),
         ) {
-            PostDetailScreen(
+            MatchThreadScreen(
                 navigateUp = navController::navigateUp,
                 post = it.arguments!!.getParcelable("post")!!,
             )
