@@ -1,6 +1,6 @@
-package dev.iurysouza.livematch.ui.features.postDetail
+package dev.iurysouza.livematch.ui.features.matchthread
 
-import dev.iurysouza.livematch.ui.features.posts.Post
+import dev.iurysouza.livematch.ui.features.matchlist.Post
 
 sealed interface PostDetailScreenState {
     data class Success(val author: User, val post: Post) : PostDetailScreenState

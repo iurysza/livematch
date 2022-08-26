@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.ui.features.posts
+package dev.iurysouza.livematch.ui.features.matchlist
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun PostItem(
+fun MatchItem(
     title: String,
     body: String,
     bgColor: Long,
@@ -88,7 +88,7 @@ private fun TitleText(value: String) {
 @Preview
 @Composable
 fun PostItemPreview() {
-    PostItem(
+    MatchItem(
         title = "25.0",
         body = "Label",
         0xFFc92a2a,

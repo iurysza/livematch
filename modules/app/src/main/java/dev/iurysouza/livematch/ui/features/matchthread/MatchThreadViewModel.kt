@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.ui.features.postDetail
+package dev.iurysouza.livematch.ui.features.matchthread
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,7 +9,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @HiltViewModel
-class PostsDetailViewModel @Inject constructor(
+class MatchThreadViewModel @Inject constructor(
     private val resourceProvider: ResourceProvider,
 ) : ViewModel() {
 

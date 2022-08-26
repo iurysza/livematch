@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.ui.features.postDetail
+package dev.iurysouza.livematch.ui.features.matchthread
 
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -16,15 +16,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.ui.components.ErrorScreen
 import dev.iurysouza.livematch.ui.components.FullScreenProgress
-import dev.iurysouza.livematch.ui.features.posts.Post
+import dev.iurysouza.livematch.ui.features.matchlist.Post
 import dev.iurysouza.livematch.ui.theme.ColorPrimary
 
 @Composable
-fun PostDetailScreen(
+fun MatchThreadScreen(
     navigateUp: () -> Unit,
     post: Post,
 ) {
-    val viewModel = hiltViewModel<PostsDetailViewModel>()
+    val viewModel = hiltViewModel<MatchThreadViewModel>()
     LaunchedEffect(Unit) {
         //TODO: make request
     }
@@ -59,7 +59,7 @@ private fun PostDetail(
             )
         },
     ) {
-        PostDetailContent(post, user)
+        MatchThreadComponent(post, user)
     }
 }
 

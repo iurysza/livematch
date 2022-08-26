@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.ui.features.postDetail
+package dev.iurysouza.livematch.ui.features.matchthread
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,18 +19,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.iurysouza.livematch.ui.features.posts.Post
-import dev.iurysouza.livematch.ui.features.posts.PostItem
+import dev.iurysouza.livematch.ui.features.matchlist.Post
+import dev.iurysouza.livematch.ui.features.matchlist.MatchItem
 
 @Composable
-fun PostDetailContent(
+fun MatchThreadComponent(
     post: Post,
     user: User,
 ) {
     val modifier = Modifier
     Column(modifier.height(260.dp)) {
         UserComponent(modifier, post, user)
-        PostItem(
+        MatchItem(
             title = post.title,
             body = post.body,
             bgColor = post.bgColor

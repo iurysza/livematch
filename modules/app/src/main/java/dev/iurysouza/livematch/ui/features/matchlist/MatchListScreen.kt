@@ -1,6 +1,7 @@
-package dev.iurysouza.livematch.ui.features.posts
+package dev.iurysouza.livematch.ui.features.matchlist
 
 import android.widget.TextView
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,7 +27,7 @@ import dev.iurysouza.livematch.ui.components.ErrorScreen
 import dev.iurysouza.livematch.ui.components.FullScreenProgress
 
 @Composable
-fun PostsScreen(openPostDetail: (Post) -> Unit) {
+fun MatchListScreen(openPostDetail: (Post) -> Unit) {
     Posts(
         viewModel = hiltViewModel(),
         openPostDetail
@@ -35,7 +36,7 @@ fun PostsScreen(openPostDetail: (Post) -> Unit) {
 
 @Composable
 fun Posts(
-    viewModel: PostsViewModel,
+    viewModel: MatchThreadViewModel,
     navigateToPostDetail: (Post) -> Unit,
 ) {
     val state = viewModel.state.collectAsState().value
@@ -54,14 +55,14 @@ fun Posts(
     ) {
         Column {
             when (state) {
-                is PostScreenState.Success -> {
+                is MatchListState.Success -> {
                     PostList(
-                        postList = state.postList,
+                        postList = state.matches,
                         onClick = { navigateToPostDetail(it) }
                     )
                 }
-                PostScreenState.Loading -> FullScreenProgress()
-                is PostScreenState.Error -> ErrorScreen(state.msg)
+                MatchListState.Loading -> FullScreenProgress()
+                is MatchListState.Error -> ErrorScreen(state.msg)
             }
         }
     }
@@ -82,7 +83,19 @@ private fun PostList(
                         text = HtmlCompat.fromHtml(finalContent, HtmlCompat.FROM_HTML_MODE_LEGACY)
                     }
                 },
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier
+                    .padding(16.dp)
+                    .clickable {
+                        onClick(
+                            Post(
+                                body = finalContent,
+                                id = post.createdAt.toInt(),
+                                title = post.title,
+                                userId = post.createdAt.toInt(),
+                                bgColor = 0
+                            )
+                        )
+                    }
             )
         }
     }

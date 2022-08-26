@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.ui.features.posts
+package dev.iurysouza.livematch.ui.features.matchlist
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -16,13 +16,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class PostsViewModel @Inject constructor(
+class MatchThreadViewModel @Inject constructor(
     private val resourceProvider: ResourceProvider,
     private val matchListUseCase: MatchListUseCase,
     private val authUseCase: AuthUseCase,
 ) : ViewModel() {
 
-    val state = MutableStateFlow<PostScreenState>(PostScreenState.Loading)
+    val state = MutableStateFlow<MatchListState>(MatchListState.Loading)
 
     init {
         getMachList()
@@ -32,14 +32,13 @@ class PostsViewModel @Inject constructor(
         either {
             authUseCase.refreshTokenIfNeeded().bind()
             matchListUseCase.getMatches().bind()
-
-        }.fold({
-            Log.e("PostsViewModel", "error: ${it}")
-            state.emit(PostScreenState.Error(mapErrorMsg(it)))
+        }.fold({ error ->
+            Log.e("PostsViewModel", "error: $error")
+            state.emit(MatchListState.Error(mapErrorMsg(error)))
         },
             { matchList ->
-                Log.e("PostsViewModel", "Error getting match list ${matchList}")
-                state.emit(PostScreenState.Success(matchList))
+                Log.e("PostsViewModel", "Error getting match list $matchList")
+                state.emit(MatchListState.Success(matchList))
             })
     }
 

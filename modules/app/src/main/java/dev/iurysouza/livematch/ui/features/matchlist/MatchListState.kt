@@ -1,13 +1,13 @@
-package dev.iurysouza.livematch.ui.features.posts
+package dev.iurysouza.livematch.ui.features.matchlist
 
 import android.os.Parcelable
 import dev.iurysouza.livematch.domain.matchlist.MatchThreadEntity
 import kotlinx.parcelize.Parcelize
 
-sealed interface PostScreenState {
-    data class Success(val postList: List<MatchThreadEntity>) : PostScreenState
-    object Loading : PostScreenState
-    data class Error(val msg: String) : PostScreenState
+sealed interface MatchListState {
+    data class Success(val matches: List<MatchThreadEntity>) : MatchListState
+    object Loading : MatchListState
+    data class Error(val msg: String) : MatchListState
 }
 
 @Parcelize
