@@ -18,6 +18,7 @@ dependencyResolutionManagement {
         }
     }
     repositories {
+        maven { url = create("https://oss.sonatype.org/content/repositories/snapshots/") }
         mavenCentral()
         google()
     }

@@ -26,7 +26,7 @@ fun PostDetailScreen(
 ) {
     val viewModel = hiltViewModel<PostsDetailViewModel>()
     LaunchedEffect(Unit) {
-        viewModel.loadPostDetail(post)
+        //TODO: make request
     }
 
     when (val state = viewModel.state.collectAsState().value) {
