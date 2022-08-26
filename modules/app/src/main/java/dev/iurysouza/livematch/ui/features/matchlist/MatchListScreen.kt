@@ -22,7 +22,7 @@ import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.iurysouza.livematch.R
-import dev.iurysouza.livematch.domain.matchlist.MatchThreadEntity
+import dev.iurysouza.livematch.domain.adapters.MatchThreadEntity
 import dev.iurysouza.livematch.ui.components.ErrorScreen
 import dev.iurysouza.livematch.ui.components.FullScreenProgress
 

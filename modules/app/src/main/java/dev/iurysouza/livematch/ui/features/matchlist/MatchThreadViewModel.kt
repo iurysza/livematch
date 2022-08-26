@@ -10,7 +10,7 @@ import dev.iurysouza.livematch.domain.DomainError
 import dev.iurysouza.livematch.domain.NetworkError
 import dev.iurysouza.livematch.domain.auth.AuthUseCase
 import dev.iurysouza.livematch.domain.matchlist.MatchListUseCase
-import dev.iurysouza.livematch.domain.matchlist.MatchThreadEntity
+import dev.iurysouza.livematch.domain.adapters.MatchThreadEntity
 import dev.iurysouza.livematch.util.ResourceProvider
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow

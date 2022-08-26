@@ -5,9 +5,9 @@ import arrow.core.Either.Companion.catch
 import dev.iurysouza.livematch.BuildConfig
 import dev.iurysouza.livematch.domain.DomainError
 import dev.iurysouza.livematch.domain.NetworkError
+import dev.iurysouza.livematch.domain.adapters.AccessTokenEntity
+import dev.iurysouza.livematch.domain.adapters.MatchThreadEntity
 import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
-import dev.iurysouza.livematch.domain.auth.AccessTokenEntity
-import dev.iurysouza.livematch.domain.matchlist.MatchThreadEntity
 import java.util.Base64
 import javax.inject.Inject
 
@@ -15,9 +15,9 @@ class RedditNetworkDataSource @Inject constructor(
     private val redditApi: RedditApi,
 ) : NetworkDataSource {
 
-    override suspend fun getMachThreadList(): Either<NetworkError, List<MatchThreadEntity>> =
+    override suspend fun getLatestMatchThreadsForToday(): Either<NetworkError, List<MatchThreadEntity>> =
         catch {
-            redditApi.getMatchThread()
+            redditApi.getLatestMatchThreadsForToday()
         }.mapLeft { NetworkError(it.message) }
             .map { response ->
                 response.data.children.map { child ->
@@ -26,7 +26,7 @@ class RedditNetworkDataSource @Inject constructor(
                         url = child.data.url,
                         score = child.data.score,
                         numComments = child.data.numComments,
-                        createdAt = child.data.created.toLong(),
+                        createdAt = child.data.created,
                         content = child.data.selfText ?: "",
                         contentHtml = child.data.selfTextHtml ?: "",
                     )

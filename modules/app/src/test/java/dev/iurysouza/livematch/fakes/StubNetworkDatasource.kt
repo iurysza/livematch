@@ -1,17 +1,17 @@
 package dev.iurysouza.livematch.fakes
 
 import arrow.core.Either
-import dev.iurysouza.livematch.domain.auth.AccessTokenEntity
+import dev.iurysouza.livematch.domain.adapters.AccessTokenEntity
 import dev.iurysouza.livematch.domain.DomainError
 import dev.iurysouza.livematch.domain.NetworkError
 import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
-import dev.iurysouza.livematch.domain.matchlist.MatchThreadEntity
+import dev.iurysouza.livematch.domain.adapters.MatchThreadEntity
 
 class StubNetworkDatasource(
     var returnAccessToken: AccessTokenEntity? = anAccessTokenEntity(),
     private var accessTokenError: Throwable? = null,
 ) : NetworkDataSource {
-    override suspend fun getMachThreadList(): Either<DomainError, List<MatchThreadEntity>> {
+    override suspend fun getLatestMatchThreadsForToday(): Either<DomainError, List<MatchThreadEntity>> {
         TODO("Not yet implemented")
     }
 

@@ -1,7 +1,7 @@
 package dev.iurysouza.livematch.ui.features.matchlist
 
 import android.os.Parcelable
-import dev.iurysouza.livematch.domain.matchlist.MatchThreadEntity
+import dev.iurysouza.livematch.domain.adapters.MatchThreadEntity
 import kotlinx.parcelize.Parcelize
 
 sealed interface MatchListState {

@@ -1,7 +1,7 @@
 package dev.iurysouza.livematch.data.network
 
 import dev.iurysouza.livematch.data.models.AccessTokenResponse
-import dev.iurysouza.livematch.data.models.cloned.responses.EnvelopedSubmissionListing
+import dev.iurysouza.livematch.data.models.reddit.responses.EnvelopedSubmissionListing
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -17,7 +17,7 @@ interface RedditApi {
     ): AccessTokenResponse
 
     @GET("r/soccer/search/.json")
-    suspend fun getMatchThread(
+    suspend fun getLatestMatchThreadsForToday(
         @Query("q") q: String = "flair:match+thread AND NOT flair:post AND NOT flair:pre",
         @Query("sort") sort: String = "new",
         @Query("t") timePeriod: String = "day",
