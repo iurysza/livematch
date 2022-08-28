@@ -1,7 +1,10 @@
 package dev.iurysouza.livematch.data.models.reddit.entities
 
+import com.squareup.moshi.FromJson
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonQualifier
+import com.squareup.moshi.ToJson
 import dev.iurysouza.livematch.data.models.reddit.responses.EnvelopedCommentDataListing
 import dev.iurysouza.livematch.data.models.reddit.entities.base.CommentData
 import dev.iurysouza.livematch.data.models.reddit.entities.base.Created
@@ -211,12 +214,12 @@ data class Comment(
     @Json(name = "permalink")
     val permalink: String,
 
-    @Json(name = "replies")
-    val repliesRaw: EnvelopedCommentDataListing?,
+//    @Json(name = "replies")
+//    val repliesRaw: EnvelopedCommentDataListing?,
 
-    @Transient
-    override var replies: List<CommentData>? =
-        repliesRaw?.data?.children?.map { it.data }?.toList(),
+//    @Transient
+//    override var replies: List<CommentData>? =
+//        repliesRaw?.data?.children?.map { it.data }?.toList(),
 
     @Transient
     override val parentFullname: String = parentId,
@@ -237,11 +240,11 @@ data class Comment(
 
     override val hasReplies: Boolean
         get() {
-            return replies != null && replies!!.isNotEmpty()
+            return true
         }
 
     override val repliesSize: Int
         get() {
-            return replies?.size ?: 0
+            return 0
         }
 }
