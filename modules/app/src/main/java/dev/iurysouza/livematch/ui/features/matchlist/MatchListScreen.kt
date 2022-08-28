@@ -1,8 +1,8 @@
 package dev.iurysouza.livematch.ui.features.matchlist
 
-import android.widget.TextView
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -15,14 +15,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.text.HtmlCompat
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.iurysouza.livematch.R
-import dev.iurysouza.livematch.domain.adapters.MatchThreadEntity
 import dev.iurysouza.livematch.ui.components.ErrorScreen
 import dev.iurysouza.livematch.ui.components.FullScreenProgress
 
@@ -57,9 +61,8 @@ fun Posts(
             when (state) {
                 is MatchListState.Success -> {
                     MatchList(
-                        postList = state.matches,
-                        onClick = { navigateToMatchThread(it) }
-                    )
+                        postList = state.matches
+                    ) { navigateToMatchThread(it) }
                 }
                 MatchListState.Loading -> FullScreenProgress()
                 is MatchListState.Error -> ErrorScreen(state.msg)
@@ -70,32 +73,58 @@ fun Posts(
 
 @Composable
 private fun MatchList(
-    postList: List<MatchThreadEntity>,
+    postList: List<MatchItem>,
     onClick: (Post) -> Unit,
 ) {
     LazyColumn {
-        itemsIndexed(postList.sortedBy { it.numComments }) { _, match ->
-            AndroidView(
-                factory = { context ->
-                    TextView(context).apply {
-                        text =
-                            HtmlCompat.fromHtml(match.contentHtml, HtmlCompat.FROM_HTML_MODE_LEGACY)
-                    }
-                },
-                modifier = Modifier
-                    .padding(16.dp)
-                    .clickable {
-                        onClick(
-                            Post(
-                                body = match.title,
-                                id = match.createdAt.toInt(),
-                                title = match.title,
-                                userId = match.createdAt.toInt(),
-                                bgColor = 0
-                            )
+        itemsIndexed(postList) { _, match ->
+            Column(Modifier
+                .clickable {
+                    onClick(
+                        Post(
+                            body = match.competition,
+                            id = match.id,
+                            title = match.title,
+                            userId = 0,
+                            bgColor = 0
                         )
-                    }
-            )
+                    )
+
+                }
+                .padding(vertical = 8.dp, horizontal = 4.dp)
+                .fillMaxWidth()
+            ) {
+                Text(
+                    buildAnnotatedString {
+                        withStyle(
+                            style = SpanStyle(
+                                fontWeight = FontWeight.W600,
+                            )
+                        ) {
+                            append(match.title)
+                        }
+                    },
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                    fontSize = 19.sp,
+                    textAlign = TextAlign.Left,
+                )
+                Text(
+                    buildAnnotatedString {
+                        withStyle(
+                            style = SpanStyle(
+                                fontWeight = FontWeight.W300,
+                            )
+                        ) {
+                            append(match.competition)
+                        }
+                    },
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                    fontSize = 19.sp,
+                    textAlign = TextAlign.Left,
+                )
+            }
         }
     }
 }
@@ -105,19 +134,13 @@ private fun MatchList(
 private fun PostListPreview(
 ) {
     listOf(
-        MatchThreadEntity(
-            title = "Title",
-            content = "Content",
-            contentHtml = "ContentHtml",
-            createdAt = 8400,
-            numComments = 0,
-            score = 0,
-            url = "Url",
+        MatchItem(
+            title = "Fortuna Dusseldorf vs SSV Jahn Regensburg",
+            competition = "German 2. Bundesliga",
         )
     ).let {
         MatchList(
-            postList = it,
-            onClick = { }
-        )
+            postList = it
+        ) { }
     }
 }

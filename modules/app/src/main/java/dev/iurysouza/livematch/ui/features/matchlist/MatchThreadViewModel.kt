@@ -8,9 +8,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.domain.DomainError
 import dev.iurysouza.livematch.domain.NetworkError
+import dev.iurysouza.livematch.domain.adapters.MatchThreadEntity
 import dev.iurysouza.livematch.domain.auth.AuthUseCase
 import dev.iurysouza.livematch.domain.matchlist.MatchListUseCase
-import dev.iurysouza.livematch.domain.adapters.MatchThreadEntity
 import dev.iurysouza.livematch.util.ResourceProvider
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +33,7 @@ class MatchThreadViewModel @Inject constructor(
         either {
             authUseCase.refreshTokenIfNeeded().bind()
             matchListUseCase.getMatches().bind()
-        }.map { it.parseText() }.fold(
+        }.map { it.toMatchItem() }.fold(
             ifLeft = { error ->
                 Log.e("PostsViewModel", "error: $error")
                 state.emit(MatchListState.Error(mapErrorMsg(error)))
@@ -44,11 +44,14 @@ class MatchThreadViewModel @Inject constructor(
         )
     }
 
-    private fun List<MatchThreadEntity>.parseText() = map { match ->
-        val index = match.contentHtml.indexOf("<p><a href=\"#icon-net-big\"></a>")
-        val finalContent = match.contentHtml.take(index)
-        match.copy(contentHtml = finalContent)
-    }
+    private fun List<MatchThreadEntity>.toMatchItem(): List<MatchItem> = mapNotNull { match ->
+        kotlin.runCatching {
+        val (title, subtitle) = match.title
+            .replace("Match Thread:", "")
+            .split("|")
+        MatchItem(match.id, title, subtitle)
+        }.getOrNull()
+    }.sortedBy { it.competition }
 
     private fun mapErrorMsg(error: DomainError?): String = when (error) {
         is NetworkError -> resourceProvider.getString(R.string.post_screen_error_no_internet)

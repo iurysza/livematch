@@ -26,7 +26,6 @@ fun MatchThreadScreen(
 ) {
     val viewModel = hiltViewModel<MatchThreadViewModel>()
     LaunchedEffect(Unit) {
-        viewModel.fetchCommentsFor(post)
     }
 
     when (val state = viewModel.state.collectAsState().value) {
@@ -77,7 +76,7 @@ private fun PostDetailPreview() {
         ),
         post = Post(
             body = "do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-            id = 0,
+            id = "",
             userId = 0,
             title = "Lorem ipsum dolor sit amet",
             bgColor = 0xFF33A369
