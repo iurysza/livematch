@@ -1,6 +1,7 @@
 package dev.iurysouza.livematch.domain.adapters
 
 data class MatchThreadEntity(
+    val id:String,
     val title: String,
     val url: String,
     val score: Int,

@@ -3,7 +3,11 @@ package dev.iurysouza.livematch.di
 import android.util.Log
 import arrow.core.continuations.either
 import arrow.core.handleError
+import com.squareup.moshi.FromJson
+import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonQualifier
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.ToJson
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -172,7 +176,7 @@ class NetworkModule {
     @Singleton
     internal fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
         val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.BODY
+        logging.level = HttpLoggingInterceptor.Level.HEADERS
         return logging
     }
 

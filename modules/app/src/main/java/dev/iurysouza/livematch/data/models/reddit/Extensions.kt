@@ -104,23 +104,3 @@ val WikiRevision.timestampDate: Date
         val milliseconds = timestamp * MILLIS
         return Date(milliseconds)
     }
-
-//fun List<CommentData>.toLinearList(): List<CommentData> {
-//
-//    val list = ArrayList<CommentData>()
-//
-//    treeIterator()
-//        .forEach {
-//
-//            if (it is Comment) {
-//                val item = it.copy()
-//                item.replies = null
-//
-//                list.add(item)
-//            } else {
-//                list.add(it)
-//            }
-//        }
-//
-//    return list
-//}
