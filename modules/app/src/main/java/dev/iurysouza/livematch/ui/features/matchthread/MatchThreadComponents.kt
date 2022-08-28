@@ -19,12 +19,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.iurysouza.livematch.ui.features.matchlist.Post
+import dev.iurysouza.livematch.ui.features.matchlist.MatchThread
 import dev.iurysouza.livematch.ui.features.matchlist.MatchItem
 
 @Composable
 fun MatchThreadComponent(
-    post: Post,
+    post: MatchThread,
     user: User,
 ) {
     val modifier = Modifier
@@ -32,8 +32,8 @@ fun MatchThreadComponent(
         UserComponent(modifier, post, user)
         MatchItem(
             title = post.title,
-            body = post.body,
-            bgColor = post.bgColor
+            body = post.title,
+            bgColor = 0
         )
     }
 }
@@ -41,16 +41,15 @@ fun MatchThreadComponent(
 @Composable
 private fun UserComponent(
     modifier: Modifier,
-    post: Post,
+    post: MatchThread,
     user: User,
 ) {
     Row(modifier = modifier
         .padding(top = 16.dp)
         .fillMaxWidth()) {
-        UserAvatar(post.bgColor, modifier)
         Column {
-            DetailText(user.username, post.bgColor)
-            DetailText(user.email, post.bgColor)
+            DetailText(user.username,0 )
+            DetailText(user.email, 0)
         }
     }
 }

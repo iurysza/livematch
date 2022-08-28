@@ -3,6 +3,7 @@ package dev.iurysouza.livematch.ui.features.matchlist
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.Either.Companion.catch
 import arrow.core.continuations.either
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.iurysouza.livematch.R
@@ -14,6 +15,8 @@ import dev.iurysouza.livematch.domain.matchlist.MatchListUseCase
 import dev.iurysouza.livematch.util.ResourceProvider
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -23,40 +26,71 @@ class MatchThreadViewModel @Inject constructor(
     private val authUseCase: AuthUseCase,
 ) : ViewModel() {
 
-    val state = MutableStateFlow<MatchListState>(MatchListState.Loading)
+    private val _effects = MutableStateFlow<MatchListEffects>(MatchListEffects.Idle)
+    val effects: StateFlow<MatchListEffects> = _effects.asStateFlow()
 
-    init {
-        getMachList()
-    }
+    private val _state = MutableStateFlow<MatchListState>(MatchListState.Loading)
+    val state: StateFlow<MatchListState> = _state.asStateFlow()
 
-    private fun getMachList() = viewModelScope.launch {
+    private var lastMatches = emptyList<MatchThreadEntity>()
+
+    fun getMachList() = viewModelScope.launch {
         either {
             authUseCase.refreshTokenIfNeeded().bind()
             matchListUseCase.getMatches().bind()
-        }.map { it.toMatchItem() }.fold(
+        }.map {
+            lastMatches = it
+            it.toMatchItem()
+        }.fold(
             ifLeft = { error ->
+                lastMatches = emptyList()
                 Log.e("PostsViewModel", "error: $error")
-                state.emit(MatchListState.Error(mapErrorMsg(error)))
+                _state.emit(MatchListState.Error(mapErrorMsg(error)))
             },
             ifRight = { matchList ->
-                state.emit(MatchListState.Success(matchList))
+                _state.emit(MatchListState.Success(matchList))
             }
         )
     }
 
+    fun navigateTo(matchItem: MatchItem) {
+        viewModelScope.launch {
+            catch {
+                val currentState = _state.value as MatchListState.Success
+                val match = lastMatches.find { it.id == matchItem.id }!!
+                match to currentState.matchList.find { it.id == matchItem.id }!!
+            }.mapLeft {
+                InvalidMatchId
+            }.map { (matchEntity, matchItem) ->
+                MatchThread(
+                    title = matchItem.title,
+                    competition = matchItem.competition,
+                    matchDescriptionHtml = matchEntity.contentHtml,
+                    commentList = emptyList()
+                )
+            }.fold(
+                { error ->
+                    Log.e("LiveMatch", "error: $error")
+                    _effects.emit(MatchListEffects.NavigationError(error))
+                }
+            ) { matchThread ->
+                _effects.emit(MatchListEffects.NavigateToMatchThread(matchThread))
+            }
+        }
+    }
+
     private fun List<MatchThreadEntity>.toMatchItem(): List<MatchItem> = mapNotNull { match ->
-        kotlin.runCatching {
-        val (title, subtitle) = match.title
-            .replace("Match Thread:", "")
-            .split("|")
-        MatchItem(match.id, title, subtitle)
+        runCatching {
+            val (title, subtitle) = match.title
+                .replace("Match Thread:", "")
+                .split("|")
+            MatchItem(match.id, title, subtitle)
         }.getOrNull()
     }.sortedBy { it.competition }
+
 
     private fun mapErrorMsg(error: DomainError?): String = when (error) {
         is NetworkError -> resourceProvider.getString(R.string.post_screen_error_no_internet)
         else -> resourceProvider.getString(R.string.post_screen_error_default)
     }
 }
-
-

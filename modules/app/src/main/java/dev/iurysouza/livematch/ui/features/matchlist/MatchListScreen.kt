@@ -1,5 +1,6 @@
 package dev.iurysouza.livematch.ui.features.matchlist
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +11,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -31,24 +33,34 @@ import dev.iurysouza.livematch.ui.components.ErrorScreen
 import dev.iurysouza.livematch.ui.components.FullScreenProgress
 
 @Composable
-fun MatchListScreen(openPostDetail: (Post) -> Unit) {
-    Posts(
+fun MatchListScreen(openPostDetail: (MatchThread) -> Unit) {
+    MatchList(
         viewModel = hiltViewModel(),
         openPostDetail
     )
 }
 
 @Composable
-fun Posts(
+fun MatchList(
     viewModel: MatchThreadViewModel,
-    navigateToMatchThread: (Post) -> Unit,
+    onNavigateToMatchThread: (MatchThread) -> Unit,
 ) {
     val state = viewModel.state.collectAsState().value
     val systemUiController = rememberSystemUiController()
     SideEffect {
         systemUiController.setSystemBarsColor(color = Color.Transparent, darkIcons = true)
     }
+    LaunchedEffect(Unit) { viewModel.getMachList() }
 
+    LaunchedEffect(viewModel) {
+        viewModel.effects.collect { effect ->
+            when (effect) {
+                MatchListEffects.Idle -> Log.e("", "Idle")
+                is MatchListEffects.NavigateToMatchThread -> onNavigateToMatchThread(effect.matchThread)
+                is MatchListEffects.NavigationError -> TODO()
+            }
+        }
+    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -59,13 +71,12 @@ fun Posts(
     ) {
         Column {
             when (state) {
-                is MatchListState.Success -> {
-                    MatchList(
-                        postList = state.matches
-                    ) { navigateToMatchThread(it) }
-                }
-                MatchListState.Loading -> FullScreenProgress()
                 is MatchListState.Error -> ErrorScreen(state.msg)
+                MatchListState.Loading -> FullScreenProgress()
+                is MatchListState.Success -> MatchList(
+                    matchItemList = state.matchList,
+                    onClick = { viewModel.navigateTo(it) }
+                )
             }
         }
     }
@@ -73,65 +84,46 @@ fun Posts(
 
 @Composable
 private fun MatchList(
-    postList: List<MatchItem>,
-    onClick: (Post) -> Unit,
+    matchItemList: List<MatchItem>,
+    onClick: (MatchItem) -> Unit,
 ) {
     LazyColumn {
-        itemsIndexed(postList) { _, match ->
-            Column(Modifier
-                .clickable {
-                    onClick(
-                        Post(
-                            body = match.competition,
-                            id = match.id,
-                            title = match.title,
-                            userId = 0,
-                            bgColor = 0
-                        )
-                    )
-
-                }
-                .padding(vertical = 8.dp, horizontal = 4.dp)
-                .fillMaxWidth()
+        itemsIndexed(matchItemList) { _, matchItem ->
+            Column(
+                Modifier
+                    .clickable { onClick(matchItem) }
+                    .padding(vertical = 8.dp, horizontal = 4.dp)
+                    .fillMaxWidth()
             ) {
-                Text(
-                    buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(
-                                fontWeight = FontWeight.W600,
-                            )
-                        ) {
-                            append(match.title)
-                        }
-                    },
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                    fontSize = 19.sp,
-                    textAlign = TextAlign.Left,
-                )
-                Text(
-                    buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(
-                                fontWeight = FontWeight.W300,
-                            )
-                        ) {
-                            append(match.competition)
-                        }
-                    },
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                    fontSize = 19.sp,
-                    textAlign = TextAlign.Left,
-                )
+                MatchText(matchItem.title)
+                MatchText(matchItem.competition)
             }
         }
     }
 }
 
+@Composable
+private fun MatchText(text: String) {
+    Text(
+        buildAnnotatedString {
+            withStyle(
+                style = SpanStyle(
+                    fontWeight = FontWeight.W600,
+                )
+            ) {
+                append(text)
+            }
+        },
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 1,
+        fontSize = 19.sp,
+        textAlign = TextAlign.Left,
+    )
+}
+
 @Preview
 @Composable
-private fun PostListPreview(
+private fun MatchListPreview(
 ) {
     listOf(
         MatchItem(
@@ -139,8 +131,12 @@ private fun PostListPreview(
             competition = "German 2. Bundesliga",
         )
     ).let {
-        MatchList(
-            postList = it
-        ) { }
+        MatchList(matchItemList = it) { }
     }
 }
+
+data class MatchItem(
+    val id: String = "",
+    val title: String,
+    val competition: String,
+)
