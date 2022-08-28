@@ -1,11 +1,12 @@
 package dev.iurysouza.livematch.fakes
 
 import arrow.core.Either
-import dev.iurysouza.livematch.domain.adapters.AccessTokenEntity
 import dev.iurysouza.livematch.domain.DomainError
 import dev.iurysouza.livematch.domain.NetworkError
-import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
+import dev.iurysouza.livematch.domain.adapters.AccessTokenEntity
+import dev.iurysouza.livematch.domain.adapters.CommentsEntity
 import dev.iurysouza.livematch.domain.adapters.MatchThreadEntity
+import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
 
 class StubNetworkDatasource(
     var returnAccessToken: AccessTokenEntity? = anAccessTokenEntity(),
@@ -20,6 +21,10 @@ class StubNetworkDatasource(
             accessTokenError?.let { throw it }
             returnAccessToken!!
         }.mapLeft { NetworkError(it.message) }
+    }
+
+    override suspend fun getCommentsFor(id: String): Either<DomainError, List<CommentsEntity>> {
+        TODO("Not yet implemented")
     }
 }
 
