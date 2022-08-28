@@ -3,10 +3,8 @@ package dev.iurysouza.livematch.data.network
 import dev.iurysouza.livematch.data.models.AccessTokenResponse
 import dev.iurysouza.livematch.data.models.reddit.responses.EnvelopedContributionListing
 import dev.iurysouza.livematch.data.models.reddit.responses.EnvelopedSubmissionListing
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
-import retrofit2.http.HeaderMap
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -34,14 +32,14 @@ interface RedditApi {
         @Path("submissionId") submissionId: String,
         @Query("comment") focusedCommentId: String? = null,
         @Query("context") focusedCommentParentsNum: Int? = null,
-        @Query("sort") sorting: String = "top",
+        @Query("sort") sorting: String = TOP_RATED,
         @Query("limit") limit: Long? = null,
         @Query("depth") depth: Int? = 1,
         @Query("raw_json") rawJson: Int? = null,
     ): List<EnvelopedContributionListing>
 
-
     companion object {
+        private const val TOP_RATED = "top"
         private const val UNTRACKED_DEVICE = "DO_NOT_TRACK_THIS_DEVICE"
         private const val INSTALLED_CLIENT = "https://oauth.reddit.com/grants/installed_client"
     }

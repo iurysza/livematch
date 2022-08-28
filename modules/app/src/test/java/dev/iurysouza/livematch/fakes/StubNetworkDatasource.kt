@@ -23,7 +23,7 @@ class StubNetworkDatasource(
         }.mapLeft { NetworkError(it.message) }
     }
 
-    override suspend fun getCommentsFor(id: String): Either<DomainError, List<CommentsEntity>> {
+    override suspend fun getCommentsForSubmission(id: String): Either<DomainError, List<CommentsEntity>> {
         TODO("Not yet implemented")
     }
 }

@@ -55,14 +55,15 @@ class RedditNetworkDataSource @Inject constructor(
         return "Basic ${Base64.getEncoder().encodeToString("$username:$password".toByteArray())}"
     }
 
-    override suspend fun getCommentsFor(id: String): Either<DomainError, List<CommentsEntity>> =
-        catch { redditApi.fetchComments("wp9s35") }
+    override suspend fun getCommentsForSubmission(id: String): Either<DomainError, List<CommentsEntity>> =
+        catch { redditApi.fetchComments(id) }
             .mapLeft { NetworkError(it.message) }
             .map { it.toCommentsEntity() }
             .mapLeft { SerializationError(it.message) }
 }
 
 
+@Suppress("UNCHECKED_CAST")
 private fun List<EnvelopedContributionListing>.toCommentsEntity(): List<CommentsEntity> =
     (last().data as Listing<EnvelopedCommentData>).children
         .map { it.data }
