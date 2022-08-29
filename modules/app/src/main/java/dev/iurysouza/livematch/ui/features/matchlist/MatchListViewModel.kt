@@ -12,6 +12,8 @@ import dev.iurysouza.livematch.domain.NetworkError
 import dev.iurysouza.livematch.domain.adapters.MatchThreadEntity
 import dev.iurysouza.livematch.domain.auth.AuthUseCase
 import dev.iurysouza.livematch.domain.matchlist.MatchListUseCase
+import dev.iurysouza.livematch.ui.features.matchthread.InvalidMatchId
+import dev.iurysouza.livematch.ui.features.matchthread.MatchThread
 import dev.iurysouza.livematch.util.ResourceProvider
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,7 +23,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class MatchListiewModel @Inject constructor(
+class MatchListViewModel @Inject constructor(
     private val resourceProvider: ResourceProvider,
     private val matchListUseCase: MatchListUseCase,
     private val authUseCase: AuthUseCase,
@@ -61,6 +63,7 @@ class MatchListiewModel @Inject constructor(
             InvalidMatchId
         }.map { (matchEntity, matchItem) ->
             MatchThread(
+                id = matchEntity.id,
                 title = matchItem.title,
                 competition = matchItem.competition,
                 contentByteArray = matchEntity.contentHtml.toByteArray()

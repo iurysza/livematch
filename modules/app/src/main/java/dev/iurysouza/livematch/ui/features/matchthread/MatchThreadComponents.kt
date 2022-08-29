@@ -1,28 +1,33 @@
 package dev.iurysouza.livematch.ui.features.matchthread
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.halilibo.richtext.markdown.Markdown
 import com.halilibo.richtext.ui.RichText
-import dev.iurysouza.livematch.ui.features.matchlist.CommentItem
 
 @Composable
 fun MatchDescription(
     htmlDescription: String,
 ) {
-    val modifier = Modifier
-
-    RichText(
-        modifier = modifier.padding(16.dp)
-    ) {
-        Markdown(htmlDescription)
+    Box(modifier = Modifier.height(400.dp)) {
+        Column(modifier = Modifier
+            .verticalScroll(rememberScrollState())) {
+            RichText(Modifier.padding(16.dp)) {
+                Markdown(htmlDescription)
+            }
+        }
     }
 }
 
@@ -32,7 +37,7 @@ fun CommentList(
     onClick: (CommentItem) -> Unit,
 ) {
     LazyColumn {
-        itemsIndexed(commentList) { _, commentItem ->
+        items(commentList) { commentItem ->
             Column(
                 Modifier
                     .clickable { onClick(commentItem) }
@@ -47,5 +52,10 @@ fun CommentList(
 
 @Composable
 fun CommentItemComponent(commentItem: CommentItem) {
-
+    Text(commentItem.author)
+    RichText(
+        modifier = Modifier.padding(16.dp)
+    ) {
+        Markdown(commentItem.comment)
+    }
 }

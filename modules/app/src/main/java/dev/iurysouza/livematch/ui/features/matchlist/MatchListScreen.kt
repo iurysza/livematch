@@ -28,7 +28,7 @@ fun MatchListScreen(onOpenMatchThread: (MatchThread) -> Unit) {
 
 @Composable
 fun MatchList(
-    viewModel: MatchListiewModel,
+    viewModel: MatchListViewModel,
     onNavigateToMatchThread: (MatchThread) -> Unit,
 ) {
     val state = viewModel.state.collectAsState().value

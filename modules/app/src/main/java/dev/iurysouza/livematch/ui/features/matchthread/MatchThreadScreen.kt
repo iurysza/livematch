@@ -1,5 +1,6 @@
 package dev.iurysouza.livematch.ui.features.matchthread
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
@@ -16,8 +17,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.ui.components.ErrorScreen
 import dev.iurysouza.livematch.ui.components.FullScreenProgress
-import dev.iurysouza.livematch.ui.features.matchlist.CommentItem
-import dev.iurysouza.livematch.ui.features.matchlist.MatchThread
 import dev.iurysouza.livematch.ui.theme.ColorPrimary
 
 @Composable
@@ -27,13 +26,12 @@ fun MatchThreadScreen(
 ) {
     val viewModel = hiltViewModel<MatchThreadViewModel>()
     LaunchedEffect(Unit) {
-        viewModel.fetchComments()
+        viewModel.update(matchThread)
     }
-    viewModel.update(matchThread)
     when (val state = viewModel.state.collectAsState().value) {
-        is PostDetailScreenState.Success -> MatchThreadComponent(matchThread, navigateUp)
-        PostDetailScreenState.Loading -> FullScreenProgress()
-        is PostDetailScreenState.Error -> ErrorScreen(state.msg)
+        is MatchThreadState.Success -> MatchThreadComponent(state.matchThread, navigateUp)
+        MatchThreadState.Loading -> FullScreenProgress()
+        is MatchThreadState.Error -> ErrorScreen(state.msg)
     }
 }
 
@@ -59,11 +57,13 @@ private fun MatchThreadComponent(
             )
         },
     ) {
-        MatchDescription(matchThread.content)
-        CommentList(
-            commentList = emptyList(),
-            onClick = {}
-        )
+        Column {
+            MatchDescription(matchThread.content)
+            CommentList(
+                commentList = matchThread.comments,
+                onClick = {}
+            )
+        }
     }
 }
 
@@ -72,8 +72,11 @@ private fun MatchThreadComponent(
 private fun MatchThreadPreview() {
     MatchThreadComponent(
         matchThread = MatchThread(
-            title = "",
-            competition = "",
+            title = "Espanyol vs Real Madrid",
+            competition = "LaLiga",
+            contentByteArray = "Real Madrid".toByteArray(),
+            comments = listOf(CommentItem("author", date = "", comment = "Hala Madrid!")),
+            id = "id"
         ),
         navigateUp = {}
     )
