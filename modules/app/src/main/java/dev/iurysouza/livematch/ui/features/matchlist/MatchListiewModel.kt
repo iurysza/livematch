@@ -14,20 +14,20 @@ import dev.iurysouza.livematch.domain.auth.AuthUseCase
 import dev.iurysouza.livematch.domain.matchlist.MatchListUseCase
 import dev.iurysouza.livematch.util.ResourceProvider
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class MatchThreadViewModel @Inject constructor(
+class MatchListiewModel @Inject constructor(
     private val resourceProvider: ResourceProvider,
     private val matchListUseCase: MatchListUseCase,
     private val authUseCase: AuthUseCase,
 ) : ViewModel() {
 
-    private val _effects = MutableStateFlow<MatchListEffects>(MatchListEffects.Idle)
-    val effects: StateFlow<MatchListEffects> = _effects.asStateFlow()
+    val events = MutableSharedFlow<MatchListEvents>()
 
     private val _state = MutableStateFlow<MatchListState>(MatchListState.Loading)
     val state: StateFlow<MatchListState> = _state.asStateFlow()
@@ -53,29 +53,25 @@ class MatchThreadViewModel @Inject constructor(
         )
     }
 
-    fun navigateTo(matchItem: MatchItem) {
-        viewModelScope.launch {
-            catch {
-                val currentState = _state.value as MatchListState.Success
-                val match = lastMatches.find { it.id == matchItem.id }!!
-                match to currentState.matchList.find { it.id == matchItem.id }!!
-            }.mapLeft {
-                InvalidMatchId
-            }.map { (matchEntity, matchItem) ->
-                MatchThread(
-                    title = matchItem.title,
-                    competition = matchItem.competition,
-                    matchDescriptionHtml = matchEntity.contentHtml,
-                    commentList = emptyList()
-                )
-            }.fold(
-                { error ->
-                    Log.e("LiveMatch", "error: $error")
-                    _effects.emit(MatchListEffects.NavigationError(error))
-                }
-            ) { matchThread ->
-                _effects.emit(MatchListEffects.NavigateToMatchThread(matchThread))
+    fun navigateTo(matchItem: MatchItem) = viewModelScope.launch {
+        catch {
+            val matchEntity = lastMatches.find { it.id == matchItem.id }!!
+            matchEntity to matchItem
+        }.mapLeft {
+            InvalidMatchId
+        }.map { (matchEntity, matchItem) ->
+            MatchThread(
+                title = matchItem.title,
+                competition = matchItem.competition,
+                contentByteArray = matchEntity.contentHtml.toByteArray()
+            )
+        }.fold(
+            { error ->
+                Log.e("LiveMatch", "error: $error")
+                events.emit(MatchListEvents.NavigationError(error))
             }
+        ) { matchThread ->
+            events.emit(MatchListEvents.NavigateToMatchThread(matchThread))
         }
     }
 
@@ -90,7 +86,7 @@ class MatchThreadViewModel @Inject constructor(
 
 
     private fun mapErrorMsg(error: DomainError?): String = when (error) {
-        is NetworkError -> resourceProvider.getString(R.string.post_screen_error_no_internet)
-        else -> resourceProvider.getString(R.string.post_screen_error_default)
+        is NetworkError -> resourceProvider.getString(R.string.match_screen_error_no_internet)
+        else -> resourceProvider.getString(R.string.match_screen_error_default)
     }
 }

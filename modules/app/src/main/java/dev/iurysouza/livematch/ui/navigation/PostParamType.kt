@@ -7,21 +7,21 @@ import dev.iurysouza.livematch.ui.features.matchlist.MatchThread
 import dev.iurysouza.livematch.util.JsonParser
 import dev.iurysouza.livematch.util.fromJson
 
-class PostParamType(private val jsonParser: JsonParser) :
-    NavType<MatchThread>(isNullableAllowed = false) {
+class PostParamType(
+    private val jsonParser: JsonParser,
+) : NavType<MatchThread>(isNullableAllowed = false) {
 
-    override fun get(bundle: Bundle, key: String): MatchThread? {
-        return bundle.getParcelable(key)
-    }
+    override fun get(
+        bundle: Bundle,
+        key: String,
+    ): MatchThread? = bundle.getParcelable(key)
 
     override fun parseValue(value: String): MatchThread {
         return when (val result = jsonParser.fromJson<MatchThread>(value)) {
             is Either.Left -> {
-                return MatchThread(
-                    matchDescriptionHtml = "",
-                    title = "",
-                    competition = "",
-                    commentList = listOf()
+                MatchThread(
+                    title = "invalid",
+                    competition = "invalid",
                 )
             }
             is Either.Right -> result.value

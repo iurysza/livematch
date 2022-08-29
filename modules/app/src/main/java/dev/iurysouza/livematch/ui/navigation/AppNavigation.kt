@@ -14,6 +14,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 import dev.iurysouza.livematch.ui.features.matchlist.MatchListScreen
+import dev.iurysouza.livematch.ui.features.matchlist.MatchThread
 import dev.iurysouza.livematch.ui.features.matchthread.MatchThreadScreen
 import dev.iurysouza.livematch.util.JsonParser
 
@@ -26,12 +27,12 @@ internal fun AppNavigation(
 ) {
     AnimatedNavHost(
         navController = navController,
-        startDestination = Screen.Posts.route,
+        startDestination = Screen.MatchList.route,
         enterTransition = { defaultEnterTransition(initialState, targetState) },
         exitTransition = { defaultExitTransition(initialState, targetState) },
     ) {
         addPostsTopLevel(navController, jsonParser)
-        addPostsDetail(navController = navController, jsonParser, parent = Screen.Posts)
+        addPostsDetail(navController = navController, jsonParser, parent = Screen.MatchList)
     }
 }
 
@@ -42,15 +43,20 @@ private fun NavGraphBuilder.addPostsTopLevel(
     val startDestination = "root"
     navigation(
         startDestination = startDestination,
-        route = Screen.Posts.route,
+        route = Screen.MatchList.route,
     ) {
         composable(route = startDestination) {
-            MatchListScreen(openPostDetail = { post ->
-                either.eager { jsonParser.toJson(post).bind() }.fold(
-                    { Log.e("LiveMatch", "$it") },
-                    { navController.navigate(Screen.PostDetail.createRoute(Screen.Posts, it)) }
-                )
-            })
+            MatchListScreen(
+                onOpenMatchThread = { matchThread ->
+                    either.eager { jsonParser.toJson(matchThread).bind() }
+                        .fold(
+                            { Log.e("LiveMatch", "$it") },
+                            { matchContent ->
+                                navController.navigate(
+                                    Screen.MatchThread.createRoute(Screen.MatchList, matchContent))
+                            }
+                        )
+                })
         }
     }
 }
@@ -61,21 +67,23 @@ private fun NavGraphBuilder.addPostsDetail(
     parent: Screen,
 ) {
     navigation(
-        route = Screen.PostDetail.route,
+        route = Screen.MatchThread.route,
         startDestination = parent.route,
     ) {
         composable(
-            route = LeafScreen.PostDetail.defineRoute(parent),
+            route = LeafScreen.MatchThread.defineRoute(parent),
             arguments = listOf(
-                navArgument("post") {
+                navArgument(PARAM) {
                     type = PostParamType(jsonParser)
                 },
             ),
         ) {
             MatchThreadScreen(
                 navigateUp = navController::navigateUp,
-                post = it.arguments!!.getParcelable("post")!!,
+                matchThread = it.arguments!!.getParcelable(PARAM)!!,
             )
         }
     }
 }
+
+const val PARAM = "matchThread"
