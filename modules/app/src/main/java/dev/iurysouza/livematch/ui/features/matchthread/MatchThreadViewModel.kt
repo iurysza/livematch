@@ -18,17 +18,12 @@ class MatchThreadViewModel @Inject constructor(
     val state = MutableStateFlow<PostDetailScreenState>(PostDetailScreenState.Loading)
 
     private fun mapErrorMsg(error: Throwable?): String = when (error) {
-        is UnknownHostException -> resourceProvider.getString(R.string.post_screen_error_no_internet)
-        else -> resourceProvider.getString(R.string.post_screen_error_default)
+        is UnknownHostException -> resourceProvider.getString(R.string.match_screen_error_no_internet)
+        else -> resourceProvider.getString(R.string.match_screen_error_default)
     }
 
-    fun update(post: MatchThread) {
-        state.value = PostDetailScreenState.Success(User(id = 0,
-            name = "",
-            username = "",
-            email = "",
-            website = ""), post)
-
+    fun update(match: MatchThread) {
+        state.value = PostDetailScreenState.Success(match)
     }
 
     fun fetchComments() {

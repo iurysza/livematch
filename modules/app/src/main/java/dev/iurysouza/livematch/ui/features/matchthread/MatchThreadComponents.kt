@@ -1,90 +1,51 @@
 package dev.iurysouza.livematch.ui.features.matchthread
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import dev.iurysouza.livematch.ui.features.matchlist.MatchThread
-import dev.iurysouza.livematch.ui.features.matchlist.MatchItem
+import com.halilibo.richtext.markdown.Markdown
+import com.halilibo.richtext.ui.RichText
+import dev.iurysouza.livematch.ui.features.matchlist.CommentItem
 
 @Composable
-fun MatchThreadComponent(
-    post: MatchThread,
-    user: User,
+fun MatchDescription(
+    htmlDescription: String,
 ) {
     val modifier = Modifier
-    Column(modifier.height(260.dp)) {
-        UserComponent(modifier, post, user)
-        MatchItem(
-            title = post.title,
-            body = post.title,
-            bgColor = 0
-        )
+
+    RichText(
+        modifier = modifier.padding(16.dp)
+    ) {
+        Markdown(htmlDescription)
     }
 }
 
 @Composable
-private fun UserComponent(
-    modifier: Modifier,
-    post: MatchThread,
-    user: User,
+fun CommentList(
+    commentList: List<CommentItem>,
+    onClick: (CommentItem) -> Unit,
 ) {
-    Row(modifier = modifier
-        .padding(top = 16.dp)
-        .fillMaxWidth()) {
-        Column {
-            DetailText(user.username,0 )
-            DetailText(user.email, 0)
+    LazyColumn {
+        itemsIndexed(commentList) { _, commentItem ->
+            Column(
+                Modifier
+                    .clickable { onClick(commentItem) }
+                    .padding(vertical = 8.dp, horizontal = 4.dp)
+                    .fillMaxWidth()
+            ) {
+                CommentItemComponent(commentItem)
+            }
         }
     }
 }
 
 @Composable
-private fun DetailText(
-    text: String,
-    bgColor: Long,
-) {
-    Text(
-        buildAnnotatedString {
-            withStyle(
-                style = SpanStyle(
-                    fontWeight = FontWeight.W600,
-                    color = Color(bgColor)
-                )
-            ) {
-                append(text)
-            }
-        },
-        modifier = Modifier.padding(horizontal = 8.dp),
-        fontSize = 19.sp,
-        textAlign = TextAlign.Left,
-    )
-}
+fun CommentItemComponent(commentItem: CommentItem) {
 
-@Composable
-fun UserAvatar(
-    color: Long,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier
-            .background(Color(color))
-            .height(45.dp)
-            .aspectRatio(1f)
-    )
 }
