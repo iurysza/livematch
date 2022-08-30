@@ -14,7 +14,7 @@ sealed class Screen(val route: String) {
 sealed class LeafScreen(private val route: String) {
     fun defineRoute(parent: Screen) = "${parent.route}/$route"
 
-    object MatchThread : LeafScreen("${ROUTE_MATCH_THREAD}/{$PARAM}")
+    object MatchThread : LeafScreen("${ROUTE_MATCH_THREAD}/{$MATCH_THREAD_ARGUMENT}")
 }
 
 

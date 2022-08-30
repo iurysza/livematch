@@ -14,7 +14,6 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 import dev.iurysouza.livematch.ui.features.matchlist.MatchListScreen
-import dev.iurysouza.livematch.ui.features.matchlist.MatchThread
 import dev.iurysouza.livematch.ui.features.matchthread.MatchThreadScreen
 import dev.iurysouza.livematch.util.JsonParser
 
@@ -31,12 +30,12 @@ internal fun AppNavigation(
         enterTransition = { defaultEnterTransition(initialState, targetState) },
         exitTransition = { defaultExitTransition(initialState, targetState) },
     ) {
-        addPostsTopLevel(navController, jsonParser)
-        addPostsDetail(navController = navController, jsonParser, parent = Screen.MatchList)
+        addMatchListTopLevel(navController, jsonParser)
+        addMatchThread(navController, jsonParser, Screen.MatchList)
     }
 }
 
-private fun NavGraphBuilder.addPostsTopLevel(
+private fun NavGraphBuilder.addMatchListTopLevel(
     navController: NavController,
     jsonParser: JsonParser,
 ) {
@@ -61,7 +60,7 @@ private fun NavGraphBuilder.addPostsTopLevel(
     }
 }
 
-private fun NavGraphBuilder.addPostsDetail(
+private fun NavGraphBuilder.addMatchThread(
     navController: NavController,
     jsonParser: JsonParser,
     parent: Screen,
@@ -73,17 +72,17 @@ private fun NavGraphBuilder.addPostsDetail(
         composable(
             route = LeafScreen.MatchThread.defineRoute(parent),
             arguments = listOf(
-                navArgument(PARAM) {
-                    type = PostParamType(jsonParser)
+                navArgument(MATCH_THREAD_ARGUMENT) {
+                    type = MatchThreadParamType(jsonParser)
                 },
             ),
         ) {
             MatchThreadScreen(
                 navigateUp = navController::navigateUp,
-                matchThread = it.arguments!!.getParcelable(PARAM)!!,
+                matchThread = it.arguments!!.getParcelable(MATCH_THREAD_ARGUMENT)!!,
             )
         }
     }
 }
 
-const val PARAM = "matchThread"
+const val MATCH_THREAD_ARGUMENT = "matchThread"
