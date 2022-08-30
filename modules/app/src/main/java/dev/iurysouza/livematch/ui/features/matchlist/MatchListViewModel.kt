@@ -1,6 +1,5 @@
 package dev.iurysouza.livematch.ui.features.matchlist
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either.Companion.catch
@@ -19,6 +18,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
@@ -40,18 +40,15 @@ class MatchListViewModel @Inject constructor(
         either {
             authUseCase.refreshTokenIfNeeded().bind()
             matchListUseCase.getMatches().bind()
-        }.map {
-            lastMatches = it
-            it.toMatchItem()
+        }.mapLeft {
+            lastMatches = emptyList()
+            mapErrorMsg(it)
+        }.map { matchList ->
+            lastMatches = matchList
+            matchList.toMatchItem()
         }.fold(
-            ifLeft = { error ->
-                lastMatches = emptyList()
-                Log.e("PostsViewModel", "error: $error")
-                _state.emit(MatchListState.Error(mapErrorMsg(error)))
-            },
-            ifRight = { matchList ->
-                _state.emit(MatchListState.Success(matchList))
-            }
+            { _state.emit(MatchListState.Error(it)) },
+            { _state.emit(MatchListState.Success(it)) }
         )
     }
 
@@ -69,13 +66,9 @@ class MatchListViewModel @Inject constructor(
                 contentByteArray = matchEntity.contentHtml.toByteArray()
             )
         }.fold(
-            { error ->
-                Log.e("LiveMatch", "error: $error")
-                events.emit(MatchListEvents.NavigationError(error))
-            }
-        ) { matchThread ->
-            events.emit(MatchListEvents.NavigateToMatchThread(matchThread))
-        }
+            { events.emit(MatchListEvents.NavigationError(it)) },
+            { events.emit(MatchListEvents.NavigateToMatchThread(it)) }
+        )
     }
 
     private fun List<MatchThreadEntity>.toMatchItem(): List<MatchItem> = mapNotNull { match ->

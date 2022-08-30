@@ -1,6 +1,5 @@
 package dev.iurysouza.livematch.ui.features.matchthread
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.continuations.either
@@ -32,28 +31,16 @@ class MatchThreadViewModel @Inject constructor(
 
     fun update(match: MatchThread) = viewModelScope.launch {
         _state.value = MatchThreadState.Success(match)
-        either {
-            matchThreadUseCase.getMatchComments(match.id).bind()
-        }.map { comments ->
-            comments.map {
-                CommentItem(
-                    author = it.author,
-                    date = it.body,
-                    comment = it.body
-                )
+        either { matchThreadUseCase.getMatchComments(match.id).bind() }
+            .mapLeft { mapErrorMsg(it) }
+            .map { comments ->
+                comments.map { CommentItem(it.author, it.body, it.body) }
             }
-        }.fold(
-            ifLeft = { error ->
-                Log.e("LiveMatch", "error: $error")
-                _state.emit(MatchThreadState.Error(mapErrorMsg(error)))
-            },
-            ifRight = { comments ->
-                Log.e("LiveMatch", "matches: $comments")
-                _state.emit(MatchThreadState.Success(
-                    match.copy(comments = comments))
-                )
-            }
-        )
+            .map { match.copy(comments = it) }
+            .fold(
+                { _state.emit(MatchThreadState.Error(it)) },
+                { _state.emit(MatchThreadState.Success(it)) }
+            )
     }
 
 }

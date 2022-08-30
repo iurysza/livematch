@@ -17,6 +17,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.ui.components.ErrorScreen
 import dev.iurysouza.livematch.ui.components.FullScreenProgress
+import dev.iurysouza.livematch.ui.features.matchthread.MatchThread
 
 @Composable
 fun MatchListScreen(onOpenMatchThread: (MatchThread) -> Unit) {
