@@ -13,7 +13,7 @@ android {
     compileSdk = 32
 
     defaultConfig {
-        applicationId = "com.iurysouza.livematch"
+        applicationId = "dev.iurysouza.livematch"
         minSdk = 26
         targetSdk = 32
         versionCode = 1
