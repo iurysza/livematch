@@ -1,8 +1,8 @@
 package dev.iurysouza.livematch.data.network
 
-import dev.iurysouza.livematch.data.models.AccessTokenResponse
-import dev.iurysouza.livematch.data.models.reddit.responses.EnvelopedContributionListing
-import dev.iurysouza.livematch.data.models.reddit.responses.EnvelopedSubmissionListing
+import dev.iurysouza.livematch.domain.models.AccessTokenResponse
+import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedContributionListing
+import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedSubmissionListing
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -18,12 +18,13 @@ interface RedditApi {
         @Query("device_id") deviceId: String = UNTRACKED_DEVICE,
     ): AccessTokenResponse
 
-    @GET("r/soccer/search/.json")
-    suspend fun getLatestMatchThreadsForToday(
-        @Query("q") q: String = "flair:match+thread AND NOT flair:post AND NOT flair:pre",
-        @Query("sort") sort: String = "new",
-        @Query("t") timePeriod: String = "day",
-        @Query("restrict_sr") restrictToSubreddit: Boolean = true,
+    @GET("r/{subreddit}/search/.json")
+    suspend fun searchFor(
+        @Path("subreddit") subreddit: String,
+        @Query("q") query: String,
+        @Query("sort") sort: String,
+        @Query("t") timePeriod: String,
+        @Query("restrict_sr") restrictToSubreddit: Boolean,
         @Query("raw_json") rawJson: Int? = 1,
     ): EnvelopedSubmissionListing
 

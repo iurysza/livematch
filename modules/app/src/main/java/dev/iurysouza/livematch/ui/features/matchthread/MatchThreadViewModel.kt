@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.continuations.either
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.iurysouza.livematch.R
-import dev.iurysouza.livematch.domain.DomainError
-import dev.iurysouza.livematch.domain.matchthread.MatchThreadUseCase
+import dev.iurysouza.livematch.domain.adapters.DomainError
+import dev.iurysouza.livematch.domain.matchthread.FetchMatchCommentsUseCase
 import dev.iurysouza.livematch.util.ResourceProvider
 import java.net.UnknownHostException
 import javax.inject.Inject
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class MatchThreadViewModel @Inject constructor(
     private val resourceProvider: ResourceProvider,
-    private val matchThreadUseCase: MatchThreadUseCase,
+    private val fetchMatchComments: FetchMatchCommentsUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<MatchThreadState>(MatchThreadState.Loading)
@@ -31,7 +31,7 @@ class MatchThreadViewModel @Inject constructor(
 
     fun update(match: MatchThread) = viewModelScope.launch {
         _state.value = MatchThreadState.Success(match)
-        either { matchThreadUseCase.getMatchComments(match.id).bind() }
+        either { fetchMatchComments(match.id).bind() }
             .mapLeft { mapErrorMsg(it) }
             .map { comments ->
                 comments.map { CommentItem(it.author, it.body, it.body) }

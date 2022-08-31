@@ -1,18 +1,23 @@
 package dev.iurysouza.livematch.fakes
 
 import arrow.core.Either
-import dev.iurysouza.livematch.domain.DomainError
-import dev.iurysouza.livematch.domain.NetworkError
-import dev.iurysouza.livematch.domain.adapters.AccessTokenEntity
-import dev.iurysouza.livematch.domain.adapters.CommentsEntity
-import dev.iurysouza.livematch.domain.adapters.MatchThreadEntity
+import dev.iurysouza.livematch.domain.adapters.DomainError
+import dev.iurysouza.livematch.domain.adapters.NetworkError
+import dev.iurysouza.livematch.domain.adapters.models.CommentsEntity
+import dev.iurysouza.livematch.domain.adapters.models.MatchThreadEntity
 import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
 
 class StubNetworkDatasource(
     var returnAccessToken: AccessTokenEntity? = anAccessTokenEntity(),
     private var accessTokenError: Throwable? = null,
 ) : NetworkDataSource {
-    override suspend fun getLatestMatchThreadsForToday(): Either<DomainError, List<MatchThreadEntity>> {
+    override suspend fun searchFor(
+        query: String,
+        sort: String,
+        timePeriod: String,
+        restrictedToSubreddit: Boolean,
+        subreddit: String
+    ): Either<DomainError, List<MatchThreadEntity>> {
         TODO("Not yet implemented")
     }
 

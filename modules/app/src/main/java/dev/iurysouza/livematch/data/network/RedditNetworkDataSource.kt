@@ -3,17 +3,11 @@ package dev.iurysouza.livematch.data.network
 import arrow.core.Either
 import arrow.core.Either.Companion.catch
 import dev.iurysouza.livematch.BuildConfig
-import dev.iurysouza.livematch.domain.adapters.CommentsEntity
-import dev.iurysouza.livematch.data.models.reddit.entities.Comment
-import dev.iurysouza.livematch.data.models.reddit.responses.EnvelopedCommentData
-import dev.iurysouza.livematch.data.models.reddit.responses.EnvelopedContributionListing
-import dev.iurysouza.livematch.data.models.reddit.responses.base.Listing
-import dev.iurysouza.livematch.domain.DomainError
-import dev.iurysouza.livematch.domain.NetworkError
-import dev.iurysouza.livematch.domain.SerializationError
-import dev.iurysouza.livematch.domain.adapters.AccessTokenEntity
-import dev.iurysouza.livematch.domain.adapters.MatchThreadEntity
 import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
+import dev.iurysouza.livematch.domain.adapters.NetworkError
+import dev.iurysouza.livematch.domain.models.AccessTokenResponse
+import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedContributionListing
+import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedSubmissionListing
 import java.util.Base64
 import javax.inject.Inject
 
@@ -21,63 +15,35 @@ class RedditNetworkDataSource @Inject constructor(
     private val redditApi: RedditApi,
 ) : NetworkDataSource {
 
-    override suspend fun getLatestMatchThreadsForToday(): Either<NetworkError, List<MatchThreadEntity>> =
-        catch {
-            redditApi.getLatestMatchThreadsForToday()
-        }.mapLeft { NetworkError(it.message) }
-            .map { response ->
-                response.data.children.map { child ->
-                    MatchThreadEntity(
-                        id = child.data.id,
-                        title = child.data.title,
-                        url = child.data.url,
-                        score = child.data.score,
-                        numComments = child.data.numComments,
-                        createdAt = child.data.created,
-                        content = child.data.selfText ?: "",
-                        contentHtml = child.data.selfTextHtml ?: "",
-                    )
-                }
-            }
+    override suspend fun searchFor(
+        subreddit: String,
+        query: String,
+        sortBy: String,
+        timePeriod: String,
+        restrictedToSubreddit: Boolean,
+    ): Either<NetworkError, EnvelopedSubmissionListing> = catch {
+        redditApi.searchFor(
+            subreddit = subreddit,
+            query = query,
+            sort = sortBy,
+            timePeriod = timePeriod,
+            restrictToSubreddit = restrictedToSubreddit
+        )
+    }.mapLeft { NetworkError(it.message) }
 
-    override suspend fun getAccessToken(): Either<DomainError, AccessTokenEntity> =
-        catch {
-            val authorization = getAuthorizationHeader()
-            redditApi.getAccessToken(authorization)
-        }.mapLeft { NetworkError(it.message) }
-            .map {
-                AccessTokenEntity(it.accessToken, it.expiresIn, it.deviceId, it.scope, it.tokenType)
-            }
+    override suspend fun getAccessToken(): Either<NetworkError, AccessTokenResponse> = catch {
+        redditApi.getAccessToken(authorization = buildBasicAuthHeader())
+    }.mapLeft { NetworkError(it.message) }
 
-    private fun getAuthorizationHeader(): String {
+    private fun buildBasicAuthHeader(): String {
         val username = BuildConfig.CLIENT_ID
         val password = ""
         return "Basic ${Base64.getEncoder().encodeToString("$username:$password".toByteArray())}"
     }
 
-    override suspend fun getCommentsForSubmission(id: String): Either<DomainError, List<CommentsEntity>> =
-        catch { redditApi.fetchComments(id) }
-            .mapLeft { NetworkError(it.message) }
-            .map { it.toCommentsEntity() }
-            .mapLeft { SerializationError(it.message) }
+    override suspend fun getCommentsForSubmission(
+        id: String,
+    ): Either<NetworkError, List<EnvelopedContributionListing>> = catch {
+        redditApi.fetchComments(id)
+    }.mapLeft { NetworkError(it.message) }
 }
-
-
-@Suppress("UNCHECKED_CAST")
-private fun List<EnvelopedContributionListing>.toCommentsEntity(): List<CommentsEntity> =
-    (last().data as Listing<EnvelopedCommentData>).children
-        .map { it.data }
-        .toList()
-        .filterIsInstance<Comment>()
-        .map {
-            CommentsEntity(
-                it.id,
-                it.author,
-                it.fullname,
-                it.body,
-                it.bodyHtml,
-                it.created
-            )
-        }
-
-
