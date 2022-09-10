@@ -21,8 +21,12 @@ class MatchThreadViewModel @Inject constructor(
     private val fetchMatchComments: FetchMatchCommentsUseCase,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<MatchThreadState>(MatchThreadState.Loading)
-    val state: StateFlow<MatchThreadState> = _state.asStateFlow()
+
+    private val _commentsState =
+        MutableStateFlow<MatchCommentsState>(MatchCommentsState.Loading)
+    val commentsState: StateFlow<MatchCommentsState> = _commentsState.asStateFlow()
+    private val _state = MutableStateFlow<MatchDescriptionState>(MatchDescriptionState.Loading)
+    val state: StateFlow<MatchDescriptionState> = _state.asStateFlow()
 
     private fun mapErrorMsg(error: DomainError?): String = when (error) {
         is UnknownHostException -> resourceProvider.getString(R.string.match_screen_error_no_internet)
@@ -30,16 +34,18 @@ class MatchThreadViewModel @Inject constructor(
     }
 
     fun update(match: MatchThread) = viewModelScope.launch {
-        _state.value = MatchThreadState.Success(match)
+        _state.value = MatchDescriptionState.Success(match)
+        _commentsState.value = MatchCommentsState.Loading
         either { fetchMatchComments(match.id).bind() }
             .mapLeft { mapErrorMsg(it) }
             .map { comments ->
-                comments.map { CommentItem(it.author, it.body, it.body) }
+                comments
+                    .map { CommentItem(it.author, it.body, it.body) }
+                    .sortedBy { it.date }
             }
-            .map { match.copy(comments = it) }
             .fold(
-                { _state.emit(MatchThreadState.Error(it)) },
-                { _state.emit(MatchThreadState.Success(it)) }
+                { _commentsState.emit(MatchCommentsState.Error(it)) },
+                { _commentsState.emit(MatchCommentsState.Success(it)) }
             )
     }
 

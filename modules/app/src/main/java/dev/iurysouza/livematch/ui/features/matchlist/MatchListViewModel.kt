@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class MatchListViewModel @Inject constructor(
     private val resourceProvider: ResourceProvider,
-    private val latestMatchThreadsForToday: FetchLatestMatchThreadsForTodayUseCase,
+    private val fetchLatestMatchThreadsForTodayUseCase: FetchLatestMatchThreadsForTodayUseCase,
     private val refreshTokenIfNeeded: RefreshTokenIfNeededUseCase,
 ) : ViewModel() {
 
@@ -39,7 +39,7 @@ class MatchListViewModel @Inject constructor(
     fun getMachList() = viewModelScope.launch {
         either {
             refreshTokenIfNeeded().bind()
-            latestMatchThreadsForToday().bind()
+            fetchLatestMatchThreadsForTodayUseCase().bind()
         }.mapLeft { error ->
             lastMatches = emptyList()
             error.toErrorMsg()
@@ -63,7 +63,7 @@ class MatchListViewModel @Inject constructor(
                 id = matchEntity.id,
                 title = matchItem.title,
                 competition = matchItem.competition,
-                contentByteArray = matchEntity.contentHtml.toByteArray()
+                contentByteArray = matchEntity.content.toByteArray()
             )
         }.fold(
             { events.emit(MatchListEvents.NavigationError(it)) },

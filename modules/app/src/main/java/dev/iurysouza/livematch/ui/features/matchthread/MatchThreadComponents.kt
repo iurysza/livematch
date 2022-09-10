@@ -59,3 +59,8 @@ fun CommentItemComponent(commentItem: CommentItem) {
         Markdown(commentItem.comment)
     }
 }
+
+@Composable
+fun CommentProgress() {
+
+}

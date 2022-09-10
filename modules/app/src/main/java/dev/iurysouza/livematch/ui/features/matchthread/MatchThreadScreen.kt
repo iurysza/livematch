@@ -28,19 +28,10 @@ fun MatchThreadScreen(
     LaunchedEffect(Unit) {
         viewModel.update(matchThread)
     }
-    when (val state = viewModel.state.collectAsState().value) {
-        is MatchThreadState.Success -> MatchThreadComponent(state.matchThread, navigateUp)
-        MatchThreadState.Loading -> FullScreenProgress()
-        is MatchThreadState.Error -> ErrorScreen(state.msg)
-    }
-}
 
+    val commentsState = viewModel.commentsState.collectAsState().value
+    val state = viewModel.state.collectAsState().value
 
-@Composable
-private fun MatchThreadComponent(
-    matchThread: MatchThread,
-    navigateUp: () -> Unit,
-) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -58,24 +49,36 @@ private fun MatchThreadComponent(
         },
     ) {
         Column {
-            MatchDescription(matchThread.content)
-            CommentList(
-                commentList = matchThread.comments,
-                onClick = {}
-            )
+            when (state) {
+                MatchDescriptionState.Loading -> FullScreenProgress()
+                is MatchDescriptionState.Error -> ErrorScreen(state.msg)
+                is MatchDescriptionState.Success -> MatchDescription(state.matchThread.content)
+            }
+            when (commentsState) {
+                MatchCommentsState.Loading -> CommentProgress()
+                is MatchCommentsState.Error -> ErrorScreen(commentsState.msg)
+                is MatchCommentsState.Success -> {
+                    CommentList(
+                        commentList = commentsState.commentList,
+                        onClick = {}
+                    )
+                }
+            }
+
         }
     }
+
 }
+
 
 @Preview
 @Composable
 private fun MatchThreadPreview() {
-    MatchThreadComponent(
+    MatchThreadScreen(
         matchThread = MatchThread(
             title = "Espanyol vs Real Madrid",
             competition = "LaLiga",
             contentByteArray = "Real Madrid".toByteArray(),
-            comments = listOf(CommentItem("author", date = "", comment = "Hala Madrid!")),
             id = "id"
         ),
         navigateUp = {}

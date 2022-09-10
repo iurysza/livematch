@@ -15,7 +15,6 @@ data class MatchThread(
      * deep linking to html content.
      */
     val contentByteArray: ByteArray = ByteArray(0),
-    val comments: List<CommentItem> = emptyList(),
 ) : Parcelable {
     val content: String get() = String(contentByteArray)
     override fun equals(other: Any?): Boolean {
@@ -28,7 +27,6 @@ data class MatchThread(
         if (title != other.title) return false
         if (competition != other.competition) return false
         if (!contentByteArray.contentEquals(other.contentByteArray)) return false
-        if (comments != other.comments) return false
 
         return true
     }
@@ -38,7 +36,6 @@ data class MatchThread(
         result = 31 * result + title.hashCode()
         result = 31 * result + competition.hashCode()
         result = 31 * result + contentByteArray.contentHashCode()
-        result = 31 * result + comments.hashCode()
         return result
     }
 }

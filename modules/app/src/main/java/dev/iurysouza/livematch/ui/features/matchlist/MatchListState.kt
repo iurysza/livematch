@@ -9,10 +9,9 @@ sealed interface MatchListState {
     data class Error(val msg: String) : MatchListState
 }
 
-sealed interface ErrorEvent : MatchListEvents
 sealed interface MatchListEvents {
     object Idle : MatchListEvents
-    data class NavigationError(val msg: ViewError) : ErrorEvent
+    data class NavigationError(val msg: ViewError) : MatchListEvents
     data class NavigateToMatchThread(val matchThread: MatchThread) : MatchListEvents
 }
 
