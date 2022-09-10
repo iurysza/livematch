@@ -59,9 +59,8 @@ fun MatchThreadScreen(
                 is MatchCommentsState.Error -> ErrorScreen(commentsState.msg)
                 is MatchCommentsState.Success -> {
                     CommentList(
-                        commentList = commentsState.commentList,
-                        onClick = {}
-                    )
+                        commentList = commentsState.groupedComments
+                    ) {}
                 }
             }
 
@@ -79,7 +78,8 @@ private fun MatchThreadPreview() {
             title = "Espanyol vs Real Madrid",
             competition = "LaLiga",
             contentByteArray = "Real Madrid".toByteArray(),
-            id = "id"
+            id = "id",
+            startTime = 9
         ),
         navigateUp = {}
     )

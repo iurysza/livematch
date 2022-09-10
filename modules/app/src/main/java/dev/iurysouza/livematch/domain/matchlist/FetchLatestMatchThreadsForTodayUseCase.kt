@@ -29,7 +29,7 @@ class FetchLatestMatchThreadsForTodayUseCase @Inject constructor(
                 url = child.data.url,
                 score = child.data.score,
                 numComments = child.data.numComments,
-                createdAt = child.data.created,
+                createdAt = child.data.createdUtc,
                 content = child.data.selfText ?: "",
                 contentHtml = child.data.selfTextHtml ?: "",
             )

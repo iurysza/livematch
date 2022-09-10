@@ -63,7 +63,8 @@ class MatchListViewModel @Inject constructor(
                 id = matchEntity.id,
                 title = matchItem.title,
                 competition = matchItem.competition,
-                contentByteArray = matchEntity.content.toByteArray()
+                contentByteArray = matchEntity.content.toByteArray(),
+                startTime = matchEntity.createdAt,
             )
         }.fold(
             { events.emit(MatchListEvents.NavigationError(it)) },

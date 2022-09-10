@@ -7,7 +7,10 @@ sealed interface MatchDescriptionState {
 }
 
 sealed interface MatchCommentsState {
-    data class Success(val commentList: List<CommentItem>) : MatchCommentsState
+    data class Success(
+        val groupedComments: List<Pair<String, List<CommentItem>>>,
+    ) : MatchCommentsState
+
     object Loading : MatchCommentsState
     data class Error(val msg: String) : MatchCommentsState
 }

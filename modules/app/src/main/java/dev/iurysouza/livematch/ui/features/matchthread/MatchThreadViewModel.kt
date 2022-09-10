@@ -9,11 +9,16 @@ import dev.iurysouza.livematch.domain.adapters.DomainError
 import dev.iurysouza.livematch.domain.matchthread.FetchMatchCommentsUseCase
 import dev.iurysouza.livematch.util.ResourceProvider
 import java.net.UnknownHostException
+import java.time.Duration
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlin.math.floor
 
 @HiltViewModel
 class MatchThreadViewModel @Inject constructor(
@@ -25,6 +30,7 @@ class MatchThreadViewModel @Inject constructor(
     private val _commentsState =
         MutableStateFlow<MatchCommentsState>(MatchCommentsState.Loading)
     val commentsState: StateFlow<MatchCommentsState> = _commentsState.asStateFlow()
+
     private val _state = MutableStateFlow<MatchDescriptionState>(MatchDescriptionState.Loading)
     val state: StateFlow<MatchDescriptionState> = _state.asStateFlow()
 
@@ -40,14 +46,43 @@ class MatchThreadViewModel @Inject constructor(
             .mapLeft { mapErrorMsg(it) }
             .map { comments ->
                 comments
-                    .map { CommentItem(it.author, it.body, it.body) }
-                    .sortedBy { it.date }
+                    .map {
+                        CommentItem(
+                            author = it.author,
+                            comment = it.body,
+                            relativeTime = calculateRelativeTime(it.created,
+                                match.startTime).toString()
+                        )
+                    }
+                    .sortedBy { it.relativeTime }
+            }.map { list ->
+                list.groupBy { comment ->
+                    floor((comment.relativeTime.toDouble().div(10.0))).toInt()
+                }
+                    .toList()
+                    .sortedBy { it.first }
+                    .map { (time, comments) ->
+                        "${(time + 1) * 10} minutes" to comments
+                    }
             }
             .fold(
                 { _commentsState.emit(MatchCommentsState.Error(it)) },
                 { _commentsState.emit(MatchCommentsState.Success(it)) }
             )
     }
+
+
+    private fun calculateRelativeTime(
+        commentTime: Long,
+        matchTime: Long,
+    ): Double = Duration.between(
+        matchTime.toUTCLocalDateTime(),
+        commentTime.toUTCLocalDateTime(),
+    ).toMinutes().toDouble()
+
+    private fun Long.toUTCLocalDateTime() =
+        LocalDateTime.ofInstant(Instant.ofEpochSecond(this), ZoneId.systemDefault())
+
 
 }
 

@@ -10,6 +10,7 @@ data class MatchThread(
     val id: String = "",
     val title: String,
     val competition: String,
+    val startTime: Long,
     /**
      * This is used to store the html content, since the android navigation library doesn't support
      * deep linking to html content.
@@ -44,7 +45,7 @@ data class MatchThread(
 @Parcelize
 data class CommentItem(
     val author: String,
-    val date: String,
+    val relativeTime: String,
     val comment: String,
 ) : Parcelable
 

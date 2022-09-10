@@ -40,6 +40,6 @@ private fun List<EnvelopedContributionListing>.toCommentsEntity(): List<Comments
                 it.fullname,
                 it.body,
                 it.bodyHtml,
-                it.created
+                it.createdUtc
             )
         }
