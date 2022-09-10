@@ -23,7 +23,8 @@ androidxTestRunner = "1.4.0"
 arrow = "1.1.3-alpha.46"
 kotest = "5.4.2"
 kotestArrow = "1.2.5"
-mockk = "1.12.1"
+moshiAdapters = "1.12.0"
+richtextCommonmark = "0.13.0"
 
 [libraries]
 arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
@@ -69,9 +70,9 @@ squareup-okhttp-loggingInterceptor = { group = "com.squareup.okhttp3", name = "l
 squareup-moshi-kotlinCodegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshiKotlinCodegen" }
 squareup-retrofit-moshi-converter = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "moshiConverter" }
 squareup-moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshiKotlin" }
+squareup-moshi-moshiAdapters = { group = "com.squareup.moshi", name = "moshi-adapters", version.ref = "moshiAdapters" }
 
-#mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
-#mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
+halilibo-composeRichttext-richtextCommonmark = { group = "com.halilibo.compose-richtext", name = "richtext-commonmark", version.ref = "richtextCommonmark" }
 
 kotest-kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
 kotest-kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
