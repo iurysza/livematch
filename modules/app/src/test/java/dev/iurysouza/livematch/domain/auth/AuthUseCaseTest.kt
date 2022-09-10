@@ -3,7 +3,7 @@ package dev.iurysouza.livematch.domain.auth
 import dev.iurysouza.livematch.domain.adapters.NetworkError
 import dev.iurysouza.livematch.fakes.InMemoryKeyValueStorage
 import dev.iurysouza.livematch.fakes.StubNetworkDatasource
-import dev.iurysouza.livematch.fakes.anAccessTokenEntity
+import dev.iurysouza.livematch.fakes.anAccessTokenResponse
 import dev.iurysouza.livematch.util.secondsAgo
 import dev.iurysouza.livematch.util.secondsFromNow
 import io.kotest.assertions.arrow.core.shouldBeLeft
@@ -18,7 +18,7 @@ class AuthUseCaseTest : BehaviorSpec({
         val accessToken = "token"
         val sut = RefreshTokenIfNeededUseCase(
             networkDataSource = StubNetworkDatasource(
-                returnAccessToken = anAccessTokenEntity(accessToken)
+                returnAccessToken = anAccessTokenResponse(accessToken)
             ),
             storage = AuthStorage(InMemoryKeyValueStorage(localStorage))
         )
