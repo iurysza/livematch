@@ -1,30 +1,11 @@
-# LiveMatch App
+# LiveMatch App - WIP
 
-This project uses a minimal architecture due to the time limitation of the task and the overall simplicity of the feature-set. Some naming conventions are not _ideal_.
-
-## Project notes
-
-### Features
-
-The project has two features (`posts` and `postDetail`) and for every feature, we have 4 files:
-- `FeatureViewModel`: Coordinates how the state should be updated based on user actions and the backend response.
-- `FeatureScreen`: A UI component that represents the feature's screen and handles the rendering of the state.
-- `FeatureState`: A set of Data Classes and Sealed Classes which represent the UI state.
-- `FeatureComponents`: The UI subcomponents related to that feature.
-
-
-### DI
-
-I decided to use Hilt for this project for its synergy with Jetpack Compose and Compose Navigation libraries. Most objects in the graph are scoped to the app, but we can still benefit from the aforementioned integrations to simplify things like view model injection.
-
-## Main libraries used
-- Jetpack Compose for UI
-- Hilt for Dependency Injection
-- Retrofit for the HTTP client
+This is a POC of a client built specifically for Reddit's `/r/soccer` community. 
+The idea is that you can use this app to follow any live match happening, besides you will be able to watch goals as they're posted with a native video player (WIP).
 
 ## Tests
 
-You can find unit tests in the `./app/src/test/` folder.
+You can find unit tests in the `./modules//app/src/test/` folder.
 
 ### Testing with mock-web-server:
 
@@ -37,9 +18,16 @@ To do that you will need only 3 things:
 
 To change the API response, just change the data in `./mockwebserver-docker-img/initializerJson.json`.
 
-## Run
+# TODO
 
-You can use the good old `gradle assebleDebug` to generate an APK or if you're in a hurry, you can [download this one](assets/app-debug.apk).
+### POC
 
-<img src="assets/posts.png" width="400">
-<img src="assets/post_detail.png" width="400">
+- [x] Show current matches with description
+- [x] Show comments with time relative to the ongoing match
+- [ ] Provide links to match related videos
+
+### Wish list
+- [ ] UI Revamp
+- [ ] Match description from dedicated source
+- [ ] Better match events ticker
+- [ ] Reddit comment stream
