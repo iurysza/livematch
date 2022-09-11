@@ -13,8 +13,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
@@ -72,9 +73,10 @@ fun CommentList(
                         CommentHeader(group)
                     }
                 }
-                items(comments) { commentItem: CommentItem ->
+                itemsIndexed(comments) { index, commentItem: CommentItem ->
+                    val color = if (index % 2 == 0) Color(0xFFE0E0E0) else Color.White
                     AnimatedVisibility(visible = shouldShowContent(showContent, group)) {
-                        CommentItemComponent(commentItem = commentItem, onClick = onClick)
+                        CommentItemComponent(commentItem = commentItem, color, onClick = onClick)
                     }
                 }
 
@@ -91,31 +93,44 @@ private fun shouldShowContent(
 @Composable
 fun CommentItemComponent(
     commentItem: CommentItem,
+    color: Color,
     onClick: (CommentItem) -> Unit,
 ) {
 
+    val modifier = Modifier
 
     Column(
-        Modifier
+        modifier
             .clickable { onClick(commentItem) }
             .padding(vertical = 8.dp, horizontal = 4.dp)
             .fillMaxWidth()
+            .background(color)
+            .wrapContentHeight()
     ) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .background(Color.LightGray)
-                .padding(8.dp)
         ) {
 
             Text(text = commentItem.author, fontSize = 12.sp)
             Spacer(Modifier.weight(1f))
-            Text(text = commentItem.relativeTime, fontSize = 12.sp)
+            Text(text = commentItem.score, fontSize = 12.sp)
         }
-        RichText(
-            Modifier.padding(16.dp)
-        ) {
+
+        RichText() {
             Markdown(commentItem.body)
+        }
+        Row(
+            modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.End
+
+        ) {
+            Text(
+                text = commentItem.relativeTime,
+                fontSize = 12.sp,
+            )
         }
     }
 }
