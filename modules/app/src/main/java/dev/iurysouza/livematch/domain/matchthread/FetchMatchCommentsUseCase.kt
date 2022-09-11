@@ -39,6 +39,7 @@ private fun List<EnvelopedContributionListing>.toCommentsEntity(): List<Comments
                 it.author,
                 it.fullname,
                 it.body,
+                it.score,
                 it.bodyHtml,
                 it.createdUtc
             )

@@ -5,6 +5,7 @@ data class CommentsEntity(
     val author: String,
     val fullname: String,
     val body: String,
+    val score: Int,
     val bodyHtml: String,
     val created: Long,
 )

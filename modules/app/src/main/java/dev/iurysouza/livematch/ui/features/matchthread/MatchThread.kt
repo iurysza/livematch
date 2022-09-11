@@ -47,7 +47,7 @@ data class CommentItem(
     val author: String,
     val relativeTime: String,
     val body: String,
-    val score:Int,
+    val score:String,
 ) : Parcelable
 
 sealed interface ViewError

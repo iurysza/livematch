@@ -66,7 +66,8 @@ class MatchThreadViewModel @Inject constructor(
             CommentItem(
                 author = comment.author,
                 body = comment.body,
-                relativeTime = calculateRelativeTime(comment.created, matchStartTime).toString()
+                relativeTime = calculateRelativeTime(comment.created, matchStartTime).toString(),
+                score = "${comment.score} points",
             )
         }.sortedBy { it.relativeTime }
     }
