@@ -6,10 +6,10 @@ import arrow.core.continuations.either
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.domain.adapters.DomainError
+import dev.iurysouza.livematch.domain.adapters.NetworkError
 import dev.iurysouza.livematch.domain.adapters.models.CommentsEntity
 import dev.iurysouza.livematch.domain.matchthread.FetchMatchCommentsUseCase
 import dev.iurysouza.livematch.util.ResourceProvider
-import java.net.UnknownHostException
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDateTime
@@ -36,7 +36,7 @@ class MatchThreadViewModel @Inject constructor(
     val state: StateFlow<MatchDescriptionState> = _state.asStateFlow()
 
     private fun mapErrorMsg(error: DomainError?): String = when (error) {
-        is UnknownHostException -> resourceProvider.getString(R.string.match_screen_error_no_internet)
+        is NetworkError -> resourceProvider.getString(R.string.match_screen_error_no_internet)
         else -> resourceProvider.getString(R.string.match_screen_error_default)
     }
 
@@ -45,23 +45,28 @@ class MatchThreadViewModel @Inject constructor(
         _commentsState.value = MatchCommentsState.Loading
         either { fetchMatchComments(match.id).bind() }
             .mapLeft { mapErrorMsg(it) }
-            .map { it.toCommentItem(match.startTime) }
-            .map { it.groupByRelativeTime() }
+            .map { it.toCommentItemList(match.startTime) }
+            .map { it.toCommentSectionList() }
             .fold(
                 { _commentsState.emit(MatchCommentsState.Error(it)) },
                 { _commentsState.emit(MatchCommentsState.Success(it)) }
             )
     }
 
-    private fun List<CommentItem>.groupByRelativeTime(): List<Pair<String, List<CommentItem>>> {
+    private fun List<CommentItem>.toCommentSectionList(): List<CommentSection> {
         return groupBy { comment ->
-            floor((comment.relativeTime.toDouble().div(10.0))).toInt()
+            floor(comment.relativeTime.toDouble() / 10.0).toInt()
         }.toList()
-            .sortedBy { (relativeTime, _) -> relativeTime }
-            .map { (relativeTime, comments) -> "${(relativeTime + 1) * 10} minutes" to comments }
+            .sortedBy { (relativeTime, _) -> relativeTime }.reversed()
+            .map { (relativeTime, comments) ->
+                CommentSection(
+                    sectionName = "${(relativeTime + 1) * 10} minutes",
+                    commentList = comments
+                )
+            }
     }
 
-    private fun List<CommentsEntity>.toCommentItem(matchStartTime: Long): List<CommentItem> {
+    private fun List<CommentsEntity>.toCommentItemList(matchStartTime: Long): List<CommentItem> {
         return map { comment ->
             CommentItem(
                 author = comment.author,

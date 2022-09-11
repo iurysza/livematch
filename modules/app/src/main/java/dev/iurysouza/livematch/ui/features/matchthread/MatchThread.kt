@@ -47,8 +47,13 @@ data class CommentItem(
     val author: String,
     val relativeTime: String,
     val body: String,
-    val score:String,
+    val score: String,
 ) : Parcelable
 
 sealed interface ViewError
 object InvalidMatchId : ViewError
+
+data class CommentSection(
+    val sectionName: String,
+    val commentList: List<CommentItem>,
+)

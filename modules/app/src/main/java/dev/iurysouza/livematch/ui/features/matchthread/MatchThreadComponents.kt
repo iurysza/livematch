@@ -35,7 +35,7 @@ import com.halilibo.richtext.ui.RichText
 fun MatchDescription(
     htmlDescription: String,
 ) {
-    Box(modifier = Modifier.height(400.dp)) {
+    Box(modifier = Modifier.height(200.dp)) {
         Column(modifier = Modifier
             .verticalScroll(rememberScrollState())) {
             RichText(Modifier.padding(16.dp)) {
@@ -47,20 +47,23 @@ fun MatchDescription(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CommentList(
-    commentList: List<Pair<String, List<CommentItem>>>,
+fun CommentSectionComponent(
+    commentSectionList: List<CommentSection>,
     onClick: (CommentItem) -> Unit,
 ) {
 
     val map = mutableMapOf<String, Boolean>()
-    commentList.forEach { (group, _) -> map[group] = true }
+    commentSectionList.forEachIndexed { index, (group, _) -> map[group] = index == 0 }
     var showContent by remember { mutableStateOf(map.toMap()) }
 
     LazyColumn(
-        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+        contentPadding = PaddingValues(
+            horizontal = 12.dp,
+            vertical = 8.dp
+        ),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         content = {
-            commentList.forEach { (group: String, comments: List<CommentItem>) ->
+            commentSectionList.forEach { (group: String, comments: List<CommentItem>) ->
                 stickyHeader {
                     Box(modifier = Modifier
                         .fillMaxWidth()
@@ -74,9 +77,12 @@ fun CommentList(
                     }
                 }
                 itemsIndexed(comments) { index, commentItem: CommentItem ->
-                    val color = if (index % 2 == 0) Color(0xFFE0E0E0) else Color.White
                     AnimatedVisibility(visible = shouldShowContent(showContent, group)) {
-                        CommentItemComponent(commentItem = commentItem, color, onClick = onClick)
+                        CommentItemComponent(
+                            commentItem = commentItem,
+                            color = if (index % 2 == 0) Color(0xFFE0E0E0) else Color.White,
+                            onClick = onClick
+                        )
                     }
                 }
 

@@ -58,9 +58,10 @@ fun MatchThreadScreen(
                 MatchCommentsState.Loading -> CommentProgress()
                 is MatchCommentsState.Error -> ErrorScreen(commentsState.msg)
                 is MatchCommentsState.Success -> {
-                    CommentList(
-                        commentList = commentsState.groupedComments
-                    ) {}
+                    CommentSectionComponent(
+                        commentSectionList = commentsState.commentSectionList,
+                        onClick = {}
+                    )
                 }
             }
 
