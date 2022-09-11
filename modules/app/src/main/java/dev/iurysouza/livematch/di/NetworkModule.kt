@@ -9,6 +9,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.iurysouza.livematch.BuildConfig
 import dev.iurysouza.livematch.DefaultDispatcherProvider
 import dev.iurysouza.livematch.DispatcherProvider
 import dev.iurysouza.livematch.data.PolyJsonAdapterFactory
@@ -57,7 +58,7 @@ class NetworkModule {
         okHttpClient: OkHttpClient,
         factory: Converter.Factory,
     ) = Retrofit.Builder()
-        .baseUrl("https://oauth.reddit.com/")
+        .baseUrl(BuildConfig.API_URL)
         .addConverterFactory(factory)
         .callbackExecutor(dispatcherProvider.io().asExecutor())
         .client(okHttpClient)
