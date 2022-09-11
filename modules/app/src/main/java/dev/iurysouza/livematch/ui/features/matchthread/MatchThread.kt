@@ -46,7 +46,8 @@ data class MatchThread(
 data class CommentItem(
     val author: String,
     val relativeTime: String,
-    val comment: String,
+    val body: String,
+    val score:Int,
 ) : Parcelable
 
 sealed interface ViewError

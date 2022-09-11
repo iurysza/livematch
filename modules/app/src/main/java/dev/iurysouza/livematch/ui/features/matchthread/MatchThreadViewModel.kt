@@ -6,6 +6,7 @@ import arrow.core.continuations.either
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.domain.adapters.DomainError
+import dev.iurysouza.livematch.domain.adapters.models.CommentsEntity
 import dev.iurysouza.livematch.domain.matchthread.FetchMatchCommentsUseCase
 import dev.iurysouza.livematch.util.ResourceProvider
 import java.net.UnknownHostException
@@ -44,31 +45,30 @@ class MatchThreadViewModel @Inject constructor(
         _commentsState.value = MatchCommentsState.Loading
         either { fetchMatchComments(match.id).bind() }
             .mapLeft { mapErrorMsg(it) }
-            .map { comments ->
-                comments
-                    .map {
-                        CommentItem(
-                            author = it.author,
-                            comment = it.body,
-                            relativeTime = calculateRelativeTime(it.created,
-                                match.startTime).toString()
-                        )
-                    }
-                    .sortedBy { it.relativeTime }
-            }.map { list ->
-                list.groupBy { comment ->
-                    floor((comment.relativeTime.toDouble().div(10.0))).toInt()
-                }
-                    .toList()
-                    .sortedBy { it.first }
-                    .map { (time, comments) ->
-                        "${(time + 1) * 10} minutes" to comments
-                    }
-            }
+            .map { it.toCommentItem(match.startTime) }
+            .map { it.groupByRelativeTime() }
             .fold(
                 { _commentsState.emit(MatchCommentsState.Error(it)) },
                 { _commentsState.emit(MatchCommentsState.Success(it)) }
             )
+    }
+
+    private fun List<CommentItem>.groupByRelativeTime(): List<Pair<String, List<CommentItem>>> {
+        return groupBy { comment ->
+            floor((comment.relativeTime.toDouble().div(10.0))).toInt()
+        }.toList()
+            .sortedBy { (relativeTime, _) -> relativeTime }
+            .map { (relativeTime, comments) -> "${(relativeTime + 1) * 10} minutes" to comments }
+    }
+
+    private fun List<CommentsEntity>.toCommentItem(matchStartTime: Long): List<CommentItem> {
+        return map { comment ->
+            CommentItem(
+                author = comment.author,
+                body = comment.body,
+                relativeTime = calculateRelativeTime(comment.created, matchStartTime).toString()
+            )
+        }.sortedBy { it.relativeTime }
     }
 
 
