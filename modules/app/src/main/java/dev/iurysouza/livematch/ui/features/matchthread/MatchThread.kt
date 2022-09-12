@@ -54,6 +54,7 @@ sealed interface ViewError
 object InvalidMatchId : ViewError
 
 data class CommentSection(
-    val sectionName: String,
+    val name: String,
+    val leadingComment: CommentItem,
     val commentList: List<CommentItem>,
 )

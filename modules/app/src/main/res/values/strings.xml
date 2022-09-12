@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">LiveMatch</string>
     <string name="match_screen_error_no_internet">No internet connection</string>
+    <string name="points">%1$s points</string>
+    <string name="minutes">%1$s minutes</string>
     <string name="match_screen_error_default">Something went wrong</string>
     <string name="matches">Matches</string>
     <string name="match_thread">Match Thread</string>

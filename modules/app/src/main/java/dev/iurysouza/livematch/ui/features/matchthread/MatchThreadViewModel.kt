@@ -60,8 +60,9 @@ class MatchThreadViewModel @Inject constructor(
             .sortedBy { (relativeTime, _) -> relativeTime }.reversed()
             .map { (relativeTime, comments) ->
                 CommentSection(
-                    sectionName = "${(relativeTime + 1) * 10} minutes",
-                    commentList = comments
+                    name = "${(relativeTime + 1) * 10} minutes",
+                    leadingComment = comments.first(),
+                    commentList = comments.drop(1)
                 )
             }
     }
@@ -72,7 +73,7 @@ class MatchThreadViewModel @Inject constructor(
                 author = comment.author,
                 body = comment.body,
                 relativeTime = calculateRelativeTime(comment.created, matchStartTime).toString(),
-                score = "${comment.score} points",
+                score = comment.score.toString(),
             )
         }.sortedBy { it.relativeTime }
     }
@@ -81,10 +82,10 @@ class MatchThreadViewModel @Inject constructor(
     private fun calculateRelativeTime(
         commentTime: Long,
         matchTime: Long,
-    ): Double = Duration.between(
+    ): Int = Duration.between(
         matchTime.toUTCLocalDateTime(),
         commentTime.toUTCLocalDateTime(),
-    ).toMinutes().toDouble()
+    ).toMinutes().toInt()
 
     private fun Long.toUTCLocalDateTime() =
         LocalDateTime.ofInstant(Instant.ofEpochSecond(this), ZoneId.systemDefault())
