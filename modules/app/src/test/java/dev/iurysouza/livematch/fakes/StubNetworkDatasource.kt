@@ -24,8 +24,13 @@ class StubNetworkDatasource(
         sortBy: String,
         timePeriod: String,
         restrictedToSubreddit: Boolean,
+        limit: Int?,
     ): Either<NetworkError, EnvelopedSubmissionListing> {
         TODO("Not yet implemented")
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return super.equals(other)
     }
 
     override suspend fun getCommentsForSubmission(id: String): Either<NetworkError, List<EnvelopedContributionListing>> {

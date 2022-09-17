@@ -4,7 +4,7 @@ import arrow.core.Either
 import arrow.core.continuations.either
 import dev.iurysouza.livematch.domain.adapters.DomainError
 import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
-import dev.iurysouza.livematch.domain.adapters.models.MatchMediaEntity
+import dev.iurysouza.livematch.domain.adapters.models.MatchHighlight
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,20 +13,21 @@ class GetMatchHighlightsUseCase @Inject constructor(
     private val networkDataSource: NetworkDataSource,
 ) {
 
-    suspend operator fun invoke(): Either<DomainError, List<MatchMediaEntity>> = either {
+    suspend operator fun invoke(): Either<DomainError, List<MatchHighlight>> = either {
         networkDataSource.searchFor(
             subreddit = "soccer",
             query = """flair:media OR flair:Mirror""",
             sortBy = "new",
-            timePeriod = "day",
+            timePeriod = "week",
             restrictedToSubreddit = true,
+            limit = 100
         ).bind()
     }.map { response ->
         response.data.children.map { child ->
             runCatching {
                 val data = child.data
                 val media = data.media!!.oEmbed!!
-                MatchMediaEntity(
+                MatchHighlight(
                     parentId = data.id,
                     title = data.title,
                     type = media.type ?: "video",
@@ -41,7 +42,7 @@ class GetMatchHighlightsUseCase @Inject constructor(
                     width = media.width,
                     height = media.height,
                 )
-            }.getOrNull() ?: MatchMediaEntity(
+            }.getOrNull() ?: MatchHighlight(
                 parentId = child.data.id,
                 title = child.data.title,
                 type = "video",

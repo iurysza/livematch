@@ -19,24 +19,24 @@ data class RedditMedia(
 data class RedditVideo(
 
     @Json(name = "dash_url")
-    val dashUrl: String,
+    val dashUrl: String?,
 
     @Json(name = "hls_url")
-    val hlsUrl: String,
+    val hlsUrl: String?,
 
     @Json(name = "scrubber_media_url")
-    val scrubberMediaUrl: String,
+    val scrubberMediaUrl: String?,
 
     @Json(name = "fallback_url")
-    val fallbackUrl: String,
+    val fallbackUrl: String?,
 
     @Json(name = "width")
-    val width: Int,
+    val width: Int?,
 
     @Json(name = "height")
-    val height: Int,
+    val height: Int?,
 
     @Json(name = "duration")
-    val duration: Int,
+    val duration: Int?,
 
     ) : Parcelable

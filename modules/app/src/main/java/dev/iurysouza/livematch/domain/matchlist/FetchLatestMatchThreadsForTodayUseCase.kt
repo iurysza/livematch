@@ -3,8 +3,8 @@ package dev.iurysouza.livematch.domain.matchlist
 import arrow.core.Either
 import arrow.core.continuations.either
 import dev.iurysouza.livematch.domain.adapters.DomainError
-import dev.iurysouza.livematch.domain.adapters.models.MatchThreadEntity
 import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
+import dev.iurysouza.livematch.domain.adapters.models.MatchThreadEntity
 import javax.inject.Inject
 import javax.inject.Singleton
 

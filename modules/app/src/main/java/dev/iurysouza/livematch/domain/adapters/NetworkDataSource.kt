@@ -12,6 +12,7 @@ interface NetworkDataSource {
         sortBy: String,
         timePeriod: String,
         restrictedToSubreddit: Boolean,
+        limit: Int? = null,
     ): Either<NetworkError, EnvelopedSubmissionListing>
 
     suspend fun getAccessToken(): Either<NetworkError, AccessTokenResponse>
