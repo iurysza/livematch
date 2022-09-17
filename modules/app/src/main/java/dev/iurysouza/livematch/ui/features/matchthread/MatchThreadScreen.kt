@@ -52,7 +52,10 @@ fun MatchThreadScreen(
             when (state) {
                 MatchDescriptionState.Loading -> FullScreenProgress()
                 is MatchDescriptionState.Error -> ErrorScreen(state.msg)
-                is MatchDescriptionState.Success -> MatchDescription(state.matchThread.content)
+                is MatchDescriptionState.Success -> MatchDescription(
+                    state.matchThread.content,
+                    state.matchThread.mediaList,
+                )
             }
             when (commentsState) {
                 MatchCommentsState.Loading -> CommentProgress()
@@ -80,7 +83,8 @@ private fun MatchThreadPreview() {
             competition = "LaLiga",
             contentByteArray = "Real Madrid".toByteArray(),
             id = "id",
-            startTime = 9
+            startTime = 9,
+            mediaList = emptyList(),
         ),
         navigateUp = {}
     )

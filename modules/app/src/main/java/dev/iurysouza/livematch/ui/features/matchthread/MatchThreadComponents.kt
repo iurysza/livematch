@@ -16,10 +16,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,9 +30,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.halilibo.richtext.markdown.Markdown
@@ -42,15 +47,69 @@ import dev.iurysouza.livematch.R
 @Composable
 fun MatchDescription(
     htmlDescription: String,
+    mediaList: List<MediaItem>,
 ) {
     Box(modifier = Modifier.height(200.dp)) {
-        Column(modifier = Modifier
-            .verticalScroll(rememberScrollState())) {
-            RichText(Modifier.padding(16.dp)) {
-                Markdown(htmlDescription)
-            }
-        }
+        LazyColumn(
+            contentPadding = PaddingValues(
+                horizontal = 12.dp,
+                vertical = 8.dp
+            ),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            content = {
+                items(mediaList) { item ->
+                    ItemLink(item.title, item.url)
+                }
+                item(htmlDescription) {
+                    RichText(Modifier.padding(16.dp)) {
+                        Markdown(htmlDescription)
+                    }
+                }
+            })
     }
+}
+
+@Composable
+private fun ItemLink(title: String, linkUrl: String) {
+    val annotatedLinkString: AnnotatedString = buildAnnotatedString {
+        val startIndex = 0
+        val endIndex = title.length
+        append(title)
+        addStyle(
+            style = SpanStyle(
+                color = Color(0xff64B5F6),
+                fontSize = 14.sp,
+                textDecoration = TextDecoration.Underline
+            ), start = startIndex, end = endIndex
+        )
+
+        // attach a string annotation that stores a URL to the text "link"
+        addStringAnnotation(
+            tag = "URL",
+            annotation = linkUrl,
+            start = startIndex,
+            end = endIndex
+        )
+
+    }
+
+// UriHandler parse and opens URI inside AnnotatedString Item in Browse
+    val uriHandler = LocalUriHandler.current
+
+// 🔥 Clickable text returns position of text that is clicked in onClick callback
+    ClickableText(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
+        text = annotatedLinkString,
+        onClick = {
+            annotatedLinkString
+                .getStringAnnotations("URL", it, it)
+                .firstOrNull()?.let { stringAnnotation ->
+                    uriHandler.openUri(stringAnnotation.item)
+                }
+        }
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -61,7 +120,7 @@ fun CommentSectionComponent(
 ) {
 
     val map = mutableMapOf<String, Boolean>()
-    commentSectionList.forEachIndexed { index, (group, _) -> map[group] = index == 0 }
+    commentSectionList.forEachIndexed { index, (group, _) -> map[group] = true }
     var showContent by remember { mutableStateOf(map.toMap()) }
 
     LazyColumn(
@@ -71,7 +130,7 @@ fun CommentSectionComponent(
         ),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         content = {
-            commentSectionList.forEach { (name: String, leadingComment: CommentItem, comments: List<CommentItem>) ->
+            commentSectionList.forEach { (name: String, event: MatchEvent?, comments: List<CommentItem>) ->
                 stickyHeader {
                     Box(modifier = Modifier
                         .fillMaxWidth()
@@ -81,7 +140,7 @@ fun CommentSectionComponent(
                                 .apply { this[name] = !this[name]!! }
                         }
                     ) {
-                        CommentHeader(name, leadingComment)
+                        CommentHeader(name, event!!)
                     }
                 }
                 itemsIndexed(comments) { index, commentItem: CommentItem ->
@@ -156,15 +215,17 @@ fun CommentProgress() {
 }
 
 @Composable
-fun CommentHeader(initial: String, commentItem: CommentItem) {
-    Column() {
+fun CommentHeader(initial: String, commentItem: MatchEvent) {
+    Column(
+        Modifier
+            .background(Color.White)
+            .padding(vertical = 8.dp)
+    ) {
         Row {
             CircleWith(initial)
-            CommentItemComponent(
-                commentItem = commentItem,
-                color = Color(0xff039BE5),
-                onClick = {}
-            )
+            RichText() {
+                Markdown(commentItem.description)
+            }
         }
     }
 }

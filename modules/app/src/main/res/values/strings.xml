@@ -2,9 +2,10 @@
     <string name="app_name">LiveMatch</string>
     <string name="match_screen_error_no_internet">No internet connection</string>
     <string name="points">%1$s points</string>
-    <string name="minutes">%1$s minutes</string>
+    <string name="minutes">%1$d minutes</string>
     <string name="match_screen_error_default">Something went wrong</string>
     <string name="matches">Matches</string>
     <string name="match_thread">Match Thread</string>
     <string name="icon_description">Back</string>
+    <string name="match_screen_error_comment_parsing">Failed to parse comment section</string>
 </resources>
