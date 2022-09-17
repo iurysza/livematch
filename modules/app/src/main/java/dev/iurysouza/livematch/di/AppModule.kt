@@ -10,6 +10,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.iurysouza.livematch.data.storage.SystemStorage
 import dev.iurysouza.livematch.domain.adapters.KeyValueStorage
+import dev.iurysouza.livematch.ui.features.matchthread.MatchThreadMapper
 import dev.iurysouza.livematch.util.JsonParser
 import dev.iurysouza.livematch.util.MoshiJsonParser
 import dev.iurysouza.livematch.util.ResourceProvider
@@ -32,6 +33,12 @@ class AppModule {
         return SystemStorage(sharedPreferences)
     }
 
+    @Provides
+    @Singleton
+    internal fun provideMatchThreadMapper(): MatchThreadMapper {
+        return MatchThreadMapper()
+    }
+
     @Singleton
     @Provides
     fun provideSharedPreference(@ApplicationContext context: Context): SharedPreferences {
@@ -40,7 +47,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    internal fun providesJsonParse(moshi: Moshi): JsonParser {
+    internal fun providesJsonParser(moshi: Moshi): JsonParser {
         return MoshiJsonParser(moshi)
     }
 }

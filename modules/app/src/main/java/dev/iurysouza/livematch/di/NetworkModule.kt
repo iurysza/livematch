@@ -171,7 +171,7 @@ class NetworkModule {
     @Singleton
     internal fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
         val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.HEADERS
+        logging.level = HttpLoggingInterceptor.Level.BODY
         return logging
     }
 
