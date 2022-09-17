@@ -21,13 +21,15 @@ class RedditNetworkDataSource @Inject constructor(
         sortBy: String,
         timePeriod: String,
         restrictedToSubreddit: Boolean,
+        limit: Int?,
     ): Either<NetworkError, EnvelopedSubmissionListing> = catch {
         redditApi.searchFor(
             subreddit = subreddit,
             query = query,
             sort = sortBy,
             timePeriod = timePeriod,
-            restrictToSubreddit = restrictedToSubreddit
+            restrictToSubreddit = restrictedToSubreddit,
+            limit = limit
         )
     }.mapLeft { NetworkError(it.message) }
 
