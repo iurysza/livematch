@@ -17,6 +17,7 @@ import dev.iurysouza.livematch.ui.features.matchthread.MatchThreadMapper
 import dev.iurysouza.livematch.ui.features.matchthread.toMatchItem
 import dev.iurysouza.livematch.util.ResourceProvider
 import javax.inject.Inject
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -40,25 +41,35 @@ class MatchListViewModel @Inject constructor(
     private var lastHighlights = emptyList<MatchHighlight>()
     private var lastMatches = emptyList<MatchThreadEntity>()
 
-    fun getMachList() = viewModelScope.launch {
-        either {
-            refreshTokenIfNeeded().bind()
-            Pair(
-                getMatchHighlights().bind(),
-                fetchLatestMatchThreadsForTodayUseCase().bind()
+    private val enabledCompetitions = listOf(
+        "English Premier League",
+        "Italian Seria A",
+        "LaLiga",
+        "Ligue 1",
+        "German Bundesliga",
+    )
+
+    fun getMachList(): Job {
+        return viewModelScope.launch {
+            either {
+                refreshTokenIfNeeded().bind()
+                Pair(
+                    getMatchHighlights().bind(),
+                    fetchLatestMatchThreadsForTodayUseCase().bind()
+                )
+            }.mapLeft { error ->
+                lastMatches = emptyList()
+                lastHighlights = emptyList()
+                error.toErrorMsg()
+            }.map { (highlights, matchList) ->
+                lastMatches = matchList
+                lastHighlights = highlights
+                matchList.toMatchItem(enabledCompetitions)
+            }.fold(
+                { _state.emit(MatchListState.Error(it)) },
+                { _state.emit(MatchListState.Success(it)) }
             )
-        }.mapLeft { error ->
-            lastMatches = emptyList()
-            lastHighlights = emptyList()
-            error.toErrorMsg()
-        }.map { (highlights, matchList) ->
-            lastMatches = matchList
-            lastHighlights = highlights
-            matchList.toMatchItem()
-        }.fold(
-            { _state.emit(MatchListState.Error(it)) },
-            { _state.emit(MatchListState.Success(it)) }
-        )
+        }
     }
 
     fun navigateTo(matchItem: MatchItem) = viewModelScope.launch {

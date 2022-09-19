@@ -120,8 +120,10 @@ open class MatchThreadMapper {
         return media.title.toByteArray()
     }
 
-    private fun String?.parseTeamNames() =
-        this?.split(" ")?.filter { it.length > 3 } ?: emptyList()
+    private fun String?.parseTeamNames(): List<String> = this
+        ?.split("vs")
+        ?.map { it.trim().split(" ").first() }
+        ?: emptyList()
 
     fun toCommentSectionListEvents(
         commentList: List<CommentItem>,
@@ -179,24 +181,26 @@ open class MatchThreadMapper {
     }
 }
 
-fun List<MatchThreadEntity>.toMatchItem(): List<MatchItem> {
-    return mapNotNull { match ->
-        runCatching {
-            val (title, subtitle) = match.title
-                .replace("Match Thread:", "")
-                .split("|")
-            MatchItem(match.id, title, subtitle)
-        }
-            .onFailure { Log.e("LiveMatch", "Error parsing match thread", it) }
-            .getOrNull() ?: runCatching {
-            val (title, subtitle) = match.title
-                .replace("Match Thread:", "")
-                .split("[")
-            MatchItem(match.id, title, subtitle.replace("]", ""))
+fun parseTitle(matchTitle: String): Pair<String, String>? = runCatching {
+    val (title, subtitle) = matchTitle
+        .replace("Match Thread:", "")
+        .split("|")
+    title to subtitle
+}.onFailure { Log.e("LiveMatch", "Error parsing match thread: ${matchTitle})", it) }
+    .getOrNull() ?: runCatching {
+    val (title, subtitle) = matchTitle
+        .replace("Match Thread:", "")
+        .split("[")
+    title to subtitle.replace("]", "")
+}.getOrNull()
 
-        }.getOrNull()
-    }.sortedBy { it.competition }
-}
+fun List<MatchThreadEntity>.toMatchItem(
+    enabledCompetitions: List<String>,
+): List<MatchItem> = mapNotNull { match ->
+    val (title, subtitle) = parseTitle(match.title) ?: return@mapNotNull null
+    MatchItem(match.id, title, subtitle.replace("]", ""))
+}.filter { enabledCompetitions.any { competition -> it.competition.contains(competition) } }
+    .sortedBy { it.competition }
 
 private val TIME_PATTERN = """((\d)*')"""
 private val ICONS_PATTERN = """\[([^\[\]]*?)]\((\S*?)\)"""
