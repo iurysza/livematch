@@ -1,10 +1,13 @@
 package dev.iurysouza.livematch.domain.highlights
 
 import arrow.core.Either
+import arrow.core.combine
 import arrow.core.continuations.either
 import dev.iurysouza.livematch.domain.adapters.DomainError
 import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
 import dev.iurysouza.livematch.domain.adapters.models.MatchHighlight
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,8 +20,8 @@ class GetMatchHighlightsUseCase @Inject constructor(
         networkDataSource.searchFor(
             subreddit = "soccer",
             query = """flair:media OR flair:Mirror""",
-            sortBy = "new",
-            timePeriod = "week",
+            sortBy = "hot",
+            timePeriod = "day",
             restrictedToSubreddit = true,
             limit = 100
         ).bind()
@@ -41,6 +44,7 @@ class GetMatchHighlightsUseCase @Inject constructor(
                     thumbnailHeight = media.thumbnailHeight,
                     width = media.width,
                     height = media.height,
+                    createdAt = data.createdUtc,
                 )
             }.getOrNull() ?: MatchHighlight(
                 parentId = child.data.id,
@@ -56,8 +60,8 @@ class GetMatchHighlightsUseCase @Inject constructor(
                 thumbnailHeight = null,
                 width = null,
                 height = null,
+                createdAt = child.data.createdUtc,
             )
         }
     }
 }
-

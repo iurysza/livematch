@@ -13,4 +13,5 @@ data class MatchHighlight(
     val thumbnailHeight: Int?,
     val width: Int?,
     val height: Int?,
+    val createdAt: Long,
 )
