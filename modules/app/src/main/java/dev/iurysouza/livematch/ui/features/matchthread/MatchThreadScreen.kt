@@ -1,6 +1,7 @@
 package dev.iurysouza.livematch.ui.features.matchthread
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -58,7 +60,7 @@ fun MatchThreadScreen(
                 )
             }
             when (commentsState) {
-                MatchCommentsState.Loading -> CommentProgress()
+                MatchCommentsState.Loading -> FullScreenProgress()
                 is MatchCommentsState.Error -> ErrorScreen(commentsState.msg)
                 is MatchCommentsState.Success -> {
                     CommentSectionComponent(

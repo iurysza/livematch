@@ -1,6 +1,10 @@
 package dev.iurysouza.livematch.ui.features.matchthread
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,7 +16,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,6 +24,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -51,7 +55,11 @@ fun MatchDescription(
     htmlDescription: String,
     mediaList: List<MediaItem>,
 ) {
-    Box(modifier = Modifier.height(200.dp)) {
+    Box(modifier =
+    Modifier
+        .wrapContentHeight()
+        .padding(16.dp)
+    ) {
         LazyColumn(
             contentPadding = PaddingValues(
                 horizontal = 12.dp,
@@ -59,12 +67,24 @@ fun MatchDescription(
             ),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             content = {
-                items(mediaList) { item ->
-                    ItemLink(item.title, item.url)
-                }
                 item(htmlDescription) {
-                    RichText(Modifier.padding(16.dp)) {
+                    RichText() {
                         Markdown(htmlDescription)
+                    }
+                }
+                if (mediaList.isNotEmpty()) {
+                    item("Media") {
+                        Text(
+                            text = "Highlights",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Left,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        )
+                    }
+                    items(mediaList) { item ->
+                        ItemLink(item.title, item.url)
                     }
                 }
             })
@@ -101,7 +121,7 @@ private fun ItemLink(title: String, linkUrl: String) {
 // 🔥 Clickable text returns position of text that is clicked in onClick callback
     ClickableText(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(4.dp)
             .fillMaxWidth(),
         text = annotatedLinkString,
         onClick = {
@@ -141,20 +161,20 @@ fun CommentSectionComponent(
         content = {
             commentSectionList.forEach { (name: String, event: MatchEvent?, comments: List<CommentItem>) ->
                 stickyHeader {
-                    Box(modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
+                    CommentHeader(
+                        initial = name,
+                        commentItem = event!!,
+                        onClick = {
                             showContent = showContent
                                 .toMutableMap()
                                 .apply { this[name] = !this[name]!! }
-                        }
-                    ) {
-                        CommentHeader(name, event!!)
-                    }
+                        })
                 }
                 itemsIndexed(comments) { index, commentItem: CommentItem ->
                     AnimatedVisibility(
-                        visible = showContent.isNotEmpty() && showContent[name]!!
+                        visible = showContent.isNotEmpty() && showContent[name]!!,
+                        enter = expandVertically() + fadeIn(),
+                        exit = shrinkVertically() + fadeOut()
                     ) {
                         CommentItemComponent(
                             commentItem = commentItem,
@@ -179,14 +199,12 @@ fun CommentItemComponent(
 
     Column(
         modifier
-            .padding(start = 4.dp, top = 4.dp, bottom = 4.dp)
+            .padding(start = 32.dp, top = 4.dp, bottom = 4.dp)
             .fillMaxWidth()
             .background(color)
             .wrapContentHeight()
     ) {
-        Column(modifier = modifier
-            .padding(horizontal = 4.dp)
-        ) {
+        Column(modifier = modifier.padding(horizontal = 4.dp)) {
             Row(Modifier.fillMaxWidth()) {
                 Text(
                     text = commentItem.author,
@@ -213,27 +231,38 @@ fun CommentItemComponent(
                 )
             }
         }
-
     }
 }
 
 
 @Composable
-fun CommentProgress() {
-    Text(text = "Loading")
+fun CommentProgress(modifier: Modifier = Modifier) {
+    Column(modifier.fillMaxWidth()) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(16.dp)
+        ) {
+            CircularProgressIndicator()
+        }
+    }
 }
 
 @Composable
-fun CommentHeader(initial: String, commentItem: MatchEvent) {
+fun CommentHeader(initial: String, commentItem: MatchEvent, onClick: (MatchEvent) -> Unit) {
     Column(
         Modifier
+            .clickable {
+                onClick(commentItem)
+            }
             .background(Color.White)
             .padding(vertical = 8.dp)
     ) {
-        Row {
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             CircleWith(initial)
             RichText() {
-                Markdown(commentItem.description)
+                Text(commentItem.description)
             }
         }
     }

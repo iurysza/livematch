@@ -39,9 +39,17 @@ open class MatchThreadMapper {
         }
     }
 
+    private val ICONS_PATTERN = """\[([^\[\]]*?)]\((\S*?)\)"""
     fun getMatchEvents(content: String): Pair<List<MatchEvent>, ByteArray> {
 
-        val finalContent = content.substringBefore("[](#icon-net-big) **MATCH EVENTS**")
+        val finalContent = content
+                .substringBefore("[Auto-refreshing")
+                .replace("#**", "## **")
+                .replace("(#bar-3-white)", "")
+                .replace("]", "")
+                .replace("[", "")
+
+
         val matchEventList = content
             .substringAfter("*via [ESPN]")
             .substringBefore("--------")
