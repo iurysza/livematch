@@ -18,10 +18,12 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -123,7 +125,14 @@ fun CommentSectionComponent(
     commentSectionList.forEachIndexed { index, (group, _) -> map[group] = true }
     var showContent by remember { mutableStateOf(map.toMap()) }
 
+    val scrollState = rememberLazyListState()
+    LaunchedEffect(Unit) {
+        val index = commentSectionList.flatMap { it.commentList }.size - 1
+        scrollState.animateScrollToItem(index)
+    }
+
     LazyColumn(
+        state = scrollState,
         contentPadding = PaddingValues(
             horizontal = 12.dp,
             vertical = 8.dp
