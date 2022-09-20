@@ -1,6 +1,5 @@
 package dev.iurysouza.livematch.ui.features.matchthread.components
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,7 +18,7 @@ import dev.iurysouza.livematch.ui.features.matchthread.CommentItem
 import dev.iurysouza.livematch.ui.features.matchthread.CommentSection
 import dev.iurysouza.livematch.ui.features.matchthread.MatchEvent
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CommentSectionComponent(
     modifier: Modifier = Modifier,
@@ -27,13 +26,12 @@ fun CommentSectionComponent(
     onClick: (CommentItem) -> Unit,
 ) {
 
-    val map = mutableMapOf<String, Boolean>()
-    commentSectionList.forEach { (group, _) ->
-        map[group] = true
-    }
-    var showContent by remember { mutableStateOf(map.toMap()) }
+    val sectionToggleMap = mutableMapOf<String, Boolean>()
+    commentSectionList.forEach { (_, event) -> sectionToggleMap[event.description] = true }
+    var showContent by remember { mutableStateOf(sectionToggleMap.toMap()) }
 
     val scrollState = rememberLazyListState()
+
     LaunchedEffect(Unit) {
         val index = commentSectionList.flatMap { it.commentList }.size - 1
         if (index > 0) scrollState.animateScrollToItem(index)
@@ -42,7 +40,7 @@ fun CommentSectionComponent(
     LazyColumn(
         state = scrollState,
         content = {
-            commentSectionList.forEach { (sectionName: String, event: MatchEvent?, comments: List<CommentItem>) ->
+            commentSectionList.forEach { (sectionName: String, event: MatchEvent, comments: List<CommentItem>) ->
                 stickyHeader {
                     SectionHeader(
                         modifier = modifier,
@@ -51,15 +49,13 @@ fun CommentSectionComponent(
                         onClick = {
                             showContent = showContent
                                 .toMutableMap()
-                                .apply { this[sectionName] = !this[sectionName]!! }
+                                .apply { this[event.description] = !this[event.description]!! }
                         },
                     )
                 }
                 items(comments) { commentItem: CommentItem ->
                     AnimatedCellExpansion(
-                        showContentIf = {
-                            showContent.isNotEmpty() && showContent[sectionName]!!
-                        },
+                        showContentIf = { showContent.isNotEmpty() && showContent[event.description]!! },
                         content = {
                             CommentItemComponent(
                                 commentItem = commentItem,
@@ -72,7 +68,6 @@ fun CommentSectionComponent(
             }
         })
 }
-
 
 @Preview
 @Composable
