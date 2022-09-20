@@ -43,11 +43,11 @@ open class MatchThreadMapper {
     fun getMatchEvents(content: String): Pair<List<MatchEvent>, ByteArray> {
 
         val finalContent = content
-                .substringBefore("[Auto-refreshing")
-                .replace("#**", "## **")
-                .replace("(#bar-3-white)", "")
-                .replace("]", "")
-                .replace("[", "")
+            .substringBefore("[Auto-refreshing")
+            .replace("#**", "## **")
+            .replace("(#bar-3-white)", "")
+            .replace("]", "")
+            .replace("[", "")
 
 
         val matchEventList = content
@@ -72,13 +72,27 @@ open class MatchThreadMapper {
                     .remove(icon)
                     .trim()
 
+                val (isKeyEvent, finalDescription) = parseDescription(description)
                 MatchEvent(
                     relativeTime = time.replace("'", ""),
                     icon = icon.substringAfter("(").substringBefore(")"),
-                    description = description
+                    description = finalDescription,
+                    keyEvent = isKeyEvent
                 )
             }.getOrNull()
         }
+
+    private fun parseDescription(description: String): Pair<Boolean, String> {
+        var isKeyEvent = false
+        val finalDescription = if (description.contains("**")) {
+            isKeyEvent = true
+            description.substringAfter("**").substringBefore("**")
+        } else {
+            isKeyEvent = false
+            description
+        }
+        return Pair(isKeyEvent, finalDescription)
+    }
 
     fun String.remove(regex: String): String {
         return replace(regex, "")
@@ -98,10 +112,12 @@ open class MatchThreadMapper {
             // "Nicolás De La Cruz (River Plate) is shown the yellow card for a bad foul."
 
             val (time, description) = it.split("[")
+            val (isKeyEvent, finalDescription) = parseDescription(description)
             MatchEvent(
                 relativeTime = time.replace("*", "").replace("'", "").trim(),
                 icon = description.substringAfter("#").substringBefore(")"),
-                description = description.substringAfter(")").trim(),
+                description = finalDescription.substringAfter(")").trim(),
+                keyEvent = isKeyEvent
             )
         }
 
@@ -207,7 +223,8 @@ fun List<MatchThreadEntity>.toMatchItem(
 ): List<MatchItem> = mapNotNull { match ->
     val (title, subtitle) = parseTitle(match.title) ?: return@mapNotNull null
     MatchItem(match.id, title, subtitle.replace("]", ""))
-}.filter { enabledCompetitions.any { competition -> it.competition.contains(competition) } }
+}
+    .filter { enabledCompetitions.any { competition -> it.competition.contains(competition) } }
     .sortedBy { it.competition }
 
 private val TIME_PATTERN = """((\d)*')"""

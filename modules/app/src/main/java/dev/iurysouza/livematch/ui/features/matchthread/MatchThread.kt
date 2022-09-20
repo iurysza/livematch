@@ -63,7 +63,7 @@ sealed class ViewError(val message: String) {
 
 data class CommentSection(
     val name: String,
-    val event: MatchEvent? = null,
+    val event: MatchEvent,
     val commentList: List<CommentItem>,
 )
 
@@ -101,6 +101,7 @@ data class MatchEvent(
     val relativeTime: String,
     val icon: String,
     val description: String,
+    val keyEvent:Boolean=false,
 ) : Parcelable
 
 data class ChampionsLeagueEvent(
