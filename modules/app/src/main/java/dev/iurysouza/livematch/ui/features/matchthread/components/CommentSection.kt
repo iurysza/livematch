@@ -5,7 +5,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -16,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import dev.iurysouza.livematch.ui.components.AnimatedCellExpansion
 import dev.iurysouza.livematch.ui.features.matchthread.CommentItem
 import dev.iurysouza.livematch.ui.features.matchthread.CommentSection
+import dev.iurysouza.livematch.ui.features.matchthread.EventIcon
 import dev.iurysouza.livematch.ui.features.matchthread.MatchEvent
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -31,11 +31,6 @@ fun CommentSectionComponent(
     var showContent by remember { mutableStateOf(sectionToggleMap.toMap()) }
 
     val scrollState = rememberLazyListState()
-
-    LaunchedEffect(Unit) {
-        val index = commentSectionList.flatMap { it.commentList }.size - 1
-        if (index > 0) scrollState.animateScrollToItem(index)
-    }
 
     LazyColumn(
         state = scrollState,
@@ -78,7 +73,7 @@ fun CommentSectionComponentPreview() {
                 name = "${it + 1}",
                 event = MatchEvent(
                     relativeTime = "Event $it",
-                    icon = "https://via.placeholder.com/150",
+                    icon = EventIcon.YellowCard,
                     description = "Event $it"
 
                 ),

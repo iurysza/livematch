@@ -39,7 +39,6 @@ open class MatchThreadMapper {
         }
     }
 
-    private val ICONS_PATTERN = """\[([^\[\]]*?)]\((\S*?)\)"""
     fun getMatchEvents(content: String): Pair<List<MatchEvent>, ByteArray> {
 
         val finalContent = content
@@ -58,7 +57,25 @@ open class MatchThreadMapper {
             runCatching { parseEventList(matchEventList) }.getOrNull() ?: let {
                 parseChampionsLeagueEvents(matchEventList)
             }
-        return eventList to finalContent.toByteArray()
+        return buildList {
+            add(
+                MatchEvent(
+                    relativeTime = "1",
+                    icon = EventIcon.KickOff,
+                    description = "Match Started",
+                    keyEvent = true
+                )
+            )
+            addAll(eventList)
+            add(
+                MatchEvent(
+                    relativeTime = "1020",
+                    icon = EventIcon.FinalWhistle,
+                    description = "Match Ended",
+                    keyEvent = true
+                )
+            )
+        } to finalContent.toByteArray()
     }
 
 
@@ -75,7 +92,7 @@ open class MatchThreadMapper {
                 val (isKeyEvent, finalDescription) = parseDescription(description)
                 MatchEvent(
                     relativeTime = time.replace("'", ""),
-                    icon = icon.substringAfter("(").substringBefore(")"),
+                    icon = EventIcon.fromString(icon.substringAfter("(").substringBefore(")")),
                     description = finalDescription,
                     keyEvent = isKeyEvent
                 )
@@ -115,7 +132,7 @@ open class MatchThreadMapper {
             val (isKeyEvent, finalDescription) = parseDescription(description)
             MatchEvent(
                 relativeTime = time.replace("*", "").replace("'", "").trim(),
-                icon = description.substringAfter("#").substringBefore(")"),
+                icon = EventIcon.fromString(description.substringAfter("#").substringBefore(")")),
                 description = finalDescription.substringAfter(")").trim(),
                 keyEvent = isKeyEvent
             )
@@ -227,13 +244,12 @@ fun List<MatchThreadEntity>.toMatchItem(
     .filter { enabledCompetitions.any { competition -> it.competition.contains(competition) } }
     .sortedBy { it.competition }
 
-private val TIME_PATTERN = """((\d)*')"""
-private val ICONS_PATTERN = """\[([^\[\]]*?)]\((\S*?)\)"""
+private const val TIME_PATTERN = """((\d)*')"""
+private const val ICONS_PATTERN = """\[([^\[\]]*?)]\((\S*?)\)"""
 
 private fun MatchEvent.relativeTime(): Int = runCatching {
     relativeTime.toInt()
-}.onFailure { Log.e("MatchThreadMapper", it.message.toString()) }
-    .getOrNull() ?: run {
+}.getOrNull() ?: run {
     // handles scenarios where event time is like: 45+1, 90+7
     val (fullTime, overtime) = relativeTime.split("+")
     fullTime.toInt() + overtime.toInt()

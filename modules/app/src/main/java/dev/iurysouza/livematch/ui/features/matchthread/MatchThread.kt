@@ -1,8 +1,15 @@
 package dev.iurysouza.livematch.ui.features.matchthread
 
 import android.os.Parcelable
+import androidx.compose.material.icons.Icons
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.squareup.moshi.JsonClass
+import dev.iurysouza.livematch.ui.theme.LiveMatchAssets
+import dev.iurysouza.livematch.ui.theme.livematchassets.Booking
+import dev.iurysouza.livematch.ui.theme.livematchassets.Goal
+import dev.iurysouza.livematch.ui.theme.livematchassets.Sub
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 @JsonClass(generateAdapter = true)
 @Parcelize
@@ -99,13 +106,7 @@ data class MediaItem(
 @Parcelize
 data class MatchEvent(
     val relativeTime: String,
-    val icon: String,
+    val icon: EventIcon,
     val description: String,
-    val keyEvent:Boolean=false,
+    val keyEvent: Boolean = false,
 ) : Parcelable
-
-data class ChampionsLeagueEvent(
-    val relativeTime: String?,
-    val icon: String?,
-    val description: String,
-)

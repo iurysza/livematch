@@ -6,59 +6,23 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import dev.iurysouza.livematch.ui.features.matchthread.EventIcon
 import dev.iurysouza.livematch.ui.features.matchthread.MatchEvent
-
-
-@Composable
-fun CircleWith(
-    modifier: Modifier = Modifier,
-    text: String = "89",
-) {
-    Box(contentAlignment = Alignment.Center,
-        modifier = modifier
-            .background(Color.Black, shape = CircleShape)
-            .layout() { measurable, constraints ->
-                // Measure the composable
-                val placeable = measurable.measure(constraints)
-
-                //get the current max dimension to assign width=height
-                val currentHeight = placeable.height
-                var heightCircle = currentHeight
-                if (placeable.width > heightCircle)
-                    heightCircle = placeable.width
-
-                //assign the dimension and the center position
-                layout(heightCircle, heightCircle) {
-                    // Where the composable gets placed
-                    placeable.placeRelative(0, (heightCircle - currentHeight) / 2)
-                }
-            }) {
-
-        Text(
-            text = text,
-            textAlign = TextAlign.Center,
-            color = Color.White,
-            modifier = modifier
-                .padding(4.dp)
-                .defaultMinSize(24.dp) //Use a min size for short text.
-        )
-    }
-}
 
 @Composable
 fun SectionHeader(
@@ -76,12 +40,17 @@ fun SectionHeader(
     ) {
         Column(
             modifier = modifier
-                .padding(vertical = 8.dp, horizontal = 8.dp),
+                .padding(horizontal = 8.dp),
         ) {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                CircleWith(modifier, sectionName)
+                MatchIcon(
+                    modifier = modifier,
+                    icon = event.icon,
+                    time = event.relativeTime,
+                )
                 Text(
                     event.description,
+                    modifier = modifier.align(Alignment.CenterVertically),
                     fontWeight = if (event.keyEvent) FontWeight.Bold else FontWeight.Normal
                 )
             }
@@ -90,15 +59,67 @@ fun SectionHeader(
     }
 }
 
+@Composable
+fun MatchIcon(modifier: Modifier = Modifier, icon: EventIcon, time: String) {
+    Column(modifier) {
+        Box(modifier = modifier
+            .align(Alignment.CenterHorizontally)
+            .background(color = Color.Black)
+            .height(24.dp)
+            .width(1.dp)
+        )
+        Column(
+            modifier.align(Alignment.CenterHorizontally),
+        ) {
+            Text(
+                modifier = modifier.align(Alignment.CenterHorizontally),
+                fontSize = 12.sp,
+                text = "$time'",
+            )
+            MatchEventIcon(
+                modifier = modifier.align(Alignment.CenterHorizontally),
+                eventIcon = icon,
+            )
+        }
+        Box(
+            modifier = modifier
+                .align(Alignment.CenterHorizontally)
+                .background(color = Color.Black)
+                .height(24.dp)
+                .width(1.dp)
+        )
+    }
+}
+
+@Composable
+private fun MatchEventIcon(modifier: Modifier, eventIcon: EventIcon) {
+    Icon(
+        imageVector = eventIcon.toImageVector(),
+        contentDescription = "Home",
+        modifier = modifier.height(24.dp)
+    )
+}
+
+
+@Preview
+@Composable
+fun MatchIconPreview() {
+    MatchIcon(
+        modifier = Modifier,
+        icon = EventIcon.Goal,
+        time = "40"
+    )
+}
+
 
 @Composable
 @Preview
 fun CommentHeaderPreview() {
     SectionHeader(
-        sectionName = "89",
+        sectionName = "89+2",
         event = MatchEvent(
-            relativeTime = "89",
-            icon = "icon-something",
+            relativeTime = "89+2",
+            icon = EventIcon.FinalWhistle,
             description = "Mario Hermoso (Atletico Madrid) is shown the yellow card for a bad foul.",
         ),
         onClick = {},
