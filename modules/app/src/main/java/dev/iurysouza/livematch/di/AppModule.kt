@@ -10,7 +10,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.iurysouza.livematch.data.storage.SystemStorage
 import dev.iurysouza.livematch.domain.adapters.KeyValueStorage
-import dev.iurysouza.livematch.ui.features.matchthread.MatchThreadMapper
+import dev.iurysouza.livematch.ui.features.matchthread.MatchEventParser
+import dev.iurysouza.livematch.ui.features.matchthread.MatchHighlightParser
 import dev.iurysouza.livematch.util.JsonParser
 import dev.iurysouza.livematch.util.MoshiJsonParser
 import dev.iurysouza.livematch.util.ResourceProvider
@@ -35,9 +36,11 @@ class AppModule {
 
     @Provides
     @Singleton
-    internal fun provideMatchThreadMapper(): MatchThreadMapper {
-        return MatchThreadMapper()
-    }
+    internal fun provideMatchHighlightParser(): MatchHighlightParser = MatchHighlightParser()
+
+    @Provides
+    @Singleton
+    internal fun provideMatchThreadMapper(): MatchEventParser = MatchEventParser()
 
     @Singleton
     @Provides

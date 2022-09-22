@@ -3,44 +3,16 @@ package dev.iurysouza.livematch.ui.features.matchthread
 import android.util.Log
 import arrow.core.Either
 import arrow.core.Either.Companion.catch
-import arrow.core.continuations.either
-import arrow.core.flatMap
 import dev.iurysouza.livematch.domain.adapters.models.CommentsEntity
-import dev.iurysouza.livematch.domain.adapters.models.MatchHighlight
-import dev.iurysouza.livematch.domain.adapters.models.MatchThreadEntity
-import dev.iurysouza.livematch.ui.features.matchlist.MatchItem
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 
 
-open class MatchThreadMapper {
-
-    suspend fun toMatchThread(
-        matchItem: MatchItem,
-        highlights: List<MatchHighlight>,
-        lastMatches: List<MatchThreadEntity>,
-    ): Either<ViewError, MatchThread> = catch {
-        val matchEntity = lastMatches.find { it.id == matchItem.id }!!
-        matchEntity to matchItem
-    }.mapLeft {
-        ViewError.InvalidMatchId(it.message.toString())
-    }.flatMap { (matchEntity, matchItem) ->
-        either<ViewError, MatchThread> {
-            MatchThread(
-                id = matchEntity.id,
-                title = matchItem.title,
-                competition = matchItem.competition,
-                contentByteArray = matchEntity.content.toByteArray(),
-                startTime = matchEntity.createdAt,
-                mediaList = getMatchHighlights(highlights, matchItem.title).bind()
-            )
-        }
-    }
+open class MatchEventParser {
 
     fun getMatchEvents(content: String): Pair<List<MatchEvent>, ByteArray> {
-
         val finalContent = content
             .substringBefore("[Auto-refreshing")
             .replace("#**", "## **")
@@ -48,15 +20,12 @@ open class MatchThreadMapper {
             .replace("]", "")
             .replace("[", "")
 
-
         val matchEventList = content
             .substringAfter("*via [ESPN]")
             .substringBefore("--------")
 
-        val eventList =
-            runCatching { parseEventList(matchEventList) }.getOrNull() ?: let {
-                parseChampionsLeagueEvents(matchEventList)
-            }
+        val eventList = runCatching { parseEventList(matchEventList) }.getOrNull()
+            ?: parseChampionsLeagueEvents(matchEventList)
         return buildList {
             add(
                 MatchEvent(
@@ -69,7 +38,7 @@ open class MatchThreadMapper {
             addAll(eventList)
             add(
                 MatchEvent(
-                    relativeTime = "1020",
+                    relativeTime = "300",
                     icon = EventIcon.FinalWhistle,
                     description = "Match Ended",
                     keyEvent = true
@@ -77,7 +46,6 @@ open class MatchThreadMapper {
             )
         } to finalContent.toByteArray()
     }
-
 
     private fun parseChampionsLeagueEvents(text: String): List<MatchEvent> =
         text.split("\n").mapNotNull { input ->
@@ -111,9 +79,7 @@ open class MatchThreadMapper {
         return Pair(isKeyEvent, finalDescription)
     }
 
-    fun String.remove(regex: String): String {
-        return replace(regex, "")
-    }
+    private fun String.remove(regex: String): String = replace(regex, "")
 
     private fun parseEventList(matchEventList: String) = matchEventList
         .split("\n")
@@ -138,33 +104,6 @@ open class MatchThreadMapper {
             )
         }
 
-    private fun getMatchHighlights(
-        matchMedias: List<MatchHighlight>,
-        matchTitle: String,
-    ): Either<ViewError.MatchMediaParsingError, List<MediaItem>> = catch {
-        val (teamA, teamB) = matchTitle.parseTeamNames()
-        matchMedias.filter { media ->
-            media.title!!.contains(teamA) && media.title.contains(teamB)
-        }.map { media ->
-            MediaItem(
-                titleByteArray = parseTitle(media),
-                urlByteArray = media.html!!.toByteArray(),
-            )
-        }
-    }.mapLeft { ViewError.MatchMediaParsingError(it.message.toString()) }
-
-    private fun parseTitle(media: MatchHighlight): ByteArray {
-        if (media.title!!.contains("href")) {
-            val title = media.title.substringAfter("href=\"").substringBefore("\">")
-            return title.toByteArray()
-        }
-        return media.title.toByteArray()
-    }
-
-    private fun String?.parseTeamNames(): List<String> = this
-        ?.split("vs")
-        ?.map { it.trim().split(" ").first() }
-        ?: emptyList()
 
     fun toCommentSectionListEvents(
         commentList: List<CommentItem>,
@@ -201,7 +140,18 @@ open class MatchThreadMapper {
                 eventStack.removeLast()
             }
 
-            commentSectionList.toList().reversed()
+            val sectionStack = ArrayDeque<CommentSection>()
+            val reversed = commentSectionList.toList().reversed()
+
+            reversed.forEach { sectionStack.add(it) }
+            buildList {
+                while (sectionStack.isNotEmpty()) {
+                    val lastSection = sectionStack.last()
+                    sectionStack.removeLast()
+                    add(lastSection.copy(commentList = sectionStack.lastOrNull()?.commentList?.reversed()
+                        ?: emptyList()))
+                }
+            }
         }.onFailure {
             Log.e("MatchThreadMapper", it.message.toString())
         }.getOrNull()!!
@@ -220,48 +170,28 @@ open class MatchThreadMapper {
             )
         }.sortedBy { it.relativeTime }
     }
-}
 
-fun parseTitle(matchTitle: String): Pair<String, String>? = runCatching {
-    val (title, subtitle) = matchTitle
-        .replace("Match Thread:", "")
-        .split("|")
-    title to subtitle
-}.onFailure { Log.e("LiveMatch", "Error parsing match thread: ${matchTitle})", it) }
-    .getOrNull() ?: runCatching {
-    val (title, subtitle) = matchTitle
-        .replace("Match Thread:", "")
-        .split("[")
-    title to subtitle.replace("]", "")
-}.getOrNull()
+    private fun calculateRelativeTime(
+        commentTime: Long,
+        matchTime: Long,
+    ): Int = Duration.between(
+        matchTime.toUTCLocalDateTime(),
+        commentTime.toUTCLocalDateTime(),
+    ).toMinutes().toInt()
 
-fun List<MatchThreadEntity>.toMatchItem(
-    enabledCompetitions: List<String>,
-): List<MatchItem> = mapNotNull { match ->
-    val (title, subtitle) = parseTitle(match.title) ?: return@mapNotNull null
-    MatchItem(match.id, title, subtitle.replace("]", ""))
+    private fun Long.toUTCLocalDateTime() =
+        LocalDateTime.ofInstant(Instant.ofEpochSecond(this), ZoneId.systemDefault())
+
+    private fun MatchEvent.relativeTime(): Int = runCatching {
+        relativeTime.toInt()
+    }.getOrNull() ?: run {
+        // handles scenarios where event time is like: 45+1, 90+7
+        val (fullTime, overtime) = relativeTime.split("+")
+        fullTime.toInt() + overtime.toInt()
+    }
+
 }
-    .filter { enabledCompetitions.any { competition -> it.competition.contains(competition) } }
-    .sortedBy { it.competition }
 
 private const val TIME_PATTERN = """((\d)*')"""
 private const val ICONS_PATTERN = """\[([^\[\]]*?)]\((\S*?)\)"""
 
-private fun MatchEvent.relativeTime(): Int = runCatching {
-    relativeTime.toInt()
-}.getOrNull() ?: run {
-    // handles scenarios where event time is like: 45+1, 90+7
-    val (fullTime, overtime) = relativeTime.split("+")
-    fullTime.toInt() + overtime.toInt()
-}
-
-private fun calculateRelativeTime(
-    commentTime: Long,
-    matchTime: Long,
-): Int = Duration.between(
-    matchTime.toUTCLocalDateTime(),
-    commentTime.toUTCLocalDateTime(),
-).toMinutes().toInt()
-
-private fun Long.toUTCLocalDateTime() =
-    LocalDateTime.ofInstant(Instant.ofEpochSecond(this), ZoneId.systemDefault())

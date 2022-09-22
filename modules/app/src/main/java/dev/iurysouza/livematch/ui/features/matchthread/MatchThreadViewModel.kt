@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class MatchThreadViewModel @Inject constructor(
-    private val matchThreadMapper: MatchThreadMapper,
+    private val eventParser: MatchEventParser,
     private val resourceProvider: ResourceProvider,
     private val fetchMatchComments: FetchMatchCommentsUseCase,
 ) : ViewModel() {
@@ -32,7 +32,7 @@ class MatchThreadViewModel @Inject constructor(
     val state: StateFlow<MatchDescriptionState> = _state.asStateFlow()
 
     suspend fun update(match: MatchThread) = viewModelScope.launch {
-        val (matchEvents, content) = matchThreadMapper.getMatchEvents(match.content)
+        val (matchEvents, content) = eventParser.getMatchEvents(match.content)
         _state.value = MatchDescriptionState.Success(
             matchThread = match.copy(contentByteArray = content),
             matchEvents = matchEvents,
@@ -41,9 +41,9 @@ class MatchThreadViewModel @Inject constructor(
 
         either { fetchMatchComments(match.id).bind() }
             .mapLeft { mapErrorMsg(it) }
-            .flatMap { matchThreadMapper.toCommentItemList(it, match.startTime) }
+            .flatMap { eventParser.toCommentItemList(it, match.startTime) }
             .mapLeft { ViewError.CommentItemParsingError(it.toString()) }
-            .flatMap { matchThreadMapper.toCommentSectionListEvents(it, matchEvents) }
+            .flatMap { eventParser.toCommentSectionListEvents(it, matchEvents) }
             .mapLeft { ViewError.CommentSectionParsingError(it.toString()) }
             .fold(
                 { _commentsState.emit(MatchCommentsState.Error(parseError(it))) },

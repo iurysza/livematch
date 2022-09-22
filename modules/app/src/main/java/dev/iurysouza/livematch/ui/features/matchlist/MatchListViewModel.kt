@@ -13,8 +13,8 @@ import dev.iurysouza.livematch.domain.adapters.models.MatchThreadEntity
 import dev.iurysouza.livematch.domain.auth.RefreshTokenIfNeededUseCase
 import dev.iurysouza.livematch.domain.highlights.GetMatchHighlightsUseCase
 import dev.iurysouza.livematch.domain.matchlist.FetchLatestMatchThreadsForTodayUseCase
-import dev.iurysouza.livematch.ui.features.matchthread.MatchThreadMapper
-import dev.iurysouza.livematch.ui.features.matchthread.toMatchItem
+import dev.iurysouza.livematch.ui.features.matchthread.MatchHighlightParser
+import dev.iurysouza.livematch.ui.features.matchthread.parseTitle
 import dev.iurysouza.livematch.util.ResourceProvider
 import javax.inject.Inject
 import kotlinx.coroutines.Job
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class MatchListViewModel @Inject constructor(
     private val resourceProvider: ResourceProvider,
-    private val matchThreadMapper: MatchThreadMapper,
+    private val highlightParser: MatchHighlightParser,
     private val getMatchHighlights: GetMatchHighlightsUseCase,
     private val refreshTokenIfNeeded: RefreshTokenIfNeededUseCase,
     private val fetchLatestMatchThreadsForTodayUseCase: FetchLatestMatchThreadsForTodayUseCase,
@@ -73,7 +73,7 @@ class MatchListViewModel @Inject constructor(
     }
 
     fun navigateTo(matchItem: MatchItem) = viewModelScope.launch {
-        matchThreadMapper.toMatchThread(
+        highlightParser.toMatchThread(
             matchItem = matchItem,
             highlights = lastHighlights,
             lastMatches = lastMatches
@@ -93,3 +93,11 @@ class MatchListViewModel @Inject constructor(
         }
     }
 }
+private fun List<MatchThreadEntity>.toMatchItem(
+    enabledCompetitions: List<String>,
+): List<MatchItem> = mapNotNull { match ->
+    val (title, subtitle) = parseTitle(match.title) ?: return@mapNotNull null
+    MatchItem(match.id, title, subtitle.replace("]", ""))
+}
+//    .filter { enabledCompetitions.any { competition -> it.competition.contains(competition) } }
+    .sortedBy { it.competition }
