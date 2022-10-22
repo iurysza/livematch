@@ -1,6 +1,6 @@
 package dev.iurysouza.livematch.ui.features.matchlist
 
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -10,6 +10,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -18,6 +19,7 @@ import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.ui.components.ErrorScreen
 import dev.iurysouza.livematch.ui.components.FullScreenProgress
 import dev.iurysouza.livematch.ui.features.matchthread.MatchThread
+import timber.log.Timber
 
 @Composable
 fun MatchListScreen(onOpenMatchThread: (MatchThread) -> Unit) {
@@ -38,13 +40,18 @@ fun MatchList(
         systemUiController.setSystemBarsColor(color = Color.Transparent, darkIcons = true)
     }
     LaunchedEffect(Unit) { viewModel.getMachList() }
+    val context = LocalContext.current
 
     LaunchedEffect(viewModel) {
         viewModel.events.collect { effect ->
             when (effect) {
-                MatchListEvents.Idle -> Log.e("", "Idle")
+                MatchListEvents.Idle -> Timber.e("Idle")
                 is MatchListEvents.NavigateToMatchThread -> onNavigateToMatchThread(effect.matchThread)
-                is MatchListEvents.NavigationError -> TODO("NavigationError")
+                is MatchListEvents.NavigationError -> Toast.makeText(
+                    context,
+                    effect.msg.toString(),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

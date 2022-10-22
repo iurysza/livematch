@@ -1,6 +1,5 @@
 package dev.iurysouza.livematch.ui.features.matchthread
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.continuations.either
@@ -16,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @HiltViewModel
 class MatchThreadViewModel @Inject constructor(
@@ -52,7 +52,7 @@ class MatchThreadViewModel @Inject constructor(
     }
 
     private fun mapErrorMsg(error: DomainError?): String {
-        Log.e("MatchThreadViewModel", "mapErrorMsg: $error")
+        Timber.e("mapErrorMsg: $error")
         return when (error) {
             is NetworkError -> resourceProvider.getString(R.string.match_screen_error_no_internet)
             else -> resourceProvider.getString(R.string.match_screen_error_default)
@@ -60,7 +60,7 @@ class MatchThreadViewModel @Inject constructor(
     }
 
     private fun parseError(it: ViewError): String {
-        Log.e("MatchThreadViewModel", "parseError: $it")
+        Timber.e(it.message)
         return when (it) {
             is ViewError.CommentSectionParsingError -> resourceProvider.getString(R.string.match_screen_error_comment_parsing)
             else -> resourceProvider.getString(R.string.match_screen_error_default)

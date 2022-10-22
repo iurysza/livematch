@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
@@ -27,7 +28,7 @@ fun MatchDescription(
 ) {
     Box(modifier =
     modifier
-        .height(200.dp)
+        .wrapContentHeight()
         .padding(16.dp)
     ) {
         LazyColumn(

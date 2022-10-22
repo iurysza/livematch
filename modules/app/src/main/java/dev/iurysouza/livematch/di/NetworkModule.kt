@@ -46,6 +46,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import timber.log.Timber
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -104,7 +105,7 @@ class NetworkModule {
                     "Bearer: $credentials"
                 ).build()
             }.handleError {
-                Log.e("LiveMatch", "No Bearer Token Available $it")
+                Timber.tag("LiveMatch").e("No Bearer Token Available " + it)
             }
         }
         chain.proceed(request)
@@ -171,7 +172,7 @@ class NetworkModule {
     @Singleton
     internal fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
         val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.BODY
+        logging.level = HttpLoggingInterceptor.Level.HEADERS
         return logging
     }
 

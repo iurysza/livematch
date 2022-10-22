@@ -2,7 +2,6 @@
 
 package dev.iurysouza.livematch.ui.navigation
 
-import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
@@ -16,6 +15,7 @@ import com.google.accompanist.navigation.animation.navigation
 import dev.iurysouza.livematch.ui.features.matchlist.MatchListScreen
 import dev.iurysouza.livematch.ui.features.matchthread.MatchThreadScreen
 import dev.iurysouza.livematch.util.JsonParser
+import timber.log.Timber
 
 
 @ExperimentalAnimationApi
@@ -49,7 +49,7 @@ private fun NavGraphBuilder.addMatchListTopLevel(
                 onOpenMatchThread = { matchThread ->
                     either.eager { jsonParser.toJson(matchThread).bind() }
                         .fold(
-                            { Log.e("LiveMatch", "$it") },
+                            { Timber.e(it.toString()) },
                             { matchContent ->
                                 navController.navigate(
                                     Screen.MatchThread.createRoute(Screen.MatchList, matchContent))
