@@ -5,6 +5,18 @@ plugins {
 }
 
 android {
+    val appStorePassword: String by project
+    val appStoreFile: String by project
+    val appKeyPassword: String by project
+    val appKeyAlias: String by project
+    signingConfigs {
+        create("release") {
+            keyAlias = appKeyAlias
+            keyPassword = appKeyPassword
+            storePassword = appStorePassword
+            storeFile = file(appStoreFile)
+        }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -21,6 +33,8 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
+            isDebuggable = false
             buildConfigField("String", "API_URL", API_URL)
         }
         getByName("debug") {
