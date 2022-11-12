@@ -8,7 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.domain.adapters.DomainError
 import dev.iurysouza.livematch.domain.adapters.NetworkError
-import dev.iurysouza.livematch.domain.matchthread.FetchMatchCommentsUseCase
+import dev.iurysouza.livematch.domain.matchcomments.FetchMatchCommentsUseCase
 import dev.iurysouza.livematch.util.ResourceProvider
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow

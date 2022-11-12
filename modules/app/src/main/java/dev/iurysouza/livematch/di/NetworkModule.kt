@@ -1,6 +1,5 @@
 package dev.iurysouza.livematch.di
 
-import android.util.Log
 import arrow.core.continuations.either
 import arrow.core.handleError
 import com.squareup.moshi.Moshi
@@ -13,6 +12,13 @@ import dev.iurysouza.livematch.BuildConfig
 import dev.iurysouza.livematch.DefaultDispatcherProvider
 import dev.iurysouza.livematch.DispatcherProvider
 import dev.iurysouza.livematch.data.PolyJsonAdapterFactory
+import dev.iurysouza.livematch.data.network.footballdata.FootballDataApi
+import dev.iurysouza.livematch.data.network.footballdata.FootballDataSource
+import dev.iurysouza.livematch.data.network.footballdata.FootballNetworkDataSource
+import dev.iurysouza.livematch.data.network.reddit.RedditApi
+import dev.iurysouza.livematch.data.network.reddit.RedditNetworkDataSource
+import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
+import dev.iurysouza.livematch.domain.auth.AuthStorage
 import dev.iurysouza.livematch.domain.models.reddit.entities.PremiumSubreddit
 import dev.iurysouza.livematch.domain.models.reddit.entities.PrivateSubreddit
 import dev.iurysouza.livematch.domain.models.reddit.entities.Redditor
@@ -30,10 +36,6 @@ import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedRedditor
 import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedSubmission
 import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedSubreddit
 import dev.iurysouza.livematch.domain.models.reddit.responses.base.EnvelopeKind
-import dev.iurysouza.livematch.data.network.RedditApi
-import dev.iurysouza.livematch.data.network.RedditNetworkDataSource
-import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
-import dev.iurysouza.livematch.domain.auth.AuthStorage
 import java.util.Base64
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
@@ -54,6 +56,20 @@ class NetworkModule {
 
     @Provides
     @Singleton
+    @Named(FOOTBALLDATA_RETROFIT)
+    internal fun provideFootballDataRetrofitBuilder(
+        dispatcherProvider: DispatcherProvider,
+        okHttpClient: OkHttpClient,
+        factory: Converter.Factory,
+    ) = Retrofit.Builder()
+        .baseUrl(BuildConfig.FOOTBALL_DATA_BASE_URL)
+        .addConverterFactory(factory)
+        .callbackExecutor(dispatcherProvider.io().asExecutor())
+        .client(okHttpClient)
+
+    @Provides
+    @Singleton
+    @Named(REDDIT_RETROFIT)
     internal fun provideRetrofitBuilder(
         dispatcherProvider: DispatcherProvider,
         okHttpClient: OkHttpClient,
@@ -66,7 +82,13 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRedditApi(builder: Retrofit.Builder): RedditApi {
+    fun provideFootballDataApi(@Named(FOOTBALLDATA_RETROFIT) builder: Retrofit.Builder): FootballDataApi {
+        return builder.build().create(FootballDataApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRedditApi(@Named(REDDIT_RETROFIT) builder: Retrofit.Builder): RedditApi {
         return builder.build().create(RedditApi::class.java)
     }
 
@@ -105,7 +127,7 @@ class NetworkModule {
                     "Bearer: $credentials"
                 ).build()
             }.handleError {
-                Timber.tag("LiveMatch").e("No Bearer Token Available " + it)
+                Timber.tag("LiveMatch").e("No Bearer Token Available $it")
             }
         }
         chain.proceed(request)
@@ -178,11 +200,19 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    internal fun provideNetworkDataSource(redditApi: RedditApi): NetworkDataSource {
+    internal fun provideFootballDataSource(api: FootballDataApi): FootballDataSource {
+        return FootballNetworkDataSource(api)
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideRedditDataSource(redditApi: RedditApi): NetworkDataSource {
         return RedditNetworkDataSource(redditApi)
     }
 }
 
 private const val MAX_REQUESTS = 10
 private const val HTTP_CONNECTION_TIMEOUT = 60
+private const val FOOTBALLDATA_RETROFIT = "FootballData"
+private const val REDDIT_RETROFIT = "Reddit"
 private const val NAMED_AUTH_INTERCEPTOR = "AuthInterceptor"
