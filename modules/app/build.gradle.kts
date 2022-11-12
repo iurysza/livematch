@@ -25,6 +25,7 @@ android {
     buildTypes {
         val USE_MOCK_URL: String by project
         val API_URL: String by project
+        val FOOTBALL_DATA_BASE_URL: String by project
         val MOCK_API_URL: String by project
 
         getByName("release") {
@@ -40,8 +41,14 @@ android {
         getByName("debug") {
             buildConfigField(
                 type = "String",
+                name = "FOOTBALL_DATA_BASE_URL",
+                value = if (USE_MOCK_URL.toBoolean()) MOCK_API_URL else FOOTBALL_DATA_BASE_URL
+            )
+            buildConfigField(
+                type = "String",
                 name = "API_URL",
-                value = if (USE_MOCK_URL.toBoolean()) MOCK_API_URL else API_URL)
+                value = if (USE_MOCK_URL.toBoolean()) MOCK_API_URL else API_URL
+            )
         }
     }
 }
