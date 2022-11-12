@@ -1,12 +1,22 @@
 package dev.iurysouza.livematch
 
+import dev.iurysouza.livematch.ui.features.matchthread.EventIcon
 import dev.iurysouza.livematch.ui.features.matchthread.MatchEvent
+import dev.iurysouza.livematch.ui.features.matchthread.MatchEventParser
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldNotBe
 
 
 class ParsingTest : BehaviorSpec({
 
+    given("a match title") {
+        `when`("parsed") {
+//            val result = parseTitle(fullInput)
+            then("should get a valid result") {
+//                result shouldNotBe null
+            }
+        }
+    }
     given("given a champions league input") {
         val anInput = "[](#icon-whistle-big) 0' We're underway in Munich"
         `when`("parsed") {
@@ -34,7 +44,7 @@ private fun parseChampionsLeagueEvents(text: String): List<MatchEvent> =
 
             MatchEvent(
                 relativeTime = time.replace("'", ""),
-                icon = icon.substringAfter("(").substringBefore(")"),
+                icon = EventIcon.FinalWhistle,
                 description = description
             )
         }.getOrNull()

@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.data.network
+package dev.iurysouza.livematch.data.network.reddit
 
 import arrow.core.Either
 import arrow.core.Either.Companion.catch

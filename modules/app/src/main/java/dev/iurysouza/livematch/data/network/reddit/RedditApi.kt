@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.data.network
+package dev.iurysouza.livematch.data.network.reddit
 
 import dev.iurysouza.livematch.domain.models.AccessTokenResponse
 import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedContributionListing

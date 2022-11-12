@@ -21,7 +21,7 @@ import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedRedditor
 import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedSubmission
 import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedSubreddit
 import dev.iurysouza.livematch.domain.models.reddit.responses.base.EnvelopeKind
-import dev.iurysouza.livematch.data.network.RedditApi
+import dev.iurysouza.livematch.data.network.reddit.RedditApi
 import java.util.Base64
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockWebServer

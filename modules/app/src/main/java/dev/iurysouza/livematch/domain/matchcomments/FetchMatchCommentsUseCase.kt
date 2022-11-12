@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.domain.matchthread
+package dev.iurysouza.livematch.domain.matchcomments
 
 import arrow.core.Either
 import arrow.core.continuations.either

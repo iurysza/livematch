@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.domain.matchlist
+package dev.iurysouza.livematch.domain.matchthreads
 
 import arrow.core.Either
 import arrow.core.continuations.either
@@ -17,7 +17,7 @@ class FetchLatestMatchThreadsForTodayUseCase @Inject constructor(
         networkDataSource.searchFor(
             subreddit = "soccer",
             query = """flair:match+thread AND NOT flair:post AND NOT flair:pre""",
-            sortBy = "new",
+            sortBy = "hot",
             timePeriod = "day",
             restrictedToSubreddit = true,
         ).bind()
