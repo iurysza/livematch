@@ -12,6 +12,9 @@ import dev.iurysouza.livematch.data.network.footballdata.models.Referee
 import dev.iurysouza.livematch.data.network.footballdata.models.Score
 import dev.iurysouza.livematch.domain.adapters.DomainError
 import dev.iurysouza.livematch.domain.adapters.MappingError
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -38,9 +41,10 @@ class FetchMatchesUseCase @Inject constructor(
                 matchday = it.matchday!!,
                 homeTeam = it.homeTeam!!,
                 status = it.status!!,
-                utcDate = it.utcDate!!,
+                utcDate = LocalDateTime.ofInstant(Instant.parse(it.utcDate), ZoneOffset.UTC),
                 referees = it.referees!!,
-                score = it.score!!
+                score = it.score!!,
+                lastUpdated = LocalDateTime.ofInstant(Instant.parse(it.lastUpdated), ZoneOffset.UTC)
             )
         }.getOrNull()
     } ?: emptyList()
@@ -56,5 +60,6 @@ data class MatchEntity(
     val referees: List<Referee>,
     val score: Score,
     val status: String,
-    val utcDate: String,
+    val utcDate: LocalDateTime,
+    val lastUpdated: LocalDateTime,
 )
