@@ -5,18 +5,18 @@ plugins {
 }
 
 android {
-    val appStorePassword: String by project
-    val appStoreFile: String by project
-    val appKeyPassword: String by project
-    val appKeyAlias: String by project
-    signingConfigs {
-        create("release") {
-            keyAlias = appKeyAlias
-            keyPassword = appKeyPassword
-            storePassword = appStorePassword
-            storeFile = file(appStoreFile)
-        }
-    }
+//    val appStorePassword: String by project
+//    val appStoreFile: String by project
+//    val appKeyPassword: String by project
+//    val appKeyAlias: String by project
+//    signingConfigs {
+//        create("release") {
+//            keyAlias = appKeyAlias
+//            keyPassword = appKeyPassword
+//            storePassword = appStorePassword
+//            storeFile = file(appStoreFile)
+//        }
+//    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -28,16 +28,16 @@ android {
         val FOOTBALL_DATA_BASE_URL: String by project
         val MOCK_API_URL: String by project
 
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-            signingConfig = signingConfigs.getByName("release")
-            isDebuggable = false
-            buildConfigField("String", "API_URL", API_URL)
-        }
+//        getByName("release") {
+//            isMinifyEnabled = false
+//            proguardFiles(
+//                getDefaultProguardFile("proguard-android-optimize.txt"),
+//                "proguard-rules.pro"
+//            )
+//            signingConfig = signingConfigs.getByName("release")
+//            isDebuggable = false
+//            buildConfigField("String", "API_URL", API_URL)
+//        }
         getByName("debug") {
             buildConfigField(
                 type = "String",
@@ -82,6 +82,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation(libs.bundles.arrow)
     implementation(libs.halilibo.composeRichttext.richtextCommonmark)
+
+    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation("io.coil-kt:coil-svg:2.2.2")
 
     testImplementation(libs.squareup.okhttp.mockwebserver)
     testImplementation(libs.kotlin.reflect)
