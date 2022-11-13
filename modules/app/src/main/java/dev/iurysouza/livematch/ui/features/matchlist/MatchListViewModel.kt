@@ -13,7 +13,7 @@ import dev.iurysouza.livematch.domain.adapters.models.MatchHighlight
 import dev.iurysouza.livematch.domain.adapters.models.MatchThreadEntity
 import dev.iurysouza.livematch.domain.auth.RefreshTokenIfNeededUseCase
 import dev.iurysouza.livematch.domain.highlights.GetMatchHighlightsUseCase
-import dev.iurysouza.livematch.domain.matchlist.FetchLatestMatchThreadsForTodayUseCase
+import dev.iurysouza.livematch.domain.matchthreads.FetchLatestMatchThreadsForTodayUseCase
 import dev.iurysouza.livematch.ui.features.matchthread.MatchHighlightParser
 import dev.iurysouza.livematch.ui.features.matchthread.MatchThread
 import dev.iurysouza.livematch.ui.features.matchthread.ViewError
