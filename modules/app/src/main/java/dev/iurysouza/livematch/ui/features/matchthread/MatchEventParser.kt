@@ -12,7 +12,7 @@ import timber.log.Timber
 
 open class MatchEventParser {
 
-    fun getMatchEvents(content: String): Pair<List<MatchEvent>, ByteArray> {
+    fun getMatchEvents(content: String): Pair<List<MatchEvent>, String> {
         val contentList = content.split("\n")
         var headline = contentList.first()
         val scoreValue = headline.substringAfter("[").substringBefore("]")
@@ -51,7 +51,7 @@ open class MatchEventParser {
                     keyEvent = true
                 )
             )
-        } to finalContent.toByteArray()
+        } to finalContent
     }
 
     /**

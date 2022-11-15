@@ -34,7 +34,7 @@ class MatchThreadViewModel @Inject constructor(
     suspend fun update(match: MatchThread) = viewModelScope.launch {
         val (matchEvents, content) = eventParser.getMatchEvents(match.content)
         _state.value = MatchDescriptionState.Success(
-            matchThread = match.copy(contentByteArray = content),
+            matchThread = match.copy(content = content),
             matchEvents = matchEvents,
         )
         _commentsState.value = MatchCommentsState.Loading

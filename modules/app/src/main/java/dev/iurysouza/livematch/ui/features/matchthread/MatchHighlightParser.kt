@@ -15,18 +15,17 @@ open class MatchHighlightParser {
             containsTeamName(media.title!!, homeTeam) && containsTeamName(media.title, awayTeam)
         }.map { media ->
             MediaItem(
-                titleByteArray = parseTitle(media),
-                urlByteArray = media.html!!.toByteArray(),
+                title = parseTitle(media),
+                url = media.html!!,
             )
         }
     }.mapLeft { ViewError.MatchMediaParsingError(it.message.toString()) }
 
-    private fun parseTitle(media: MatchHighlight): ByteArray {
+    private fun parseTitle(media: MatchHighlight): String {
         if (media.title!!.contains("href")) {
-            val title = media.title.substringAfter("href=\"").substringBefore("\">")
-            return title.toByteArray()
+            return media.title.substringAfter("href=\"").substringBefore("\">")
         }
-        return media.title.toByteArray()
+        return media.title
     }
 
     private fun containsTeamName(title: String, teamName: String): Boolean {

@@ -90,7 +90,7 @@ class MatchListViewModel @Inject constructor(
                 id = matchEntity.id,
                 title = matchItem.title,
                 competition = matchItem.competition,
-                contentByteArray = matchEntity.content.toByteArray(),
+                content = matchEntity.content,
                 startTime = matchEntity.createdAt,
                 mediaList = highlightParser.getMatchHighlights(highlights, matchItem.title).bind()
             )

@@ -2,6 +2,7 @@
 
 package dev.iurysouza.livematch.ui.navigation
 
+import android.net.Uri
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
@@ -12,8 +13,6 @@ import arrow.core.continuations.either
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
-import dev.iurysouza.livematch.ui.features.matches.Matches
-import dev.iurysouza.livematch.ui.features.matches.MatchesScreen
 import dev.iurysouza.livematch.ui.features.matchlist.MatchListScreen
 import dev.iurysouza.livematch.ui.features.matchthread.MatchThreadScreen
 import dev.iurysouza.livematch.util.JsonParser
@@ -47,20 +46,21 @@ private fun NavGraphBuilder.addMatchListTopLevel(
         route = Screen.MatchList.route,
     ) {
         composable(route = startDestination) {
-            MatchesScreen(){
-
-            }
-//            MatchListScreen(
-//                onOpenMatchThread = { matchThread ->
-//                    either.eager { jsonParser.toJson(matchThread).bind() }
-//                        .fold(
-//                            { Timber.e(it.toString()) },
-//                            { matchContent ->
-//                                navController.navigate(
-//                                    Screen.MatchThread.createRoute(Screen.MatchList, matchContent))
-//                            }
-//                        )
-//                })
+            MatchListScreen(
+                onOpenMatchThread = { matchThread ->
+                    either.eager { Uri.encode(jsonParser.toJson(matchThread).bind()) }
+                        .fold(
+                            { Timber.e(it.toString()) },
+                            { matchContent ->
+                                navController.navigate(
+                                    Screen.MatchThread.createRoute(
+                                        Screen.MatchList,
+                                        matchContent
+                                    )
+                                )
+                            }
+                        )
+                })
         }
     }
 }

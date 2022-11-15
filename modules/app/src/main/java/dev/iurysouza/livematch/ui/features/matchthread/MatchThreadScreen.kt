@@ -83,7 +83,7 @@ private fun MatchThreadPreview() {
         matchThread = MatchThread(
             title = "Espanyol vs Real Madrid",
             competition = "LaLiga",
-            contentByteArray = "Real Madrid".toByteArray(),
+            content = "Real Madrid",
             id = "id",
             startTime = 9,
             mediaList = emptyList(),
