@@ -1,10 +1,13 @@
-package dev.iurysouza.livematch.ui.features.matches
+package dev.iurysouza.livematch.ui.features.matchlist
 
+import android.os.Parcelable
+import com.squareup.moshi.JsonClass
 import dev.iurysouza.livematch.data.network.footballdata.models.AwayTeam
 import dev.iurysouza.livematch.data.network.footballdata.models.HomeTeam
 import dev.iurysouza.livematch.data.network.footballdata.models.Score
-import dev.iurysouza.livematch.domain.matches.MatchEntity
+import dev.iurysouza.livematch.ui.features.matchthread.MatchThread
 import dev.iurysouza.livematch.ui.features.matchthread.ViewError
+import kotlinx.parcelize.Parcelize
 
 sealed interface MatchesState {
     data class Success(val matches: List<Match>) : MatchesState
@@ -12,10 +15,9 @@ sealed interface MatchesState {
     data class Error(val msg: String) : MatchesState
 }
 
-sealed interface MatchesEvents {
-    object Idle : MatchesEvents
-    data class NavigationError(val msg: ViewError) : MatchesEvents
-    data class NavigateToMatchThread(val matchThread: MatchEntity) : MatchesEvents
+sealed interface MatchListEvents {
+    data class NavigationError(val msg: ViewError) : MatchListEvents
+    data class NavigateToMatchThread(val matchThread: MatchThread) : MatchListEvents
 }
 
 data class Match(
@@ -26,13 +28,15 @@ data class Match(
     val elapsedMinutes: String,
 )
 
+@JsonClass(generateAdapter = true)
+@Parcelize
 data class Team(
     val crestUrl: String?,
     val name: String,
     val isHomeTeam: Boolean,
     val isAhead: Boolean,
     val score: String,
-)
+) : Parcelable
 
 fun toTeam(homeTeam: HomeTeam, score: Score, isHome: Boolean): Team {
     val validHomeScore = if (score.fullTime == null) {
@@ -66,10 +70,17 @@ fun toTeam(homeTeam: HomeTeam, score: Score, isHome: Boolean): Team {
         isHomeTeam = isHome,
     )
 }
+
 fun AwayTeam.asHomeTeam() = HomeTeam(
     crest = crest,
     id = id,
     name = name,
     shortName = shortName,
     tla = tla
+)
+
+data class MatchItem(
+    val id: String = "",
+    val title: String,
+    val competition: String,
 )

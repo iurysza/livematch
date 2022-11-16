@@ -2,22 +2,26 @@ package dev.iurysouza.livematch.ui.features.matchthread
 
 import android.os.Parcelable
 import com.squareup.moshi.JsonClass
+import dev.iurysouza.livematch.ui.features.matchlist.Team
 import kotlinx.parcelize.Parcelize
 
-@JsonClass(generateAdapter = true)
 @Parcelize
+@JsonClass(generateAdapter = true)
 data class MatchThread(
     val id: String = "",
     val title: String,
-    val competition: String,
     val startTime: Long,
     val mediaList: List<MediaItem>,
     val content: String,
+    val homeTeam: Team,
+    val awayTeam: Team,
+    val refereeList: List<String>,
+    val competition: Competition,
 ) : Parcelable
 
 
-@JsonClass(generateAdapter = true)
 @Parcelize
+@JsonClass(generateAdapter = true)
 data class CommentItem(
     val author: String,
     val relativeTime: Int,
@@ -39,18 +43,27 @@ data class CommentSection(
     val commentList: List<CommentItem>,
 )
 
-@JsonClass(generateAdapter = true)
 @Parcelize
+@JsonClass(generateAdapter = true)
 data class MediaItem(
     val title: String,
     val url: String,
 ) : Parcelable
 
-@JsonClass(generateAdapter = true)
 @Parcelize
+@JsonClass(generateAdapter = true)
 data class MatchEvent(
     val relativeTime: String,
     val icon: EventIcon,
     val description: String,
     val keyEvent: Boolean = false,
+) : Parcelable
+
+
+@Parcelize
+@JsonClass(generateAdapter = true)
+data class Competition(
+    val emblemUrl: String,
+    val id: Int?,
+    val name: String,
 ) : Parcelable
