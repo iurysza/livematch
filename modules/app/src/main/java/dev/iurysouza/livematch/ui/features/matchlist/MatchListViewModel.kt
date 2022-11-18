@@ -181,5 +181,5 @@ private fun List<MatchThreadEntity>.toMatchItem(
 
     MatchItem(match.id, title, competition)
 }
-    .filter { enabledCompetitions.any { competition -> it.competition.contains(competition) } }
+//    .filter { enabledCompetitions.any { competition -> it.competition.contains(competition) } }
     .sortedBy { it.competition }

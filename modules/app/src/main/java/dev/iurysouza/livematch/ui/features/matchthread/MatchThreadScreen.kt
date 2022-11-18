@@ -17,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.ui.components.ErrorScreen
 import dev.iurysouza.livematch.ui.components.FullScreenProgress
+import dev.iurysouza.livematch.ui.features.matchlist.Team
 import dev.iurysouza.livematch.ui.features.matchthread.components.CommentSectionComponent
 import dev.iurysouza.livematch.ui.features.matchthread.components.MatchDescription
 import dev.iurysouza.livematch.ui.theme.ColorPrimary
@@ -82,11 +83,30 @@ private fun MatchThreadPreview() {
     MatchThreadScreen(
         matchThread = MatchThread(
             title = "Espanyol vs Real Madrid",
-            competition = "LaLiga",
+            competition = Competition(
+                emblemUrl = "",
+                id = null,
+                name = ""
+            ),
             content = "Real Madrid",
             id = "id",
             startTime = 9,
             mediaList = emptyList(),
+            homeTeam = Team(
+                crestUrl = null,
+                name = "",
+                isHomeTeam = false,
+                isAhead = false,
+                score = ""
+            ),
+            awayTeam = Team(
+                crestUrl = null,
+                name = "",
+                isHomeTeam = false,
+                isAhead = false,
+                score = ""
+            ),
+            refereeList = listOf(),
         ),
         navigateUp = {}
     )

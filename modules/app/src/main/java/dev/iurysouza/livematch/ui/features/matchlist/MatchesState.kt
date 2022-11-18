@@ -28,8 +28,8 @@ data class Match(
     val elapsedMinutes: String,
 )
 
-@JsonClass(generateAdapter = true)
 @Parcelize
+@JsonClass(generateAdapter = true)
 data class Team(
     val crestUrl: String?,
     val name: String,

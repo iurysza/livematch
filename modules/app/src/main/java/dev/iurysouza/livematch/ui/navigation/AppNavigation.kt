@@ -3,8 +3,10 @@
 package dev.iurysouza.livematch.ui.navigation
 
 import android.net.Uri
+import android.os.Parcelable
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -31,41 +33,31 @@ internal fun AppNavigation(
         enterTransition = { defaultEnterTransition(initialState, targetState) },
         exitTransition = { defaultExitTransition(initialState, targetState) },
     ) {
-        addMatchListTopLevel(navController, jsonParser)
-        addMatchThread(navController, jsonParser, Screen.MatchList)
+        addMatchListNavGraph(navController, jsonParser, Screen.Root)
+        addMatchThreadNavGraph(navController, jsonParser, Screen.MatchList)
     }
 }
 
-private fun NavGraphBuilder.addMatchListTopLevel(
+private fun NavGraphBuilder.addMatchListNavGraph(
     navController: NavController,
     jsonParser: JsonParser,
+    parent: Screen,
 ) {
-    val startDestination = "root"
     navigation(
-        startDestination = startDestination,
+        startDestination = parent.route,
         route = Screen.MatchList.route,
     ) {
-        composable(route = startDestination) {
+        composable(route = parent.route) {
             MatchListScreen(
-                onOpenMatchThread = { matchThread ->
-                    either.eager { Uri.encode(jsonParser.toJson(matchThread).bind()) }
-                        .fold(
-                            { Timber.e(it.toString()) },
-                            { matchContent ->
-                                navController.navigate(
-                                    Screen.MatchThread.createRoute(
-                                        Screen.MatchList,
-                                        matchContent
-                                    )
-                                )
-                            }
-                        )
-                })
+                onOpenMatchThread = navController.navigateToRoute(jsonParser) { params ->
+                    Screen.MatchThread.createRoute(Screen.MatchList, params)
+                }
+            )
         }
     }
 }
 
-private fun NavGraphBuilder.addMatchThread(
+private fun NavGraphBuilder.addMatchThreadNavGraph(
     navController: NavController,
     jsonParser: JsonParser,
     parent: Screen,
@@ -74,20 +66,34 @@ private fun NavGraphBuilder.addMatchThread(
         route = Screen.MatchThread.route,
         startDestination = parent.route,
     ) {
+        val matchThreadScreen = LeafScreen.MatchThread()
         composable(
-            route = LeafScreen.MatchThread.defineRoute(parent),
+            route = matchThreadScreen.defineRoute(parent),
             arguments = listOf(
-                navArgument(MATCH_THREAD_ARGUMENT) {
+                navArgument(matchThreadScreen.argument) {
                     type = MatchThreadParamType(jsonParser)
                 },
             ),
-        ) {
+        ) { backStackEntry ->
             MatchThreadScreen(
                 navigateUp = navController::navigateUp,
-                matchThread = it.arguments!!.getParcelable(MATCH_THREAD_ARGUMENT)!!,
+                matchThread = backStackEntry.getParcelable(matchThreadScreen.argument)
             )
         }
     }
 }
 
-const val MATCH_THREAD_ARGUMENT = "matchThread"
+fun <T : Parcelable> NavBackStackEntry.getParcelable(key: String): T =
+    requireNotNull(arguments?.getParcelable(key))
+
+fun <T : Any> NavController.navigateToRoute(
+    jsonParser: JsonParser,
+    routeBuilder: (String) -> String,
+): (T) -> Unit = { argument: T ->
+    either.eager { Uri.encode(jsonParser.toJson(argument).bind()) }
+        .fold(
+            { Timber.e(it.toString()) },
+            { jsonObject -> navigate(routeBuilder(jsonObject)) }
+        )
+}
+
