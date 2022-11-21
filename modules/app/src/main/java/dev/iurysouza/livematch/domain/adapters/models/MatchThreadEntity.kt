@@ -1,5 +1,9 @@
 package dev.iurysouza.livematch.domain.adapters.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class MatchThreadEntity(
     val id: String,
     val title: String,
@@ -9,5 +13,5 @@ data class MatchThreadEntity(
     val contentHtml: String,
     val numComments: Int,
     val createdAt: Long,
-)
+) : Parcelable
 
