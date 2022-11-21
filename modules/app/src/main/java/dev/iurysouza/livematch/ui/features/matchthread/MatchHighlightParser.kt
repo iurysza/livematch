@@ -1,13 +1,13 @@
 package dev.iurysouza.livematch.ui.features.matchthread
 
 import arrow.core.Either
-import dev.iurysouza.livematch.domain.adapters.models.MatchHighlight
+import dev.iurysouza.livematch.domain.adapters.models.MatchHighlightEntity
 
 
 open class MatchHighlightParser {
 
     fun getMatchHighlights(
-        matchMedias: List<MatchHighlight>,
+        matchMedias: List<MatchHighlightEntity>,
         matchTitle: String,
     ): Either<ViewError.MatchMediaParsingError, List<MediaItem>> = Either.catch {
         val (homeTeam, awayTeam) = matchTitle.parseTeamNames()
@@ -21,7 +21,7 @@ open class MatchHighlightParser {
         }
     }.mapLeft { ViewError.MatchMediaParsingError(it.message.toString()) }
 
-    private fun parseTitle(media: MatchHighlight): String {
+    private fun parseTitle(media: MatchHighlightEntity): String {
         if (media.title!!.contains("href")) {
             return media.title.substringAfter("href=\"").substringBefore("\">")
         }

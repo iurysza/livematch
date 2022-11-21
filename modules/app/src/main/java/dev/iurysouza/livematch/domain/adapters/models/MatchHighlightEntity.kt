@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @JsonClass(generateAdapter = true)
-data class MatchHighlight(
+data class MatchHighlightEntity(
     val parentId: String,
     val title: String?,
     val type: String?,

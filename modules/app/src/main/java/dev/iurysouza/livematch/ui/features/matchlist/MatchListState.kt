@@ -7,7 +7,7 @@ import dev.iurysouza.livematch.ui.features.matchthread.ViewError
 import kotlinx.parcelize.Parcelize
 
 sealed interface MatchListState {
-    data class Success(val matches: List<Match>) : MatchListState
+    data class Success(val matches: List<Match>, val isSyncing: Boolean = false) : MatchListState
     object Loading : MatchListState
     data class Error(val msg: String) : MatchListState
 }
