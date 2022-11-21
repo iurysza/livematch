@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Parcelable
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -19,7 +20,6 @@ import dev.iurysouza.livematch.ui.features.matchlist.MatchListScreen
 import dev.iurysouza.livematch.ui.features.matchthread.MatchThreadScreen
 import dev.iurysouza.livematch.util.JsonParser
 import timber.log.Timber
-
 
 @ExperimentalAnimationApi
 @Composable

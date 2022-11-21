@@ -1,6 +1,5 @@
 package dev.iurysouza.livematch.ui.features.matchlist
 
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,7 +34,7 @@ import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.ui.components.ErrorScreen
 import dev.iurysouza.livematch.ui.components.FullScreenProgress
 import dev.iurysouza.livematch.ui.features.matchthread.MatchThread
-import timber.log.Timber
+import dev.iurysouza.livematch.util.shortToast
 
 @Composable
 fun MatchListScreen(onOpenMatchThread: (MatchThread) -> Unit) {
@@ -64,12 +63,8 @@ fun MatchList(
         viewModel.events.collect { effect ->
             when (effect) {
                 is MatchListEvents.NavigateToMatchThread -> onNavigateToMatchThread(effect.matchThread)
-                is MatchListEvents.NavigationError -> Toast.makeText(
-                    context,
-                    effect.msg.toString(),
-                    Toast.LENGTH_SHORT
-                ).show()
-                else -> Timber.e("Idle")
+                is MatchListEvents.NavigationError -> context.shortToast(effect.msg.message)
+                is MatchListEvents.Error -> context.shortToast(effect.msg)
             }
         }
     }
@@ -83,9 +78,9 @@ fun MatchList(
     ) {
         Column {
             when (state) {
-                is MatchesState.Error -> ErrorScreen(state.msg)
-                MatchesState.Loading -> FullScreenProgress()
-                is MatchesState.Success -> MatchesList(
+                is MatchListState.Error -> ErrorScreen(state.msg)
+                MatchListState.Loading -> FullScreenProgress()
+                is MatchListState.Success -> MatchesList(
                     modifier = Modifier,
                     matchItemList = state.matches,
                     onClick = { viewModel.navigateToMatch(it) })
