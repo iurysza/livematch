@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Parcelable
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -29,7 +28,7 @@ internal fun AppNavigation(
 ) {
     AnimatedNavHost(
         navController = navController,
-        startDestination = Screen.MatchList.route,
+        startDestination = Screen.MatchList.name,
         enterTransition = { defaultEnterTransition(initialState, targetState) },
         exitTransition = { defaultExitTransition(initialState, targetState) },
     ) {
@@ -43,14 +42,19 @@ private fun NavGraphBuilder.addMatchListNavGraph(
     jsonParser: JsonParser,
     parent: Screen,
 ) {
+    val route = Screen.MatchList
+
     navigation(
-        startDestination = parent.route,
-        route = Screen.MatchList.route,
+        route = route.name,
+        startDestination = parent.name,
     ) {
-        composable(route = parent.route) {
+        composable(route = parent.name) {
             MatchListScreen(
                 onOpenMatchThread = navController.navigateToRoute(jsonParser) { params ->
-                    Screen.MatchThread.createRoute(Screen.MatchList, params)
+                    Screen.MatchThread.createRoute(
+                        origin = route,
+                        content = params
+                    )
                 }
             )
         }
@@ -63,8 +67,8 @@ private fun NavGraphBuilder.addMatchThreadNavGraph(
     parent: Screen,
 ) {
     navigation(
-        route = Screen.MatchThread.route,
-        startDestination = parent.route,
+        route = Screen.MatchThread.name,
+        startDestination = parent.name,
     ) {
         val matchThreadScreen = LeafScreen.MatchThread()
         composable(

@@ -1,10 +1,10 @@
 package dev.iurysouza.livematch.ui.navigation
 
-sealed class Screen(val route: String) {
+sealed class Screen(val name: String) {
 
     object MatchThread : Screen(ROUTE_MATCH_THREAD) {
-        fun createRoute(root: Screen, content: String): String {
-            return "${root.route}/$ROUTE_MATCH_THREAD/$content"
+        fun createRoute(origin: Screen, content: String): String {
+            return "${origin.name}/$ROUTE_MATCH_THREAD/$content"
         }
     }
 
@@ -16,7 +16,7 @@ sealed class LeafScreen(private val route: String) {
     /**
      * A route is defined by the parent route with leaf route
      */
-    fun defineRoute(parent: Screen) = "${parent.route}/$route"
+    fun defineRoute(parent: Screen) = "${parent.name}/$route"
 
     data class MatchThread(
         val argument: String = "MatchThread",
