@@ -38,15 +38,14 @@ internal fun List<MatchEntity>.toMatchList(): List<Match> = map { entity ->
 
 
 internal fun toMatchList(
-    matchThread: MatchThreadEntity,
-    mediaList: List<MediaItem>,
+    matchThread: MatchThreadEntity?,
+    mediaList: List<MediaItem> = emptyList(),
     match: Match,
     matchEntity: MatchEntity,
 ) = MatchThread(
-    id = matchThread.id,
-    title = matchThread.title,
-    content = matchThread.content,
-    startTime = matchThread.createdAt,
+    id = matchThread?.id,
+    content = matchThread?.content,
+    startTime = matchThread?.createdAt,
     mediaList = mediaList,
     homeTeam = match.homeTeam,
     awayTeam = match.awayTeam,

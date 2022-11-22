@@ -20,6 +20,7 @@ import dev.iurysouza.livematch.ui.components.FullScreenProgress
 import dev.iurysouza.livematch.ui.features.matchlist.Team
 import dev.iurysouza.livematch.ui.features.matchthread.components.CommentSectionComponent
 import dev.iurysouza.livematch.ui.features.matchthread.components.MatchDescription
+import dev.iurysouza.livematch.ui.features.matchthread.components.MatchHeader
 import dev.iurysouza.livematch.ui.theme.ColorPrimary
 
 @Composable
@@ -34,6 +35,17 @@ fun MatchThreadScreen(
 
     val commentsState = viewModel.commentsState.collectAsState().value
     val state = viewModel.state.collectAsState().value
+
+    MatchThread(navigateUp, state, commentsState)
+
+}
+
+@Composable
+private fun MatchThread(
+    navigateUp: () -> Unit = {},
+    state: MatchDescriptionState,
+    commentsState: MatchCommentsState,
+) {
 
     Scaffold(
         topBar = {
@@ -55,10 +67,16 @@ fun MatchThreadScreen(
             when (state) {
                 MatchDescriptionState.Loading -> FullScreenProgress()
                 is MatchDescriptionState.Error -> ErrorScreen(state.msg)
-                is MatchDescriptionState.Success -> MatchDescription(
-                    description = state.matchThread.content,
-                    mediaList = state.matchThread.mediaList,
-                )
+                is MatchDescriptionState.Success -> {
+                    MatchHeader(
+                        homeTeam = state.matchThread.awayTeam,
+                        awayTeam = state.matchThread.homeTeam,
+                    )
+                    MatchDescription(
+                        description = state.matchThread.content ?: "",
+                        mediaList = state.matchThread.mediaList,
+                    )
+                }
             }
             when (commentsState) {
                 MatchCommentsState.Loading -> FullScreenProgress()
@@ -70,7 +88,6 @@ fun MatchThreadScreen(
                     )
                 }
             }
-
         }
     }
 
@@ -82,7 +99,6 @@ fun MatchThreadScreen(
 private fun MatchThreadPreview() {
     MatchThreadScreen(
         matchThread = MatchThread(
-            title = "Espanyol vs Real Madrid",
             competition = Competition(
                 emblemUrl = "",
                 id = null,

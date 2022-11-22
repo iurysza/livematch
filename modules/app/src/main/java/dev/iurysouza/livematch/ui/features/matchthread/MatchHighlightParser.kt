@@ -11,7 +11,7 @@ open class MatchHighlightParser {
         matchTitle: String,
     ): Either<ViewError.MatchMediaParsingError, List<MediaItem>> = Either.catch {
         val (homeTeam, awayTeam) = matchTitle.parseTeamNames()
-        matchMedias.filter { media ->
+        matchMedias.sortedBy { it.createdAt }.filter { media ->
             containsTeamName(media.title!!, homeTeam) && containsTeamName(media.title, awayTeam)
         }.map { media ->
             MediaItem(
@@ -43,9 +43,9 @@ open class MatchHighlightParser {
         return homeTeam to awayTeam
     }
 
-    private val teamNickNameDictionary = mapOf<String, String>(
+    private val teamNickNameDictionary = mapOf(
         "Paris Saint-Germain" to "PSG"
     )
 }
 
-private const val HOME_VS_AWAY = """(.*) vs(\.)? (.*)"""
+private const val HOME_VS_AWAY = """Match Thread: (.*) vs (.*)\| (.*)"""

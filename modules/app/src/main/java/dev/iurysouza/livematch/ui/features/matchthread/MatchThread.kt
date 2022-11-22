@@ -8,11 +8,10 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @JsonClass(generateAdapter = true)
 data class MatchThread(
-    val id: String = "",
-    val title: String,
-    val startTime: Long,
+    val id: String ?,
+    val startTime: Long?,
     val mediaList: List<MediaItem>,
-    val content: String,
+    val content: String?,
     val homeTeam: Team,
     val awayTeam: Team,
     val refereeList: List<String>,

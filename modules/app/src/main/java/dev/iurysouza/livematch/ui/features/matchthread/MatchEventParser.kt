@@ -20,7 +20,7 @@ open class MatchEventParser {
             Regex(ICONS_PATTERN).findAll(headline).first().value, scoreValue
         ).replace("#**", "# **")
 
-        val finalContent = headline + contentList
+        val finalContent = contentList
             .drop(1)
             .joinToString("\n")
             .substringBefore("-----\n")

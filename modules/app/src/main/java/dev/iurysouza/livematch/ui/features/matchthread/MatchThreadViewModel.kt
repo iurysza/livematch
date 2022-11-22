@@ -32,23 +32,25 @@ class MatchThreadViewModel @Inject constructor(
     val state: StateFlow<MatchDescriptionState> = _state.asStateFlow()
 
     suspend fun update(match: MatchThread) = viewModelScope.launch {
-        val (matchEvents, content) = eventParser.getMatchEvents(match.content)
-        _state.value = MatchDescriptionState.Success(
-            matchThread = match.copy(content = content),
-            matchEvents = matchEvents,
-        )
-        _commentsState.value = MatchCommentsState.Loading
-
-        either { fetchMatchComments(match.id).bind() }
-            .mapLeft { mapErrorMsg(it) }
-            .flatMap { eventParser.toCommentItemList(it, match.startTime) }
-            .mapLeft { ViewError.CommentItemParsingError(it.toString()) }
-            .flatMap { eventParser.toCommentSectionListEvents(it, matchEvents) }
-            .mapLeft { ViewError.CommentSectionParsingError(it.toString()) }
-            .fold(
-                { _commentsState.emit(MatchCommentsState.Error(parseError(it))) },
-                { _commentsState.emit(MatchCommentsState.Success(it)) }
+        if (match.content != null && match.id != null && match.startTime != null) {
+            val (matchEvents, content) = eventParser.getMatchEvents(match.content)
+            _state.value = MatchDescriptionState.Success(
+                matchThread = match.copy(content = content),
+                matchEvents = matchEvents,
             )
+            _commentsState.value = MatchCommentsState.Loading
+
+            either { fetchMatchComments(match.id).bind() }
+                .mapLeft { mapErrorMsg(it) }
+                .flatMap { eventParser.toCommentItemList(it, match.startTime) }
+                .mapLeft { ViewError.CommentItemParsingError(it.toString()) }
+                .flatMap { eventParser.toCommentSectionListEvents(it, matchEvents) }
+                .mapLeft { ViewError.CommentSectionParsingError(it.toString()) }
+                .fold(
+                    { _commentsState.emit(MatchCommentsState.Error(parseError(it))) },
+                    { _commentsState.emit(MatchCommentsState.Success(it)) }
+                )
+        }
     }
 
     private fun mapErrorMsg(error: DomainError?): String {

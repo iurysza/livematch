@@ -28,7 +28,7 @@ import dev.iurysouza.livematch.util.shortToast
 @Composable
 fun MatchListScreen(
     viewModel: MatchListViewModel = hiltViewModel(),
-    onOpenMatchThread: (MatchThread) -> Unit,
+    onOpenMatchThread: (MatchThread) -> Unit = {},
 ) {
     val systemUiController = rememberSystemUiController()
     val context = LocalContext.current

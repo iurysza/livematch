@@ -91,4 +91,5 @@ dependencies {
     testImplementation(libs.bundles.kotestBundle)
     testImplementation(libs.androidx.test.runner)
     testImplementation(libs.kotlinx.coroutines.test)
+    implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 }
