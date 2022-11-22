@@ -16,6 +16,7 @@ import dev.iurysouza.livematch.domain.auth.RefreshTokenIfNeededUseCase
 import dev.iurysouza.livematch.domain.highlights.GetMatchHighlightsUseCase
 import dev.iurysouza.livematch.domain.matches.FetchMatchesUseCase
 import dev.iurysouza.livematch.domain.matchthreads.FetchLatestMatchThreadsForTodayUseCase
+import dev.iurysouza.livematch.ui.features.matchthread.MatchEventParser
 import dev.iurysouza.livematch.ui.features.matchthread.MatchHighlightParser
 import dev.iurysouza.livematch.ui.features.matchthread.ViewError
 import dev.iurysouza.livematch.util.ResourceProvider
@@ -39,6 +40,7 @@ class MatchListViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val resourceProvider: ResourceProvider,
     private val fetchMatches: FetchMatchesUseCase,
+    private val eventParser: MatchEventParser,
     private val highlightParser: MatchHighlightParser,
     private val getMatchHighlights: GetMatchHighlightsUseCase,
     private val refreshTokenIfNeeded: RefreshTokenIfNeededUseCase,

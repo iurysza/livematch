@@ -24,6 +24,7 @@ open class MatchEventParser {
             .drop(1)
             .joinToString("\n")
             .substringBefore("-----\n")
+            .replace("---","")
 
         val matchEventList = contentList.takeLastWhile {
             !it.contains("**MATCH EVENTS**", true)

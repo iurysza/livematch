@@ -1,27 +1,47 @@
 package dev.iurysouza.livematch.ui.features.matchthread
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.halilibo.richtext.markdown.Markdown
+import com.halilibo.richtext.ui.RichText
+import com.halilibo.richtext.ui.RichTextStyle
+import com.halilibo.richtext.ui.string.RichTextStringStyle
 import dev.iurysouza.livematch.R
+import dev.iurysouza.livematch.ui.components.AnimatedCellExpansion
 import dev.iurysouza.livematch.ui.components.ErrorScreen
 import dev.iurysouza.livematch.ui.components.FullScreenProgress
 import dev.iurysouza.livematch.ui.features.matchlist.Team
-import dev.iurysouza.livematch.ui.features.matchthread.components.CommentSectionComponent
-import dev.iurysouza.livematch.ui.features.matchthread.components.MatchDescription
+import dev.iurysouza.livematch.ui.features.matchthread.components.CommentItemComponent
 import dev.iurysouza.livematch.ui.features.matchthread.components.MatchHeader
-import dev.iurysouza.livematch.ui.theme.ColorPrimary
+import dev.iurysouza.livematch.ui.features.matchthread.components.SectionHeader
 
 @Composable
 fun MatchThreadScreen(
@@ -36,61 +56,115 @@ fun MatchThreadScreen(
     val commentsState = viewModel.commentsState.collectAsState().value
     val state = viewModel.state.collectAsState().value
 
-    MatchThread(navigateUp, state, commentsState)
+    MatchThreadF(navigateUp, state, matchThread, commentsState)
 
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun MatchThread(
+fun MatchThreadF(
     navigateUp: () -> Unit = {},
     state: MatchDescriptionState,
+    matchThread: MatchThread,
     commentsState: MatchCommentsState,
 ) {
+    val sectionToggleMap = mutableMapOf<String, Boolean>()
+    var showContent by remember { mutableStateOf(sectionToggleMap.toMap()) }
+    Box(modifier = Modifier.fillMaxSize()) {
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = navigateUp) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.icon_description),
+
+        val scrollState = rememberLazyListState()
+        LazyColumn(
+            modifier = Modifier
+                .padding(top = 38.dp),
+            state = scrollState,
+            content = {
+                item {
+                    MatchHeader(
+                        homeTeam = matchThread.awayTeam,
+                        awayTeam = matchThread.homeTeam,
+                    )
+                }
+                item {
+                    when (state) {
+                        MatchDescriptionState.Loading -> FullScreenProgress()
+                        is MatchDescriptionState.Error -> ErrorScreen(state.msg)
+                        is MatchDescriptionState.Success -> MatchDetails(
+                            state.matchThread.content!!
                         )
                     }
-                },
-                title = { Text(text = stringResource(R.string.match_thread)) },
-                backgroundColor = ColorPrimary,
-            )
-        },
-    ) {
-        Column {
-            when (state) {
-                MatchDescriptionState.Loading -> FullScreenProgress()
-                is MatchDescriptionState.Error -> ErrorScreen(state.msg)
-                is MatchDescriptionState.Success -> {
-                    MatchHeader(
-                        homeTeam = state.matchThread.awayTeam,
-                        awayTeam = state.matchThread.homeTeam,
-                    )
-                    MatchDescription(
-                        description = state.matchThread.content ?: "",
-                        mediaList = state.matchThread.mediaList,
-                    )
                 }
-            }
-            when (commentsState) {
-                MatchCommentsState.Loading -> FullScreenProgress()
-                is MatchCommentsState.Error -> ErrorScreen(commentsState.msg)
-                is MatchCommentsState.Success -> {
-                    CommentSectionComponent(
-                        commentSectionList = commentsState.commentSectionList,
-                        onClick = {}
-                    )
-                }
-            }
-        }
-    }
+                when (commentsState) {
+                    MatchCommentsState.Loading -> item { FullScreenProgress() }
+                    is MatchCommentsState.Error -> item { ErrorScreen(commentsState.msg) }
+                    is MatchCommentsState.Success -> {
+                        commentsState.commentSectionList.forEach { (_, event) ->
+                            sectionToggleMap[event.description] = true
+                        }
+                        showContent = sectionToggleMap.toMap()
 
+                        commentsState.commentSectionList.forEach { (sectionName: String, event: MatchEvent, comments: List<CommentItem>) ->
+                            stickyHeader {
+                                SectionHeader(
+                                    sectionName = sectionName,
+                                    event = event,
+                                    onClick = {
+                                        showContent = showContent
+                                            .toMutableMap()
+                                            .apply {
+                                                this[event.description] = !this[event.description]!!
+                                            }
+                                    },
+                                )
+                            }
+                            items(comments) { commentItem: CommentItem ->
+                                AnimatedCellExpansion(
+                                    showContentIf = { showContent.isNotEmpty() && showContent[event.description]!! },
+                                    content = {
+                                        CommentItemComponent(
+                                            commentItem = commentItem,
+                                            color = Color(0xFFF7F4F4),
+                                            onClick = {},
+                                        )
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+            })
+    }
+    Row(
+        horizontalArrangement = Arrangement.Start,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Transparent)
+    ) {
+        IconButton(
+            onClick = navigateUp) {
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = stringResource(R.string.icon_description),
+            )
+        }
+
+    }
+}
+
+@Composable
+private fun MatchDetails(content: String) {
+    RichText(
+        modifier = Modifier.padding(8.dp),
+        style = RichTextStyle.Default.copy(
+            stringStyle = RichTextStringStyle.Default.copy(
+                italicStyle = SpanStyle(
+                    fontSize = 12.sp
+                )
+            )
+        )
+    ) {
+        Markdown(content)
+    }
 }
 
 

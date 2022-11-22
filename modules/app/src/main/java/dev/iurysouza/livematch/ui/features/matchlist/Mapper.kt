@@ -7,6 +7,7 @@ import dev.iurysouza.livematch.domain.adapters.models.MatchThreadEntity
 import dev.iurysouza.livematch.domain.adapters.models.ScoreEntity
 import dev.iurysouza.livematch.domain.adapters.models.Status
 import dev.iurysouza.livematch.ui.features.matchthread.Competition
+import dev.iurysouza.livematch.ui.features.matchthread.MatchEvent
 import dev.iurysouza.livematch.ui.features.matchthread.MatchThread
 import dev.iurysouza.livematch.ui.features.matchthread.MediaItem
 import java.time.Instant

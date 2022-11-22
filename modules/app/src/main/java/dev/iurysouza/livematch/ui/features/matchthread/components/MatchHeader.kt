@@ -53,14 +53,19 @@ fun MatchHeader(
     Row(
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .padding(vertical = 32.dp)
+            .fillMaxWidth()
     ) {
         HomeMatchHeader(
             team = homeTeam.name,
             teamCrestUrl = homeTeam.crestUrl!!,
             score = homeTeam.score
         )
-        Text(text = "x", modifier = Modifier.padding(horizontal = 8.dp).padding(bottom = 16.dp))
+        Text(text = "x",
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .padding(bottom = 16.dp))
         AwayMatchHeader(
             team = awayTeam.name,
             teamCrestUrl = awayTeam.crestUrl!!,
