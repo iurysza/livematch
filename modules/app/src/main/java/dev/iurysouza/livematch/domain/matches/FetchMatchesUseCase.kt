@@ -16,8 +16,10 @@ import dev.iurysouza.livematch.domain.adapters.models.RefereeEntity
 import dev.iurysouza.livematch.domain.adapters.models.ScoreEntity
 import dev.iurysouza.livematch.domain.adapters.models.Status
 import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
 import timber.log.Timber
@@ -26,10 +28,14 @@ import timber.log.Timber
 class FetchMatchesUseCase @Inject constructor(
     private val networkDataSource: FootballDataSource,
 ) {
+    private val datePattern = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     suspend operator fun invoke(): Either<DomainError, List<MatchEntity>> =
         either {
-            networkDataSource.fetchLatestMatches()
+            networkDataSource.fetchLatestMatches(
+                startDate = LocalDate.now().minusDays(1).format(datePattern),
+                endDate = LocalDate.now().plusDays(1).format(datePattern),
+            )
                 .map { it.toMatchEntity() }
                 .mapLeft { MappingError(it.message) }
                 .bind()
