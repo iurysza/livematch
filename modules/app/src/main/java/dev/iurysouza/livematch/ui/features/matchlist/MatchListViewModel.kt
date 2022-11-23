@@ -40,7 +40,6 @@ class MatchListViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val resourceProvider: ResourceProvider,
     private val fetchMatches: FetchMatchesUseCase,
-    private val eventParser: MatchEventParser,
     private val highlightParser: MatchHighlightParser,
     private val getMatchHighlights: GetMatchHighlightsUseCase,
     private val refreshTokenIfNeeded: RefreshTokenIfNeededUseCase,

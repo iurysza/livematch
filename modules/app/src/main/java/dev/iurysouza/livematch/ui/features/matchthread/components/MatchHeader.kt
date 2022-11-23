@@ -1,5 +1,6 @@
 package dev.iurysouza.livematch.ui.features.matchthread.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,7 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,6 +26,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import coil.compose.AsyncImage
 import dev.iurysouza.livematch.ui.features.matchlist.Team
+import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
+import dev.iurysouza.livematch.ui.theme.TitleColor
 
 @Composable
 @Preview
@@ -55,6 +60,7 @@ fun MatchHeader(
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .padding(vertical = 32.dp)
+            .background(AppBackgroundColor)
             .fillMaxWidth()
     ) {
         HomeMatchHeader(
@@ -62,7 +68,7 @@ fun MatchHeader(
             teamCrestUrl = homeTeam.crestUrl!!,
             score = homeTeam.score
         )
-        Text(text = "x",
+        Text(text = "x", style = TextStyle(color = TitleColor),
             modifier = Modifier
                 .padding(horizontal = 8.dp)
                 .padding(bottom = 16.dp))
@@ -162,12 +168,13 @@ private fun HeaderContent(
         constraintSet = constraintSet,
         modifier = Modifier.wrapContentSize()
     ) {
+        val title = TextStyle(color = TitleColor)
         Box(
             modifier = Modifier
                 .layoutId("name")
                 .padding(bottom = 8.dp)
         ) {
-            Team(team = team)
+            Team(team = team, title)
         }
         Box(
             modifier = Modifier.layoutId("crest")
@@ -178,19 +185,19 @@ private fun HeaderContent(
             modifier = scoreModifier
                 .layoutId("score")
         ) {
-            Score(score = score)
+            Score(score = score, title)
         }
     }
 }
 
 @Composable
-private fun Score(score: String) {
-    Text(text = score, fontSize = 35.sp)
+private fun Score(score: String, title: TextStyle) {
+    Text(text = score, style = title.copy(fontSize = 35.sp))
 }
 
 @Composable
-private fun Team(team: String) {
-    Text(text = team)
+private fun Team(team: String, style: TextStyle) {
+    Text(text = team, style = style)
 }
 
 @Composable
@@ -199,8 +206,8 @@ private fun TeamCrest(teamCrestUrl: String) {
         modifier = Modifier
             .size(56.dp)
             .clip(CircleShape)
-            .border(width = 2.dp, Color.White, CircleShape)
-            .padding(4.dp),
+            .border(width = 2.dp, Color.White, CircleShape),
+        contentScale = ContentScale.FillBounds,
         model = teamCrestUrl,
         contentDescription = "teamCrest"
     )

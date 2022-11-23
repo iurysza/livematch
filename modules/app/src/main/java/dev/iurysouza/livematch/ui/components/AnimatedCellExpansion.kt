@@ -6,8 +6,10 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.with
+import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -19,7 +21,7 @@ fun AnimatedCellExpansion(
 ) {
     AnimatedContent(
         targetState = showContentIf(),
-        modifier = modifier,
+        modifier = modifier.background(AppBackgroundColor),
         transitionSpec = {
             if (targetState) {
                 fadeIn() with fadeOut() // fadeOut animation if targetState changes to false

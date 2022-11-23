@@ -24,17 +24,18 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import timber.log.Timber
 
+
 @Singleton
 class FetchMatchesUseCase @Inject constructor(
     private val networkDataSource: FootballDataSource,
 ) {
-    private val datePattern = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     suspend operator fun invoke(): Either<DomainError, List<MatchEntity>> =
         either {
+            val now = LocalDate.now(ZoneOffset.UTC)
             networkDataSource.fetchLatestMatches(
-                startDate = LocalDate.now().minusDays(1).format(datePattern),
-                endDate = LocalDate.now().plusDays(1).format(datePattern),
+                startDate = now.format(DATE_PATTERN),
+                endDate = now.plusDays(1).format(DATE_PATTERN),
             )
                 .map { it.toMatchEntity() }
                 .mapLeft { MappingError(it.message) }
@@ -100,5 +101,9 @@ class FetchMatchesUseCase @Inject constructor(
                 .onFailure { Timber.e(it) }
                 .getOrNull()
         } ?: emptyList()
+
+    companion object {
+        private val DATE_PATTERN = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    }
 }
 

@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.halilibo.richtext.markdown.Markdown
 import com.halilibo.richtext.ui.RichText
 import com.halilibo.richtext.ui.RichTextStyle
@@ -42,6 +44,8 @@ import dev.iurysouza.livematch.ui.features.matchlist.Team
 import dev.iurysouza.livematch.ui.features.matchthread.components.CommentItemComponent
 import dev.iurysouza.livematch.ui.features.matchthread.components.MatchHeader
 import dev.iurysouza.livematch.ui.features.matchthread.components.SectionHeader
+import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
+import dev.iurysouza.livematch.ui.theme.TitleColor
 
 @Composable
 fun MatchThreadScreen(
@@ -51,6 +55,11 @@ fun MatchThreadScreen(
     val viewModel = hiltViewModel<MatchThreadViewModel>()
     LaunchedEffect(Unit) {
         viewModel.update(matchThread)
+    }
+    val systemUiController = rememberSystemUiController()
+
+    SideEffect {
+        systemUiController.setSystemBarsColor(AppBackgroundColor, false)
     }
 
     val commentsState = viewModel.commentsState.collectAsState().value
@@ -70,7 +79,11 @@ fun MatchThreadF(
 ) {
     val sectionToggleMap = mutableMapOf<String, Boolean>()
     var showContent by remember { mutableStateOf(sectionToggleMap.toMap()) }
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .background(AppBackgroundColor)
+            .fillMaxSize()
+    ) {
 
 
         val scrollState = rememberLazyListState()
@@ -98,23 +111,30 @@ fun MatchThreadF(
                     MatchCommentsState.Loading -> item { FullScreenProgress() }
                     is MatchCommentsState.Error -> item { ErrorScreen(commentsState.msg) }
                     is MatchCommentsState.Success -> {
-                        commentsState.commentSectionList.forEach { (_, event) ->
-                            sectionToggleMap[event.description] = true
+                        if (sectionToggleMap.isEmpty()) {
+                            commentsState.commentSectionList.forEach { (_, event) ->
+                                sectionToggleMap[event.description] = true
+                            }
+                            showContent = sectionToggleMap.toMap()
                         }
-                        showContent = sectionToggleMap.toMap()
-
                         commentsState.commentSectionList.forEach { (sectionName: String, event: MatchEvent, comments: List<CommentItem>) ->
+                            val method = if (comments.isEmpty()) {
+                                null
+                            } else {
+                                { _: MatchEvent ->
+                                    showContent = showContent
+                                        .toMutableMap()
+                                        .apply {
+                                            this[event.description] = !this[event.description]!!
+                                        }
+                                }
+                            }
+
                             stickyHeader {
                                 SectionHeader(
                                     sectionName = sectionName,
                                     event = event,
-                                    onClick = {
-                                        showContent = showContent
-                                            .toMutableMap()
-                                            .apply {
-                                                this[event.description] = !this[event.description]!!
-                                            }
-                                    },
+                                    onClick = method,
                                 )
                             }
                             items(comments) { commentItem: CommentItem ->
@@ -123,7 +143,6 @@ fun MatchThreadF(
                                     content = {
                                         CommentItemComponent(
                                             commentItem = commentItem,
-                                            color = Color(0xFFF7F4F4),
                                             onClick = {},
                                         )
                                     }
@@ -144,6 +163,7 @@ fun MatchThreadF(
             onClick = navigateUp) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
+                tint = TitleColor,
                 contentDescription = stringResource(R.string.icon_description),
             )
         }

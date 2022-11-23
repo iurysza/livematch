@@ -15,12 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import dev.iurysouza.livematch.ui.theme.AuthorColor
+import dev.iurysouza.livematch.ui.theme.TitleColor
 
 
 @Composable
@@ -70,10 +71,12 @@ fun MatchTime(modifier: Modifier, match: Match) {
         Text(
             text = match.startTime,
             textAlign = TextAlign.Center,
+            color = TitleColor,
         )
         Text(
             text = match.elapsedMinutes,
             textAlign = TextAlign.Center,
+            color = TitleColor,
         )
 
     }
@@ -95,13 +98,13 @@ internal fun Team(modifier: Modifier, team: Team) {
             TextStyle(
                 fontSize = 19.sp,
                 textAlign = TextAlign.Left,
-                color = Color.Black,
+                color = TitleColor,
             )
         } else {
             TextStyle(
                 fontSize = 19.sp,
                 textAlign = TextAlign.Left,
-                color = Color.Gray,
+                color = AuthorColor,
             )
         }
         Text(
