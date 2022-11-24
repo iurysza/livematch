@@ -17,8 +17,8 @@ class FetchLatestMatchThreadsForTodayUseCase @Inject constructor(
         networkDataSource.searchFor(
             subreddit = "soccer",
             query = """flair:match+thread AND NOT flair:post AND NOT flair:pre""",
-            sortBy = "hot",
-            timePeriod = "day",
+            sortBy = "new",
+            timePeriod = "week",
             restrictedToSubreddit = true,
         ).bind()
     }.map { response ->
