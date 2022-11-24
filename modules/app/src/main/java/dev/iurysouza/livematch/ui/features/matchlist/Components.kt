@@ -85,7 +85,10 @@ fun MatchTime(modifier: Modifier, match: Match) {
 
 @Composable
 internal fun Team(modifier: Modifier, team: Team) {
-    Row(modifier) {
+    Row(
+       verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+    ) {
         AsyncImage(
             modifier = modifier
                 .size(24.dp)

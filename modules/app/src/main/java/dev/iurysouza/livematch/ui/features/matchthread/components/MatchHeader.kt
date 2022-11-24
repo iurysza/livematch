@@ -207,7 +207,7 @@ private fun TeamCrest(teamCrestUrl: String) {
             .size(56.dp)
             .clip(CircleShape)
             .border(width = 2.dp, Color.White, CircleShape),
-        contentScale = ContentScale.FillBounds,
+        contentScale = ContentScale.Crop,
         model = teamCrestUrl,
         contentDescription = "teamCrest"
     )

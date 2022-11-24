@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @JsonClass(generateAdapter = true)
 data class MatchThread(
-    val id: String ?,
+    val id: String?,
     val startTime: Long?,
     val mediaList: List<MediaItem>,
     val content: String?,
@@ -26,6 +26,8 @@ data class CommentItem(
     val relativeTime: Int,
     val body: String,
     val score: String,
+    val flairUrl: String?,
+    val flairName: String,
 ) : Parcelable
 
 sealed class ViewError(val message: String) {

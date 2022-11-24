@@ -65,17 +65,22 @@ fun MatchThreadScreen(
     val commentsState = viewModel.commentsState.collectAsState().value
     val state = viewModel.state.collectAsState().value
 
-    MatchThreadF(navigateUp, state, matchThread, commentsState)
+    MatchThreadF(
+        matchThread = matchThread,
+        state = state,
+        commentsState = commentsState,
+        navigateUp = navigateUp,
+    )
 
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MatchThreadF(
-    navigateUp: () -> Unit = {},
-    state: MatchDescriptionState,
     matchThread: MatchThread,
+    state: MatchDescriptionState,
     commentsState: MatchCommentsState,
+    navigateUp: () -> Unit = {},
 ) {
     val sectionToggleMap = mutableMapOf<String, Boolean>()
     var showContent by remember { mutableStateOf(sectionToggleMap.toMap()) }

@@ -109,6 +109,8 @@ open class MatchEventParser {
             CommentItem(
                 author = comment.author,
                 body = comment.body,
+                flairUrl = comment.flairUrl,
+                flairName = comment.flairText.remove(":"),
                 relativeTime = calculateRelativeTime(comment.created, matchStartTime),
                 score = comment.score.toString(),
             )
