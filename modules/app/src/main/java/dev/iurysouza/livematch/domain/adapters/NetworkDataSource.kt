@@ -16,5 +16,5 @@ interface NetworkDataSource {
     ): Either<NetworkError, EnvelopedSubmissionListing>
 
     suspend fun getAccessToken(): Either<NetworkError, AccessTokenResponse>
-    suspend fun getCommentsForSubmission(id: String): Either<NetworkError, List<EnvelopedContributionListing>>
+    suspend fun getCommentsForSubmission(id: String, sortBy: String): Either<NetworkError, List<EnvelopedContributionListing>>
 }

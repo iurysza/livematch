@@ -45,7 +45,8 @@ class RedditNetworkDataSource @Inject constructor(
 
     override suspend fun getCommentsForSubmission(
         id: String,
+        sortBy: String,
     ): Either<NetworkError, List<EnvelopedContributionListing>> = catch {
-        redditApi.fetchComments(id)
+        redditApi.fetchComments(id, sorting = sortBy)
     }.mapLeft { NetworkError(it.message) }
 }

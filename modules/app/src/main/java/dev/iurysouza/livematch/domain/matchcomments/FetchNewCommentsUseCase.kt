@@ -10,7 +10,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FetchMatchCommentsUseCase @Inject constructor(
+class FetchNewCommentsUseCase @Inject constructor(
     private val networkDataSource: NetworkDataSource,
 ) {
 
@@ -18,11 +18,12 @@ class FetchMatchCommentsUseCase @Inject constructor(
         either {
             networkDataSource.getCommentsForSubmission(
                 id = matchId,
-                sortBy = "hot"
+                sortBy = "new"
             )
                 .map { it.toCommentsEntity() }
                 .mapLeft { MappingError(it.message) }
                 .bind()
         }
+
 }
 
