@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.compose.ui.graphics.vector.ImageVector
 import dev.iurysouza.livematch.ui.theme.LiveMatchAssets
 import dev.iurysouza.livematch.ui.theme.livematchassets.Booking
+import dev.iurysouza.livematch.ui.theme.livematchassets.Clock
 import dev.iurysouza.livematch.ui.theme.livematchassets.Goal
 import dev.iurysouza.livematch.ui.theme.livematchassets.Sub
 import kotlinx.parcelize.Parcelize
@@ -54,7 +55,7 @@ sealed class EventIcon(val icon: String) : Parcelable {
         is FreeKick -> LiveMatchAssets.Goal
         is RedCard -> LiveMatchAssets.Booking
         is Substitution -> LiveMatchAssets.Sub
-        is FinalWhistle -> LiveMatchAssets.Goal
+        is FinalWhistle -> LiveMatchAssets.Clock
         is YellowCard -> LiveMatchAssets.Booking
     }
 }

@@ -70,12 +70,20 @@ fun SectionHeader(
 @Composable
 fun MatchIcon(modifier: Modifier = Modifier, icon: EventIcon, time: String) {
     Column(modifier.background(AppBackgroundColor)) {
-        Box(modifier = modifier
-            .align(Alignment.CenterHorizontally)
-            .background(color = TextColor)
-            .height(16.dp)
-            .width(1.dp)
-        )
+        if (time.isNotEmpty()) {
+            Box(modifier = modifier
+                .align(Alignment.CenterHorizontally)
+                .background(color = TextColor)
+                .height(16.dp)
+                .width(1.dp)
+            )
+        } else {
+            Box(modifier = modifier
+                .align(Alignment.CenterHorizontally)
+                .height(16.dp)
+                .width(1.dp)
+            )
+        }
         Column(
             modifier.align(Alignment.CenterHorizontally),
         ) {
@@ -83,7 +91,7 @@ fun MatchIcon(modifier: Modifier = Modifier, icon: EventIcon, time: String) {
                 modifier = modifier.align(Alignment.CenterHorizontally),
                 fontSize = 12.sp,
                 color = TitleColor,
-                text = "$time'",
+                text = time,
             )
             MatchEventIcon(
                 modifier = modifier.align(Alignment.CenterHorizontally),

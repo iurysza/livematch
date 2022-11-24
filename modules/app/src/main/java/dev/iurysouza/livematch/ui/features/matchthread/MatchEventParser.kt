@@ -48,7 +48,7 @@ open class MatchEventParser {
                 MatchEvent(
                     relativeTime = "300",
                     icon = EventIcon.FinalWhistle,
-                    description = "Match Ended",
+                    description = "Last Comments",
                     keyEvent = true
                 )
             )

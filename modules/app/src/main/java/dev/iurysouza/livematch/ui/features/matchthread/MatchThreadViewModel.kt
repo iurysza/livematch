@@ -45,6 +45,15 @@ class MatchThreadViewModel @Inject constructor(
                 .flatMap { eventParser.toCommentItemList(it, match.startTime) }
                 .mapLeft { ViewError.CommentItemParsingError(it.toString()) }
                 .flatMap { eventParser.toCommentSectionListEvents(it, matchEvents) }
+                .map {
+                    it.mapIndexed { index, commentSection ->
+                        if (index == 0) {
+                            commentSection.copy(event = commentSection.event.copy(relativeTime = ""))
+                        } else {
+                            commentSection.copy(event = commentSection.event.copy(relativeTime = "${commentSection.event.relativeTime}'"))
+                        }
+                    }
+                }
                 .mapLeft { ViewError.CommentSectionParsingError(it.toString()) }
                 .fold(
                     { _commentsState.emit(MatchCommentsState.Error(parseError(it))) },
