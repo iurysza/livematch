@@ -1,5 +1,6 @@
 package dev.iurysouza.livematch.ui.features.matchthread
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,10 +12,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.PullRefreshState
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
@@ -22,7 +28,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -46,7 +54,10 @@ import dev.iurysouza.livematch.ui.features.matchthread.components.MatchHeader
 import dev.iurysouza.livematch.ui.features.matchthread.components.SectionHeader
 import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
 import dev.iurysouza.livematch.ui.theme.TitleColor
+import kotlinx.coroutines.launch
 
+@SuppressLint("UnrememberedMutableState")
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MatchThreadScreen(
     matchThread: MatchThread,
@@ -54,7 +65,7 @@ fun MatchThreadScreen(
 ) {
     val viewModel = hiltViewModel<MatchThreadViewModel>()
     LaunchedEffect(Unit) {
-        viewModel.update(matchThread)
+        viewModel.getLatestComments(matchThread, false)
     }
     val systemUiController = rememberSystemUiController()
 
@@ -62,10 +73,21 @@ fun MatchThreadScreen(
         systemUiController.setSystemBarsColor(AppBackgroundColor, false)
     }
 
+    val isRefreshing = viewModel.isRefreshingState.collectAsState(false)
     val commentsState = viewModel.commentsState.collectAsState().value
     val state = viewModel.state.collectAsState().value
 
+
+    val refreshScope = rememberCoroutineScope()
+    val refreshState = rememberPullRefreshState(isRefreshing.value, onRefresh = {
+        refreshScope.launch {
+            viewModel.getLatestComments(matchThread, true)
+        }
+    })
+
     MatchThreadF(
+        isRefreshing = isRefreshing.value,
+        refreshState = refreshState,
         matchThread = matchThread,
         state = state,
         commentsState = commentsState,
@@ -74,9 +96,11 @@ fun MatchThreadScreen(
 
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun MatchThreadF(
+    isRefreshing: Boolean,
+    refreshState: PullRefreshState,
     matchThread: MatchThread,
     state: MatchDescriptionState,
     commentsState: MatchCommentsState,
@@ -86,6 +110,7 @@ fun MatchThreadF(
     var showContent by remember { mutableStateOf(sectionToggleMap.toMap()) }
     Box(
         modifier = Modifier
+            .pullRefresh(refreshState)
             .background(AppBackgroundColor)
             .fillMaxSize()
     ) {
@@ -157,6 +182,12 @@ fun MatchThreadF(
                     }
                 }
             })
+        PullRefreshIndicator(
+            modifier = Modifier.align(Alignment.TopCenter),
+            refreshing = isRefreshing,
+            state = refreshState,
+        )
+
     }
     Row(
         horizontalArrangement = Arrangement.Start,
