@@ -1,5 +1,6 @@
 package dev.iurysouza.livematch.ui.features.matchlist
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -46,7 +47,7 @@ fun MatchListScreen(
         viewModel.events.collect { effect ->
             when (effect) {
                 is MatchListEvents.NavigateToMatchThread -> onOpenMatchThread(effect.matchThread)
-                is MatchListEvents.NavigationError -> context.shortToast(effect.msg.message)
+                is MatchListEvents.NavigationError -> context.shortToast("This Match has not started yet.")
                 is MatchListEvents.Error -> context.shortToast(effect.msg)
             }
         }
@@ -58,6 +59,7 @@ fun MatchListScreen(
     )
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun MatchListScreenComponent(
     state: MatchListState,

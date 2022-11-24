@@ -113,7 +113,7 @@ class MatchListViewModel @Inject constructor(
         val matchThreadEntity = matchThreadListFlow.value.first { matchThread ->
             matchThread.title.contains(
                 newMatch.homeTeam.name
-            ) && matchThread.title.contains(
+            ) || matchThread.title.contains(
                 newMatch.awayTeam.name
             )
         }
