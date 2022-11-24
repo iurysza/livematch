@@ -164,7 +164,11 @@ open class MatchEventParser {
                         CommentSection(
                             lastEventTime.toString(),
                             event = eventStack.last(),
-                            commentList = sectionComments.reversed(),
+                            commentList =
+                            sectionComments
+                                .sortedBy { it.score }
+                                .take(20)
+                                .sortedBy { it.relativeTime },
                         )
                     )
                     eventStack.removeLast()

@@ -34,14 +34,14 @@ interface RedditApi {
         @Path("submissionId") submissionId: String,
         @Query("comment") focusedCommentId: String? = null,
         @Query("context") focusedCommentParentsNum: Int? = null,
-        @Query("sort") sorting: String = TOP_RATED,
+        @Query("sort") sorting: String = HOT,
         @Query("limit") limit: Long? = null,
         @Query("depth") depth: Int? = 1,
         @Query("raw_json") rawJson: Int? = null,
     ): List<EnvelopedContributionListing>
 
     companion object {
-        private const val TOP_RATED = "top"
+        private const val HOT = "hot"
         private const val UNTRACKED_DEVICE = "DO_NOT_TRACK_THIS_DEVICE"
         private const val INSTALLED_CLIENT = "https://oauth.reddit.com/grants/installed_client"
     }

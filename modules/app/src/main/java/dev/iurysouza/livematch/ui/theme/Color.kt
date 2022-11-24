@@ -9,7 +9,7 @@ val Teal200 = Color(0xFF03DAC5)
 val ColorPrimary = Color.White
 
 
-val ScoreColor = Color(0xFFC7B300)
+val ScoreColor = Color(0xC4C7B300)
 val LineColor = Color(0xFFFAEA00)
 val AppBackgroundColor = Color(0xFF222330)
 val TextColor = Color(0xFFDFDFE1)
