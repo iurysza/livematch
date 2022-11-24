@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
@@ -37,7 +36,7 @@ import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.ui.features.matchthread.CommentItem
 import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
 import dev.iurysouza.livematch.ui.theme.AuthorColor
-import dev.iurysouza.livematch.ui.theme.LineColor
+import dev.iurysouza.livematch.ui.theme.AppAccentColor
 import dev.iurysouza.livematch.ui.theme.ScoreColor
 
 
@@ -53,7 +52,7 @@ fun CommentItemComponent(
             .padding(start = 32.dp)
             .padding(vertical = 4.dp)
             .padding(bottom = 2.dp)
-            .background(LineColor)
+            .background(AppAccentColor)
             .fillMaxWidth()
             .wrapContentHeight()
     ) {
@@ -133,7 +132,7 @@ private fun CommentBody(content: String) {
         WithStyle(
             style = RichTextStyle(
                 stringStyle = RichTextStringStyle(
-                    linkStyle = SpanStyle(color = LineColor)
+                    linkStyle = SpanStyle(color = AppAccentColor)
                 )
             ),
         ) {

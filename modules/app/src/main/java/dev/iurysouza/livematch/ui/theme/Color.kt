@@ -10,7 +10,7 @@ val ColorPrimary = Color.White
 
 
 val ScoreColor = Color(0xC4C7B300)
-val LineColor = Color(0xFFFAEA00)
+val AppAccentColor = Color(0xFFFAEA00)
 val AppBackgroundColor = Color(0xFF222330)
 val TextColor = Color(0xFFDFDFE1)
 val AuthorColor = Color(0xFF7C7A8C)

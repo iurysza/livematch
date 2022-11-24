@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import dev.iurysouza.livematch.ui.theme.AppAccentColor
 import dev.iurysouza.livematch.ui.theme.AuthorColor
 import dev.iurysouza.livematch.ui.theme.TitleColor
 
@@ -76,7 +77,11 @@ fun MatchTime(modifier: Modifier, match: Match) {
         Text(
             text = match.elapsedMinutes,
             textAlign = TextAlign.Center,
-            color = TitleColor,
+            color = if (match.elapsedMinutes.contains("'")) {
+                AppAccentColor
+            } else {
+                TitleColor
+            },
         )
 
     }
@@ -86,7 +91,7 @@ fun MatchTime(modifier: Modifier, match: Match) {
 @Composable
 internal fun Team(modifier: Modifier, team: Team) {
     Row(
-       verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
     ) {
         AsyncImage(
