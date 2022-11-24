@@ -16,7 +16,6 @@ import dev.iurysouza.livematch.domain.auth.RefreshTokenIfNeededUseCase
 import dev.iurysouza.livematch.domain.highlights.GetMatchHighlightsUseCase
 import dev.iurysouza.livematch.domain.matches.FetchMatchesUseCase
 import dev.iurysouza.livematch.domain.matchthreads.FetchLatestMatchThreadsForTodayUseCase
-import dev.iurysouza.livematch.ui.features.matchthread.MatchEventParser
 import dev.iurysouza.livematch.ui.features.matchthread.MatchHighlightParser
 import dev.iurysouza.livematch.ui.features.matchthread.ViewError
 import dev.iurysouza.livematch.util.ResourceProvider
@@ -46,6 +45,7 @@ class MatchListViewModel @Inject constructor(
     private val fetchLatestMatchThreadsForTodayUseCase: FetchLatestMatchThreadsForTodayUseCase,
 ) : ViewModel() {
 
+    val isRefreshingState = MutableSharedFlow<Boolean>()
     val events = MutableSharedFlow<MatchListEvents>()
 
     private val matchHighlightsFlow = savedStateHandle.getStateFlow(
@@ -78,18 +78,28 @@ class MatchListViewModel @Inject constructor(
         }
     }
 
-    fun getLatestMatches() = viewModelScope.launch {
+    fun getLatestMatches(isRefreshing: Boolean) = viewModelScope.launch {
         val savedMatches = matchEntityListFlow.value
-        if (savedMatches.isNotEmpty()) {
+        isRefreshingState.emit(isRefreshing)
+        if (savedMatches.isNotEmpty() && !isRefreshing) {
             _state.emit(MatchListState.Success(savedMatches.toMatchList()))
         } else {
+            if (isRefreshing) {
+                fetchRedditContent()
+            }
             either { fetchMatches().bind() }
                 .map { matchEntityList ->
                     savedStateHandle[KEY_MATCHES] = matchEntityList
                     matchEntityList.toMatchList()
                 }
-                .mapLeft { _state.emit(MatchListState.Error(it.toString())) }
-                .map { _state.emit(MatchListState.Success(it)) }
+                .mapLeft {
+                    isRefreshingState.emit(false)
+                    _state.emit(MatchListState.Error(it.toString()))
+                }
+                .map {
+                    isRefreshingState.emit(false)
+                    _state.emit(MatchListState.Success(it))
+                }
         }
     }
 
