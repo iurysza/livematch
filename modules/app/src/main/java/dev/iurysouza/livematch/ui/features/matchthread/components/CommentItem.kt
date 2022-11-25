@@ -10,19 +10,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,10 +32,9 @@ import com.halilibo.richtext.ui.WithStyle
 import com.halilibo.richtext.ui.string.RichTextStringStyle
 import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.ui.features.matchthread.CommentItem
+import dev.iurysouza.livematch.ui.theme.AppAccentColor
 import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
 import dev.iurysouza.livematch.ui.theme.AuthorColor
-import dev.iurysouza.livematch.ui.theme.AppAccentColor
-import dev.iurysouza.livematch.ui.theme.ScoreColor
 
 
 @Composable
@@ -101,22 +98,16 @@ fun CommentItemComponent(
                     style = authorStyle.copy(fontWeight = FontWeight.Normal)
                 )
                 Spacer(modifier.weight(1f))
-                Box(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .background(ScoreColor, RoundedCornerShape(10.dp))
-                        .padding(4.dp)
-                ) {
-                    Text(
-                        modifier = Modifier.fillMaxSize(),
-                        text = commentItem.score,
-                        style = TextStyle(
-                            textAlign = TextAlign.Center,
-                            fontSize = 12.sp,
-                            color = Color.White
-                        ),
-                    )
-                }
+                Text(
+                    modifier = Modifier.wrapContentSize(),
+                    text = commentItem.score,
+                    style = authorStyle.copy(fontWeight = FontWeight.Normal, color = AppAccentColor)
+                )
+                Text(
+                    modifier = Modifier.wrapContentSize(),
+                    text = " pts",
+                    style = authorStyle.copy(fontWeight = FontWeight.Normal)
+                )
             }
 
             CommentBody(commentItem.body)

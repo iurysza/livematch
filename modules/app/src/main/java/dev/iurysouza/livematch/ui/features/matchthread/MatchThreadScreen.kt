@@ -1,20 +1,31 @@
 package dev.iurysouza.livematch.ui.features.matchthread
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.net.Uri
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.browser.customtabs.CustomTabsIntent.COLOR_SCHEME_DARK
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
@@ -33,8 +44,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,8 +67,11 @@ import dev.iurysouza.livematch.ui.features.matchthread.components.CommentItemCom
 import dev.iurysouza.livematch.ui.features.matchthread.components.MatchHeader
 import dev.iurysouza.livematch.ui.features.matchthread.components.SectionHeader
 import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
+import dev.iurysouza.livematch.ui.theme.AuthorColor
+import dev.iurysouza.livematch.ui.theme.TextColor
 import dev.iurysouza.livematch.ui.theme.TitleColor
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterialApi::class)
@@ -133,7 +150,8 @@ fun MatchThreadF(
                         MatchDescriptionState.Loading -> FullScreenProgress()
                         is MatchDescriptionState.Error -> ErrorScreen(state.msg)
                         is MatchDescriptionState.Success -> MatchDetails(
-                            state.matchThread.content!!
+                            state.matchThread.content!!,
+                            state.matchThread.mediaList,
                         )
                     }
                 }
@@ -163,6 +181,8 @@ fun MatchThreadF(
                             stickyHeader {
                                 SectionHeader(
                                     sectionName = sectionName,
+                                    isExpanded = showContent.isNotEmpty() && showContent[event.description]!!,
+                                    nestedCommentCount = comments.size,
                                     event = event,
                                     onClick = method,
                                 )
@@ -208,21 +228,65 @@ fun MatchThreadF(
 }
 
 @Composable
-private fun MatchDetails(content: String) {
-    RichText(
-        modifier = Modifier.padding(8.dp),
-        style = RichTextStyle.Default.copy(
-            stringStyle = RichTextStringStyle.Default.copy(
-                italicStyle = SpanStyle(
-                    fontSize = 12.sp
+private fun MatchDetails(content: String, mediaItemList: List<MediaItem>) {
+    Column(
+        modifier = Modifier
+            .background(AppBackgroundColor)
+            .padding(horizontal = 8.dp),
+    ) {
+        RichText(
+            modifier = Modifier.padding(8.dp),
+            style = RichTextStyle.Default.copy(
+                stringStyle = RichTextStringStyle.Default.copy(
+                    italicStyle = SpanStyle(
+                        fontSize = 12.sp
+                    )
                 )
             )
-        )
+        ) {
+            Markdown(content)
+        }
+        MediaCarousel(mediaItemList)
+    }
+
+}
+
+@Composable
+fun MediaCarousel(mediaItemList: List<MediaItem>) {
+    val context = LocalContext.current
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Markdown(content)
+        itemsIndexed(mediaItemList) { index, item ->
+            Box(
+                Modifier
+                    .clickable { context.launchBrowserTabWith(item.url) }
+                    .size(80.dp)
+                    .background(AuthorColor, RoundedCornerShape(10.dp))
+                    .padding(8.dp)
+            ) {
+                Text(
+                    text = item.title,
+                    Modifier.align(Alignment.Center),
+                    style = TextStyle(
+                        fontSize = 9.sp,
+                        color = TextColor,
+                        fontWeight = FontWeight.Bold,
+                    )
+                )
+            }
+        }
     }
 }
 
+private fun Context.launchBrowserTabWith(url: String) = runCatching {
+    CustomTabsIntent
+        .Builder()
+        .setUrlBarHidingEnabled(true)
+        .setColorScheme(COLOR_SCHEME_DARK)
+        .build()
+        .launchUrl(this@launchBrowserTabWith, Uri.parse(url))
+}.onFailure { Timber.e(it) }
 
 @Preview
 @Composable

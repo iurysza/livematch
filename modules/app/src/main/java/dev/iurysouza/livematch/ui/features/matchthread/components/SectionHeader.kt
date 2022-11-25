@@ -9,20 +9,27 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.iurysouza.livematch.ui.features.matchthread.EventIcon
 import dev.iurysouza.livematch.ui.features.matchthread.MatchEvent
 import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
+import dev.iurysouza.livematch.ui.theme.ScoreColor
 import dev.iurysouza.livematch.ui.theme.TextColor
 import dev.iurysouza.livematch.ui.theme.TitleColor
 
@@ -31,6 +38,8 @@ fun SectionHeader(
     sectionName: String,
     event: MatchEvent,
     onClick: ((MatchEvent) -> Unit)?,
+    isExpanded: Boolean = false,
+    nestedCommentCount: Int = 0,
     modifier: Modifier = Modifier,
 ) {
     var newModifier = modifier
@@ -49,18 +58,44 @@ fun SectionHeader(
                 .background(AppBackgroundColor)
                 .padding(horizontal = 8.dp),
         ) {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                MatchIcon(
-                    modifier = modifier,
-                    icon = event.icon,
-                    time = event.relativeTime,
-                )
-                Text(
-                    event.description,
-                    modifier = modifier.align(Alignment.CenterVertically),
-                    fontWeight = if (event.keyEvent) FontWeight.Bold else FontWeight.Normal,
-                    color = TitleColor
-                )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(
+                    Modifier.weight(.85f),
+                ) {
+                    MatchIcon(
+                        modifier = modifier,
+                        icon = event.icon,
+                        time = event.relativeTime,
+                    )
+                    Text(
+                        event.description,
+                        modifier = modifier
+                            .padding(start = 4.dp)
+                            .align(Alignment.CenterVertically),
+                        fontWeight = if (event.keyEvent) FontWeight.Bold else FontWeight.Normal,
+                        color = TitleColor
+                    )
+                }
+                if (!isExpanded && nestedCommentCount > 0) {
+                    Box(
+                        modifier = modifier
+                            .width(28.dp)
+                            .height(24.dp)
+                            .background(ScoreColor, RoundedCornerShape(10.dp))
+                    ) {
+                        Text(
+                            modifier = Modifier.align(Alignment.Center),
+                            text = "+$nestedCommentCount",
+                            style = TextStyle(
+                                textAlign = TextAlign.Center,
+                                fontSize = 10.sp,
+                                color = Color.White
+                            ),
+                        )
+                    }
+                }
             }
         }
 
