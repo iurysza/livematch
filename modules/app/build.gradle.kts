@@ -1,22 +1,20 @@
 @file:Suppress("LocalVariableName")
 
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("dev.iurysouza.livematch.android-application")
 }
 
 android {
-//    val appStorePassword: String by project
-//    val appStoreFile: String by project
-//    val appKeyPassword: String by project
-//    val appKeyAlias: String by project
-//    signingConfigs {
-//        create("release") {
-//            keyAlias = appKeyAlias
-//            keyPassword = appKeyPassword
-//            storePassword = appStorePassword
-//            storeFile = file(appStoreFile)
-//        }
-//    }
+    signingConfigs {
+        create("release") {
+            keyAlias = getLocalProperty("keyAlias")
+            keyPassword = getLocalProperty("keyPassword")
+            storePassword = getLocalProperty("storePassword")
+            storeFile = file(getLocalProperty("storeFile"))
+        }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -28,16 +26,21 @@ android {
         val FOOTBALL_DATA_BASE_URL: String by project
         val MOCK_API_URL: String by project
 
-//        getByName("release") {
-//            isMinifyEnabled = false
-//            proguardFiles(
-//                getDefaultProguardFile("proguard-android-optimize.txt"),
-//                "proguard-rules.pro"
-//            )
-//            signingConfig = signingConfigs.getByName("release")
-//            isDebuggable = false
-//            buildConfigField("String", "API_URL", API_URL)
-//        }
+        getByName("release") {
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            signingConfig = signingConfigs.getByName("release")
+            isDebuggable = false
+            buildConfigField("String", "API_URL", API_URL)
+            buildConfigField(
+                type = "String",
+                name = "FOOTBALL_DATA_BASE_URL",
+                value = FOOTBALL_DATA_BASE_URL
+            )
+        }
         getByName("debug") {
             buildConfigField(
                 type = "String",
@@ -93,6 +96,8 @@ dependencies {
     testImplementation(libs.bundles.kotestBundle)
     testImplementation(libs.androidx.test.runner)
     testImplementation(libs.kotlinx.coroutines.test)
-    implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     implementation("androidx.browser:browser:1.4.0")
 }
+
+fun getLocalProperty(key: String) = gradleLocalProperties(rootDir).getProperty(key)

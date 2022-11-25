@@ -14,6 +14,8 @@
 bin/
 gen/
 out/
+/assets/icons/
+/assets/keys/
 #  Uncomment the following line in case you need and you don't have the release build type files in your app
 # release/
 
@@ -38,6 +40,11 @@ captures/
 
 # IntelliJ
 *.iml
+.idea/compiler.xml
+.idea/misc.xml
+.idea/kotlinScripting.xml
+.idea/inspectionProfiles/
+.idea/git_toolbox_prj.xml
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/gradle.xml
