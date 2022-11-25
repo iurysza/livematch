@@ -12,7 +12,7 @@ open class MatchHighlightParser {
     ): Either<ViewError.MatchMediaParsingError, List<MediaItem>> = Either.catch {
         val (homeTeam, awayTeam) = matchTitle.parseTeamNames()
         matchMedias.sortedBy { it.createdAt }.filter { media ->
-            containsTeamName(media.title!!, homeTeam) && containsTeamName(media.title, awayTeam)
+            containsTeamName(media.title!!, homeTeam) || containsTeamName(media.title, awayTeam)
         }.map { media ->
             MediaItem(
                 title = parseTitle(media),
@@ -38,9 +38,16 @@ open class MatchHighlightParser {
     }
 
     private fun String.parseTeamNames(): Pair<String, String> {
-        val regexMatch = HOME_VS_AWAY.toRegex().find(this)!!
-        val (homeTeam, awayTeam) = regexMatch.destructured
-        return homeTeam to awayTeam
+//        val regexMatch = HOME_VS_AWAY.toRegex().find(this)!!
+//        val (homeTeam, awayTeam) = regexMatch.destructured
+        val pattern = "\\W+".toRegex()
+        val words = pattern.split(this).filter { it.isNotBlank() }
+        val new = words.takeWhile { it != "vs" }
+        val homeTeam = new.drop(2)
+
+        val awayTeam = words.takeLastWhile { it != "vs" }.takeWhile { it != "FIFA" }
+
+        return homeTeam.joinToString(" ") to awayTeam.joinToString(" ")
     }
 
     private val teamNickNameDictionary = mapOf(
@@ -48,4 +55,4 @@ open class MatchHighlightParser {
     )
 }
 
-private const val HOME_VS_AWAY = """Match Thread: (.*) vs (.*)\| (.*)"""
+private const val HOME_VS_AWAY = """Match Thread: (.*) vs (.*)(\| | \[)* (.*)"""

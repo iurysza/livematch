@@ -30,6 +30,7 @@ internal fun List<MatchEntity>.toMatchList(): List<Match> = map { entity ->
                 val diffMin = (nowInMilli - matchStartTimeInMilli) / 60000
                 "$diffMin'"
             }
+            Status.PAUSED -> "HT"
             Status.TIMED -> ""
         }
     )

@@ -71,6 +71,7 @@ data class HalfEntity(
 
 enum class Status(name: String) {
     IN_PLAY("IN_PLAY"),
+    PAUSED("PAUSED"),
     TIMED("TIMED"),
     FINISHED("FINISHED"),
 }

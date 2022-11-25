@@ -16,15 +16,18 @@ open class MatchEventParser {
         val contentList = content.split("\n")
         var headline = contentList.first()
         val scoreValue = headline.substringAfter("[").substringBefore("]")
-        headline = headline.replace(
-            Regex(ICONS_PATTERN).findAll(headline).first().value, scoreValue
-        ).replace("#**", "# **")
+        runCatching {
+            headline = headline.replace(
+                Regex(ICONS_PATTERN).findAll(headline).first().value,
+                scoreValue
+            ).replace("#**", "# **")
+        }
 
         val finalContent = contentList
             .drop(1)
             .joinToString("\n")
             .substringBefore("-----\n")
-            .replace("---","")
+            .replace("---", "")
 
         val matchEventList = contentList.takeLastWhile {
             !it.contains("**MATCH EVENTS**", true)
