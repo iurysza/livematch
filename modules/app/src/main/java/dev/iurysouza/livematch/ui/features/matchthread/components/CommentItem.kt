@@ -5,11 +5,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
@@ -34,7 +32,7 @@ import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.ui.features.matchthread.CommentItem
 import dev.iurysouza.livematch.ui.theme.AppAccentColor
 import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
-import dev.iurysouza.livematch.ui.theme.AuthorColor
+import dev.iurysouza.livematch.ui.theme.AppWhite3
 
 
 @Composable
@@ -43,22 +41,19 @@ fun CommentItemComponent(
     modifier: Modifier = Modifier,
     onClick: (CommentItem) -> Unit,
 ) {
-    Column(
-        modifier
+    Row(
+        modifier = modifier
             .background(AppBackgroundColor)
-            .padding(start = 32.dp)
-            .padding(vertical = 4.dp)
-            .padding(bottom = 2.dp)
+            .padding(vertical = 8.dp)
+            .padding(start = 64.dp)
             .background(AppAccentColor)
-            .fillMaxWidth()
-            .wrapContentHeight()
-    ) {
+    )
+    {
         Column(
             modifier = modifier
                 .padding(start = 4.dp)
                 .background(AppBackgroundColor)
-                .padding(horizontal = 4.dp)
-                .padding(vertical = 2.dp)
+                .padding(horizontal = 4.dp, vertical = 4.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -66,7 +61,7 @@ fun CommentItemComponent(
             ) {
                 val authorStyle = TextStyle(
                     fontSize = 12.sp,
-                    color = AuthorColor,
+                    color = AppWhite3,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
@@ -76,8 +71,7 @@ fun CommentItemComponent(
                 )
                 if (commentItem.flairUrl != null) {
                     Box(
-                        Modifier
-                            .padding(horizontal = 2.dp)
+                        Modifier.padding(horizontal = 2.dp)
                     ) {
                         AsyncImage(
                             modifier = Modifier

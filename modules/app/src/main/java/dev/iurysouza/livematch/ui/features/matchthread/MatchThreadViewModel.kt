@@ -54,7 +54,7 @@ class MatchThreadViewModel @Inject constructor(
                     .mapLeft { mapErrorMsg(it) }
                     .flatMap { eventParser.toCommentItemList(it, match.startTime) }
                     .mapLeft { ViewError.CommentItemParsingError(it.toString()) }
-                    .flatMap { eventParser.toCommentSectionListEvents(it, matchEvents) }
+                    .flatMap { eventParser.toCommentSectionListEvents(it, matchEvents, isRefreshing) }
                     .map {
                         it.mapIndexed { index, commentSection ->
                             if (index == 0) {

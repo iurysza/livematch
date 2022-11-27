@@ -67,9 +67,9 @@ import dev.iurysouza.livematch.ui.features.matchthread.components.CommentItemCom
 import dev.iurysouza.livematch.ui.features.matchthread.components.MatchHeader
 import dev.iurysouza.livematch.ui.features.matchthread.components.SectionHeader
 import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
-import dev.iurysouza.livematch.ui.theme.AuthorColor
-import dev.iurysouza.livematch.ui.theme.TextColor
-import dev.iurysouza.livematch.ui.theme.TitleColor
+import dev.iurysouza.livematch.ui.theme.AppWhite1
+import dev.iurysouza.livematch.ui.theme.AppWhite2
+import dev.iurysouza.livematch.ui.theme.AppWhite3
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -136,7 +136,7 @@ fun MatchThreadF(
         val scrollState = rememberLazyListState()
         LazyColumn(
             modifier = Modifier
-                .padding(top = 38.dp),
+                .padding(top = 42.dp),
             state = scrollState,
             content = {
                 item {
@@ -213,13 +213,15 @@ fun MatchThreadF(
         horizontalArrangement = Arrangement.Start,
         modifier = Modifier
             .fillMaxWidth()
+            .padding(bottom = 4.dp)
             .background(Color.Transparent)
     ) {
         IconButton(
-            onClick = navigateUp) {
+            onClick = navigateUp
+        ) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
-                tint = TitleColor,
+                tint = AppWhite1,
                 contentDescription = stringResource(R.string.icon_description),
             )
         }
@@ -262,7 +264,7 @@ fun MediaCarousel(mediaItemList: List<MediaItem>) {
                 Modifier
                     .clickable { context.launchBrowserTabWith(item.url) }
                     .size(80.dp)
-                    .background(AuthorColor, RoundedCornerShape(10.dp))
+                    .background(AppWhite3, RoundedCornerShape(10.dp))
                     .padding(8.dp)
             ) {
                 Text(
@@ -270,7 +272,7 @@ fun MediaCarousel(mediaItemList: List<MediaItem>) {
                     Modifier.align(Alignment.Center),
                     style = TextStyle(
                         fontSize = 9.sp,
-                        color = TextColor,
+                        color = AppWhite2,
                         fontWeight = FontWeight.Bold,
                     )
                 )

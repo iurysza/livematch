@@ -27,7 +27,7 @@ import androidx.constraintlayout.compose.ConstraintSet
 import coil.compose.AsyncImage
 import dev.iurysouza.livematch.ui.features.matchlist.Team
 import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
-import dev.iurysouza.livematch.ui.theme.TitleColor
+import dev.iurysouza.livematch.ui.theme.AppWhite1
 
 @Composable
 @Preview
@@ -68,7 +68,7 @@ fun MatchHeader(
             teamCrestUrl = homeTeam.crestUrl!!,
             score = homeTeam.score
         )
-        Text(text = "x", style = TextStyle(color = TitleColor),
+        Text(text = "x", style = TextStyle(color = AppWhite1),
             modifier = Modifier
                 .padding(horizontal = 8.dp)
                 .padding(bottom = 16.dp))
@@ -168,7 +168,7 @@ private fun HeaderContent(
         constraintSet = constraintSet,
         modifier = Modifier.wrapContentSize()
     ) {
-        val title = TextStyle(color = TitleColor)
+        val title = TextStyle(color = AppWhite1)
         Box(
             modifier = Modifier
                 .layoutId("name")

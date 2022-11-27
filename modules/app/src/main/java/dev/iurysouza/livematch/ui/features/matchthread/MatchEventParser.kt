@@ -40,10 +40,10 @@ open class MatchEventParser {
         return buildList {
             add(
                 MatchEvent(
-                    relativeTime = "1",
+                    relativeTime = "0",
                     icon = EventIcon.KickOff,
-                    description = "Match Started",
-                    keyEvent = true
+                    description = "Kick Off!",
+                    keyEvent = false
                 )
             )
             addAll(eventList)
@@ -52,7 +52,7 @@ open class MatchEventParser {
                     relativeTime = "300",
                     icon = EventIcon.FinalWhistle,
                     description = "Last Comments",
-                    keyEvent = true
+                    keyEvent = false
                 )
             )
         } to finalContent
@@ -134,6 +134,7 @@ open class MatchEventParser {
     fun toCommentSectionListEvents(
         commentList: List<CommentItem>,
         eventList: List<MatchEvent>,
+        isRefreshing: Boolean,
     ): Either<Throwable, List<CommentSection>> {
 
         fun MatchEvent.relativeTime(): Int = runCatching {
@@ -169,11 +170,17 @@ open class MatchEventParser {
                         CommentSection(
                             lastEventTime.toString(),
                             event = eventStack.last(),
-                            commentList =
-                            sectionComments
-                                .sortedBy { it.score }
-                                .take(20)
-                                .sortedBy { it.relativeTime },
+                            commentList = if (isRefreshing) {
+                                sectionComments
+                                    .sortedBy { it.score }
+                                    .take(50)
+                                    .sortedBy { it.relativeTime }
+                            } else {
+                                sectionComments
+                                    .sortedBy { it.score }
+                                    .take(20)
+                                    .sortedBy { it.relativeTime }
+                            }
                         )
                     )
                     eventStack.removeLast()

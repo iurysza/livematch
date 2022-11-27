@@ -35,7 +35,7 @@ import dev.iurysouza.livematch.ui.components.ErrorScreen
 import dev.iurysouza.livematch.ui.components.FullScreenProgress
 import dev.iurysouza.livematch.ui.features.matchthread.MatchThread
 import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
-import dev.iurysouza.livematch.ui.theme.TitleColor
+import dev.iurysouza.livematch.ui.theme.AppWhite1
 import dev.iurysouza.livematch.util.shortToast
 import kotlinx.coroutines.launch
 
@@ -94,10 +94,14 @@ fun MatchListScreenComponent(
     }
 
     Scaffold(
-        modifier = Modifier.background(AppBackgroundColor),
+        modifier = Modifier
+            .background(AppBackgroundColor)
+            .fillMaxHeight()
+            .pullRefresh(refreshState)
+        ,
         topBar = {
             TopAppBar(
-                title = { Text(text = stringResource(R.string.matches), color = TitleColor) },
+                title = { Text(text = stringResource(R.string.matches), color = AppWhite1) },
                 backgroundColor = AppBackgroundColor,
                 actions = {
                     if (isSyncing.value) {
@@ -113,16 +117,13 @@ fun MatchListScreenComponent(
         }
     ) {
         Box(
-            modifier = Modifier
-                .pullRefresh(refreshState)
-
         ) {
             Column(
                 Modifier
                     .background(AppBackgroundColor)
                     .fillMaxHeight()
                     .padding(it),
-                ) {
+            ) {
                 when (state) {
                     is MatchListState.Error -> ErrorScreen(state.msg)
                     MatchListState.Loading -> FullScreenProgress()

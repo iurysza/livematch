@@ -6,6 +6,7 @@ import dev.iurysouza.livematch.ui.theme.LiveMatchAssets
 import dev.iurysouza.livematch.ui.theme.livematchassets.Booking
 import dev.iurysouza.livematch.ui.theme.livematchassets.Clock
 import dev.iurysouza.livematch.ui.theme.livematchassets.Goal
+import dev.iurysouza.livematch.ui.theme.livematchassets.Kickoff
 import dev.iurysouza.livematch.ui.theme.livematchassets.Sub
 import kotlinx.parcelize.Parcelize
 
@@ -44,7 +45,7 @@ sealed class EventIcon(val icon: String) : Parcelable {
     }
 
     fun toImageVector(): ImageVector = when (this) {
-        is Goal -> LiveMatchAssets.Goal
+        is Goal -> LiveMatchAssets.Kickoff
         is Foul -> LiveMatchAssets.Goal
         is Corner -> LiveMatchAssets.Goal
         is Penalty -> LiveMatchAssets.Goal

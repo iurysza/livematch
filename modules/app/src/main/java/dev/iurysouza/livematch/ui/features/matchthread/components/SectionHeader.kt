@@ -2,18 +2,17 @@ package dev.iurysouza.livematch.ui.features.matchthread.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -28,10 +27,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.iurysouza.livematch.ui.features.matchthread.EventIcon
 import dev.iurysouza.livematch.ui.features.matchthread.MatchEvent
+import dev.iurysouza.livematch.ui.theme.AppAccentColor
+import dev.iurysouza.livematch.ui.theme.AppAccentColorDark
 import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
-import dev.iurysouza.livematch.ui.theme.ScoreColor
-import dev.iurysouza.livematch.ui.theme.TextColor
-import dev.iurysouza.livematch.ui.theme.TitleColor
+import dev.iurysouza.livematch.ui.theme.AppWhite1
+import dev.iurysouza.livematch.ui.theme.AppWhite2
 
 @Composable
 fun SectionHeader(
@@ -43,124 +43,135 @@ fun SectionHeader(
     modifier: Modifier = Modifier,
 ) {
     var newModifier = modifier
-        .fillMaxWidth()
         .background(AppBackgroundColor)
-
     if (onClick != null) {
         newModifier = newModifier.clickable { onClick(event) }
     }
-    Card(
-        modifier = newModifier,
-        elevation = 4.dp,
+    Row(
+        modifier = newModifier
+            .padding(horizontal = 8.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Column(
-            modifier = modifier
-                .background(AppBackgroundColor)
-                .padding(horizontal = 8.dp),
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Row(
-                    Modifier.weight(.85f),
-                ) {
-                    MatchIcon(
-                        modifier = modifier,
-                        icon = event.icon,
-                        time = event.relativeTime,
-                    )
-                    Text(
-                        event.description,
-                        modifier = modifier
-                            .padding(start = 4.dp)
-                            .align(Alignment.CenterVertically),
-                        fontWeight = if (event.keyEvent) FontWeight.Bold else FontWeight.Normal,
-                        color = TitleColor
-                    )
-                }
-                if (!isExpanded && nestedCommentCount > 0) {
-                    Box(
-                        modifier = modifier
-                            .width(28.dp)
-                            .height(24.dp)
-                            .background(ScoreColor, RoundedCornerShape(10.dp))
-                    ) {
-                        Text(
-                            modifier = Modifier.align(Alignment.Center),
-                            text = "+$nestedCommentCount",
-                            style = TextStyle(
-                                textAlign = TextAlign.Center,
-                                fontSize = 10.sp,
-                                color = Color.White
-                            ),
-                        )
-                    }
-                }
-            }
+        Row(modifier = modifier.weight(.85f)) {
+            Timeline(
+                modifier = modifier,
+                icon = event.icon,
+                time = event.relativeTime,
+                isKeyEvent = event.keyEvent
+            )
+            Text(
+                event.description,
+                modifier = modifier
+                    .weight(.15f)
+                    .padding(start = 4.dp)
+                    .padding(bottom = 14.dp)
+                    .align(Alignment.CenterVertically),
+                style = if (event.keyEvent) TextStyle(color = AppWhite1,
+                    fontWeight = FontWeight.Bold) else TextStyle(color = AppWhite2),
+            )
         }
+        CommentCounterIndicator(isExpanded, nestedCommentCount, modifier
+            .padding(start = 4.dp, bottom = 14.dp)
+            .width(IntrinsicSize.Min))
 
     }
 }
 
 @Composable
-fun MatchIcon(modifier: Modifier = Modifier, icon: EventIcon, time: String) {
-    Column(modifier.background(AppBackgroundColor)) {
-        if (time.isNotEmpty()) {
-            Box(modifier = modifier
-                .align(Alignment.CenterHorizontally)
-                .background(color = TextColor)
-                .height(16.dp)
-                .width(1.dp)
-            )
-        } else {
-            Box(modifier = modifier
-                .align(Alignment.CenterHorizontally)
-                .height(16.dp)
-                .width(1.dp)
+private fun CommentCounterIndicator(
+    isExpanded: Boolean,
+    nestedCommentCount: Int,
+    modifier: Modifier,
+) {
+    if (!isExpanded && nestedCommentCount > 0) {
+        Box(
+            modifier = modifier
+                .width(28.dp)
+                .height(24.dp)
+                .background(AppAccentColorDark, RoundedCornerShape(10.dp))
+        ) {
+            Text(
+                modifier = Modifier.align(Alignment.Center),
+                text = "+$nestedCommentCount",
+                style = TextStyle(
+                    textAlign = TextAlign.Center,
+                    fontSize = 10.sp,
+                    color = Color.White
+                ),
             )
         }
+    }
+}
+
+@Composable
+fun Timeline(modifier: Modifier = Modifier, icon: EventIcon, time: String, isKeyEvent: Boolean) {
+    Column(
+        modifier.background(AppBackgroundColor)
+    ) {
         Column(
             modifier.align(Alignment.CenterHorizontally),
         ) {
             Text(
                 modifier = modifier.align(Alignment.CenterHorizontally),
                 fontSize = 12.sp,
-                color = TitleColor,
+                color = AppWhite1,
                 text = time,
             )
             MatchEventIcon(
                 modifier = modifier.align(Alignment.CenterHorizontally),
                 eventIcon = icon,
+                isKeyEvent = isKeyEvent,
             )
         }
-        Box(
-            modifier = modifier
-                .align(Alignment.CenterHorizontally)
-                .background(color = TextColor)
-                .height(24.dp)
-                .width(1.dp)
+        Line(
+            modifier = modifier.padding(top = 8.dp),
+            color = AppWhite2
         )
     }
 }
 
 @Composable
-private fun MatchEventIcon(modifier: Modifier, eventIcon: EventIcon) {
-    Icon(
-        tint = TextColor,
-        imageVector = eventIcon.toImageVector(),
-        contentDescription = "Home",
-        modifier = modifier.height(24.dp)
+private fun ColumnScope.Line(modifier: Modifier, color: Color) {
+    Box(modifier = modifier
+        .align(Alignment.CenterHorizontally)
+        .background(color = color)
+        .height(30.dp)
+        .width(3.dp)
     )
+}
+
+@Composable
+private fun MatchEventIcon(modifier: Modifier, eventIcon: EventIcon, isKeyEvent: Boolean) {
+    val tint = if (isKeyEvent) AppAccentColor else AppWhite1
+    Box(
+        modifier = modifier
+            .background(tint, CircleShape)
+            .padding(2.dp)
+            .background(AppBackgroundColor, CircleShape)
+            .padding(4.dp)
+    ) {
+        Icon(
+            tint = tint,
+            imageVector = eventIcon.toImageVector(),
+            contentDescription = "Home",
+            modifier = modifier
+                .height(16.dp)
+                .padding(1.dp)
+        )
+
+    }
 }
 
 
 @Preview
 @Composable
 fun MatchIconPreview() {
-    MatchIcon(
+    Timeline(
         modifier = Modifier,
-        icon = EventIcon.Goal,
-        time = "40"
+        icon = EventIcon.KickOff,
+        time = "40",
+        isKeyEvent = true
     )
 }
 
@@ -169,6 +180,8 @@ fun MatchIconPreview() {
 @Preview
 fun CommentHeaderPreview() {
     SectionHeader(
+        nestedCommentCount = 23,
+        isExpanded = false,
         sectionName = "89+2",
         event = MatchEvent(
             relativeTime = "89+2",

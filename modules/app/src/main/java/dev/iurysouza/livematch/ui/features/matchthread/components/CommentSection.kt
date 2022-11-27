@@ -1,6 +1,7 @@
 package dev.iurysouza.livematch.ui.features.matchthread.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -11,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import dev.iurysouza.livematch.ui.components.AnimatedCellExpansion
 import dev.iurysouza.livematch.ui.features.matchthread.CommentItem
 import dev.iurysouza.livematch.ui.features.matchthread.CommentSection
@@ -32,6 +34,7 @@ fun CommentSectionComponent(
     val scrollState = rememberLazyListState()
 
     LazyColumn(
+        contentPadding = PaddingValues(vertical = 4.dp),
         state = scrollState,
         content = {
             commentSectionList.forEach { (sectionName: String, event: MatchEvent, comments: List<CommentItem>) ->
@@ -70,9 +73,9 @@ fun CommentSectionComponentPreview() {
             add(CommentSection(
                 name = "${it + 1}",
                 event = MatchEvent(
-                    relativeTime = "Event $it",
+                    relativeTime = "35",
                     icon = EventIcon.YellowCard,
-                    description = "Event $it"
+                    description = "Goal! Something happened is amazing"
 
                 ),
                 commentList = buildList {
