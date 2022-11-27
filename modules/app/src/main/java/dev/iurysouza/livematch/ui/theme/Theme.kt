@@ -39,14 +39,14 @@ fun LivematchTheme(
         shapes = Shapes,
     ) {
         RichTextThemeIntegration(
-            textStyle = { TextStyle(color = TextColor) },
+            textStyle = { TextStyle(color = AppWhite2) },
             ProvideTextStyle = { newTextStyle, content ->
-                CompositionLocalProvider(compositionLocalOf { TextStyle(color = TextColor) } provides newTextStyle) {
+                CompositionLocalProvider(compositionLocalOf { TextStyle(color = AppWhite2) } provides newTextStyle) {
                     content()
                 }
             },
             ProvideContentColor = { newColor, content ->
-                CompositionLocalProvider(compositionLocalOf { TextColor } provides newColor) {
+                CompositionLocalProvider(compositionLocalOf { AppWhite2 } provides newColor) {
                     content()
                 }
             },

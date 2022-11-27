@@ -1,31 +1,20 @@
 package dev.iurysouza.livematch.ui.features.matchthread
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.net.Uri
-import androidx.browser.customtabs.CustomTabsIntent
-import androidx.browser.customtabs.CustomTabsIntent.COLOR_SCHEME_DARK
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
@@ -44,34 +33,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.halilibo.richtext.markdown.Markdown
-import com.halilibo.richtext.ui.RichText
-import com.halilibo.richtext.ui.RichTextStyle
-import com.halilibo.richtext.ui.string.RichTextStringStyle
 import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.ui.components.AnimatedCellExpansion
 import dev.iurysouza.livematch.ui.components.ErrorScreen
 import dev.iurysouza.livematch.ui.components.FullScreenProgress
-import dev.iurysouza.livematch.ui.features.matchlist.Team
 import dev.iurysouza.livematch.ui.features.matchthread.components.CommentItemComponent
+import dev.iurysouza.livematch.ui.features.matchthread.components.MatchDetails
 import dev.iurysouza.livematch.ui.features.matchthread.components.MatchHeader
 import dev.iurysouza.livematch.ui.features.matchthread.components.SectionHeader
 import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
 import dev.iurysouza.livematch.ui.theme.AppWhite1
-import dev.iurysouza.livematch.ui.theme.AppWhite2
-import dev.iurysouza.livematch.ui.theme.AppWhite3
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterialApi::class)
@@ -102,7 +78,7 @@ fun MatchThreadScreen(
         }
     })
 
-    MatchThreadF(
+    MatchThreadComponent(
         isRefreshing = isRefreshing.value,
         refreshState = refreshState,
         matchThread = matchThread,
@@ -115,7 +91,7 @@ fun MatchThreadScreen(
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun MatchThreadF(
+fun MatchThreadComponent(
     isRefreshing: Boolean,
     refreshState: PullRefreshState,
     matchThread: MatchThread,
@@ -131,8 +107,6 @@ fun MatchThreadF(
             .background(AppBackgroundColor)
             .fillMaxSize()
     ) {
-
-
         val scrollState = rememberLazyListState()
         LazyColumn(
             modifier = Modifier
@@ -166,25 +140,19 @@ fun MatchThreadF(
                             showContent = sectionToggleMap.toMap()
                         }
                         commentsState.commentSectionList.forEach { (sectionName: String, event: MatchEvent, comments: List<CommentItem>) ->
-                            val method = if (comments.isEmpty()) {
-                                null
-                            } else {
-                                { _: MatchEvent ->
-                                    showContent = showContent
-                                        .toMutableMap()
-                                        .apply {
-                                            this[event.description] = !this[event.description]!!
-                                        }
-                                }
-                            }
-
                             stickyHeader {
                                 SectionHeader(
                                     sectionName = sectionName,
                                     isExpanded = showContent.isNotEmpty() && showContent[event.description]!!,
                                     nestedCommentCount = comments.size,
                                     event = event,
-                                    onClick = method,
+                                    onClick = {
+                                        showContent = showContent
+                                            .toMutableMap()
+                                            .apply {
+                                                this[event.description] = !this[event.description]!!
+                                            }
+                                    },
                                 )
                             }
                             items(comments) { commentItem: CommentItem ->
@@ -207,8 +175,12 @@ fun MatchThreadF(
             refreshing = isRefreshing,
             state = refreshState,
         )
-
     }
+    ScreenToolbar(navigateUp)
+}
+
+@Composable
+private fun ScreenToolbar(navigateUp: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.Start,
         modifier = Modifier
@@ -229,97 +201,3 @@ fun MatchThreadF(
     }
 }
 
-@Composable
-private fun MatchDetails(content: String, mediaItemList: List<MediaItem>) {
-    Column(
-        modifier = Modifier
-            .background(AppBackgroundColor)
-            .padding(horizontal = 8.dp),
-    ) {
-        RichText(
-            modifier = Modifier.padding(8.dp),
-            style = RichTextStyle.Default.copy(
-                stringStyle = RichTextStringStyle.Default.copy(
-                    italicStyle = SpanStyle(
-                        fontSize = 12.sp
-                    )
-                )
-            )
-        ) {
-            Markdown(content)
-        }
-        MediaCarousel(mediaItemList)
-    }
-
-}
-
-@Composable
-fun MediaCarousel(mediaItemList: List<MediaItem>) {
-    val context = LocalContext.current
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        itemsIndexed(mediaItemList) { index, item ->
-            Box(
-                Modifier
-                    .clickable { context.launchBrowserTabWith(item.url) }
-                    .size(80.dp)
-                    .background(AppWhite3, RoundedCornerShape(10.dp))
-                    .padding(8.dp)
-            ) {
-                Text(
-                    text = item.title,
-                    Modifier.align(Alignment.Center),
-                    style = TextStyle(
-                        fontSize = 9.sp,
-                        color = AppWhite2,
-                        fontWeight = FontWeight.Bold,
-                    )
-                )
-            }
-        }
-    }
-}
-
-private fun Context.launchBrowserTabWith(url: String) = runCatching {
-    CustomTabsIntent
-        .Builder()
-        .setUrlBarHidingEnabled(true)
-        .setColorScheme(COLOR_SCHEME_DARK)
-        .build()
-        .launchUrl(this@launchBrowserTabWith, Uri.parse(url))
-}.onFailure { Timber.e(it) }
-
-@Preview
-@Composable
-private fun MatchThreadPreview() {
-    MatchThreadScreen(
-        matchThread = MatchThread(
-            competition = Competition(
-                emblemUrl = "",
-                id = null,
-                name = ""
-            ),
-            content = "Real Madrid",
-            id = "id",
-            startTime = 9,
-            mediaList = emptyList(),
-            homeTeam = Team(
-                crestUrl = null,
-                name = "",
-                isHomeTeam = false,
-                isAhead = false,
-                score = ""
-            ),
-            awayTeam = Team(
-                crestUrl = null,
-                name = "",
-                isHomeTeam = false,
-                isAhead = false,
-                score = ""
-            ),
-            refereeList = listOf(),
-        ),
-        navigateUp = {}
-    )
-}

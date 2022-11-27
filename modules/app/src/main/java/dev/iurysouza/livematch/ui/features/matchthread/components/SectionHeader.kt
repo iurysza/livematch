@@ -175,18 +175,35 @@ fun MatchIconPreview() {
     )
 }
 
+@Composable
+@Preview
+fun CommentHeaderPreview2() {
+    SectionHeader(
+        nestedCommentCount = 23,
+        isExpanded = false,
+        sectionName = "",
+        event = MatchEvent(
+            relativeTime = "89+2'",
+            icon = EventIcon.Goal,
+            description = "Goal! Japan 0, Costa RIca 1, Keysher Fuller (Costa Rica) left footed shot from the centre of the box to the top left corner. Assisted by Yeltsin Tejeda.",
+            keyEvent = true,
+        ),
+        onClick = {},
+    )
+}
 
 @Composable
 @Preview
 fun CommentHeaderPreview() {
     SectionHeader(
         nestedCommentCount = 23,
-        isExpanded = false,
-        sectionName = "89+2",
+        isExpanded = true,
+        sectionName = "",
         event = MatchEvent(
-            relativeTime = "89+2",
-            icon = EventIcon.FinalWhistle,
+            relativeTime = "75'",
+            icon = EventIcon.YellowCard,
             description = "Mario Hermoso (Atletico Madrid) is shown the yellow card for a bad foul.",
+            keyEvent = false
         ),
         onClick = {},
     )

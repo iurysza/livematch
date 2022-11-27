@@ -69,30 +69,46 @@ fun CommentSectionComponent(
 @Composable
 fun CommentSectionComponentPreview() {
     val commentSectionList = buildList<CommentSection> {
-        (0..10).forEach {
-            add(CommentSection(
-                name = "${it + 1}",
-                event = MatchEvent(
-                    relativeTime = "35",
-                    icon = EventIcon.YellowCard,
-                    description = "Goal! Something happened is amazing"
-
-                ),
-                commentList = buildList {
-                    (0..10).forEach { index ->
-                        add(
-                            CommentItem(
-                                author = "elrubiojefe",
-                                relativeTime = 62 + index,
-                                body = "Fede is just getting better and better. Qatar can't come come soon enough...",
-                                score = "11",
-                                flairUrl = "",
-                                flairName = ""
-                            )
-                        )
-                    }
-                }
-            ))
+        (0..10).forEach { index ->
+            if (index % 2 == 0) {
+                add(
+                    CommentSection(
+                        name = "${index + 1}",
+                        event = MatchEvent(
+                            relativeTime = "${index + 3}'",
+                            icon = EventIcon.Goal,
+                            description = "Goal! Japan 0, Costa RIca 1, Keysher Fuller (Costa Rica) left footed shot from the centre of the box to the top left corner. Assisted by Yeltsin Tejeda.",
+                            keyEvent = true,
+                        ),
+                        commentList = buildList {
+                            (0..7).forEach { index ->
+                                add(
+                                    CommentItem(
+                                        author = "elrubiojefe",
+                                        relativeTime = 62 + index,
+                                        body = "Fede is just getting better and better. Qatar can't come come soon enough...",
+                                        score = "${index + 2}",
+                                        flairUrl = "",
+                                        flairName = ""
+                                    )
+                                )
+                            }
+                        }
+                    ))
+            } else {
+                add(
+                    CommentSection(
+                        name = "${index + 1}",
+                        event = MatchEvent(
+                            relativeTime = "${index + 4}'",
+                            icon = EventIcon.Substitution,
+                            description = "Substitution for Japan.",
+                            keyEvent = true,
+                        ),
+                        commentList = emptyList()
+                    )
+                )
+            }
         }
     }
     CommentSectionComponent(commentSectionList = commentSectionList, onClick = {})

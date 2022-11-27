@@ -18,17 +18,9 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 import dev.iurysouza.livematch.ui.features.matchlist.MatchListScreen
-import dev.iurysouza.livematch.ui.features.matchlist.Team
-import dev.iurysouza.livematch.ui.features.matchthread.Competition
-import dev.iurysouza.livematch.ui.features.matchthread.MatchCommentsState
-import dev.iurysouza.livematch.ui.features.matchthread.MatchDescriptionState
-import dev.iurysouza.livematch.ui.features.matchthread.MatchThread
-import dev.iurysouza.livematch.ui.features.matchthread.MatchThreadF
 import dev.iurysouza.livematch.ui.features.matchthread.MatchThreadScreen
-import dev.iurysouza.livematch.ui.features.matchthread.MediaItem
 import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
 import dev.iurysouza.livematch.util.JsonParser
-import kotlinx.coroutines.NonDisposableHandle.parent
 import timber.log.Timber
 
 @ExperimentalAnimationApi
