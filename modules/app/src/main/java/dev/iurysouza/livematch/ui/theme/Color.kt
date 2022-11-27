@@ -2,8 +2,8 @@ package dev.iurysouza.livematch.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val AppAccent2Dark = Color(0xC4C7B300)
 val AppAccent1Dark = Color(0xFFFAEA00)
+val AppAccent2Dark = Color(0xC4C7B300)
 val AppBackgroundDark = Color(0xFF222330)
 val AppText1Dark = Color(0xFFDFE0E0)
 val AppText2Dark = Color(0xFFDFDFE1)

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,12 +32,11 @@ import dev.iurysouza.livematch.ui.features.matchthread.MatchEvent
 
 @Composable
 fun SectionHeader(
-    sectionName: String,
+    modifier: Modifier = Modifier,
     event: MatchEvent,
     onClick: ((MatchEvent) -> Unit)?,
     isExpanded: Boolean = false,
     nestedCommentCount: Int = 0,
-    modifier: Modifier = Modifier,
 ) {
     var newModifier = modifier
         .background(MaterialTheme.colors.background)
@@ -45,7 +45,7 @@ fun SectionHeader(
     }
     Row(
         modifier = newModifier
-            .padding(horizontal = 8.dp)
+            .padding(horizontal = 12.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -56,22 +56,34 @@ fun SectionHeader(
                 time = event.relativeTime,
                 isKeyEvent = event.keyEvent
             )
-            Text(
-                event.description,
-                modifier = modifier
-                    .weight(.15f)
-                    .padding(start = 4.dp)
-                    .padding(bottom = 14.dp)
-                    .align(Alignment.CenterVertically),
-                style = if (event.keyEvent) TextStyle(color = MaterialTheme.colors.onPrimary,
-                    fontWeight = FontWeight.Bold) else TextStyle(color = MaterialTheme.colors.onBackground),
-            )
+            HeaderBody(event, modifier)
         }
         CommentCounterIndicator(isExpanded, nestedCommentCount, modifier
             .padding(start = 4.dp, bottom = 14.dp)
             .width(IntrinsicSize.Min))
 
     }
+}
+
+@Composable
+private fun RowScope.HeaderBody(
+    event: MatchEvent,
+    modifier: Modifier,
+) {
+    Text(
+        text = event.description,
+        modifier = modifier
+            .weight(.15f)
+            .padding(start = 4.dp)
+            .padding(bottom = 14.dp)
+            .align(Alignment.CenterVertically),
+        style = if (event.keyEvent) {
+            TextStyle(color = MaterialTheme.colors.onPrimary,
+                fontWeight = FontWeight.Bold)
+        } else {
+            TextStyle(color = MaterialTheme.colors.onBackground)
+        },
+    )
 }
 
 @Composable
@@ -139,7 +151,11 @@ private fun ColumnScope.Line(modifier: Modifier, color: Color) {
 
 @Composable
 private fun MatchEventIcon(modifier: Modifier, eventIcon: EventIcon, isKeyEvent: Boolean) {
-    val tint = if (isKeyEvent) MaterialTheme.colors.primaryVariant else MaterialTheme.colors.onPrimary
+    val tint = if (isKeyEvent) {
+        MaterialTheme.colors.primaryVariant
+    } else {
+        MaterialTheme.colors.onPrimary
+    }
     Box(
         modifier = modifier
             .background(tint, CircleShape)
@@ -148,14 +164,13 @@ private fun MatchEventIcon(modifier: Modifier, eventIcon: EventIcon, isKeyEvent:
             .padding(4.dp)
     ) {
         Icon(
-            tint = tint,
-            imageVector = eventIcon.toImageVector(),
-            contentDescription = "Home",
             modifier = modifier
                 .height(16.dp)
-                .padding(1.dp)
+                .padding(1.dp),
+            imageVector = eventIcon.toImageVector(),
+            contentDescription = "Home",
+            tint = tint,
         )
-
     }
 }
 
@@ -177,7 +192,6 @@ fun CommentHeaderPreview2() {
     SectionHeader(
         nestedCommentCount = 23,
         isExpanded = false,
-        sectionName = "",
         event = MatchEvent(
             relativeTime = "89+2'",
             icon = EventIcon.Goal,
@@ -194,7 +208,6 @@ fun CommentHeaderPreview() {
     SectionHeader(
         nestedCommentCount = 23,
         isExpanded = true,
-        sectionName = "",
         event = MatchEvent(
             relativeTime = "75'",
             icon = EventIcon.YellowCard,

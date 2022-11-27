@@ -41,7 +41,6 @@ fun CommentSectionComponent(
                 stickyHeader {
                     SectionHeader(
                         modifier = modifier,
-                        sectionName = sectionName,
                         event = event,
                         onClick = {
                             showContent = showContent

@@ -42,7 +42,7 @@ open class MatchEventParser {
                 MatchEvent(
                     relativeTime = "0",
                     icon = EventIcon.KickOff,
-                    description = "Kick Off!",
+                    description = "Kick Off!\n",
                     keyEvent = false
                 )
             )
@@ -51,7 +51,7 @@ open class MatchEventParser {
                 MatchEvent(
                     relativeTime = "300",
                     icon = EventIcon.FinalWhistle,
-                    description = "Last Comments",
+                    description = "Last Comments\n",
                     keyEvent = false
                 )
             )

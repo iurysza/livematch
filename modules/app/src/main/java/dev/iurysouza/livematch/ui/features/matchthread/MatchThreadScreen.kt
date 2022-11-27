@@ -143,7 +143,6 @@ fun MatchThreadComponent(
                         commentsState.commentSectionList.forEach { (sectionName: String, event: MatchEvent, comments: List<CommentItem>) ->
                             stickyHeader {
                                 SectionHeader(
-                                    sectionName = sectionName,
                                     isExpanded = showContent.isNotEmpty() && showContent[event.description]!!,
                                     nestedCommentCount = comments.size,
                                     event = event,
