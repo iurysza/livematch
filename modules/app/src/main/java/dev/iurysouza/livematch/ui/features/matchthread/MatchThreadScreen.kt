@@ -3,6 +3,7 @@ package dev.iurysouza.livematch.ui.features.matchthread
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
@@ -45,8 +47,6 @@ import dev.iurysouza.livematch.ui.features.matchthread.components.CommentItemCom
 import dev.iurysouza.livematch.ui.features.matchthread.components.MatchDetails
 import dev.iurysouza.livematch.ui.features.matchthread.components.MatchHeader
 import dev.iurysouza.livematch.ui.features.matchthread.components.SectionHeader
-import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
-import dev.iurysouza.livematch.ui.theme.AppWhite1
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnrememberedMutableState")
@@ -61,9 +61,10 @@ fun MatchThreadScreen(
         viewModel.getLatestComments(matchThread, false)
     }
     val systemUiController = rememberSystemUiController()
-
+    val isDark = isSystemInDarkTheme()
+    val backgroundColor = MaterialTheme.colors.background
     SideEffect {
-        systemUiController.setSystemBarsColor(AppBackgroundColor, false)
+        systemUiController.setSystemBarsColor(backgroundColor, !isDark)
     }
 
     val isRefreshing = viewModel.isRefreshingState.collectAsState(false)
@@ -104,7 +105,7 @@ fun MatchThreadComponent(
     Box(
         modifier = Modifier
             .pullRefresh(refreshState)
-            .background(AppBackgroundColor)
+            .background(MaterialTheme.colors.background)
             .fillMaxSize()
     ) {
         val scrollState = rememberLazyListState()
@@ -193,7 +194,7 @@ private fun ScreenToolbar(navigateUp: () -> Unit) {
         ) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
-                tint = AppWhite1,
+                tint = MaterialTheme.colors.onPrimary,
                 contentDescription = stringResource(R.string.icon_description),
             )
         }

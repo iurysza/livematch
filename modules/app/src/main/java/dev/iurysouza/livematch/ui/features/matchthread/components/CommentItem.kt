@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,9 +31,7 @@ import com.halilibo.richtext.ui.WithStyle
 import com.halilibo.richtext.ui.string.RichTextStringStyle
 import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.ui.features.matchthread.CommentItem
-import dev.iurysouza.livematch.ui.theme.AppAccentColor
-import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
-import dev.iurysouza.livematch.ui.theme.AppWhite3
+import dev.iurysouza.livematch.ui.theme.AppAccent1Dark
 
 
 @Composable
@@ -43,16 +42,16 @@ fun CommentItemComponent(
 ) {
     Row(
         modifier = modifier
-            .background(AppBackgroundColor)
+            .background(MaterialTheme.colors.background)
             .padding(vertical = 8.dp)
             .padding(start = 64.dp)
-            .background(AppAccentColor)
+            .background(MaterialTheme.colors.primary)
     )
     {
         Column(
             modifier = modifier
                 .padding(start = 4.dp)
-                .background(AppBackgroundColor)
+                .background(MaterialTheme.colors.background)
                 .padding(horizontal = 4.dp, vertical = 4.dp)
         ) {
             Row(
@@ -61,7 +60,7 @@ fun CommentItemComponent(
             ) {
                 val authorStyle = TextStyle(
                     fontSize = 12.sp,
-                    color = AppWhite3,
+                    color = MaterialTheme.colors.onSurface,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
@@ -95,7 +94,7 @@ fun CommentItemComponent(
                 Text(
                     modifier = Modifier.wrapContentSize(),
                     text = commentItem.score,
-                    style = authorStyle.copy(fontWeight = FontWeight.Normal, color = AppAccentColor)
+                    style = authorStyle.copy(fontWeight = FontWeight.Normal, color = MaterialTheme.colors.primary)
                 )
                 Text(
                     modifier = Modifier.wrapContentSize(),
@@ -117,7 +116,7 @@ private fun CommentBody(content: String) {
         WithStyle(
             style = RichTextStyle(
                 stringStyle = RichTextStringStyle(
-                    linkStyle = SpanStyle(color = AppAccentColor)
+                    linkStyle = SpanStyle(color = MaterialTheme.colors.primary)
                 )
             ),
         ) {

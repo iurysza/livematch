@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,9 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import dev.iurysouza.livematch.ui.theme.AppAccentColor
-import dev.iurysouza.livematch.ui.theme.AppWhite3
-import dev.iurysouza.livematch.ui.theme.AppWhite1
+import dev.iurysouza.livematch.ui.theme.AppAccent1Dark
 
 
 @Composable
@@ -72,15 +71,15 @@ fun MatchTime(modifier: Modifier, match: Match) {
         Text(
             text = match.startTime,
             textAlign = TextAlign.Center,
-            color = AppWhite1,
+            color = MaterialTheme.colors.onPrimary,
         )
         Text(
             text = match.elapsedMinutes,
             textAlign = TextAlign.Center,
             color = if (match.elapsedMinutes.contains("'")) {
-                AppAccentColor
+                MaterialTheme.colors.primary
             } else {
-                AppWhite1
+                MaterialTheme.colors.onPrimary
             },
         )
 
@@ -106,13 +105,13 @@ internal fun Team(modifier: Modifier, team: Team) {
             TextStyle(
                 fontSize = 19.sp,
                 textAlign = TextAlign.Left,
-                color = AppWhite1,
+                color = MaterialTheme.colors.onPrimary,
             )
         } else {
             TextStyle(
                 fontSize = 19.sp,
                 textAlign = TextAlign.Left,
-                color = AppWhite3,
+                color = MaterialTheme.colors.onSurface,
             )
         }
         Text(

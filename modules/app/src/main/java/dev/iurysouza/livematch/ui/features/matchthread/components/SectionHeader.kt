@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,11 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.iurysouza.livematch.ui.features.matchthread.EventIcon
 import dev.iurysouza.livematch.ui.features.matchthread.MatchEvent
-import dev.iurysouza.livematch.ui.theme.AppAccentColor
-import dev.iurysouza.livematch.ui.theme.AppAccentColorDark
-import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
-import dev.iurysouza.livematch.ui.theme.AppWhite1
-import dev.iurysouza.livematch.ui.theme.AppWhite2
+import dev.iurysouza.livematch.ui.theme.AppAccent1Dark
+import dev.iurysouza.livematch.ui.theme.AppAccent2Dark
 
 @Composable
 fun SectionHeader(
@@ -43,7 +41,7 @@ fun SectionHeader(
     modifier: Modifier = Modifier,
 ) {
     var newModifier = modifier
-        .background(AppBackgroundColor)
+        .background(MaterialTheme.colors.background)
     if (onClick != null) {
         newModifier = newModifier.clickable { onClick(event) }
     }
@@ -67,8 +65,8 @@ fun SectionHeader(
                     .padding(start = 4.dp)
                     .padding(bottom = 14.dp)
                     .align(Alignment.CenterVertically),
-                style = if (event.keyEvent) TextStyle(color = AppWhite1,
-                    fontWeight = FontWeight.Bold) else TextStyle(color = AppWhite2),
+                style = if (event.keyEvent) TextStyle(color = MaterialTheme.colors.onPrimary,
+                    fontWeight = FontWeight.Bold) else TextStyle(color = MaterialTheme.colors.onBackground),
             )
         }
         CommentCounterIndicator(isExpanded, nestedCommentCount, modifier
@@ -89,7 +87,7 @@ private fun CommentCounterIndicator(
             modifier = modifier
                 .width(28.dp)
                 .height(24.dp)
-                .background(AppAccentColorDark, RoundedCornerShape(10.dp))
+                .background(MaterialTheme.colors.primaryVariant, RoundedCornerShape(10.dp))
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
@@ -97,7 +95,7 @@ private fun CommentCounterIndicator(
                 style = TextStyle(
                     textAlign = TextAlign.Center,
                     fontSize = 10.sp,
-                    color = Color.White
+                    color = Color.White.copy(alpha = .7f)
                 ),
             )
         }
@@ -107,7 +105,7 @@ private fun CommentCounterIndicator(
 @Composable
 fun Timeline(modifier: Modifier = Modifier, icon: EventIcon, time: String, isKeyEvent: Boolean) {
     Column(
-        modifier.background(AppBackgroundColor)
+        modifier.background(MaterialTheme.colors.background)
     ) {
         Column(
             modifier.align(Alignment.CenterHorizontally),
@@ -115,7 +113,7 @@ fun Timeline(modifier: Modifier = Modifier, icon: EventIcon, time: String, isKey
             Text(
                 modifier = modifier.align(Alignment.CenterHorizontally),
                 fontSize = 12.sp,
-                color = AppWhite1,
+                color = MaterialTheme.colors.onPrimary,
                 text = time,
             )
             MatchEventIcon(
@@ -126,7 +124,7 @@ fun Timeline(modifier: Modifier = Modifier, icon: EventIcon, time: String, isKey
         }
         Line(
             modifier = modifier.padding(top = 8.dp),
-            color = AppWhite2
+            color = MaterialTheme.colors.onBackground
         )
     }
 }
@@ -143,12 +141,12 @@ private fun ColumnScope.Line(modifier: Modifier, color: Color) {
 
 @Composable
 private fun MatchEventIcon(modifier: Modifier, eventIcon: EventIcon, isKeyEvent: Boolean) {
-    val tint = if (isKeyEvent) AppAccentColor else AppWhite1
+    val tint = if (isKeyEvent) MaterialTheme.colors.primaryVariant else MaterialTheme.colors.onPrimary
     Box(
         modifier = modifier
             .background(tint, CircleShape)
             .padding(2.dp)
-            .background(AppBackgroundColor, CircleShape)
+            .background(MaterialTheme.colors.background, CircleShape)
             .padding(4.dp)
     ) {
         Icon(

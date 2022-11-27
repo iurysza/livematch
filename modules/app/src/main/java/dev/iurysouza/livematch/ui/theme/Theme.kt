@@ -11,15 +11,21 @@ import androidx.compose.ui.text.TextStyle
 import com.halilibo.richtext.ui.RichTextThemeIntegration
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = AppAccent1Dark,
+    primaryVariant = AppAccent2Dark,
+    background = AppBackgroundDark,
+    onPrimary = AppText1Dark,
+    onBackground = AppText2Dark,
+    onSurface = AppText3Dark,
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = AppAccent1Light,
+    primaryVariant = AppAccent2Light,
+    background = AppBackgroundLight,
+    onPrimary = AppText1Light,
+    onBackground = AppText2Light,
+    onSurface = AppText3Light,
 )
 
 @Composable
@@ -35,18 +41,19 @@ fun LivematchTheme(
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
+        typography = Typography(),
         shapes = Shapes,
     ) {
+        val textColor = MaterialTheme.colors.onBackground
         RichTextThemeIntegration(
-            textStyle = { TextStyle(color = AppWhite2) },
+            textStyle = { TextStyle(color = textColor) },
             ProvideTextStyle = { newTextStyle, content ->
-                CompositionLocalProvider(compositionLocalOf { TextStyle(color = AppWhite2) } provides newTextStyle) {
+                CompositionLocalProvider(compositionLocalOf { TextStyle(color = textColor) } provides newTextStyle) {
                     content()
                 }
             },
             ProvideContentColor = { newColor, content ->
-                CompositionLocalProvider(compositionLocalOf { AppWhite2 } provides newColor) {
+                CompositionLocalProvider(compositionLocalOf { textColor } provides newColor) {
                     content()
                 }
             },

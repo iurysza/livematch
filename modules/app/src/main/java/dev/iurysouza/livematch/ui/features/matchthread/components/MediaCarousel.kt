@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,34 +33,40 @@ import dev.iurysouza.livematch.ui.features.matchthread.Competition
 import dev.iurysouza.livematch.ui.features.matchthread.MatchThread
 import dev.iurysouza.livematch.ui.features.matchthread.MatchThreadScreen
 import dev.iurysouza.livematch.ui.features.matchthread.MediaItem
-import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
-import dev.iurysouza.livematch.ui.theme.AppWhite2
-import dev.iurysouza.livematch.ui.theme.AppWhite3
 import timber.log.Timber
 
 @Composable
 fun MediaCarousel(mediaItemList: List<MediaItem>) {
-    val context = LocalContext.current
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    Column(
+        Modifier.padding(horizontal = 8.dp)
     ) {
-        itemsIndexed(mediaItemList) { index, item ->
-            Box(
-                Modifier
-                    .clickable { context.launchBrowserTabWith(item.url) }
-                    .size(80.dp)
-                    .background(AppWhite3, RoundedCornerShape(10.dp))
-                    .padding(8.dp)
-            ) {
-                Text(
-                    text = item.title,
-                    Modifier.align(Alignment.Center),
-                    style = TextStyle(
-                        fontSize = 9.sp,
-                        color = AppWhite2,
-                        fontWeight = FontWeight.Bold,
+        val context = LocalContext.current
+        Text(
+            modifier = Modifier.padding(bottom = 4.dp),
+            text = "Highlights",
+            style = TextStyle(fontSize = 18.sp, color = MaterialTheme.colors.onPrimary)
+        )
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            itemsIndexed(mediaItemList) { index, item ->
+                Box(
+                    Modifier
+                        .clickable { context.launchBrowserTabWith(item.url) }
+                        .size(80.dp)
+                        .background(MaterialTheme.colors.onSurface, RoundedCornerShape(10.dp))
+                        .padding(8.dp)
+                ) {
+                    Text(
+                        text = item.title,
+                        Modifier.align(Alignment.Center),
+                        style = TextStyle(
+                            fontSize = 9.sp,
+                            color = MaterialTheme.colors.onPrimary,
+                            fontWeight = FontWeight.Bold,
+                        )
                     )
-                )
+                }
             }
         }
     }
@@ -78,7 +85,7 @@ private fun Context.launchBrowserTabWith(url: String) = runCatching {
 fun MatchDetails(content: String, mediaItemList: List<MediaItem>) {
     Column(
         modifier = Modifier
-            .background(AppBackgroundColor)
+            .background(MaterialTheme.colors.background)
             .padding(horizontal = 8.dp),
     ) {
         RichText(
@@ -98,7 +105,6 @@ fun MatchDetails(content: String, mediaItemList: List<MediaItem>) {
 
 }
 
-@Preview
 @Composable
 private fun MatchThreadPreview() {
     MatchThreadScreen(

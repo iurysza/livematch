@@ -2,6 +2,7 @@ package dev.iurysouza.livematch.ui.features.matchlist
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -34,8 +36,6 @@ import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.ui.components.ErrorScreen
 import dev.iurysouza.livematch.ui.components.FullScreenProgress
 import dev.iurysouza.livematch.ui.features.matchthread.MatchThread
-import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
-import dev.iurysouza.livematch.ui.theme.AppWhite1
 import dev.iurysouza.livematch.util.shortToast
 import kotlinx.coroutines.launch
 
@@ -48,8 +48,10 @@ fun MatchListScreen(
     val systemUiController = rememberSystemUiController()
     val context = LocalContext.current
 
+    val isDark = isSystemInDarkTheme()
+    val backgroundColor = MaterialTheme.colors.background
     SideEffect {
-        systemUiController.setSystemBarsColor(AppBackgroundColor, false)
+        systemUiController.setSystemBarsColor(backgroundColor, !isDark)
     }
 
     LaunchedEffect(Unit) {
@@ -95,14 +97,13 @@ fun MatchListScreenComponent(
 
     Scaffold(
         modifier = Modifier
-            .background(AppBackgroundColor)
+            .background(MaterialTheme.colors.background)
             .fillMaxHeight()
-            .pullRefresh(refreshState)
-        ,
+            .pullRefresh(refreshState),
         topBar = {
             TopAppBar(
-                title = { Text(text = stringResource(R.string.matches), color = AppWhite1) },
-                backgroundColor = AppBackgroundColor,
+                title = { Text(text = stringResource(R.string.matches), color = MaterialTheme.colors.onPrimary) },
+                backgroundColor = MaterialTheme.colors.background,
                 actions = {
                     if (isSyncing.value) {
                         IconButton(onClick = {}) {
@@ -120,7 +121,7 @@ fun MatchListScreenComponent(
         ) {
             Column(
                 Modifier
-                    .background(AppBackgroundColor)
+                    .background(MaterialTheme.colors.background)
                     .fillMaxHeight()
                     .padding(it),
             ) {

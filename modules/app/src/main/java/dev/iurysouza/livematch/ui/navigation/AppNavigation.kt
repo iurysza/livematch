@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Parcelable
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
@@ -19,7 +20,6 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 import dev.iurysouza.livematch.ui.features.matchlist.MatchListScreen
 import dev.iurysouza.livematch.ui.features.matchthread.MatchThreadScreen
-import dev.iurysouza.livematch.ui.theme.AppBackgroundColor
 import dev.iurysouza.livematch.util.JsonParser
 import timber.log.Timber
 
@@ -30,7 +30,7 @@ internal fun AppNavigation(
     jsonParser: JsonParser,
 ) {
     AnimatedNavHost(
-        modifier =Modifier.background(AppBackgroundColor),
+        modifier =Modifier.background(MaterialTheme.colors.background),
         navController = navController,
         startDestination = Screen.MatchList.name,
         enterTransition = { defaultEnterTransition(initialState, targetState) },
