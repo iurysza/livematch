@@ -3,8 +3,8 @@ package dev.iurysouza.livematch.domain.models.reddit.responses.listings
 import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import dev.iurysouza.livematch.domain.models.reddit.responses.base.Listing
 import dev.iurysouza.livematch.domain.models.reddit.entities.WikiRevision
+import dev.iurysouza.livematch.domain.models.reddit.responses.base.Listing
 import kotlinx.parcelize.Parcelize
 
 @JsonClass(generateAdapter = true)

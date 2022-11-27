@@ -2,8 +2,8 @@ package dev.iurysouza.livematch.domain.models.reddit.responses
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import dev.iurysouza.livematch.domain.models.reddit.responses.base.EnvelopeKind
 import dev.iurysouza.livematch.domain.models.reddit.entities.TrophyList
+import dev.iurysouza.livematch.domain.models.reddit.responses.base.EnvelopeKind
 
 @JsonClass(generateAdapter = true)
 class EnvelopedTrophyList(

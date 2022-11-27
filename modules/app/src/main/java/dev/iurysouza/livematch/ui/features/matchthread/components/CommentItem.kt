@@ -31,7 +31,6 @@ import com.halilibo.richtext.ui.WithStyle
 import com.halilibo.richtext.ui.string.RichTextStringStyle
 import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.ui.features.matchthread.CommentItem
-import dev.iurysouza.livematch.ui.theme.AppAccent1Dark
 
 
 @Composable

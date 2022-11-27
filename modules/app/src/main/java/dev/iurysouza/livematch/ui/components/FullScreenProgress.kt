@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.iurysouza.livematch.ui.theme.AppAccent1Dark
 
 @Composable
 fun FullScreenProgress() {

@@ -28,8 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.iurysouza.livematch.ui.features.matchthread.EventIcon
 import dev.iurysouza.livematch.ui.features.matchthread.MatchEvent
-import dev.iurysouza.livematch.ui.theme.AppAccent1Dark
-import dev.iurysouza.livematch.ui.theme.AppAccent2Dark
 
 @Composable
 fun SectionHeader(

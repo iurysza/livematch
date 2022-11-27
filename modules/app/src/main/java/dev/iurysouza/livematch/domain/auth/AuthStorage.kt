@@ -2,11 +2,11 @@ package dev.iurysouza.livematch.domain.auth
 
 import arrow.core.Either
 import arrow.core.Either.Companion.catch
-import dev.iurysouza.livematch.domain.adapters.models.AuthTokenEntity
 import dev.iurysouza.livematch.domain.adapters.DomainError
 import dev.iurysouza.livematch.domain.adapters.FailedToSave
-import dev.iurysouza.livematch.domain.adapters.TokenNotFound
 import dev.iurysouza.livematch.domain.adapters.KeyValueStorage
+import dev.iurysouza.livematch.domain.adapters.TokenNotFound
+import dev.iurysouza.livematch.domain.adapters.models.AuthTokenEntity
 import javax.inject.Inject
 
 class AuthStorage @Inject constructor(
