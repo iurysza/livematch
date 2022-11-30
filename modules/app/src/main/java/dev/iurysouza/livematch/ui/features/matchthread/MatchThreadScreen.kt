@@ -1,7 +1,6 @@
 package dev.iurysouza.livematch.ui.features.matchthread
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -50,7 +48,6 @@ import dev.iurysouza.livematch.ui.features.matchthread.components.SectionHeader
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnrememberedMutableState")
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MatchThreadScreen(
     matchThread: MatchThread,
@@ -90,7 +87,6 @@ fun MatchThreadScreen(
 
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun MatchThreadComponent(
     isRefreshing: Boolean,
@@ -140,7 +136,7 @@ fun MatchThreadComponent(
                             }
                             showContent = sectionToggleMap.toMap()
                         }
-                        commentsState.commentSectionList.forEach { (sectionName: String, event: MatchEvent, comments: List<CommentItem>) ->
+                        commentsState.commentSectionList.forEach { (_: String, event: MatchEvent, comments: List<CommentItem>) ->
                             stickyHeader {
                                 SectionHeader(
                                     isExpanded = showContent.isNotEmpty() && showContent[event.description]!!,
@@ -159,10 +155,7 @@ fun MatchThreadComponent(
                                 AnimatedCellExpansion(
                                     showContentIf = { showContent.isNotEmpty() && showContent[event.description]!! },
                                     content = {
-                                        CommentItemComponent(
-                                            commentItem = commentItem,
-                                            onClick = {},
-                                        )
+                                        CommentItemComponent(commentItem)
                                     }
                                 )
                             }

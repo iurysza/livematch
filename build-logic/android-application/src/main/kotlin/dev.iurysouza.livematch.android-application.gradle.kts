@@ -7,7 +7,7 @@ plugins {
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
-group = "com.example.myproduct"
+group = "dev.iurysouza.livematch"
 
 android {
     compileSdk = 33
@@ -25,13 +25,7 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
         // Treat all Kotlin warnings as errors (disabled by default)
         allWarningsAsErrors = properties["warningsAsErrors"] as? Boolean ?: false
 
@@ -41,6 +35,10 @@ android {
             "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
             "-opt-in=kotlinx.coroutines.FlowPreview",
             "-opt-in=kotlin.Experimental",
+            // Enable experimental compose APIs
+            "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
+            "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
+            "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
         )
     }
     buildFeatures {
@@ -53,6 +51,12 @@ android {
         resources {
             excludes += mutableSetOf("/META-INF/{AL2.0,LGPL2.1}")
         }
+    }
+}
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of("11"))
     }
 }
 

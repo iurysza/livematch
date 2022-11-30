@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "7.2.1"
+androidGradlePlugin = "7.3.0"
 androidxCompose = "1.2.0"
 androidxComposeCompiler = "1.2.0"
 secrets = "2.0.1"

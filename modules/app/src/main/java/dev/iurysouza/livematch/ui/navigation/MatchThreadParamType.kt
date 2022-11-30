@@ -11,6 +11,7 @@ class MatchThreadParamType(
     private val jsonParser: JsonParser,
 ) : NavType<MatchThread>(isNullableAllowed = false) {
 
+    @Suppress("DEPRECATION")
     override fun get(
         bundle: Bundle,
         key: String,

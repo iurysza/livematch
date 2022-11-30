@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalAnimationApi::class)
-
 package dev.iurysouza.livematch.ui.navigation
 
 import android.net.Uri
@@ -23,7 +21,6 @@ import dev.iurysouza.livematch.ui.features.matchthread.MatchThreadScreen
 import dev.iurysouza.livematch.util.JsonParser
 import timber.log.Timber
 
-@ExperimentalAnimationApi
 @Composable
 internal fun AppNavigation(
     navController: NavHostController,
@@ -91,6 +88,7 @@ private fun NavGraphBuilder.addMatchThreadNavGraph(
     }
 }
 
+@Suppress("DEPRECATION")
 fun <T : Parcelable> NavBackStackEntry.getParcelable(key: String): T =
     requireNotNull(arguments?.getParcelable(key))
 

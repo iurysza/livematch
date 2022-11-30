@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -39,7 +38,6 @@ import dev.iurysouza.livematch.ui.features.matchthread.MatchThread
 import dev.iurysouza.livematch.util.shortToast
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MatchListScreen(
     viewModel: MatchListViewModel = hiltViewModel(),
@@ -82,7 +80,6 @@ fun MatchListScreen(
     ) { viewModel.navigateToMatch(it) }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun MatchListScreenComponent(

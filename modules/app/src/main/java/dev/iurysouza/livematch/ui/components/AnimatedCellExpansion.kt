@@ -1,7 +1,6 @@
 package dev.iurysouza.livematch.ui.components
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
@@ -11,7 +10,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AnimatedCellExpansion(
     modifier: Modifier = Modifier,

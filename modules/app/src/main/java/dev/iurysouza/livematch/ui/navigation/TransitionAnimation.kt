@@ -3,12 +3,10 @@ package dev.iurysouza.livematch.ui.navigation
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.navigation.NavBackStackEntry
 
-@ExperimentalAnimationApi
 fun AnimatedContentScope<*>.defaultEnterTransition(
     initial: NavBackStackEntry,
     target: NavBackStackEntry,
@@ -21,7 +19,6 @@ fun AnimatedContentScope<*>.defaultEnterTransition(
     return fadeIn() + slideIntoContainer(AnimatedContentScope.SlideDirection.Start)
 }
 
-@ExperimentalAnimationApi
 fun AnimatedContentScope<*>.defaultExitTransition(
     initial: NavBackStackEntry,
     target: NavBackStackEntry,

@@ -48,7 +48,7 @@ fun MediaCarousel(mediaItemList: List<MediaItem>) {
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            itemsIndexed(mediaItemList) { index, item ->
+            itemsIndexed(mediaItemList) { _, item ->
                 Box(
                     Modifier
                         .clickable { context.launchBrowserTabWith(item.url) }

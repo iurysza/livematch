@@ -7,6 +7,7 @@ plugins {
 }
 
 android {
+    namespace = "dev.iurysouza.livematch"
     signingConfigs {
         create("release") {
             keyAlias = getLocalProperty("keyAlias")

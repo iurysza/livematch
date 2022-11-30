@@ -37,7 +37,6 @@ import dev.iurysouza.livematch.ui.features.matchthread.CommentItem
 fun CommentItemComponent(
     commentItem: CommentItem,
     modifier: Modifier = Modifier,
-    onClick: (CommentItem) -> Unit,
 ) {
     Row(
         modifier = modifier
@@ -137,6 +136,5 @@ fun CommentItemComponentPreview() {
             flairUrl = "",
             flairName = ""
         ),
-        onClick = {}
     )
 }
