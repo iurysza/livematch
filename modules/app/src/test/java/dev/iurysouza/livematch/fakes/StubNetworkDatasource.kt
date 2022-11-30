@@ -11,12 +11,16 @@ class StubNetworkDatasource(
     var returnAccessToken: AccessTokenResponse? = anAccessTokenResponse(),
     private var accessTokenError: Throwable? = null,
 ) : NetworkDataSource {
-    override suspend fun getAccessToken(): Either<NetworkError, AccessTokenResponse> {
-        return Either.catch {
+    override suspend fun getAccessToken(): Either<NetworkError, AccessTokenResponse> =
+        Either.catch {
             accessTokenError?.let { throw it }
             returnAccessToken!!
         }.mapLeft { NetworkError(it.message) }
-    }
+
+    override suspend fun getCommentsForSubmission(
+        id: String,
+        sortBy: String,
+    ): Either<NetworkError, List<EnvelopedContributionListing>> = TODO("Not yet implemented")
 
     override suspend fun searchFor(
         subreddit: String,
@@ -25,17 +29,7 @@ class StubNetworkDatasource(
         timePeriod: String,
         restrictedToSubreddit: Boolean,
         limit: Int?,
-    ): Either<NetworkError, EnvelopedSubmissionListing> {
-        TODO("Not yet implemented")
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return super.equals(other)
-    }
-
-    override suspend fun getCommentsForSubmission(id: String): Either<NetworkError, List<EnvelopedContributionListing>> {
-        TODO("Not yet implemented")
-    }
+    ): Either<NetworkError, EnvelopedSubmissionListing> = TODO("Not yet implemented")
 }
 
 fun anAccessTokenResponse(
