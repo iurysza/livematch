@@ -20,18 +20,6 @@ class FetchLatestMatchThreadsForTodayUseCase @Inject constructor(
             timePeriod = "day",
             restrictedToSubreddit = true,
         ).bind()
-    }.map { response ->
-        response.data.children.map { child ->
-            MatchThreadEntity(
-                id = child.data.id,
-                title = child.data.title,
-                url = child.data.url,
-                score = child.data.score,
-                numComments = child.data.numComments,
-                createdAt = child.data.createdUtc,
-                content = child.data.selfText ?: "",
-                contentHtml = child.data.selfTextHtml ?: "",
-            )
-        }
-    }
+    }.map { it.matchThreadEntities() }
+
 }

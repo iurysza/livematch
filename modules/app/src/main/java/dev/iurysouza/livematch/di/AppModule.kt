@@ -8,31 +8,42 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import dev.iurysouza.livematch.core.storage.KeyValueStorage
-import dev.iurysouza.livematch.core.storage.SystemStorage
-import dev.iurysouza.livematch.features.matchthread.MatchEventParser
-import dev.iurysouza.livematch.features.matchthread.MatchHighlightParser
+import dev.iurysouza.livematch.core.DefaultDispatcherProvider
+import dev.iurysouza.livematch.core.DispatcherProvider
 import dev.iurysouza.livematch.core.JsonParser
 import dev.iurysouza.livematch.core.MoshiJsonParser
 import dev.iurysouza.livematch.core.ResourceProvider
 import dev.iurysouza.livematch.core.SystemResourceProvider
+import dev.iurysouza.livematch.core.storage.KeyValueStorage
+import dev.iurysouza.livematch.core.storage.SystemStorage
+import dev.iurysouza.livematch.features.matchthread.MatchEventParser
+import dev.iurysouza.livematch.features.matchthread.MatchHighlightParser
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-class AppModule {
+object AppModule {
 
     @Provides
     @Singleton
-    internal fun provideResourceProvider(@ApplicationContext appContext: Context): ResourceProvider {
-        return SystemResourceProvider(appContext)
-    }
+    internal fun provideResourceProvider(
+        @ApplicationContext appContext: Context,
+    ): ResourceProvider = SystemResourceProvider(appContext)
+
+    @Singleton
+    @Provides
+    fun provideSharedPreference(
+        @ApplicationContext context: Context,
+    ): SharedPreferences = context.getSharedPreferences("livematch", Context.MODE_PRIVATE)
 
     @Provides
     @Singleton
-    internal fun provideSystemStorage(sharedPreferences: SharedPreferences): KeyValueStorage {
-        return SystemStorage(sharedPreferences)
-    }
+    internal fun provideSystemStorage(
+        sharedPreferences: SharedPreferences,
+    ): KeyValueStorage = SystemStorage(sharedPreferences)
+
+    @Provides
+    fun provideCoroutineContextProvider(): DispatcherProvider = DefaultDispatcherProvider()
 
     @Provides
     @Singleton
@@ -42,15 +53,7 @@ class AppModule {
     @Singleton
     internal fun provideMatchThreadMapper(): MatchEventParser = MatchEventParser()
 
-    @Singleton
-    @Provides
-    fun provideSharedPreference(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences("livematch", Context.MODE_PRIVATE)
-    }
-
     @Provides
     @Singleton
-    internal fun providesJsonParser(moshi: Moshi): JsonParser {
-        return MoshiJsonParser(moshi)
-    }
+    internal fun providesJsonParser(moshi: Moshi): JsonParser = MoshiJsonParser(moshi)
 }
