@@ -3,9 +3,9 @@ package dev.iurysouza.livematch.ui.navigation
 import android.os.Bundle
 import androidx.navigation.NavType
 import arrow.core.Either
-import dev.iurysouza.livematch.ui.features.matchthread.MatchThread
-import dev.iurysouza.livematch.util.JsonParser
-import dev.iurysouza.livematch.util.fromJson
+import dev.iurysouza.livematch.features.matchthread.MatchThread
+import dev.iurysouza.livematch.core.JsonParser
+import dev.iurysouza.livematch.core.fromJson
 
 class MatchThreadParamType(
     private val jsonParser: JsonParser,

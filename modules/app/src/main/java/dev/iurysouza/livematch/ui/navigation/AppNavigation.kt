@@ -2,7 +2,6 @@ package dev.iurysouza.livematch.ui.navigation
 
 import android.net.Uri
 import android.os.Parcelable
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -16,9 +15,9 @@ import arrow.core.continuations.either
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
-import dev.iurysouza.livematch.ui.features.matchlist.MatchListScreen
-import dev.iurysouza.livematch.ui.features.matchthread.MatchThreadScreen
-import dev.iurysouza.livematch.util.JsonParser
+import dev.iurysouza.livematch.features.matchlist.MatchListScreen
+import dev.iurysouza.livematch.features.matchthread.MatchThreadScreen
+import dev.iurysouza.livematch.core.JsonParser
 import timber.log.Timber
 
 @Composable

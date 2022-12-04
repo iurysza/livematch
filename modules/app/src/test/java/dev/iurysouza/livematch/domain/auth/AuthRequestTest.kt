@@ -1,7 +1,7 @@
 package dev.iurysouza.livematch.domain.auth
 
 import dev.iurysouza.livematch.data.Fixtures.commentsResponse
-import dev.iurysouza.livematch.data.network.reddit.RedditApi
+import dev.iurysouza.livematch.reddit.data.RedditApi
 import dev.iurysouza.livematch.fakes.FakeRedditApi
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldNotBe

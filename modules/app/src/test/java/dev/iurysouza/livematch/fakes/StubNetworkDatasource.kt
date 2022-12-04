@@ -1,8 +1,8 @@
 package dev.iurysouza.livematch.fakes
 
 import arrow.core.Either
-import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
-import dev.iurysouza.livematch.domain.adapters.NetworkError
+import dev.iurysouza.livematch.reddit.domain.RedditNetworkDataSource
+import dev.iurysouza.livematch.core.NetworkError
 import dev.iurysouza.livematch.domain.models.AccessTokenResponse
 import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedContributionListing
 import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedSubmissionListing
@@ -10,7 +10,7 @@ import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedSubmissio
 class StubNetworkDatasource(
     var returnAccessToken: AccessTokenResponse? = anAccessTokenResponse(),
     private var accessTokenError: Throwable? = null,
-) : NetworkDataSource {
+) : RedditNetworkDataSource {
     override suspend fun getAccessToken(): Either<NetworkError, AccessTokenResponse> =
         Either.catch {
             accessTokenError?.let { throw it }

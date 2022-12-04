@@ -1,6 +1,6 @@
 package dev.iurysouza.livematch.fakes
 
-import dev.iurysouza.livematch.domain.adapters.KeyValueStorage
+import dev.iurysouza.livematch.core.storage.KeyValueStorage
 
 
 class InMemoryKeyValueStorage(

@@ -3,7 +3,7 @@ package dev.iurysouza.livematch.fakes
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import dev.iurysouza.livematch.BuildConfig
-import dev.iurysouza.livematch.data.PolyJsonAdapterFactory
+import dev.iurysouza.livematch.reddit.PolyJsonAdapterFactory
 import dev.iurysouza.livematch.domain.models.reddit.entities.PremiumSubreddit
 import dev.iurysouza.livematch.domain.models.reddit.entities.PrivateSubreddit
 import dev.iurysouza.livematch.domain.models.reddit.entities.Redditor
@@ -21,7 +21,7 @@ import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedRedditor
 import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedSubmission
 import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedSubreddit
 import dev.iurysouza.livematch.domain.models.reddit.responses.base.EnvelopeKind
-import dev.iurysouza.livematch.data.network.reddit.RedditApi
+import dev.iurysouza.livematch.reddit.data.RedditApi
 import java.util.Base64
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockWebServer

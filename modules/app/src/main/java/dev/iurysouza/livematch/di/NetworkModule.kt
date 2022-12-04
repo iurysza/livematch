@@ -9,33 +9,33 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.iurysouza.livematch.BuildConfig
-import dev.iurysouza.livematch.DefaultDispatcherProvider
-import dev.iurysouza.livematch.DispatcherProvider
-import dev.iurysouza.livematch.data.PolyJsonAdapterFactory
-import dev.iurysouza.livematch.data.network.footballdata.FootballDataApi
-import dev.iurysouza.livematch.data.network.footballdata.FootballDataSource
-import dev.iurysouza.livematch.data.network.footballdata.FootballNetworkDataSource
-import dev.iurysouza.livematch.data.network.reddit.RedditApi
-import dev.iurysouza.livematch.data.network.reddit.RedditNetworkDataSource
-import dev.iurysouza.livematch.domain.adapters.NetworkDataSource
-import dev.iurysouza.livematch.domain.auth.AuthStorage
-import dev.iurysouza.livematch.domain.models.reddit.entities.PremiumSubreddit
-import dev.iurysouza.livematch.domain.models.reddit.entities.PrivateSubreddit
-import dev.iurysouza.livematch.domain.models.reddit.entities.Redditor
-import dev.iurysouza.livematch.domain.models.reddit.entities.Subreddit
-import dev.iurysouza.livematch.domain.models.reddit.entities.SuspendedRedditor
-import dev.iurysouza.livematch.domain.models.reddit.entities.base.RedditorData
-import dev.iurysouza.livematch.domain.models.reddit.entities.base.SubredditData
-import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedComment
-import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedCommentData
-import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedContribution
-import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedData
-import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedMessage
-import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedMoreComment
-import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedRedditor
-import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedSubmission
-import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedSubreddit
-import dev.iurysouza.livematch.domain.models.reddit.responses.base.EnvelopeKind
+import dev.iurysouza.livematch.core.DefaultDispatcherProvider
+import dev.iurysouza.livematch.core.DispatcherProvider
+import dev.iurysouza.livematch.footballdata.data.FootballDataApi
+import dev.iurysouza.livematch.footballdata.data.FootballDataSource
+import dev.iurysouza.livematch.footballdata.domain.FootballNetworkDataSource
+import dev.iurysouza.livematch.reddit.PolyJsonAdapterFactory
+import dev.iurysouza.livematch.reddit.domain.RedditNetworkDataSource
+import dev.iurysouza.livematch.reddit.data.AuthStorage
+import dev.iurysouza.livematch.reddit.data.RedditApi
+import dev.iurysouza.livematch.reddit.data.RedditNetworkDataSourceImpl
+import dev.iurysouza.livematch.reddit.data.models.entities.PremiumSubreddit
+import dev.iurysouza.livematch.reddit.data.models.entities.PrivateSubreddit
+import dev.iurysouza.livematch.reddit.data.models.entities.Redditor
+import dev.iurysouza.livematch.reddit.data.models.entities.Subreddit
+import dev.iurysouza.livematch.reddit.data.models.entities.SuspendedRedditor
+import dev.iurysouza.livematch.reddit.data.models.entities.base.RedditorData
+import dev.iurysouza.livematch.reddit.data.models.entities.base.SubredditData
+import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedComment
+import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedCommentData
+import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedContribution
+import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedData
+import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedMessage
+import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedMoreComment
+import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedRedditor
+import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedSubmission
+import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedSubreddit
+import dev.iurysouza.livematch.reddit.data.models.responses.base.EnvelopeKind
 import java.util.Base64
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
@@ -206,8 +206,8 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    internal fun provideRedditDataSource(redditApi: RedditApi): NetworkDataSource {
-        return RedditNetworkDataSource(redditApi)
+    internal fun provideRedditDataSource(redditApi: RedditApi): RedditNetworkDataSource {
+        return RedditNetworkDataSourceImpl(redditApi)
     }
 }
 

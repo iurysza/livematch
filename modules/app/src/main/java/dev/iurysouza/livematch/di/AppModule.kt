@@ -8,14 +8,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import dev.iurysouza.livematch.data.storage.SystemStorage
-import dev.iurysouza.livematch.domain.adapters.KeyValueStorage
-import dev.iurysouza.livematch.ui.features.matchthread.MatchEventParser
-import dev.iurysouza.livematch.ui.features.matchthread.MatchHighlightParser
-import dev.iurysouza.livematch.util.JsonParser
-import dev.iurysouza.livematch.util.MoshiJsonParser
-import dev.iurysouza.livematch.util.ResourceProvider
-import dev.iurysouza.livematch.util.SystemResourceProvider
+import dev.iurysouza.livematch.core.storage.KeyValueStorage
+import dev.iurysouza.livematch.core.storage.SystemStorage
+import dev.iurysouza.livematch.features.matchthread.MatchEventParser
+import dev.iurysouza.livematch.features.matchthread.MatchHighlightParser
+import dev.iurysouza.livematch.core.JsonParser
+import dev.iurysouza.livematch.core.MoshiJsonParser
+import dev.iurysouza.livematch.core.ResourceProvider
+import dev.iurysouza.livematch.core.SystemResourceProvider
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
