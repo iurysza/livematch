@@ -1,6 +1,6 @@
 package dev.iurysouza.livematch.util
 
-import dev.iurysouza.livematch.core.DispatcherProvider
+import dev.iurysouza.livematch.common.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

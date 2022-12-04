@@ -7,8 +7,8 @@ import arrow.core.Either
 import arrow.core.continuations.either
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.iurysouza.livematch.R
-import dev.iurysouza.livematch.core.DomainError
-import dev.iurysouza.livematch.core.NetworkError
+import dev.iurysouza.livematch.common.DomainError
+import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.footballdata.domain.FetchMatchesUseCase
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
 import dev.iurysouza.livematch.reddit.domain.FetchLatestMatchThreadsForTodayUseCase
@@ -18,10 +18,7 @@ import dev.iurysouza.livematch.reddit.domain.models.MatchHighlightEntity
 import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
 import dev.iurysouza.livematch.features.matchthread.MatchHighlightParser
 import dev.iurysouza.livematch.features.matchthread.ViewError
-import dev.iurysouza.livematch.core.ResourceProvider
-import dev.iurysouza.livematch.features.matchthread.Competition
-import dev.iurysouza.livematch.features.matchthread.MatchThread
-import dev.iurysouza.livematch.features.matchthread.MediaItem
+import dev.iurysouza.livematch.common.ResourceProvider
 import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow

@@ -5,7 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.iurysouza.livematch.BuildConfig
-import dev.iurysouza.livematch.core.DispatcherProvider
+import dev.iurysouza.livematch.common.DispatcherProvider
 import dev.iurysouza.livematch.footballdata.data.FootballDataApi
 import dev.iurysouza.livematch.footballdata.domain.FootballDataSource
 import dev.iurysouza.livematch.footballdata.data.FootballNetworkDataSource

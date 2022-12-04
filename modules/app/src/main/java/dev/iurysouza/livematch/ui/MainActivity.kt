@@ -7,7 +7,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.iurysouza.livematch.ui.navigation.AppNavigation
 import dev.iurysouza.livematch.ui.theme.LivematchTheme
-import dev.iurysouza.livematch.core.JsonParser
+import dev.iurysouza.livematch.common.JsonParser
 import javax.inject.Inject
 
 @AndroidEntryPoint
