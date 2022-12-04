@@ -4,9 +4,9 @@ import arrow.core.Either
 import arrow.core.Either.Companion.catch
 import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.reddit.BuildConfig
-import dev.iurysouza.livematch.reddit.domain.RedditNetworkDataSource
 import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedContributionListing
 import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedSubmissionListing
+import dev.iurysouza.livematch.reddit.domain.RedditNetworkDataSource
 import dev.iurysouza.livematch.reddit.domain.models.AccessTokenResponse
 import java.util.Base64
 import javax.inject.Inject

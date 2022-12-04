@@ -92,7 +92,8 @@ fun CommentItemComponent(
                 Text(
                     modifier = Modifier.wrapContentSize(),
                     text = commentItem.score,
-                    style = authorStyle.copy(fontWeight = FontWeight.Normal, color = MaterialTheme.colors.primary)
+                    style = authorStyle.copy(fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colors.primary)
                 )
                 Text(
                     modifier = Modifier.wrapContentSize(),

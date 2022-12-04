@@ -11,7 +11,7 @@ object Fixtures {
             }
 """.trimIndent()
 
-    val commentsResponse ="""
+    val commentsResponse = """
         
 [
     {

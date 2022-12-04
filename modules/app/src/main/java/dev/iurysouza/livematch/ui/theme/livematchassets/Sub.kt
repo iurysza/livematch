@@ -17,10 +17,10 @@ public val LiveMatchAssets.Sub: ImageVector
             return _sub!!
         }
         _sub = Builder(name = "Sub", defaultWidth = 423.755.dp, defaultHeight = 423.755.dp,
-                viewportWidth = 423.755f, viewportHeight = 423.755f).apply {
+            viewportWidth = 423.755f, viewportHeight = 423.755f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                pathFillType = NonZero) {
                 moveTo(43.84f, 281.457f)
                 curveToRelative(-18.585f, -44.869f, -18.586f, -94.29f, 0.0f, -139.159f)
                 curveToRelative(10.649f, -25.709f, 26.678f, -48.152f, 46.86f, -66.135f)
@@ -36,8 +36,8 @@ public val LiveMatchAssets.Sub: ImageVector
                 close()
             }
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                pathFillType = NonZero) {
                 moveTo(407.516f, 292.938f)
                 curveToRelative(21.652f, -52.272f, 21.652f, -109.848f, 0.0f, -162.12f)
                 curveToRelative(-14.167f, -34.202f, -37.071f, -64.159f, -66.234f, -86.633f)
@@ -54,7 +54,7 @@ public val LiveMatchAssets.Sub: ImageVector
                 close()
             }
         }
-        .build()
+            .build()
         return _sub!!
     }
 

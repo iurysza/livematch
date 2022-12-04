@@ -13,5 +13,5 @@ data class Score(
     @Json(name = "halfTime")
     val halfTime: HalfTime?,
     @Json(name = "winner")
-    val winner: String?
+    val winner: String?,
 )

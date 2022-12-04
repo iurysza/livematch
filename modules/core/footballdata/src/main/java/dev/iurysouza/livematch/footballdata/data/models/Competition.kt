@@ -15,5 +15,5 @@ data class Competition(
     @Json(name = "name")
     val name: String?,
     @Json(name = "type")
-    val type: String?
+    val type: String?,
 )

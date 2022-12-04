@@ -10,10 +10,10 @@ import dev.iurysouza.livematch.common.DomainError
 import dev.iurysouza.livematch.common.InvalidExpirationDate
 import dev.iurysouza.livematch.common.TokenExpired
 import dev.iurysouza.livematch.common.TokenNotFound
-import dev.iurysouza.livematch.reddit.data.AuthStorage
-import dev.iurysouza.livematch.reddit.domain.models.AuthTokenEntity
 import dev.iurysouza.livematch.common.isInTheFuture
 import dev.iurysouza.livematch.common.nowPlusMillis
+import dev.iurysouza.livematch.reddit.data.AuthStorage
+import dev.iurysouza.livematch.reddit.domain.models.AuthTokenEntity
 import javax.inject.Inject
 import javax.inject.Singleton
 

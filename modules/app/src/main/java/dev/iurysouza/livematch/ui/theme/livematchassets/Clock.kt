@@ -17,10 +17,10 @@ public val LiveMatchAssets.Clock: ImageVector
             return _clock!!
         }
         _clock = Builder(name = "Clock", defaultWidth = 466.008.dp, defaultHeight = 466.008.dp,
-                viewportWidth = 466.008f, viewportHeight = 466.008f).apply {
+            viewportWidth = 466.008f, viewportHeight = 466.008f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                pathFillType = NonZero) {
                 moveTo(233.004f, 0.0f)
                 curveTo(104.224f, 0.0f, 0.0f, 104.212f, 0.0f, 233.004f)
                 curveToRelative(0.0f, 128.781f, 104.212f, 233.004f, 233.004f, 233.004f)
@@ -41,7 +41,7 @@ public val LiveMatchAssets.Clock: ImageVector
                 close()
             }
         }
-        .build()
+            .build()
         return _clock!!
     }
 

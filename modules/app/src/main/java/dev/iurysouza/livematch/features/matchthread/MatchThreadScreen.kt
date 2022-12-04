@@ -38,13 +38,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.iurysouza.livematch.R
-import dev.iurysouza.livematch.ui.components.AnimatedCellExpansion
-import dev.iurysouza.livematch.ui.components.ErrorScreen
-import dev.iurysouza.livematch.ui.components.FullScreenProgress
 import dev.iurysouza.livematch.features.matchthread.components.CommentItemComponent
 import dev.iurysouza.livematch.features.matchthread.components.MatchDetails
 import dev.iurysouza.livematch.features.matchthread.components.MatchHeader
 import dev.iurysouza.livematch.features.matchthread.components.SectionHeader
+import dev.iurysouza.livematch.ui.components.AnimatedCellExpansion
+import dev.iurysouza.livematch.ui.components.ErrorScreen
+import dev.iurysouza.livematch.ui.components.FullScreenProgress
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnrememberedMutableState")

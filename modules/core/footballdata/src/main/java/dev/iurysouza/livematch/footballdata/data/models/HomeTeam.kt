@@ -15,5 +15,5 @@ data class HomeTeam(
     @Json(name = "shortName")
     val shortName: String?,
     @Json(name = "tla")
-    val tla: String?
+    val tla: String?,
 )

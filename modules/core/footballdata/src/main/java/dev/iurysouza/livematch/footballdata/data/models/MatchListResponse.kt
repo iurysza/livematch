@@ -11,5 +11,5 @@ data class MatchListResponse(
     @Json(name = "matches")
     val matches: List<Match>?,
     @Json(name = "resultSet")
-    val resultSet: ResultSet?
+    val resultSet: ResultSet?,
 )

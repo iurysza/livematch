@@ -37,7 +37,9 @@ import timber.log.Timber
 @Composable
 fun MediaCarousel(mediaItemList: List<MediaItem>) {
     Column(
-        Modifier.padding(horizontal = 8.dp).padding(bottom = 4.dp)
+        Modifier
+            .padding(horizontal = 8.dp)
+            .padding(bottom = 4.dp)
     ) {
         val context = LocalContext.current
         Text(

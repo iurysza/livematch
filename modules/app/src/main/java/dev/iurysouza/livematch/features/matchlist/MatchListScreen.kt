@@ -32,9 +32,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.iurysouza.livematch.R
+import dev.iurysouza.livematch.features.matchthread.MatchThread
 import dev.iurysouza.livematch.ui.components.ErrorScreen
 import dev.iurysouza.livematch.ui.components.FullScreenProgress
-import dev.iurysouza.livematch.features.matchthread.MatchThread
 import dev.iurysouza.livematch.ui.components.shortToast
 import kotlinx.coroutines.launch
 
@@ -99,7 +99,10 @@ fun MatchListScreenComponent(
             .pullRefresh(refreshState),
         topBar = {
             TopAppBar(
-                title = { Text(text = stringResource(R.string.matches), color = MaterialTheme.colors.onPrimary) },
+                title = {
+                    Text(text = stringResource(R.string.matches),
+                        color = MaterialTheme.colors.onPrimary)
+                },
                 backgroundColor = MaterialTheme.colors.background,
                 actions = {
                     if (isSyncing.value) {

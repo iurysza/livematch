@@ -35,5 +35,5 @@ data class Match(
     @Json(name = "status")
     val status: String?,
     @Json(name = "utcDate")
-    val utcDate: String?
+    val utcDate: String?,
 )

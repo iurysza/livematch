@@ -9,5 +9,5 @@ data class FullTime(
     @Json(name = "away")
     val away: Int?,
     @Json(name = "home")
-    val home: Int?
+    val home: Int?,
 )

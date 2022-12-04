@@ -13,5 +13,5 @@ data class Referee(
     @Json(name = "nationality")
     val nationality: String?,
     @Json(name = "type")
-    val type: String?
+    val type: String?,
 )

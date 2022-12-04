@@ -17,10 +17,10 @@ public val LiveMatchAssets.Kickoff: ImageVector
             return _kickoff!!
         }
         _kickoff = Builder(name = "Kickoff", defaultWidth = 64.0.dp, defaultHeight = 64.0.dp,
-                viewportWidth = 64.0f, viewportHeight = 64.0f).apply {
+            viewportWidth = 64.0f, viewportHeight = 64.0f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                pathFillType = NonZero) {
                 moveTo(32.0f, 0.0f)
                 curveTo(14.355f, 0.0f, 0.0f, 14.355f, 0.0f, 32.0f)
                 reflectiveCurveToRelative(14.355f, 32.0f, 32.0f, 32.0f)
@@ -118,7 +118,7 @@ public val LiveMatchAssets.Kickoff: ImageVector
                 close()
             }
         }
-        .build()
+            .build()
         return _kickoff!!
     }
 

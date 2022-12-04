@@ -4,8 +4,8 @@ import arrow.core.Either
 import arrow.core.Either.Companion.catch
 import dev.iurysouza.livematch.common.DomainError
 import dev.iurysouza.livematch.common.FailedToSave
-import dev.iurysouza.livematch.common.storage.KeyValueStorage
 import dev.iurysouza.livematch.common.TokenNotFound
+import dev.iurysouza.livematch.common.storage.KeyValueStorage
 import dev.iurysouza.livematch.reddit.domain.models.AuthTokenEntity
 import javax.inject.Inject
 

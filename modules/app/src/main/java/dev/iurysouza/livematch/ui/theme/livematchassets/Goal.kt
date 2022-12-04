@@ -17,10 +17,10 @@ public val LiveMatchAssets.Goal: ImageVector
             return _goal!!
         }
         _goal = Builder(name = "Goal", defaultWidth = 453.357.dp, defaultHeight = 453.357.dp,
-                viewportWidth = 453.357f, viewportHeight = 453.357f).apply {
+            viewportWidth = 453.357f, viewportHeight = 453.357f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                pathFillType = NonZero) {
                 moveTo(451.755f, 19.624f)
                 verticalLineTo(0.0f)
                 horizontalLineTo(1.595f)
@@ -41,8 +41,8 @@ public val LiveMatchAssets.Goal: ImageVector
                 close()
             }
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                pathFillType = NonZero) {
                 moveTo(289.943f, 167.18f)
                 lineToRelative(31.976f, -45.769f)
                 lineToRelative(-38.952f, -36.338f)
@@ -51,8 +51,8 @@ public val LiveMatchAssets.Goal: ImageVector
                 close()
             }
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                pathFillType = NonZero) {
                 moveTo(266.788f, 252.858f)
                 lineToRelative(29.892f, 31.166f)
                 lineToRelative(50.606f, -21.636f)
@@ -61,8 +61,8 @@ public val LiveMatchAssets.Goal: ImageVector
                 close()
             }
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                pathFillType = NonZero) {
                 moveTo(278.165f, 302.807f)
                 curveToRelative(62.821f, 0.0f, 114.332f, -48.161f, 119.767f, -109.569f)
                 lineToRelative(1.149f, -1.25f)
@@ -108,8 +108,8 @@ public val LiveMatchAssets.Goal: ImageVector
                 close()
             }
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                pathFillType = NonZero) {
                 moveTo(333.893f, 422.461f)
                 curveToRelative(5.566f, 13.93f, 28.345f, 7.866f, 22.71f, -6.256f)
                 curveToRelative(-10.166f, -25.451f, -23.099f, -49.616f, -33.895f, -74.774f)
@@ -118,8 +118,8 @@ public val LiveMatchAssets.Goal: ImageVector
                 close()
             }
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                pathFillType = NonZero) {
                 moveTo(403.702f, 392.657f)
                 curveToRelative(-10.163f, -25.438f, -23.099f, -49.612f, -33.891f, -74.771f)
                 curveToRelative(-5.979f, -13.918f, -26.265f, -1.911f, -20.334f, 11.882f)
@@ -128,8 +128,8 @@ public val LiveMatchAssets.Goal: ImageVector
                 close()
             }
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                pathFillType = NonZero) {
                 moveTo(450.806f, 369.105f)
                 curveToRelative(-10.167f, -25.438f, -23.099f, -49.611f, -33.891f, -74.771f)
                 curveToRelative(-5.983f, -13.913f, -26.265f, -1.911f, -20.334f, 11.882f)
@@ -138,7 +138,7 @@ public val LiveMatchAssets.Goal: ImageVector
                 close()
             }
         }
-        .build()
+            .build()
         return _goal!!
     }
 

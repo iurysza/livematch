@@ -15,5 +15,5 @@ data class Season(
     @Json(name = "startDate")
     val startDate: String?,
     @Json(name = "winner")
-    val winner: Any?
+    val winner: Any?,
 )

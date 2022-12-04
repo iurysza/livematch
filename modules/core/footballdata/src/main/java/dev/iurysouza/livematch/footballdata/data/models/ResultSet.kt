@@ -15,5 +15,5 @@ data class ResultSet(
     @Json(name = "last")
     val last: String?,
     @Json(name = "played")
-    val played: Int?
+    val played: Int?,
 )

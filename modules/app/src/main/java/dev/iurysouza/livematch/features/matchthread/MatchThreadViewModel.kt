@@ -8,9 +8,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.common.DomainError
 import dev.iurysouza.livematch.common.NetworkError
+import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.reddit.domain.FetchMatchCommentsUseCase
 import dev.iurysouza.livematch.reddit.domain.FetchNewCommentsUseCase
-import dev.iurysouza.livematch.common.ResourceProvider
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -54,7 +54,13 @@ class MatchThreadViewModel @Inject constructor(
                     .mapLeft { mapErrorMsg(it) }
                     .flatMap { eventParser.toCommentItemList(it, match.startTime) }
                     .mapLeft { ViewError.CommentItemParsingError(it.toString()) }
-                    .flatMap { eventParser.toCommentSectionListEvents(it, matchEvents, isRefreshing) }
+                    .flatMap { commentItemList ->
+                        eventParser.toCommentSectionListEvents(
+                            commentList = commentItemList,
+                            eventList = matchEvents,
+                            isRefreshing = isRefreshing
+                        )
+                    }
                     .map {
                         it.mapIndexed { index, commentSection ->
                             if (index == 0) {

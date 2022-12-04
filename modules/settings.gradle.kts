@@ -1,4 +1,4 @@
-import java.net.URI.*
+import java.net.URI.create
 
 enableFeaturePreview("VERSION_CATALOGS")
 // == Define locations for build logic ==

@@ -11,5 +11,5 @@ data class Filters(
     @Json(name = "dateTo")
     val dateTo: String?,
     @Json(name = "permission")
-    val permission: String?
+    val permission: String?,
 )

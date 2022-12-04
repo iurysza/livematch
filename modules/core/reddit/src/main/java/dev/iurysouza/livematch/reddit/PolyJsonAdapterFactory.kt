@@ -12,10 +12,14 @@ class PolyJsonAdapterFactory<T>(
 
     private val baseType: Class<T>,
     private val possibleTypes: Array<Type>,
-    private inline val selectType: (label: String, value: Any?) -> Type?
+    private inline val selectType: (label: String, value: Any?) -> Type?,
 ) : JsonAdapter.Factory {
 
-    override fun create(type: Type, annotations: Set<Annotation?>, moshi: Moshi): JsonAdapter<Any>? {
+    override fun create(
+        type: Type,
+        annotations: Set<Annotation?>,
+        moshi: Moshi,
+    ): JsonAdapter<Any>? {
 
         if (Types.getRawType(type) != baseType || annotations.isNotEmpty()) {
             return null
@@ -33,7 +37,7 @@ class PolyJsonAdapterFactory<T>(
     internal class PolyJsonAdapter(
 
         private val adaptersMap: Map<Type, JsonAdapter<Any?>>,
-        private inline val selectType: (label: String, value: Any?) -> Type?
+        private inline val selectType: (label: String, value: Any?) -> Type?,
     ) : JsonAdapter<Any>() {
 
         override fun fromJson(reader: JsonReader): Any? {

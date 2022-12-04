@@ -15,9 +15,9 @@ import arrow.core.continuations.either
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
+import dev.iurysouza.livematch.common.JsonParser
 import dev.iurysouza.livematch.features.matchlist.MatchListScreen
 import dev.iurysouza.livematch.features.matchthread.MatchThreadScreen
-import dev.iurysouza.livematch.common.JsonParser
 import timber.log.Timber
 
 @Composable
@@ -26,7 +26,7 @@ internal fun AppNavigation(
     jsonParser: JsonParser,
 ) {
     AnimatedNavHost(
-        modifier =Modifier.background(MaterialTheme.colors.background),
+        modifier = Modifier.background(MaterialTheme.colors.background),
         navController = navController,
         startDestination = Screen.MatchList.name,
         enterTransition = { defaultEnterTransition(initialState, targetState) },
