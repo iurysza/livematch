@@ -2,8 +2,8 @@ package dev.iurysouza.livematch.reddit.data
 
 import arrow.core.Either
 import arrow.core.Either.Companion.catch
-import dev.iurysouza.livematch.BuildConfig
 import dev.iurysouza.livematch.core.NetworkError
+import dev.iurysouza.livematch.reddit.BuildConfig
 import dev.iurysouza.livematch.reddit.domain.RedditNetworkDataSource
 import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedContributionListing
 import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedSubmissionListing

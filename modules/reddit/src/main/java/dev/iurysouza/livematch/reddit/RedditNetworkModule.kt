@@ -8,7 +8,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.iurysouza.livematch.BuildConfig
+import dev.iurysouza.livematch.reddit.BuildConfig
 import dev.iurysouza.livematch.core.DispatcherProvider
 import dev.iurysouza.livematch.reddit.data.AuthStorage
 import dev.iurysouza.livematch.reddit.data.RedditApi

@@ -19,7 +19,6 @@ android {
 
     buildTypes {
         val USE_MOCK_URL: String by project
-        val API_URL: String by project
         val FOOTBALL_DATA_BASE_URL: String by project
         val MOCK_API_URL: String by project
 
@@ -31,7 +30,6 @@ android {
             )
             signingConfig = signingConfigs.getByName("release")
             isDebuggable = false
-            buildConfigField("String", "API_URL", API_URL)
             buildConfigField(
                 type = "String",
                 name = "FOOTBALL_DATA_BASE_URL",
@@ -43,11 +41,6 @@ android {
                 type = "String",
                 name = "FOOTBALL_DATA_BASE_URL",
                 value = if (USE_MOCK_URL.toBoolean()) MOCK_API_URL else FOOTBALL_DATA_BASE_URL
-            )
-            buildConfigField(
-                type = "String",
-                name = "API_URL",
-                value = if (USE_MOCK_URL.toBoolean()) MOCK_API_URL else API_URL
             )
         }
     }
@@ -96,6 +89,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     implementation("androidx.browser:browser:1.4.0")
     implementation(project(":core"))
+    implementation(project(":reddit"))
 }
 
 fun getLocalProperty(key: String) = gradleLocalProperties(rootDir).getProperty(key)

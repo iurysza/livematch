@@ -26,5 +26,6 @@ dependencyResolutionManagement {
 
 // == Define the inner structure of this component ==
 rootProject.name = "modules"
+include("reddit")
 include("core")
 include("app")

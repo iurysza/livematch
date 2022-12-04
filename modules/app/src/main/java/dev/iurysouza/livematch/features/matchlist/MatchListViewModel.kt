@@ -19,6 +19,9 @@ import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
 import dev.iurysouza.livematch.features.matchthread.MatchHighlightParser
 import dev.iurysouza.livematch.features.matchthread.ViewError
 import dev.iurysouza.livematch.core.ResourceProvider
+import dev.iurysouza.livematch.features.matchthread.Competition
+import dev.iurysouza.livematch.features.matchthread.MatchThread
+import dev.iurysouza.livematch.features.matchthread.MediaItem
 import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow

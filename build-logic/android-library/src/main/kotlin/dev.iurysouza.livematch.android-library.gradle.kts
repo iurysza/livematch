@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("kotlin-parcelize")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 group = "dev.iurysouza.livematch"
@@ -11,6 +12,11 @@ group = "dev.iurysouza.livematch"
 android {
     compileSdk = 33
 
+
+    defaultConfig {
+        minSdk = 26
+        targetSdk = 33
+    }
 
     kotlinOptions {
         // Treat all Kotlin warnings as errors (disabled by default)
