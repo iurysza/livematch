@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.data
+package dev.iurysouza.livematch.domain
 
 object Fixtures {
     val authJsonResponse = """ 

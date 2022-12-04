@@ -4,10 +4,10 @@ import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.fakes.InMemoryKeyValueStorage
 import dev.iurysouza.livematch.fakes.StubNetworkDatasource
 import dev.iurysouza.livematch.fakes.anAccessTokenResponse
-import dev.iurysouza.livematch.reddit.domain.auth.AuthStorage
 import dev.iurysouza.livematch.reddit.domain.RefreshTokenIfNeededUseCase
 import dev.iurysouza.livematch.common.secondsAgo
 import dev.iurysouza.livematch.common.secondsFromNow
+import dev.iurysouza.livematch.reddit.data.AuthStorage
 import io.kotest.assertions.arrow.core.shouldBeLeft
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.maps.shouldContain

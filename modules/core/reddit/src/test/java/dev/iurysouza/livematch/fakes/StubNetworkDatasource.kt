@@ -1,11 +1,11 @@
 package dev.iurysouza.livematch.fakes
 
 import arrow.core.Either
-import dev.iurysouza.livematch.reddit.domain.RedditNetworkDataSource
 import dev.iurysouza.livematch.common.NetworkError
-import dev.iurysouza.livematch.domain.models.AccessTokenResponse
-import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedContributionListing
-import dev.iurysouza.livematch.domain.models.reddit.responses.EnvelopedSubmissionListing
+import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedContributionListing
+import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedSubmissionListing
+import dev.iurysouza.livematch.reddit.domain.RedditNetworkDataSource
+import dev.iurysouza.livematch.reddit.domain.models.AccessTokenResponse
 
 class StubNetworkDatasource(
     var returnAccessToken: AccessTokenResponse? = anAccessTokenResponse(),
