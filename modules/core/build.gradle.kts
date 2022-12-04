@@ -1,56 +1,8 @@
-@file:Suppress("LocalVariableName")
-
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-
 plugins {
-    id("dev.iurysouza.livematch.android-application")
+    id("dev.iurysouza.livematch.android-library")
 }
-
 android {
-    namespace = "dev.iurysouza.livematch"
-    signingConfigs {
-        create("release") {
-            keyAlias = getLocalProperty("keyAlias")
-            keyPassword = getLocalProperty("keyPassword")
-            storePassword = getLocalProperty("storePassword")
-            storeFile = file(getLocalProperty("storeFile"))
-        }
-    }
-
-    buildTypes {
-        val USE_MOCK_URL: String by project
-        val API_URL: String by project
-        val FOOTBALL_DATA_BASE_URL: String by project
-        val MOCK_API_URL: String by project
-
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
-            signingConfig = signingConfigs.getByName("release")
-            isDebuggable = false
-            buildConfigField("String", "API_URL", API_URL)
-            buildConfigField(
-                type = "String",
-                name = "FOOTBALL_DATA_BASE_URL",
-                value = FOOTBALL_DATA_BASE_URL
-            )
-        }
-        getByName("debug") {
-            buildConfigField(
-                type = "String",
-                name = "FOOTBALL_DATA_BASE_URL",
-                value = if (USE_MOCK_URL.toBoolean()) MOCK_API_URL else FOOTBALL_DATA_BASE_URL
-            )
-            buildConfigField(
-                type = "String",
-                name = "API_URL",
-                value = if (USE_MOCK_URL.toBoolean()) MOCK_API_URL else API_URL
-            )
-        }
-    }
+    namespace = "dev.iurysouza.livematch.core"
 }
 
 tasks.withType<Test>().configureEach {
@@ -95,7 +47,5 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     implementation("androidx.browser:browser:1.4.0")
-    implementation(project(":core"))
 }
 
-fun getLocalProperty(key: String) = gradleLocalProperties(rootDir).getProperty(key)

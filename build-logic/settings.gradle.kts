@@ -13,4 +13,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "build-logic"
+include("android-library")
 include("android-application")
