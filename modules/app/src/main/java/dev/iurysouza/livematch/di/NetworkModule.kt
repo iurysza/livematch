@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.iurysouza.livematch.BuildConfig
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import okhttp3.Dispatcher
@@ -16,10 +17,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    internal fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.HEADERS
-        return logging
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
     }
 
     @Provides
@@ -30,7 +29,7 @@ object NetworkModule {
         .dispatcher(Dispatcher().apply { maxRequestsPerHost = MAX_REQUESTS })
         .connectTimeout(HTTP_CONNECTION_TIMEOUT.toLong(), TimeUnit.SECONDS)
         .readTimeout(HTTP_CONNECTION_TIMEOUT.toLong(), TimeUnit.SECONDS)
-        .addInterceptor(loggingInterceptor)
+        .apply { if (BuildConfig.DEBUG) addInterceptor(loggingInterceptor) }
         .build()
 }
 

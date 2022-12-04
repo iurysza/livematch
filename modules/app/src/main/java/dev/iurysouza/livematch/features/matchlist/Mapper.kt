@@ -94,7 +94,7 @@ internal fun toTeam(
     )
 }
 
-fun AwayTeamEntity.asHomeTeam() = HomeTeamEntity(
+private fun AwayTeamEntity.asHomeTeam() = HomeTeamEntity(
     crest = crest,
     id = id,
     name = name,

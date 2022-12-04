@@ -37,15 +37,15 @@ class FootballDataNetworkModule {
 
     @Provides
     @Singleton
-    fun provideFootballDataApi(@Named(FOOTBALLDATA_RETROFIT) builder: Retrofit.Builder): FootballDataApi {
-        return builder.build().create(FootballDataApi::class.java)
-    }
+    fun provideFootballDataApi(
+        @Named(FOOTBALLDATA_RETROFIT) builder: Retrofit.Builder,
+    ): FootballDataApi = builder.build().create(FootballDataApi::class.java)
 
     @Provides
     @Singleton
-    internal fun provideFootballDataSource(api: FootballDataApi): FootballDataSource {
-        return FootballNetworkDataSource(api)
-    }
+    internal fun provideFootballDataSource(
+        api: FootballDataApi,
+    ): FootballDataSource = FootballNetworkDataSource(api)
 
 }
 

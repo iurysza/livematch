@@ -43,7 +43,7 @@ import timber.log.Timber
 
 @InstallIn(SingletonComponent::class)
 @Module
-object NetworkModule {
+object RedditNetworkModule {
 
     @Provides
     @Singleton

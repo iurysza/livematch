@@ -9,6 +9,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.common.DomainError
 import dev.iurysouza.livematch.common.NetworkError
+import dev.iurysouza.livematch.common.ResourceProvider
+import dev.iurysouza.livematch.features.matchthread.MatchHighlightParser
+import dev.iurysouza.livematch.features.matchthread.ViewError
 import dev.iurysouza.livematch.footballdata.domain.FetchMatchesUseCase
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
 import dev.iurysouza.livematch.reddit.domain.FetchLatestMatchThreadsForTodayUseCase
@@ -16,9 +19,6 @@ import dev.iurysouza.livematch.reddit.domain.GetMatchHighlightsUseCase
 import dev.iurysouza.livematch.reddit.domain.RefreshTokenIfNeededUseCase
 import dev.iurysouza.livematch.reddit.domain.models.MatchHighlightEntity
 import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
-import dev.iurysouza.livematch.features.matchthread.MatchHighlightParser
-import dev.iurysouza.livematch.features.matchthread.ViewError
-import dev.iurysouza.livematch.common.ResourceProvider
 import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -29,10 +29,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
-
-private const val KEY_MATCH_THREAD = "matchThreads"
-private const val KEY_HIGHLIGHTS = "highlights"
-private const val KEY_MATCHES = "matches"
 
 @HiltViewModel
 class MatchListViewModel @Inject constructor(
@@ -156,3 +152,7 @@ class MatchListViewModel @Inject constructor(
         else -> resourceProvider.getString(R.string.match_screen_error_default)
     }
 }
+
+private const val KEY_MATCH_THREAD = "matchThreads"
+private const val KEY_HIGHLIGHTS = "highlights"
+private const val KEY_MATCHES = "matches"
