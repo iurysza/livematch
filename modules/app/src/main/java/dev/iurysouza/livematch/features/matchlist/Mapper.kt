@@ -65,13 +65,13 @@ internal fun toTeam(
     val validHomeScore = if (score.fullTime == null) {
         score.halfTime?.home?.toString() ?: "0"
     } else {
-        score.fullTime.home?.toString() ?: "0"
+        score.fullTime?.home?.toString() ?: "0"
     }
 
     val validAwayScore = if (score.fullTime == null) {
         score.halfTime?.away?.toString() ?: "0"
     } else {
-        score.fullTime.away?.toString() ?: "0"
+        score.fullTime?.away?.toString() ?: "0"
     }
 
     val teamScore = if (isHome) {

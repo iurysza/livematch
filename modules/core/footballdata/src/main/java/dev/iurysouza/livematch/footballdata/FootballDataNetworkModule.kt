@@ -4,11 +4,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.iurysouza.livematch.BuildConfig
 import dev.iurysouza.livematch.common.DispatcherProvider
 import dev.iurysouza.livematch.footballdata.data.FootballDataApi
-import dev.iurysouza.livematch.footballdata.domain.FootballDataSource
 import dev.iurysouza.livematch.footballdata.data.FootballNetworkDataSource
+import dev.iurysouza.livematch.footballdata.domain.FootballDataSource
 import javax.inject.Named
 import javax.inject.Singleton
 import kotlinx.coroutines.asExecutor
@@ -50,6 +49,4 @@ class FootballDataNetworkModule {
 
 }
 
-private const val MAX_REQUESTS = 10
-private const val HTTP_CONNECTION_TIMEOUT = 60
 private const val FOOTBALLDATA_RETROFIT = "FootballData"

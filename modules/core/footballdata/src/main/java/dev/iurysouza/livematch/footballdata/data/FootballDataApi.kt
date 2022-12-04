@@ -1,6 +1,6 @@
 package dev.iurysouza.livematch.footballdata.data
 
-import dev.iurysouza.livematch.BuildConfig
+import dev.iurysouza.livematch.footballdata.BuildConfig
 import dev.iurysouza.livematch.footballdata.data.models.MatchListResponse
 import retrofit2.http.GET
 import retrofit2.http.Header

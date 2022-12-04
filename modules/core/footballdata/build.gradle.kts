@@ -5,10 +5,10 @@ plugins {
 }
 
 android {
-    namespace = "dev.iurysouza.livematch.reddit"
+    namespace = "dev.iurysouza.livematch.footballdata"
     buildTypes {
         val USE_MOCK_URL: String by project
-        val API_URL: String by project
+        val FOOTBALL_DATA_BASE_URL: String by project
         val MOCK_API_URL: String by project
 
         getByName("release") {
@@ -19,15 +19,15 @@ android {
             )
             buildConfigField(
                 type = "String",
-                name = "API_URL",
-                value = API_URL
+                name = "FOOTBALL_DATA_BASE_URL",
+                value = FOOTBALL_DATA_BASE_URL
             )
         }
         getByName("debug") {
             buildConfigField(
                 type = "String",
-                name = "API_URL",
-                value = if (USE_MOCK_URL.toBoolean()) MOCK_API_URL else API_URL
+                name = "FOOTBALL_DATA_BASE_URL",
+                value = if (USE_MOCK_URL.toBoolean()) MOCK_API_URL else FOOTBALL_DATA_BASE_URL
             )
         }
     }
@@ -39,6 +39,7 @@ tasks.withType<Test>().configureEach {
 
 dependencies {
     implementation(project(":core:common"))
+
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.androidCompiler)
 
@@ -53,8 +54,6 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     implementation(libs.bundles.arrow)
-    implementation(libs.halilibo.composeRichttext.richtextCommonmark)
-
     testImplementation(libs.squareup.okhttp.mockwebserver)
     testImplementation(libs.kotlin.reflect)
     testImplementation(libs.bundles.kotestBundle)
