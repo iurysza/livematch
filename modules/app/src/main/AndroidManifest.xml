@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LiveMatch">
         <activity
-            android:name="dev.iurysouza.livematch.ui.MainActivity"
+            android:name="dev.iurysouza.livematch.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.LiveMatch">
             <intent-filter>
