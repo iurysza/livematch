@@ -33,10 +33,6 @@ android {
     }
 }
 
-tasks.withType<Test>().configureEach {
-    useJUnitPlatform()
-}
-
 dependencies {
     implementation(project(":features:match-thread"))
     implementation(project(":features:match-list"))

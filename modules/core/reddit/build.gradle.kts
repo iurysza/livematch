@@ -33,9 +33,6 @@ android {
     }
 }
 
-tasks.withType<Test>().configureEach {
-    useJUnitPlatform()
-}
 
 dependencies {
     implementation(project(":core:common"))
@@ -50,10 +47,4 @@ dependencies {
     kapt(libs.squareup.moshi.kotlinCodegen)
 
     implementation(libs.bundles.arrow)
-
-    testImplementation(libs.squareup.okhttp.mockwebserver)
-    testImplementation(libs.kotlin.reflect)
-    testImplementation(libs.bundles.kotestBundle)
-    testImplementation(libs.androidx.test.runner)
-    testImplementation(libs.kotlinx.coroutines.test)
 }
