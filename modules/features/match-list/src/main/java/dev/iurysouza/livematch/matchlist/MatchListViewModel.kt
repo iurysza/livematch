@@ -11,7 +11,6 @@ import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.footballdata.domain.FetchMatchesUseCase
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
-import dev.iurysouza.livematch.matchlist.R
 import dev.iurysouza.livematch.reddit.domain.FetchLatestMatchThreadsForTodayUseCase
 import dev.iurysouza.livematch.reddit.domain.GetMatchHighlightsUseCase
 import dev.iurysouza.livematch.reddit.domain.MatchHighlightParserUseCase
@@ -77,15 +76,15 @@ class MatchListViewModel @Inject constructor(
                 fetchRedditContent()
             }
             either { fetchMatches().bind() }.map { matchEntityList ->
-                    savedStateHandle[KEY_MATCHES] = matchEntityList
-                    matchEntityList.toMatchList()
-                }.mapLeft {
-                    isRefreshingState.emit(false)
-                    _state.emit(MatchListState.Error(it.toString()))
-                }.map {
-                    isRefreshingState.emit(false)
-                    _state.emit(MatchListState.Success(it))
-                }
+                savedStateHandle[KEY_MATCHES] = matchEntityList
+                matchEntityList.toMatchList()
+            }.mapLeft {
+                isRefreshingState.emit(false)
+                _state.emit(MatchListState.Error(it.toString()))
+            }.map {
+                isRefreshingState.emit(false)
+                _state.emit(MatchListState.Success(it))
+            }
         }
     }
 

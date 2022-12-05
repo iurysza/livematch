@@ -44,7 +44,6 @@ import dev.iurysouza.livematch.matchthread.components.CommentItemComponent
 import dev.iurysouza.livematch.matchthread.components.MatchDetails
 import dev.iurysouza.livematch.matchthread.components.MatchHeader
 import dev.iurysouza.livematch.matchthread.components.SectionHeader
-import dev.iurysouza.livematch.matchthread.R
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnrememberedMutableState")

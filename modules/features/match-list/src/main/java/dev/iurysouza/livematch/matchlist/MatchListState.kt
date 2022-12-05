@@ -1,6 +1,5 @@
 package dev.iurysouza.livematch.matchlist
 
-import android.media.browse.MediaBrowser
 import android.os.Parcelable
 import com.squareup.moshi.JsonClass
 import dev.iurysouza.livematch.reddit.domain.models.MediaItem
@@ -58,8 +57,5 @@ data class Competition(
 ) : Parcelable
 
 sealed class ViewError(val message: String) {
-    data class CommentItemParsingError(val msg: String) : ViewError(msg)
-    data class CommentSectionParsingError(val msg: String) : ViewError(msg)
-    data class MatchMediaParsingError(val msg: String) : ViewError(msg)
     data class InvalidMatchId(val msg: String) : ViewError(msg)
 }

@@ -1,5 +1,3 @@
-import dev.iurysouza.livematch.build.withKotlinOptions
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
