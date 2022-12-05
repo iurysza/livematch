@@ -49,4 +49,5 @@ kotlin {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation("com.jakewharton.timber:timber:5.0.1")
 }

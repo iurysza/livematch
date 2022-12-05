@@ -46,12 +46,9 @@ dependencies {
     implementation(libs.squareup.moshi.kotlin)
     implementation(libs.squareup.moshi.moshiAdapters)
     kapt(libs.squareup.moshi.kotlinCodegen)
-    implementation("com.jakewharton.timber:timber:5.0.1")
     implementation(libs.bundles.arrow)
     implementation(libs.halilibo.composeRichttext.richtextCommonmark)
-
     implementation("io.coil-kt:coil-compose:2.2.2")
-    implementation("io.coil-kt:coil-svg:2.2.2")
 
     testImplementation(libs.squareup.okhttp.mockwebserver)
     testImplementation(libs.kotlin.reflect)

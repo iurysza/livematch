@@ -36,20 +36,8 @@ dependencies {
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.androidCompiler)
 
-    implementation(libs.google.acompanist.systemuicontroller)
     implementation(libs.google.acompanist.navigation.animation)
-
-    implementation("com.jakewharton.timber:timber:5.0.1")
     implementation(libs.halilibo.composeRichttext.richtextCommonmark)
 
     implementation("io.coil-kt:coil-compose:2.2.2")
-    implementation("io.coil-kt:coil-svg:2.2.2")
-
-    testImplementation(libs.squareup.okhttp.mockwebserver)
-    testImplementation(libs.kotlin.reflect)
-    testImplementation(libs.bundles.kotestBundle)
-    testImplementation(libs.androidx.test.runner)
-    testImplementation(libs.kotlinx.coroutines.test)
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-    implementation("androidx.browser:browser:1.4.0")
 }
