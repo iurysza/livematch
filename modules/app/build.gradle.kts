@@ -61,7 +61,6 @@ dependencies {
     implementation(libs.squareup.moshi.moshiAdapters)
     kapt(libs.squareup.moshi.kotlinCodegen)
     implementation("com.jakewharton.timber:timber:5.0.1")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation(libs.bundles.arrow)
     implementation(libs.halilibo.composeRichttext.richtextCommonmark)
 

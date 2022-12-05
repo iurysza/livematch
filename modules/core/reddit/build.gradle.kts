@@ -39,18 +39,15 @@ tasks.withType<Test>().configureEach {
 
 dependencies {
     implementation(project(":core:common"))
+
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.androidCompiler)
 
     implementation(libs.retrofit.core)
     implementation(libs.squareup.retrofit.moshi.converter)
-    implementation(libs.squareup.okhttp.loggingInterceptor)
     implementation(libs.squareup.moshi.kotlin)
     implementation(libs.squareup.moshi.moshiAdapters)
     kapt(libs.squareup.moshi.kotlinCodegen)
-
-    implementation("com.jakewharton.timber:timber:5.0.1")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     implementation(libs.bundles.arrow)
 
