@@ -54,9 +54,6 @@ dependencies {
     implementation(libs.google.acompanist.systemuicontroller)
     implementation(libs.google.acompanist.navigation.animation)
 
-    implementation(libs.retrofit.core)
-    implementation(libs.squareup.retrofit.moshi.converter)
-    implementation(libs.squareup.okhttp.loggingInterceptor)
     implementation(libs.squareup.moshi.kotlin)
     implementation(libs.squareup.moshi.moshiAdapters)
     kapt(libs.squareup.moshi.kotlinCodegen)

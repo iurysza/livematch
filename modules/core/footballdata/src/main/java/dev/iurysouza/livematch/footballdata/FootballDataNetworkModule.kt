@@ -12,7 +12,6 @@ import javax.inject.Named
 import javax.inject.Singleton
 import kotlinx.coroutines.asExecutor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -25,15 +24,12 @@ class FootballDataNetworkModule {
     @Named(FOOTBALLDATA_RETROFIT)
     internal fun provideRetrofitBuilder(
         dispatcherProvider: DispatcherProvider,
-        loggingInterceptor: HttpLoggingInterceptor,
         okHttpClient: OkHttpClient,
-    ) = Retrofit.Builder()
+    ): Retrofit.Builder = Retrofit.Builder()
         .baseUrl(BuildConfig.FOOTBALL_DATA_BASE_URL)
         .addConverterFactory(MoshiConverterFactory.create())
         .callbackExecutor(dispatcherProvider.io().asExecutor())
-        .client(
-            okHttpClient.newBuilder().addInterceptor(loggingInterceptor).build()
-        )
+        .client(okHttpClient)
 
     @Provides
     @Singleton

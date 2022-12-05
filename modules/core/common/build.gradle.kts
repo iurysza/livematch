@@ -16,6 +16,7 @@ dependencies {
     implementation(libs.squareup.moshi.moshiAdapters)
     kapt(libs.squareup.moshi.kotlinCodegen)
 
+    implementation(libs.squareup.okhttp.loggingInterceptor)
     implementation(libs.bundles.arrow)
 }
 

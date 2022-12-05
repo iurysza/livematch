@@ -1,10 +1,9 @@
-package dev.iurysouza.livematch.di
+package dev.iurysouza.livematch.common
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.iurysouza.livematch.BuildConfig
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import okhttp3.Dispatcher

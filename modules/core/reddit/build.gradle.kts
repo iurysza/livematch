@@ -8,7 +8,7 @@ android {
     namespace = "dev.iurysouza.livematch.reddit"
     buildTypes {
         val USE_MOCK_URL: String by project
-        val API_URL: String by project
+        val REDDIT_API_BASE_URL: String by project
         val MOCK_API_URL: String by project
 
         getByName("release") {
@@ -20,14 +20,14 @@ android {
             buildConfigField(
                 type = "String",
                 name = "API_URL",
-                value = API_URL
+                value = REDDIT_API_BASE_URL
             )
         }
         getByName("debug") {
             buildConfigField(
                 type = "String",
                 name = "API_URL",
-                value = if (USE_MOCK_URL.toBoolean()) MOCK_API_URL else API_URL
+                value = if (USE_MOCK_URL.toBoolean()) MOCK_API_URL else REDDIT_API_BASE_URL
             )
         }
     }
