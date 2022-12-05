@@ -53,7 +53,6 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     implementation(libs.bundles.arrow)
-    implementation(libs.halilibo.composeRichttext.richtextCommonmark)
 
     testImplementation(libs.squareup.okhttp.mockwebserver)
     testImplementation(libs.kotlin.reflect)
