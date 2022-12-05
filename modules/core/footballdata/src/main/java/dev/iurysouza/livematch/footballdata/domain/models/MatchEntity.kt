@@ -69,11 +69,11 @@ data class HalfEntity(
     val home: Int?,
 ) : Parcelable
 
-enum class Status(name: String) {
-    IN_PLAY("IN_PLAY"),
-    PAUSED("PAUSED"),
-    TIMED("TIMED"),
-    FINISHED("FINISHED"),
+enum class Status {
+    IN_PLAY,
+    PAUSED,
+    TIMED,
+    FINISHED,
 }
 
 @Parcelize
