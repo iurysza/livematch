@@ -1,21 +1,9 @@
-@file:Suppress("LocalVariableName")
-
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-
 plugins {
-    id("dev.iurysouza.livematch.android-application")
+    id("dev.iurysouza.livematch.android-library")
 }
 
 android {
-    namespace = "dev.iurysouza.livematch"
-    signingConfigs {
-        create("release") {
-            keyAlias = getLocalProperty("keyAlias")
-            keyPassword = getLocalProperty("keyPassword")
-            storePassword = getLocalProperty("storePassword")
-            storeFile = file(getLocalProperty("storeFile"))
-        }
-    }
+    namespace = "dev.iurysouza.livematch.matchlist"
 
     buildTypes {
         getByName("release") {
@@ -24,12 +12,13 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
-            signingConfig = signingConfigs.getByName("release")
-            isDebuggable = false
         }
-        getByName("debug") {
-            isDebuggable = true
-        }
+    }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.3.2"
     }
 }
 
@@ -73,8 +62,6 @@ dependencies {
     implementation("androidx.browser:browser:1.4.0")
     implementation(project(":core:common"))
     implementation(project(":core:footballdata"))
-    implementation(project(":features:match-list"))
+    implementation(project(":core:design-system"))
     implementation(project(":core:reddit"))
 }
-
-fun getLocalProperty(key: String) = gradleLocalProperties(rootDir).getProperty(key)

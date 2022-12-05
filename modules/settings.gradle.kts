@@ -28,5 +28,7 @@ dependencyResolutionManagement {
 rootProject.name = "modules"
 include("core:reddit")
 include("core:footballdata")
+include("features:match-list")
+include("core:design-system")
 include("core:common")
 include("app")

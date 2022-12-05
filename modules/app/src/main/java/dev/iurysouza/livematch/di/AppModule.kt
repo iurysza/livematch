@@ -5,16 +5,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.iurysouza.livematch.features.matchthread.MatchEventParser
-import dev.iurysouza.livematch.features.matchthread.MatchHighlightParser
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
 object AppModule {
-
-    @Provides
-    @Singleton
-    internal fun provideMatchHighlightParser(): MatchHighlightParser = MatchHighlightParser()
 
     @Provides
     @Singleton

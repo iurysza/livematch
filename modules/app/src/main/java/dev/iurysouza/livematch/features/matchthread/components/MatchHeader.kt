@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import coil.compose.AsyncImage
-import dev.iurysouza.livematch.features.matchlist.Team
+import dev.iurysouza.livematch.features.matchthread.Team
 
 @Composable
 @Preview

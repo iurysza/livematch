@@ -1,15 +1,18 @@
-package dev.iurysouza.livematch.features.matchthread
+package dev.iurysouza.livematch.reddit.domain
 
 import arrow.core.Either
+import dev.iurysouza.livematch.common.DomainError
+import dev.iurysouza.livematch.common.MappingError
 import dev.iurysouza.livematch.reddit.domain.models.MatchHighlightEntity
+import dev.iurysouza.livematch.reddit.domain.models.MediaItem
 
 
-open class MatchHighlightParser {
+class MatchHighlightParserUseCase {
 
     fun getMatchHighlights(
         matchMedias: List<MatchHighlightEntity>,
         matchTitle: String,
-    ): Either<ViewError.MatchMediaParsingError, List<MediaItem>> = Either.catch {
+    ): Either<DomainError, List<MediaItem>> = Either.catch {
         val (homeTeam, awayTeam) = matchTitle.parseTeamNames()
         matchMedias.sortedBy { it.createdAt }.filter { media ->
             containsTeamName(media.title!!, homeTeam) || containsTeamName(media.title!!, awayTeam)
@@ -19,7 +22,7 @@ open class MatchHighlightParser {
                 url = media.html!!,
             )
         }
-    }.mapLeft { ViewError.MatchMediaParsingError(it.message.toString()) }
+    }.mapLeft { MappingError(it.message.toString()) }
 
     private fun parseTitle(media: MatchHighlightEntity): String {
         if (media.title!!.contains("href")) {

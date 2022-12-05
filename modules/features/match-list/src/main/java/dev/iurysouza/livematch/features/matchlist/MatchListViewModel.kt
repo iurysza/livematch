@@ -6,16 +6,15 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.Either
 import arrow.core.continuations.either
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.iurysouza.livematch.R
 import dev.iurysouza.livematch.common.DomainError
 import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.common.ResourceProvider
-import dev.iurysouza.livematch.features.matchthread.MatchHighlightParser
-import dev.iurysouza.livematch.features.matchthread.ViewError
 import dev.iurysouza.livematch.footballdata.domain.FetchMatchesUseCase
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
+import dev.iurysouza.livematch.matchlist.R
 import dev.iurysouza.livematch.reddit.domain.FetchLatestMatchThreadsForTodayUseCase
 import dev.iurysouza.livematch.reddit.domain.GetMatchHighlightsUseCase
+import dev.iurysouza.livematch.reddit.domain.MatchHighlightParserUseCase
 import dev.iurysouza.livematch.reddit.domain.RefreshTokenIfNeededUseCase
 import dev.iurysouza.livematch.reddit.domain.models.MatchHighlightEntity
 import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
@@ -35,7 +34,7 @@ class MatchListViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val resourceProvider: ResourceProvider,
     private val fetchMatches: FetchMatchesUseCase,
-    private val highlightParser: MatchHighlightParser,
+    private val highlightParser: MatchHighlightParserUseCase,
     private val getMatchHighlights: GetMatchHighlightsUseCase,
     private val refreshTokenIfNeeded: RefreshTokenIfNeededUseCase,
     private val fetchLatestMatchThreadsForTodayUseCase: FetchLatestMatchThreadsForTodayUseCase,
@@ -44,18 +43,12 @@ class MatchListViewModel @Inject constructor(
     val isRefreshingState = MutableSharedFlow<Boolean>()
     val events = MutableSharedFlow<MatchListEvents>()
 
-    private val matchHighlightsFlow = savedStateHandle.getStateFlow(
-        key = KEY_HIGHLIGHTS,
-        initialValue = emptyList<MatchHighlightEntity>()
-    )
-    private val matchThreadListFlow = savedStateHandle.getStateFlow(
-        key = KEY_MATCH_THREAD,
-        initialValue = emptyList<MatchThreadEntity>()
-    )
-    private val matchEntityListFlow = savedStateHandle.getStateFlow(
-        key = KEY_MATCHES,
-        initialValue = emptyList<MatchEntity>()
-    )
+    private val matchHighlightsFlow = savedStateHandle.getStateFlow(key = KEY_HIGHLIGHTS,
+        initialValue = emptyList<MatchHighlightEntity>())
+    private val matchThreadListFlow = savedStateHandle.getStateFlow(key = KEY_MATCH_THREAD,
+        initialValue = emptyList<MatchThreadEntity>())
+    private val matchEntityListFlow =
+        savedStateHandle.getStateFlow(key = KEY_MATCHES, initialValue = emptyList<MatchEntity>())
 
     private val _state = MutableStateFlow<MatchListState>(MatchListState.Loading)
     private val isSyncing = MutableStateFlow(true)
@@ -83,16 +76,13 @@ class MatchListViewModel @Inject constructor(
             if (isRefreshing) {
                 fetchRedditContent()
             }
-            either { fetchMatches().bind() }
-                .map { matchEntityList ->
+            either { fetchMatches().bind() }.map { matchEntityList ->
                     savedStateHandle[KEY_MATCHES] = matchEntityList
                     matchEntityList.toMatchList()
-                }
-                .mapLeft {
+                }.mapLeft {
                     isRefreshingState.emit(false)
                     _state.emit(MatchListState.Error(it.toString()))
-                }
-                .map {
+                }.map {
                     isRefreshingState.emit(false)
                     _state.emit(MatchListState.Success(it))
                 }
@@ -103,25 +93,18 @@ class MatchListViewModel @Inject constructor(
         either {
             val (matchThreadEntity, matchEntity) = findSelectedMatch(match).bind()
 
-            val mediaList = highlightParser.getMatchHighlights(
-                matchHighlightsFlow.value,
-                matchThreadEntity.title
-            ).bind()
+            val mediaList = highlightParser.getMatchHighlights(matchHighlightsFlow.value,
+                matchThreadEntity.title).bind()
 
             toMatchList(matchThreadEntity, mediaList, match, matchEntity)
-        }.fold(
-            { events.emit(MatchListEvents.NavigationError(it)) },
-            { events.emit(MatchListEvents.NavigateToMatchThread(it)) }
-        )
+        }.fold({ events.emit(MatchListEvents.NavigationError(it.toString())) },
+            { events.emit(MatchListEvents.NavigateToMatchThread(it)) })
     }
 
     private fun findSelectedMatch(newMatch: Match) = Either.catch {
         val matchThreadEntity = matchThreadListFlow.value.first { matchThread ->
-            matchThread.title.contains(
-                newMatch.homeTeam.name
-            ) || matchThread.title.contains(
-                newMatch.awayTeam.name
-            )
+            matchThread.title.contains(newMatch.homeTeam.name) || matchThread.title.contains(
+                newMatch.awayTeam.name)
         }
         val matchEntity = matchEntityListFlow.value.first { it.id.toString() == newMatch.id }
         Pair(matchThreadEntity, matchEntity)

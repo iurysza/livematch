@@ -29,6 +29,7 @@ import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedRedditor
 import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedSubmission
 import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedSubreddit
 import dev.iurysouza.livematch.reddit.data.models.responses.base.EnvelopeKind
+import dev.iurysouza.livematch.reddit.domain.MatchHighlightParserUseCase
 import dev.iurysouza.livematch.reddit.domain.RedditNetworkDataSource
 import java.util.Base64
 import javax.inject.Named
@@ -151,6 +152,11 @@ object RedditNetworkModule {
     internal fun provideRedditDataSource(
         redditApi: RedditApi,
     ): RedditNetworkDataSource = RedditNetworkDataSourceImpl(redditApi)
+
+    @Provides
+    @Singleton
+    internal fun provideMatchHighlightParser(): MatchHighlightParserUseCase =
+        MatchHighlightParserUseCase()
 
 }
 

@@ -111,9 +111,22 @@ fun MatchThreadComponent(
             state = scrollState,
             content = {
                 item {
+                    val homeTeam = Team(
+                        crestUrl = matchThread.homeTeam.crestUrl,
+                        isHomeTeam = matchThread.homeTeam.isHomeTeam,
+                        isAhead = matchThread.homeTeam.isAhead,
+                        name = matchThread.homeTeam.name,
+                        score = matchThread.homeTeam.score,
+                    )
                     MatchHeader(
-                        homeTeam = matchThread.awayTeam,
-                        awayTeam = matchThread.homeTeam,
+                        homeTeam = homeTeam,
+                        awayTeam = Team(
+                            crestUrl = matchThread.awayTeam.crestUrl,
+                            isHomeTeam = matchThread.awayTeam.isHomeTeam,
+                            isAhead = matchThread.awayTeam.isAhead,
+                            name = matchThread.awayTeam.name,
+                            score = matchThread.awayTeam.score,
+                        ),
                     )
                 }
                 item {

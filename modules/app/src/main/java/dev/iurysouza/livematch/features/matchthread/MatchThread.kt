@@ -2,7 +2,6 @@ package dev.iurysouza.livematch.features.matchthread
 
 import android.os.Parcelable
 import com.squareup.moshi.JsonClass
-import dev.iurysouza.livematch.features.matchlist.Team
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -33,8 +32,6 @@ data class CommentItem(
 sealed class ViewError(val message: String) {
     data class CommentItemParsingError(val msg: String) : ViewError(msg)
     data class CommentSectionParsingError(val msg: String) : ViewError(msg)
-    data class MatchMediaParsingError(val msg: String) : ViewError(msg)
-    data class InvalidMatchId(val msg: String) : ViewError(msg)
 }
 
 
@@ -67,4 +64,14 @@ data class Competition(
     val emblemUrl: String,
     val id: Int?,
     val name: String,
+) : Parcelable
+
+@Parcelize
+@JsonClass(generateAdapter = true)
+data class Team(
+    val crestUrl: String?,
+    val name: String,
+    val isHomeTeam: Boolean,
+    val isAhead: Boolean,
+    val score: String,
 ) : Parcelable

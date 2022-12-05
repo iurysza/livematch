@@ -105,36 +105,3 @@ fun MatchDetails(content: String, mediaItemList: List<MediaItem>) {
     }
 
 }
-
-@Composable
-private fun MatchThreadPreview() {
-    MatchThreadScreen(
-        matchThread = MatchThread(
-            competition = Competition(
-                emblemUrl = "",
-                id = null,
-                name = ""
-            ),
-            content = "Real Madrid",
-            id = "id",
-            startTime = 9,
-            mediaList = emptyList(),
-            homeTeam = dev.iurysouza.livematch.features.matchlist.Team(
-                crestUrl = null,
-                name = "",
-                isHomeTeam = false,
-                isAhead = false,
-                score = ""
-            ),
-            awayTeam = dev.iurysouza.livematch.features.matchlist.Team(
-                crestUrl = null,
-                name = "",
-                isHomeTeam = false,
-                isAhead = false,
-                score = ""
-            ),
-            refereeList = listOf(),
-        ),
-        navigateUp = {}
-    )
-}

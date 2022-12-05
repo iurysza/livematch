@@ -1,14 +1,12 @@
 package dev.iurysouza.livematch.features.matchlist
 
-import dev.iurysouza.livematch.features.matchthread.Competition
-import dev.iurysouza.livematch.features.matchthread.MatchThread
-import dev.iurysouza.livematch.features.matchthread.MediaItem
 import dev.iurysouza.livematch.footballdata.domain.models.AwayTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.HomeTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
 import dev.iurysouza.livematch.footballdata.domain.models.ScoreEntity
 import dev.iurysouza.livematch.footballdata.domain.models.Status
 import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
+import dev.iurysouza.livematch.reddit.domain.models.MediaItem
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
