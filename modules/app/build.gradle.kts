@@ -18,10 +18,6 @@ android {
     }
 
     buildTypes {
-        val USE_MOCK_URL: String by project
-        val FOOTBALL_DATA_BASE_URL: String by project
-        val MOCK_API_URL: String by project
-
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
@@ -30,18 +26,9 @@ android {
             )
             signingConfig = signingConfigs.getByName("release")
             isDebuggable = false
-            buildConfigField(
-                type = "String",
-                name = "FOOTBALL_DATA_BASE_URL",
-                value = FOOTBALL_DATA_BASE_URL
-            )
         }
         getByName("debug") {
-            buildConfigField(
-                type = "String",
-                name = "FOOTBALL_DATA_BASE_URL",
-                value = if (USE_MOCK_URL.toBoolean()) MOCK_API_URL else FOOTBALL_DATA_BASE_URL
-            )
+            isDebuggable = true
         }
     }
 }
