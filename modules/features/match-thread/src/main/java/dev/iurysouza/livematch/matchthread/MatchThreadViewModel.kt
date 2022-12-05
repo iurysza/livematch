@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.features.matchthread
+package dev.iurysouza.livematch.matchthread
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

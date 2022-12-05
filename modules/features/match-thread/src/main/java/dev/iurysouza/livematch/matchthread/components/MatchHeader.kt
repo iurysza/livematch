@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.features.matchthread.components
+package dev.iurysouza.livematch.matchthread.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import coil.compose.AsyncImage
-import dev.iurysouza.livematch.features.matchthread.Team
+import dev.iurysouza.livematch.matchthread.Team
 
 @Composable
 @Preview

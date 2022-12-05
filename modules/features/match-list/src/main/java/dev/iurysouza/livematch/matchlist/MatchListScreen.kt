@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.features.matchlist
+package dev.iurysouza.livematch.matchlist
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background

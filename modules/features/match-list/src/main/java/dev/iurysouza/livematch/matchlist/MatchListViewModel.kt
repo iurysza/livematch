@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.features.matchlist
+package dev.iurysouza.livematch.matchlist
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

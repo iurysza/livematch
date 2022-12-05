@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.features.matchthread.components
+package dev.iurysouza.livematch.matchthread.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -29,7 +29,7 @@ import com.halilibo.richtext.ui.RichText
 import com.halilibo.richtext.ui.RichTextStyle
 import com.halilibo.richtext.ui.WithStyle
 import com.halilibo.richtext.ui.string.RichTextStringStyle
-import dev.iurysouza.livematch.features.matchthread.CommentItem
+import dev.iurysouza.livematch.matchthread.CommentItem
 import dev.iurysouza.livematch.matchthread.R
 
 

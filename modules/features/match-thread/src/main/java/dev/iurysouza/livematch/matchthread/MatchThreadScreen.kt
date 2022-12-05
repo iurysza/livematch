@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.features.matchthread
+package dev.iurysouza.livematch.matchthread
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -40,10 +40,10 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.iurysouza.livematch.designsystem.components.AnimatedCellExpansion
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
 import dev.iurysouza.livematch.designsystem.components.FullScreenProgress
-import dev.iurysouza.livematch.features.matchthread.components.CommentItemComponent
-import dev.iurysouza.livematch.features.matchthread.components.MatchDetails
-import dev.iurysouza.livematch.features.matchthread.components.MatchHeader
-import dev.iurysouza.livematch.features.matchthread.components.SectionHeader
+import dev.iurysouza.livematch.matchthread.components.CommentItemComponent
+import dev.iurysouza.livematch.matchthread.components.MatchDetails
+import dev.iurysouza.livematch.matchthread.components.MatchHeader
+import dev.iurysouza.livematch.matchthread.components.SectionHeader
 import dev.iurysouza.livematch.matchthread.R
 import kotlinx.coroutines.launch
 

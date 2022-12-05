@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.features.matchlist
+package dev.iurysouza.livematch.matchlist
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

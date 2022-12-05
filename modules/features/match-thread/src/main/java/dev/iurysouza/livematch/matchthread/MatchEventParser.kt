@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.features.matchthread
+package dev.iurysouza.livematch.matchthread
 
 import arrow.core.Either
 import arrow.core.Either.Companion.catch

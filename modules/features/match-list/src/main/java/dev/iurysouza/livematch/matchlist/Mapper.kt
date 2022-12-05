@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.features.matchlist
+package dev.iurysouza.livematch.matchlist
 
 import dev.iurysouza.livematch.footballdata.domain.models.AwayTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.HomeTeamEntity

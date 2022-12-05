@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.features.matchthread.components
+package dev.iurysouza.livematch.matchthread.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,8 +27,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.iurysouza.livematch.features.matchthread.EventIcon
-import dev.iurysouza.livematch.features.matchthread.MatchEvent
+import dev.iurysouza.livematch.matchthread.EventIcon
+import dev.iurysouza.livematch.matchthread.MatchEvent
 
 @Composable
 fun SectionHeader(

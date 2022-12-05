@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.features.matchthread.components
+package dev.iurysouza.livematch.matchthread.components
 
 import android.content.Context
 import android.net.Uri
@@ -28,7 +28,7 @@ import com.halilibo.richtext.markdown.Markdown
 import com.halilibo.richtext.ui.RichText
 import com.halilibo.richtext.ui.RichTextStyle
 import com.halilibo.richtext.ui.string.RichTextStringStyle
-import dev.iurysouza.livematch.features.matchthread.MediaItem
+import dev.iurysouza.livematch.matchthread.MediaItem
 import timber.log.Timber
 
 @Composable
