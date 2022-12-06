@@ -33,11 +33,10 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.uiTooling)
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.core.ktx)
+
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.androidCompiler)
 
-    implementation(libs.google.acompanist.navigation.animation)
     implementation(libs.halilibo.composeRichttext.richtextCommonmark)
-
     implementation("io.coil-kt:coil-compose:2.2.2")
 }

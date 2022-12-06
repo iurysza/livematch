@@ -42,6 +42,7 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2022.11.00"))
     implementation("androidx.compose.material:material")
     implementation(libs.bundles.composeMinimal)
+    implementation(libs.androidx.appcompat)
 
     debugImplementation(libs.androidx.compose.ui.uiTooling)
     implementation(libs.androidx.navigation.compose)

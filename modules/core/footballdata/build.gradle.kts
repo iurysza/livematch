@@ -36,13 +36,14 @@ android {
 dependencies {
     implementation(project(":core:common"))
 
+    implementation(libs.bundles.arrow)
+
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.androidCompiler)
 
     implementation(libs.retrofit.core)
-    implementation(libs.squareup.moshi.kotlin)
     implementation(libs.squareup.retrofit.moshi.converter)
-    kapt(libs.squareup.moshi.kotlinCodegen)
 
-    implementation(libs.bundles.arrow)
+    implementation(libs.squareup.moshi.kotlin)
+    kapt(libs.squareup.moshi.kotlinCodegen)
 }
