@@ -32,8 +32,16 @@ internal fun AppNavigation(
         enterTransition = { defaultEnterTransition(initialState, targetState) },
         exitTransition = { defaultExitTransition(initialState, targetState) },
     ) {
-        addMatchListNavGraph(navController, jsonParser, Screen.Root)
-        addMatchThreadNavGraph(navController, jsonParser, Screen.MatchList)
+        addMatchListNavGraph(
+            parent = Screen.Root,
+            navController = navController,
+            jsonParser = jsonParser,
+        )
+        addMatchThreadNavGraph(
+            parent = Screen.MatchList,
+            navController = navController,
+            jsonParser = jsonParser,
+        )
     }
 }
 
