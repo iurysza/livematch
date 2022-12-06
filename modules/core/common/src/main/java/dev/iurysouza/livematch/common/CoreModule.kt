@@ -35,6 +35,7 @@ object CoreModule {
     ): KeyValueStorage = SystemStorage(sharedPreferences)
 
     @Provides
+    @Singleton
     fun provideCoroutineContextProvider(): DispatcherProvider = DefaultDispatcherProvider()
 
     @Provides

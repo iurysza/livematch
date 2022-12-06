@@ -2,7 +2,9 @@ package dev.iurysouza.livematch.common.storage
 
 import android.content.SharedPreferences
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class SystemStorage @Inject constructor(
     private val sharedPref: SharedPreferences,
 ) : KeyValueStorage {

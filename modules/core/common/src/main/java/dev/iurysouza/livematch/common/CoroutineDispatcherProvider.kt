@@ -1,5 +1,6 @@
 package dev.iurysouza.livematch.common
 
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
@@ -10,6 +11,7 @@ interface DispatcherProvider {
     fun unconfined(): CoroutineDispatcher
 }
 
+@Singleton
 class DefaultDispatcherProvider : DispatcherProvider {
     override fun main(): CoroutineDispatcher = Dispatchers.Main
     override fun default(): CoroutineDispatcher = Dispatchers.Default
