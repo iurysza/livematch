@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.androidCompiler)
 
+    implementation(libs.google.acompanist.systemuicontroller)
     implementation(libs.halilibo.composeRichttext.richtextCommonmark)
     implementation("io.coil-kt:coil-compose:2.2.2")
 }

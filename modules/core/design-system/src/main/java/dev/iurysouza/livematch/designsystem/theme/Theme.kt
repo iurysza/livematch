@@ -6,8 +6,10 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.text.TextStyle
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.halilibo.richtext.ui.RichTextThemeIntegration
 
 private val DarkColorPalette = darkColors(
@@ -37,6 +39,12 @@ fun LivematchTheme(
         DarkColorPalette
     } else {
         LightColorPalette
+    }
+    val systemUiController = rememberSystemUiController()
+    val backgroundColor = MaterialTheme.colors.background
+
+    SideEffect {
+        systemUiController.setSystemBarsColor(backgroundColor, darkIcons = !darkTheme)
     }
 
     MaterialTheme(
