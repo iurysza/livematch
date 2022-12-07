@@ -4,6 +4,9 @@ plugins {
 
 android {
     namespace = "dev.iurysouza.livematch.playground"
+    defaultConfig {
+        applicationId = "dev.iurysouza.livematch.playground"
+    }
     buildTypes {
         getByName("debug") {
             isDebuggable = true

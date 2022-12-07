@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch
+package dev.iurysouza.livematch.playground
 
 import android.app.Application
 import android.content.Context
