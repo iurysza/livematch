@@ -4,7 +4,7 @@ import arrow.core.Either
 import dev.iurysouza.livematch.common.DomainError
 import dev.iurysouza.livematch.common.MappingError
 import dev.iurysouza.livematch.reddit.domain.models.MatchHighlightEntity
-import dev.iurysouza.livematch.reddit.domain.models.MediaItem
+import dev.iurysouza.livematch.reddit.domain.models.MediaEntity
 
 
 class MatchHighlightParserUseCase {
@@ -12,12 +12,12 @@ class MatchHighlightParserUseCase {
     fun getMatchHighlights(
         matchMedias: List<MatchHighlightEntity>,
         matchTitle: String,
-    ): Either<DomainError, List<MediaItem>> = Either.catch {
+    ): Either<DomainError, List<MediaEntity>> = Either.catch {
         val (homeTeam, awayTeam) = matchTitle.parseTeamNames()
         matchMedias.sortedBy { it.createdAt }.filter { media ->
             containsTeamName(media.title!!, homeTeam) || containsTeamName(media.title, awayTeam)
         }.map { media ->
-            MediaItem(
+            MediaEntity(
                 title = parseTitle(media),
                 url = media.html!!,
             )

@@ -39,38 +39,37 @@ class MatchListViewModel @Inject constructor(
     private val fetchLatestMatchThreadsForTodayUseCase: FetchLatestMatchThreadsForTodayUseCase,
 ) : ViewModel() {
 
-    val isRefreshingState = MutableSharedFlow<Boolean>()
-    val events = MutableSharedFlow<MatchListEvents>()
+    private val isRefreshingState = MutableStateFlow(true)
+    private val matchList = MutableStateFlow<MatchListState>(MatchListState.Loading)
+    private val savedHighlights = savedStateHandle.getStateFlow(
+        key = KEY_HIGHLIGHTS,
+        initialValue = emptyList<MatchHighlightEntity>()
+    )
+    private val savedMatchThreads = savedStateHandle.getStateFlow(
+        key = KEY_MATCH_THREAD,
+        initialValue = emptyList<MatchThreadEntity>()
+    )
+    private val savedMatches = savedStateHandle.getStateFlow(
+        key = KEY_MATCHES,
+        initialValue = emptyList<MatchEntity>()
+    )
 
-    private val matchHighlightsFlow = savedStateHandle.getStateFlow(key = KEY_HIGHLIGHTS,
-        initialValue = emptyList<MatchHighlightEntity>())
-    private val matchThreadListFlow = savedStateHandle.getStateFlow(key = KEY_MATCH_THREAD,
-        initialValue = emptyList<MatchThreadEntity>())
-    private val matchEntityListFlow =
-        savedStateHandle.getStateFlow(key = KEY_MATCHES, initialValue = emptyList<MatchEntity>())
-
-    private val _state = MutableStateFlow<MatchListState>(MatchListState.Loading)
-    private val isSyncing = MutableStateFlow(true)
-
-    val state = combine(_state.asStateFlow(), isSyncing.asStateFlow()) { state, isSyncing ->
-        when (state) {
-            is MatchListState.Error -> state
-            MatchListState.Loading -> state
-            is MatchListState.Success -> state.copy(isSyncing = isSyncing)
-        }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), MatchListState.Loading)
+    val uiEvent = MutableSharedFlow<MatchListEvents>()
+    val uiModel =
+        combine(matchList.asStateFlow(), isRefreshingState.asStateFlow()) { state, isSyncing ->
+            UIModel(state, isSyncing)
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), UIModel())
 
     init {
-        if (matchThreadListFlow.value.isEmpty() || matchHighlightsFlow.value.isEmpty()) {
+        if (savedMatchThreads.value.isEmpty() || savedHighlights.value.isEmpty()) {
             fetchRedditContent()
         }
     }
 
     fun getLatestMatches(isRefreshing: Boolean) = viewModelScope.launch {
-        val savedMatches = matchEntityListFlow.value
-        isRefreshingState.emit(isRefreshing)
+        val savedMatches = savedMatches.value
         if (savedMatches.isNotEmpty() && !isRefreshing) {
-            _state.emit(MatchListState.Success(savedMatches.toMatchList()))
+            matchList.emit(MatchListState.Success(savedMatches.toMatchList()))
         } else {
             if (isRefreshing) {
                 fetchRedditContent()
@@ -80,47 +79,52 @@ class MatchListViewModel @Inject constructor(
                 matchEntityList.toMatchList()
             }.mapLeft {
                 isRefreshingState.emit(false)
-                _state.emit(MatchListState.Error(it.toString()))
+                matchList.emit(matchListStateError())
             }.map {
-                isRefreshingState.emit(false)
-                _state.emit(MatchListState.Success(it))
+                isRefreshingState.emit(true)
+                matchList.emit(MatchListState.Success(it))
             }
         }
     }
 
+    private fun matchListStateError(): MatchListState.Error = MatchListState.Error(
+        resourceProvider.getString(R.string.match_screen_error_no_internet)
+    )
+
     fun navigateToMatch(match: Match) = viewModelScope.launch {
         either {
             val (matchThreadEntity, matchEntity) = findSelectedMatch(match).bind()
-
-            val mediaList = highlightParser.getMatchHighlights(matchHighlightsFlow.value,
-                matchThreadEntity.title).bind()
-
-            toMatchList(matchThreadEntity, mediaList, match, matchEntity)
-        }.fold({ events.emit(MatchListEvents.NavigationError(it.toString())) },
-            { events.emit(MatchListEvents.NavigateToMatchThread(it)) })
+            val mediaList = highlightParser.getMatchHighlights(
+                savedHighlights.value,
+                matchThreadEntity.title
+            ).bind()
+            buildMatchThreadWith(matchThreadEntity, mediaList, match, matchEntity)
+        }.fold(
+            { uiEvent.emit(MatchListEvents.NavigationError(it.toString())) },
+            { uiEvent.emit(MatchListEvents.NavigateToMatchThread(it)) })
     }
 
-    private fun findSelectedMatch(newMatch: Match) = Either.catch {
-        val matchThreadEntity = matchThreadListFlow.value.first { matchThread ->
-            matchThread.title.contains(newMatch.homeTeam.name) || matchThread.title.contains(
-                newMatch.awayTeam.name)
+    private fun findSelectedMatch(selectedMatch: Match) = Either.catch {
+        val matchThreadEntity = savedMatchThreads.value.first { matchThread ->
+            val title = matchThread.title
+            title.contains(selectedMatch.homeTeam.name) || title.contains(selectedMatch.awayTeam.name)
         }
-        val matchEntity = matchEntityListFlow.value.first { it.id.toString() == newMatch.id }
+        val matchEntity = savedMatches.value.first { it.id.toString() == selectedMatch.id }
         Pair(matchThreadEntity, matchEntity)
     }.mapLeft { ViewError.InvalidMatchId(it.message.toString()) }
 
     private fun fetchRedditContent() = viewModelScope.launch {
         either {
-            isSyncing.emit(true)
+            isRefreshingState.emit(true)
             refreshTokenIfNeeded().bind()
             val matchHighlightsRequest = async { getMatchHighlights().bind() }
             val matchThreadsRequest = async { fetchLatestMatchThreadsForTodayUseCase().bind() }
             Pair(matchHighlightsRequest.await(), matchThreadsRequest.await())
         }.mapLeft { error ->
-            isSyncing.emit(false)
-            events.emit(MatchListEvents.Error(error.toErrorMsg()))
+            isRefreshingState.emit(false)
+            uiEvent.emit(MatchListEvents.Error(error.toErrorMsg()))
         }.map { (highlights, matchThreads) ->
-            isSyncing.emit(false)
+            isRefreshingState.emit(false)
             savedStateHandle[KEY_MATCH_THREAD] = matchThreads
             savedStateHandle[KEY_HIGHLIGHTS] = highlights
         }

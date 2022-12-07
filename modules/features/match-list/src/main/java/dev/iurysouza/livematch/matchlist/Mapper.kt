@@ -6,7 +6,7 @@ import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
 import dev.iurysouza.livematch.footballdata.domain.models.ScoreEntity
 import dev.iurysouza.livematch.footballdata.domain.models.Status
 import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
-import dev.iurysouza.livematch.reddit.domain.models.MediaItem
+import dev.iurysouza.livematch.reddit.domain.models.MediaEntity
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -34,16 +34,16 @@ internal fun List<MatchEntity>.toMatchList(): List<Match> = map { entity ->
     )
 }
 
-internal fun toMatchList(
+internal fun buildMatchThreadWith(
     matchThread: MatchThreadEntity?,
-    mediaList: List<MediaItem> = emptyList(),
+    mediaList: List<MediaEntity> = emptyList(),
     match: Match,
     matchEntity: MatchEntity,
 ) = MatchThread(
     id = matchThread?.id,
     content = matchThread?.content,
     startTime = matchThread?.createdAt,
-    mediaList = mediaList,
+    mediaList = mediaList.map { Media(it.title, it.url) },
     homeTeam = match.homeTeam,
     awayTeam = match.awayTeam,
     refereeList = matchEntity.referees.map { it.name },
