@@ -11,6 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.iurysouza.livematch.designsystem.components.shortToast
+import dev.iurysouza.livematch.matchlist.betterarchitecture.MatchListViewState
 
 @Composable
 fun MatchListRoute(
@@ -40,7 +41,7 @@ fun MatchListRoute(
     val uiModel by viewModel.uiModel.collectAsState()
 
     MatchListScreen(
-        uiModel = uiModel,
+        uiModel = MatchListViewState(uiModel.matchListState, uiModel.isSyncing),
         onTapItem = { viewModel.navigateToMatch(it) },
         onRefresh = { viewModel.getLatestMatches(true) },
     )

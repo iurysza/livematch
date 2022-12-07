@@ -26,7 +26,7 @@ import dev.iurysouza.livematch.matchlist.betterarchitecture.MatchListViewState
 
 @Composable
 fun MatchListScreen(
-    uiModel: UIModel,
+    uiModel: MatchListViewState,
     onTapItem: (Match) -> Unit = {},
     onRefresh: () -> Unit = {},
 ) {
