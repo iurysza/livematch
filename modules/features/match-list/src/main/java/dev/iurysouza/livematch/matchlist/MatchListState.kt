@@ -9,17 +9,22 @@ data class UIModel(
     val isSyncing: Boolean = false,
 )
 
+@Parcelize
 data class Match(
     val id: String,
     val homeTeam: Team,
     val awayTeam: Team,
     val startTime: String,
     val elapsedMinutes: String,
-)
+) : Parcelable
 
-sealed interface MatchListState {
+@Parcelize
+sealed interface MatchListState : Parcelable {
+    @Parcelize
     data class Success(val matches: List<Match>) : MatchListState
+    @Parcelize
     object Loading : MatchListState
+    @Parcelize
     data class Error(val msg: String) : MatchListState
 }
 

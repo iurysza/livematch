@@ -2,103 +2,135 @@ package dev.iurysouza.livematch.matchlist.betterarchitecture
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import arrow.core.continuations.either
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.iurysouza.livematch.common.DomainError
+import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.common.storage.BaseViewModel
 import dev.iurysouza.livematch.footballdata.domain.FetchMatchesUseCase
-import dev.iurysouza.livematch.matchlist.Match
+import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
 import dev.iurysouza.livematch.matchlist.MatchListState
-import dev.iurysouza.livematch.matchlist.Team
+import dev.iurysouza.livematch.matchlist.R
+import dev.iurysouza.livematch.matchlist.createMatchThreadFrom
+import dev.iurysouza.livematch.matchlist.toMatchList
 import dev.iurysouza.livematch.reddit.domain.FetchLatestMatchThreadsForTodayUseCase
-import dev.iurysouza.livematch.reddit.domain.GetMatchHighlightsUseCase
-import dev.iurysouza.livematch.reddit.domain.MatchHighlightParserUseCase
 import dev.iurysouza.livematch.reddit.domain.RefreshTokenIfNeededUseCase
+import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
 import javax.inject.Inject
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @HiltViewModel
 class BetterMatchListViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val resourceProvider: ResourceProvider,
     private val fetchMatches: FetchMatchesUseCase,
-    private val highlightParser: MatchHighlightParserUseCase,
-    private val getMatchHighlights: GetMatchHighlightsUseCase,
     private val refreshTokenIfNeeded: RefreshTokenIfNeededUseCase,
     private val fetchLatestMatchThreadsForToday: FetchLatestMatchThreadsForTodayUseCase,
 ) : BaseViewModel<MatchListViewEvent, MatchListViewState, MatchListViewEffect>() {
 
+    private val savedMatchThreads = savedStateHandle.getStateFlow(
+        key = KEY_MATCH_THREADS,
+        initialValue = emptyList<MatchThreadEntity>()
+    )
+    private val savedMatches = savedStateHandle.getStateFlow(
+        key = KEY_MATCHES,
+        initialValue = emptyList<MatchEntity>()
+    )
+
     override fun setInitialState(): MatchListViewState = MatchListViewState()
 
-    override fun handleEvent(event: MatchListViewEvent) = when (event) {
-        MatchListViewEvent.GetLatestMatches -> getLatestMatches()
-        MatchListViewEvent.Refresh -> onRefresh()
-        is MatchListViewEvent.NavigateToMatch -> handleNavigation(event)
-    }
-
-    private fun getLatestMatches() {
-        viewModelScope.launch {
-            setState {
-                copy(
-                    matchListState = MatchListState.Loading,
-                    isSyncing = false
-                )
-            }
-
-            delay(300)
-
-            setState {
-                copy(
-                    matchListState = MatchListState.Success(
-                        matches = listOf(
-                            Match(
-                                id = "",
-                                homeTeam = Team(
-                                    crestUrl = "https://crests.football-data.org/770.svg",
-                                    name = "England",
-                                    isHomeTeam = false,
-                                    isAhead = true,
-                                    score = "1"
-                                ),
-                                awayTeam = Team(
-                                    crestUrl = "https://crests.football-data.org/776.svg",
-                                    name = "Wales",
-                                    isHomeTeam = false,
-                                    isAhead = false,
-                                    score = "0"
-                                ),
-                                startTime = "16:00",
-                                elapsedMinutes = "FT"
-                            )
-                        )
-                    ), isSyncing = false)
-            }
-            delay(300)
+    override fun handleEvent(event: MatchListViewEvent) {
+        when (event) {
+            MatchListViewEvent.GetLatestMatches -> onGetLatestMatches()
+            MatchListViewEvent.Refresh -> onRefresh()
+            is MatchListViewEvent.NavigateToMatch -> onNavigateToMatch(event)
         }
     }
 
-    private fun onRefresh() {
+    private fun onGetLatestMatches() {
+        setState { copy(matchListState = MatchListState.Loading) }
         viewModelScope.launch {
-            setState {
-                copy(isSyncing = true)
+            val savedMatches = savedMatches.value
+            if (savedMatches.isNotEmpty()) {
+                setState {
+                    copy(matchListState = MatchListState.Success(savedMatches.toMatchList()))
+                }
+            } else {
+                fetchRedditContent()
+                fetchMatchData()
             }
-
-            delay(300)
-
-            setState {
-                copy(isSyncing = false)
-            }
-
         }
     }
 
-    private fun handleNavigation(event: MatchListViewEvent.NavigateToMatch) {
-        setEffect { MatchListViewEffect.NavigationError("No Match yet") }
+    private suspend fun fetchMatchData() = either {
+        fetchMatches().bind()
+    }.mapLeft { it.toErrorMsg() }
+        .fold(
+            { errorMsg ->
+                setState {
+                    copy(
+                        matchListState = MatchListState.Error(errorMsg),
+                        isRefreshing = false,
+                    )
+                }
+            },
+            { matchList ->
+                savedStateHandle[KEY_MATCHES] = matchList
+                setState {
+                    copy(
+                        matchListState = MatchListState.Success(matchList.toMatchList()),
+                        isRefreshing = false
+                    )
+                }
+            }
+        )
+
+    private suspend fun fetchRedditContent() = either {
+        setState { copy(isSyncing = true) }
+        refreshTokenIfNeeded().bind()
+        fetchLatestMatchThreadsForToday().bind()
+    }.fold(
+        { error ->
+            setEffect { MatchListViewEffect.Error(error.toErrorMsg()) }
+            setState { copy(isSyncing = false) }
+        },
+        { matchThreads ->
+            savedStateHandle[KEY_MATCH_THREADS] = matchThreads
+            setState { copy(isSyncing = false) }
+        }
+    )
+
+    private fun onRefresh() = viewModelScope.launch {
+        setState { copy(isRefreshing = true) }
+        fetchMatchData()
+        fetchRedditContent()
+    }
+
+    private fun onNavigateToMatch(
+        event: MatchListViewEvent.NavigateToMatch,
+    ) = viewModelScope.launch {
+        either {
+            createMatchThreadFrom(
+                selectedMatch = event.match,
+                savedMatchThreadList = savedMatchThreads.value,
+                savedMatchEntities = savedMatches.value
+            ).bind()
+        }.fold(
+            { setEffect { MatchListViewEffect.NavigationError(it.msg) } },
+            { setEffect { MatchListViewEffect.NavigateToMatchThread(it) } }
+        )
+    }
+
+    private fun DomainError.toErrorMsg(): String = when (this) {
+        is NetworkError -> {
+            Timber.e(this.message.toString())
+            resourceProvider.getString(R.string.match_screen_error_no_internet)
+        }
+        else -> resourceProvider.getString(R.string.match_screen_error_default)
     }
 }
 
-
-private const val KEY_MATCH_THREAD = "matchThreads"
-private const val KEY_HIGHLIGHTS = "highlights"
+private const val KEY_MATCH_THREADS = "matchThreads"
 private const val KEY_MATCHES = "matches"
-

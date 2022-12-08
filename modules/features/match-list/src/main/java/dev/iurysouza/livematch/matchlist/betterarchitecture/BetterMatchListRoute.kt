@@ -3,6 +3,7 @@ package dev.iurysouza.livematch.matchlist.betterarchitecture
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.iurysouza.livematch.designsystem.components.shortToast
@@ -21,7 +22,6 @@ fun BetterMatchLisRoute(
     onOpenMatchThread: (MatchThread) -> Unit = {},
 ) {
     val context = LocalContext.current
-
     LaunchedEffect(Unit) {
         viewModel.handleEvent(GetLatestMatches)
         viewModel.effect.collect { event ->
@@ -33,7 +33,7 @@ fun BetterMatchLisRoute(
         }
     }
 
-    val uiModel by viewModel.viewState
+    val uiModel by rememberSaveable(viewModel) { viewModel.viewState }
     MatchListScreen(
         uiModel = uiModel,
         onTapItem = { viewModel.handleEvent(NavigateToMatch(it)) },

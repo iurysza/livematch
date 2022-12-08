@@ -1,5 +1,6 @@
 package dev.iurysouza.livematch.matchlist
 
+import arrow.core.Either
 import dev.iurysouza.livematch.footballdata.domain.models.AwayTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.HomeTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
@@ -33,6 +34,28 @@ internal fun List<MatchEntity>.toMatchList(): List<Match> = map { entity ->
         }
     )
 }
+
+internal fun createMatchThreadFrom(
+    selectedMatch: Match,
+    savedMatchThreadList: List<MatchThreadEntity>,
+    savedMatchEntities: List<MatchEntity>,
+) = Either.catch {
+    val matchThreadEntity = savedMatchThreadList.first { matchThread ->
+        val title = matchThread.title
+        title.contains(selectedMatch.homeTeam.name) || title.contains(selectedMatch.awayTeam.name)
+    }
+    val matchEntity = savedMatchEntities.first { it.id.toString() == selectedMatch.id }
+    Pair(matchThreadEntity, matchEntity)
+}
+    .mapLeft { ViewError.InvalidMatchId(it.message.toString()) }
+    .map { (matchThreadEntity, matchEntity) ->
+        buildMatchThreadWith(
+            matchThread = matchThreadEntity,
+            mediaList = emptyList(),
+            match = selectedMatch,
+            matchEntity = matchEntity
+        )
+    }
 
 internal fun buildMatchThreadWith(
     matchThread: MatchThreadEntity?,

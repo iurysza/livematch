@@ -30,7 +30,7 @@ fun MatchListScreen(
     onTapItem: (Match) -> Unit = {},
     onRefresh: () -> Unit = {},
 ) {
-    val refreshState = rememberPullRefreshState(uiModel.isSyncing, onRefresh = onRefresh)
+    val refreshState = rememberPullRefreshState(uiModel.isRefreshing, onRefresh = onRefresh)
 
     Scaffold(
         modifier = Modifier
@@ -75,7 +75,7 @@ fun MatchListScreen(
             }
             PullRefreshIndicator(
                 modifier = Modifier.align(Alignment.TopCenter),
-                refreshing = uiModel.isSyncing,
+                refreshing = uiModel.isRefreshing,
                 state = refreshState,
             )
         }
