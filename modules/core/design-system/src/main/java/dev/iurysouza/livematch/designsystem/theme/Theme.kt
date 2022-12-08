@@ -40,12 +40,6 @@ fun LivematchTheme(
     } else {
         LightColorPalette
     }
-    val systemUiController = rememberSystemUiController()
-    val backgroundColor = MaterialTheme.colors.background
-
-    SideEffect {
-        systemUiController.setSystemBarsColor(backgroundColor, darkIcons = !darkTheme)
-    }
 
     MaterialTheme(
         colors = colors,
@@ -53,6 +47,12 @@ fun LivematchTheme(
         shapes = Shapes,
     ) {
         val textColor = MaterialTheme.colors.onBackground
+        val systemUiController = rememberSystemUiController()
+        val backgroundColor = MaterialTheme.colors.background
+
+        SideEffect {
+            systemUiController.setSystemBarsColor(backgroundColor, darkIcons = !darkTheme)
+        }
         RichTextThemeIntegration(
             textStyle = { TextStyle(color = textColor) },
             ProvideTextStyle = { newTextStyle, content ->
