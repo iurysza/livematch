@@ -22,15 +22,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
 import dev.iurysouza.livematch.designsystem.components.FullScreenProgress
-import dev.iurysouza.livematch.matchlist.betterarchitecture.MatchListViewState
+import dev.iurysouza.livematch.matchlist.models.MatchListState
+import dev.iurysouza.livematch.matchlist.models.MatchListViewState
+import dev.iurysouza.livematch.matchlist.models.MatchUiModel
 
 @Composable
 fun MatchListScreen(
-    uiModel: MatchListViewState,
-    onTapItem: (Match) -> Unit = {},
+    uiState: MatchListViewState,
+    onTapItem: (MatchUiModel) -> Unit = {},
     onRefresh: () -> Unit = {},
 ) {
-    val refreshState = rememberPullRefreshState(uiModel.isRefreshing, onRefresh = onRefresh)
+    val refreshState = rememberPullRefreshState(uiState.isRefreshing, onRefresh = onRefresh)
 
     Scaffold(
         modifier = Modifier
@@ -45,7 +47,7 @@ fun MatchListScreen(
                 },
                 backgroundColor = MaterialTheme.colors.background,
                 actions = {
-                    if (uiModel.isSyncing) {
+                    if (uiState.isSyncing) {
                         IconButton(onClick = {}) {
                             Icon(
                                 imageVector = Icons.Filled.Refresh,
@@ -57,25 +59,27 @@ fun MatchListScreen(
             )
         }
     ) { paddingValues ->
-        Box(Modifier.padding(paddingValues)) {
+        Box(
+            Modifier.padding(paddingValues)
+        ) {
             Column(
                 Modifier
                     .background(MaterialTheme.colors.background)
                     .fillMaxHeight(),
             ) {
-                when (uiModel.matchListState) {
-                    is MatchListState.Error -> ErrorScreen(uiModel.matchListState.msg)
+                when (uiState.matchListState) {
+                    is MatchListState.Error -> ErrorScreen(uiState.matchListState.msg)
                     MatchListState.Loading -> FullScreenProgress()
                     is MatchListState.Success -> MatchesList(
                         modifier = Modifier,
-                        matchItemList = uiModel.matchListState.matches,
+                        matchItemList = uiState.matchListState.matches,
                         onTapMatchItem = onTapItem,
                     )
                 }
             }
             PullRefreshIndicator(
                 modifier = Modifier.align(Alignment.TopCenter),
-                refreshing = uiModel.isRefreshing,
+                refreshing = uiState.isRefreshing,
                 state = refreshState,
             )
         }

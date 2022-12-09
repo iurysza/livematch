@@ -21,13 +21,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import dev.iurysouza.livematch.matchlist.models.MatchUiModel
+import dev.iurysouza.livematch.matchlist.models.Team
 
 
 @Composable
 internal fun MatchesList(
     modifier: Modifier,
-    matchItemList: List<Match>,
-    onTapMatchItem: (Match) -> Unit,
+    matchItemList: List<MatchUiModel>,
+    onTapMatchItem: (MatchUiModel) -> Unit,
 ) {
     LazyColumn {
         itemsIndexed(matchItemList) { _, matchItem ->
@@ -44,7 +46,7 @@ internal fun MatchesList(
 }
 
 @Composable
-internal fun MatchItem(modifier: Modifier, match: Match) {
+internal fun MatchItem(modifier: Modifier, match: MatchUiModel) {
     Row {
         MatchTime(
             modifier = modifier.weight(.15f),
@@ -62,7 +64,7 @@ internal fun MatchItem(modifier: Modifier, match: Match) {
 }
 
 @Composable
-fun MatchTime(modifier: Modifier, match: Match) {
+fun MatchTime(modifier: Modifier, match: MatchUiModel) {
     Column(
         modifier,
         horizontalAlignment = Alignment.CenterHorizontally

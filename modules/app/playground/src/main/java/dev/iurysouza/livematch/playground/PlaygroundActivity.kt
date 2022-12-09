@@ -7,8 +7,8 @@ import dev.iurysouza.livematch.common.JsonParser
 import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
 import dev.iurysouza.livematch.matchlist.Fakes
 import dev.iurysouza.livematch.matchlist.MatchListScreen
-import dev.iurysouza.livematch.matchlist.MatchListState
-import dev.iurysouza.livematch.matchlist.betterarchitecture.MatchListViewState
+import dev.iurysouza.livematch.matchlist.models.MatchListState
+import dev.iurysouza.livematch.matchlist.models.MatchListViewState
 import javax.inject.Inject
 
 class PlaygroundActivity : ComponentActivity() {
@@ -21,7 +21,7 @@ class PlaygroundActivity : ComponentActivity() {
         setContent {
             LivematchTheme {
                 MatchListScreen(
-                    uiModel = MatchListViewState(
+                    uiState = MatchListViewState(
                         matchListState = MatchListState.Success(
                             Fakes.generateMatchList(5)
                         ),

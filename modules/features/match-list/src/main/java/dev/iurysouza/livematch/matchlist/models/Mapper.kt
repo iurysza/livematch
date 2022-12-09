@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.matchlist
+package dev.iurysouza.livematch.matchlist.models
 
 import arrow.core.Either
 import dev.iurysouza.livematch.footballdata.domain.models.AwayTeamEntity
@@ -7,13 +7,12 @@ import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
 import dev.iurysouza.livematch.footballdata.domain.models.ScoreEntity
 import dev.iurysouza.livematch.footballdata.domain.models.Status
 import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
-import dev.iurysouza.livematch.reddit.domain.models.MediaEntity
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
-internal fun List<MatchEntity>.toMatchList(): List<Match> = map { entity ->
-    Match(
+internal fun List<MatchEntity>.toMatchList(): List<MatchUiModel> = map { entity ->
+    MatchUiModel(
         id = entity.id.toString(),
         homeTeam = toTeam(entity.homeTeam, entity.score, true),
         awayTeam = toTeam(entity.awayTeam.asHomeTeam(), entity.score, false),
@@ -36,7 +35,7 @@ internal fun List<MatchEntity>.toMatchList(): List<Match> = map { entity ->
 }
 
 internal fun createMatchThreadFrom(
-    selectedMatch: Match,
+    selectedMatch: MatchUiModel,
     savedMatchThreadList: List<MatchThreadEntity>,
     savedMatchEntities: List<MatchEntity>,
 ) = Either.catch {
@@ -47,11 +46,10 @@ internal fun createMatchThreadFrom(
     val matchEntity = savedMatchEntities.first { it.id.toString() == selectedMatch.id }
     Pair(matchThreadEntity, matchEntity)
 }
-    .mapLeft { ViewError.InvalidMatchId(it.message.toString()) }
+    .mapLeft { ViewError.NoMatchFound(it.message.toString()) }
     .map { (matchThreadEntity, matchEntity) ->
         buildMatchThreadWith(
             matchThread = matchThreadEntity,
-            mediaList = emptyList(),
             match = selectedMatch,
             matchEntity = matchEntity
         )
@@ -59,14 +57,12 @@ internal fun createMatchThreadFrom(
 
 internal fun buildMatchThreadWith(
     matchThread: MatchThreadEntity?,
-    mediaList: List<MediaEntity> = emptyList(),
-    match: Match,
+    match: MatchUiModel,
     matchEntity: MatchEntity,
 ) = MatchThread(
     id = matchThread?.id,
     content = matchThread?.content,
     startTime = matchThread?.createdAt,
-    mediaList = mediaList.map { Media(it.title, it.url) },
     homeTeam = match.homeTeam,
     awayTeam = match.awayTeam,
     refereeList = matchEntity.referees.map { it.name },

@@ -1,20 +1,22 @@
 package dev.iurysouza.livematch.matchlist
 
+import dev.iurysouza.livematch.matchlist.models.MatchUiModel
+import dev.iurysouza.livematch.matchlist.models.Team
 import kotlin.random.Random
 
 object Fakes {
-    fun generateMatchList(count: Int): List<Match> {
-        val list = mutableListOf<Match>()
+    fun generateMatchList(count: Int): List<MatchUiModel> {
+        val list = mutableListOf<MatchUiModel>()
         repeat(count) {
             list.add(generateMatch(it))
         }
         return list
     }
 
-    private fun generateMatch(seed: Int): Match {
+    private fun generateMatch(seed: Int): MatchUiModel {
         val homeScore = (0..5).random()
         val awayScore = (0..5).random()
-        return Match(
+        return MatchUiModel(
             id = seed.toString(),
             homeTeam = Team(
                 crestUrl = "https://crests.football-data.org/770.svg",
