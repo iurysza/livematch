@@ -1,5 +1,6 @@
 plugins {
     id("dev.iurysouza.livematch.android-library")
+    id("dev.iurysouza.livematch.ktlint")
 }
 
 android {
