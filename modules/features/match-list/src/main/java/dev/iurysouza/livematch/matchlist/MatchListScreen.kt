@@ -42,8 +42,10 @@ fun MatchListScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = stringResource(R.string.matches),
-                        color = MaterialTheme.colors.onPrimary)
+                    Text(
+                        text = stringResource(R.string.matches),
+                        color = MaterialTheme.colors.onPrimary
+                    )
                 },
                 backgroundColor = MaterialTheme.colors.background,
                 actions = {

@@ -24,7 +24,6 @@ import coil.compose.AsyncImage
 import dev.iurysouza.livematch.matchlist.models.MatchUiModel
 import dev.iurysouza.livematch.matchlist.models.Team
 
-
 @Composable
 internal fun MatchesList(
     modifier: Modifier,
@@ -83,9 +82,7 @@ fun MatchTime(modifier: Modifier, match: MatchUiModel) {
                 MaterialTheme.colors.onPrimary
             },
         )
-
     }
-
 }
 
 @Composable
