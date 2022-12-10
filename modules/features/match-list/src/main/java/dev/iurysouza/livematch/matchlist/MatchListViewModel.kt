@@ -57,7 +57,11 @@ class MatchListViewModel @Inject constructor(
             val savedMatches = savedMatches.value
             if (savedMatches.isNotEmpty()) {
                 setState {
-                    copy(matchListState = MatchListState.Success(savedMatches.toMatchList()))
+                    copy(
+                        matchListState = MatchListState.Success(
+                            savedMatches.toMatchList(resourceProvider)
+                        )
+                    )
                 }
             } else {
                 fetchRedditContent()
@@ -82,7 +86,9 @@ class MatchListViewModel @Inject constructor(
                 savedStateHandle[KEY_MATCHES] = matchList
                 setState {
                     copy(
-                        matchListState = MatchListState.Success(matchList.toMatchList()),
+                        matchListState = MatchListState.Success(
+                            matchList.toMatchList(resourceProvider)
+                        ),
                         isRefreshing = false
                     )
                 }
@@ -115,9 +121,9 @@ class MatchListViewModel @Inject constructor(
     ) = viewModelScope.launch {
         either {
             createMatchThreadFrom(
-                selectedMatch = event.match,
-                savedMatchThreadList = savedMatchThreads.value,
-                savedMatchEntities = savedMatches.value
+                matchId = event.match.id,
+                matchThreadList = savedMatchThreads.value,
+                matchList = savedMatches.value,
             ).bind()
         }.fold(
             { setEffect { MatchListViewEffect.NavigationError(it.msg) } },

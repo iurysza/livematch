@@ -1,7 +1,5 @@
-package dev.iurysouza.livematch.matchlist
+package dev.iurysouza.livematch.matchlist.models
 
-import dev.iurysouza.livematch.matchlist.models.MatchUiModel
-import dev.iurysouza.livematch.matchlist.models.Team
 import kotlin.random.Random
 
 object Fakes {
@@ -37,6 +35,5 @@ object Fakes {
         )
     }
 }
-
 
 fun IntRange.random() = Random.nextInt((endInclusive + 1) - start) + start

@@ -9,4 +9,7 @@
     <string name="reload_description">Loading</string>
     <string name="icon_description">Back</string>
     <string name="match_screen_error_comment_parsing">Failed to parse comment section</string>
+    <string name="match_status_finished">FT</string>
+    <string name="match_status_paused">HT</string>
+    <string name="match_status_timed" />
 </resources>
