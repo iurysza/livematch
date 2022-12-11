@@ -14,5 +14,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "build-logic"
 include("android-library")
-include("ktlint")
+include("linter")
 include("android-application")

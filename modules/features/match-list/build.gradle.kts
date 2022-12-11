@@ -1,6 +1,6 @@
 plugins {
     id("dev.iurysouza.livematch.android-library")
-    id("dev.iurysouza.livematch.ktlint")
+    id("dev.iurysouza.livematch.linter")
 }
 
 android {
@@ -52,5 +52,4 @@ dependencies {
     kapt(libs.squareup.moshi.kotlinCodegen)
 
     implementation("io.coil-kt:coil-compose:2.2.2")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 }
