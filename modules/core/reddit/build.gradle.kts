@@ -47,4 +47,5 @@ dependencies {
     implementation(libs.squareup.moshi.kotlin)
     implementation(libs.squareup.moshi.moshiAdapters)
     kapt(libs.squareup.moshi.kotlinCodegen)
+    testImplementation(libs.squareup.okhttp.mockwebserver)
 }
