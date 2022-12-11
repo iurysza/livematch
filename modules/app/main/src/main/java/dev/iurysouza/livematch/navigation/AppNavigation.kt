@@ -16,7 +16,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 import dev.iurysouza.livematch.common.JsonParser
-import dev.iurysouza.livematch.matchlist.BetterMatchLisRoute
+import dev.iurysouza.livematch.matchlist.MatchLisRoute
 import dev.iurysouza.livematch.matchthread.MatchThreadScreen
 import timber.log.Timber
 
@@ -57,7 +57,7 @@ private fun NavGraphBuilder.addMatchListNavGraph(
         startDestination = parent.name,
     ) {
         composable(route = parent.name) {
-            BetterMatchLisRoute(
+            MatchLisRoute(
                 onOpenMatchThread = navController.navigateToRoute(jsonParser) { params ->
                     Screen.MatchThread.createRoute(
                         origin = route,

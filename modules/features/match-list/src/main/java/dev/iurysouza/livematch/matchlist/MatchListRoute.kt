@@ -16,26 +16,26 @@ import dev.iurysouza.livematch.matchlist.models.MatchListViewEvent.Refresh
 import dev.iurysouza.livematch.matchlist.models.MatchThread
 
 @Composable
-fun BetterMatchLisRoute(
-    viewModel: MatchListViewModel = hiltViewModel(),
-    onOpenMatchThread: (MatchThread) -> Unit = {},
+fun MatchLisRoute(
+  viewModel: MatchListViewModel = hiltViewModel(),
+  onOpenMatchThread: (MatchThread) -> Unit = {},
 ) {
-    val context = LocalContext.current
-    LaunchedEffect(Unit) {
-        viewModel.handleEvent(GetLatestMatches)
-        viewModel.effect.collect { event ->
-            when (event) {
-                is Error -> context.shortToast(event.msg)
-                is NavigateToMatchThread -> onOpenMatchThread(event.matchThread)
-                is NavigationError -> context.shortToast(event.msg)
-            }
-        }
+  val context = LocalContext.current
+  LaunchedEffect(Unit) {
+    viewModel.handleEvent(GetLatestMatches)
+    viewModel.effect.collect { event ->
+      when (event) {
+        is Error -> context.shortToast(event.msg)
+        is NavigateToMatchThread -> onOpenMatchThread(event.matchThread)
+        is NavigationError -> context.shortToast(event.msg)
+      }
     }
+  }
 
-    val uiModel by rememberSaveable(viewModel) { viewModel.viewState }
-    MatchListScreen(
-        uiState = uiModel,
-        onTapItem = { viewModel.handleEvent(NavigateToMatch(it)) },
-        onRefresh = { viewModel.handleEvent(Refresh) },
-    )
+  val uiModel by rememberSaveable(viewModel) { viewModel.viewState }
+  MatchListScreen(
+    uiState = uiModel,
+    onTapItem = { viewModel.handleEvent(NavigateToMatch(it)) },
+    onRefresh = { viewModel.handleEvent(Refresh) },
+  )
 }

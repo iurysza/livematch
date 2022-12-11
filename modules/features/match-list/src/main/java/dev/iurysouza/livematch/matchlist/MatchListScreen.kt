@@ -28,62 +28,62 @@ import dev.iurysouza.livematch.matchlist.models.MatchUiModel
 
 @Composable
 fun MatchListScreen(
-    uiState: MatchListViewState,
-    onTapItem: (MatchUiModel) -> Unit = {},
-    onRefresh: () -> Unit = {},
+  uiState: MatchListViewState,
+  onTapItem: (MatchUiModel) -> Unit = {},
+  onRefresh: () -> Unit = {},
 ) {
-    val refreshState = rememberPullRefreshState(uiState.isRefreshing, onRefresh = onRefresh)
+  val refreshState = rememberPullRefreshState(uiState.isRefreshing, onRefresh = onRefresh)
 
-    Scaffold(
-        modifier = Modifier
-            .background(MaterialTheme.colors.background)
-            .fillMaxHeight()
-            .pullRefresh(refreshState),
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.matches),
-                        color = MaterialTheme.colors.onPrimary
-                    )
-                },
-                backgroundColor = MaterialTheme.colors.background,
-                actions = {
-                    if (uiState.isSyncing) {
-                        IconButton(onClick = {}) {
-                            Icon(
-                                imageVector = Icons.Filled.Refresh,
-                                contentDescription = stringResource(R.string.icon_description),
-                            )
-                        }
-                    }
-                }
-            )
-        }
-    ) { paddingValues ->
-        Box(
-            Modifier.padding(paddingValues)
-        ) {
-            Column(
-                Modifier
-                    .background(MaterialTheme.colors.background)
-                    .fillMaxHeight(),
-            ) {
-                when (uiState.matchListState) {
-                    is MatchListState.Error -> ErrorScreen(uiState.matchListState.msg)
-                    MatchListState.Loading -> FullScreenProgress()
-                    is MatchListState.Success -> MatchesList(
-                        modifier = Modifier,
-                        matchItemList = uiState.matchListState.matches,
-                        onTapMatchItem = onTapItem,
-                    )
-                }
+  Scaffold(
+    modifier = Modifier
+      .background(MaterialTheme.colors.background)
+      .fillMaxHeight()
+      .pullRefresh(refreshState),
+    topBar = {
+      TopAppBar(
+        title = {
+          Text(
+            text = stringResource(R.string.matches),
+            color = MaterialTheme.colors.onPrimary
+          )
+        },
+        backgroundColor = MaterialTheme.colors.background,
+        actions = {
+          if (uiState.isSyncing) {
+            IconButton(onClick = {}) {
+              Icon(
+                imageVector = Icons.Filled.Refresh,
+                contentDescription = stringResource(R.string.icon_description),
+              )
             }
-            PullRefreshIndicator(
-                modifier = Modifier.align(Alignment.TopCenter),
-                refreshing = uiState.isRefreshing,
-                state = refreshState,
-            )
+          }
         }
+      )
     }
+  ) { paddingValues ->
+    Box(
+      Modifier.padding(paddingValues)
+    ) {
+      Column(
+        Modifier
+          .background(MaterialTheme.colors.background)
+          .fillMaxHeight(),
+      ) {
+        when (uiState.matchListState) {
+          is MatchListState.Error -> ErrorScreen(uiState.matchListState.msg)
+          MatchListState.Loading -> FullScreenProgress()
+          is MatchListState.Success -> MatchesList(
+            modifier = Modifier,
+            matchItemList = uiState.matchListState.matches,
+            onTapMatchItem = onTapItem,
+          )
+        }
+      }
+      PullRefreshIndicator(
+        modifier = Modifier.align(Alignment.TopCenter),
+        refreshing = uiState.isRefreshing,
+        state = refreshState,
+      )
+    }
+  }
 }

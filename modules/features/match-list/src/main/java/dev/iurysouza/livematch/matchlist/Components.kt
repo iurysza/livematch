@@ -26,102 +26,102 @@ import dev.iurysouza.livematch.matchlist.models.Team
 
 @Composable
 internal fun MatchesList(
-    modifier: Modifier,
-    matchItemList: List<MatchUiModel>,
-    onTapMatchItem: (MatchUiModel) -> Unit,
+  modifier: Modifier,
+  matchItemList: List<MatchUiModel>,
+  onTapMatchItem: (MatchUiModel) -> Unit,
 ) {
-    LazyColumn {
-        itemsIndexed(matchItemList) { _, matchItem ->
-            Column(
-                modifier
-                    .clickable { onTapMatchItem(matchItem) }
-                    .padding(vertical = 8.dp, horizontal = 16.dp)
-                    .fillMaxWidth()
-            ) {
-                MatchItem(modifier, matchItem)
-            }
-        }
+  LazyColumn {
+    itemsIndexed(matchItemList) { _, matchItem ->
+      Column(
+        modifier
+          .clickable { onTapMatchItem(matchItem) }
+          .padding(vertical = 8.dp, horizontal = 16.dp)
+          .fillMaxWidth()
+      ) {
+        MatchItem(modifier, matchItem)
+      }
     }
+  }
 }
 
 @Composable
 internal fun MatchItem(modifier: Modifier, match: MatchUiModel) {
-    Row {
-        MatchTime(
-            modifier = modifier.weight(.15f),
-            match = match
-        )
-        Column(
-            modifier.weight(.85f),
-            verticalArrangement = Arrangement.Center
+  Row {
+    MatchTime(
+      modifier = modifier.weight(.15f),
+      match = match
+    )
+    Column(
+      modifier.weight(.85f),
+      verticalArrangement = Arrangement.Center
 
-        ) {
-            Team(modifier, match.homeTeam)
-            Team(modifier, match.awayTeam)
-        }
+    ) {
+      Team(modifier, match.homeTeam)
+      Team(modifier, match.awayTeam)
     }
+  }
 }
 
 @Composable
 fun MatchTime(modifier: Modifier, match: MatchUiModel) {
-    Column(
-        modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = match.startTime,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colors.onPrimary,
-        )
-        Text(
-            text = match.elapsedMinutes,
-            textAlign = TextAlign.Center,
-            color = if (match.elapsedMinutes.contains("'")) {
-                MaterialTheme.colors.primary
-            } else {
-                MaterialTheme.colors.onPrimary
-            },
-        )
-    }
+  Column(
+    modifier,
+    horizontalAlignment = Alignment.CenterHorizontally
+  ) {
+    Text(
+      text = match.startTime,
+      textAlign = TextAlign.Center,
+      color = MaterialTheme.colors.onPrimary,
+    )
+    Text(
+      text = match.elapsedMinutes,
+      textAlign = TextAlign.Center,
+      color = if (match.elapsedMinutes.contains("'")) {
+        MaterialTheme.colors.primary
+      } else {
+        MaterialTheme.colors.onPrimary
+      },
+    )
+  }
 }
 
 @Composable
 internal fun Team(modifier: Modifier, team: Team) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-    ) {
-        AsyncImage(
-            modifier = modifier
-                .size(24.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .padding(4.dp),
-            model = team.crestUrl,
-            contentDescription = "${team.name} crest"
-        )
-        val style = if (team.isAhead) {
-            TextStyle(
-                fontSize = 19.sp,
-                textAlign = TextAlign.Left,
-                color = MaterialTheme.colors.onPrimary,
-            )
-        } else {
-            TextStyle(
-                fontSize = 19.sp,
-                textAlign = TextAlign.Left,
-                color = MaterialTheme.colors.onSurface,
-            )
-        }
-        Text(
-            text = team.name,
-            style = style,
-            modifier = modifier.weight(.75f),
-        )
-        Text(
-            modifier = modifier.weight(.25F),
-            text = team.score,
-            style = style,
-            textAlign = TextAlign.Right,
-        )
+  Row(
+    verticalAlignment = Alignment.CenterVertically,
+    modifier = modifier
+  ) {
+    AsyncImage(
+      modifier = modifier
+        .size(24.dp)
+        .clip(RoundedCornerShape(10.dp))
+        .padding(4.dp),
+      model = team.crestUrl,
+      contentDescription = "${team.name} crest"
+    )
+    val style = if (team.isAhead) {
+      TextStyle(
+        fontSize = 19.sp,
+        textAlign = TextAlign.Left,
+        color = MaterialTheme.colors.onPrimary,
+      )
+    } else {
+      TextStyle(
+        fontSize = 19.sp,
+        textAlign = TextAlign.Left,
+        color = MaterialTheme.colors.onSurface,
+      )
     }
+    Text(
+      text = team.name,
+      style = style,
+      modifier = modifier.weight(.75f),
+    )
+    Text(
+      modifier = modifier.weight(.25F),
+      text = team.score,
+      style = style,
+      textAlign = TextAlign.Right,
+    )
+  }
 }

@@ -25,7 +25,7 @@ dependencyResolutionManagement {
 }
 
 // == Define the inner structure of this component ==
-rootProject.name = "modules"
+rootProject.name = "livematch-project"
 include("core:reddit")
 include("core:footballdata")
 include("core:design-system")
