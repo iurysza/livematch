@@ -1,4 +1,4 @@
-val ktlint by configurations.creating
+val ktlint: Configuration by configurations.creating
 
 dependencies {
   ktlint("com.pinterest:ktlint:0.47.1") {
@@ -8,21 +8,23 @@ dependencies {
   }
 }
 
-val outputDir = "${project.buildDir}/reports/ktlint/"
-val inputFiles = project.fileTree(mapOf("dir" to rootDir, "include" to "**/*.kt"))
-val reportDir = "${rootProject.buildDir}/reports/ktlint"
-val ktlintGlobPattern = arrayOf(
+val inputFiles: ConfigurableFileTree = project.fileTree(mapOf("dir" to rootDir, "include" to "**/*.kt"))
+val reportDir = "${rootProject.buildDir}/reports/"
+val outputDir = reportDir
+
+val ktlintArgs = listOf(
   "**/*.kt",
   "!**/build/**",
   "!**/test/**/",
   "!**/androidTest/**/",
-)
-val ktlintArgs = listOf(
-  *ktlintGlobPattern,
   "--relative",
   "--reporter=checkstyle,output=$reportDir/ktlint-checkstyle.xml",
-  "--reporter=html,output=$reportDir/report.html",
+  "--reporter=html,output=$reportDir/ktlint-report.html",
 )
+
+// |--------------------------------------------------
+// | Linting Tasks
+// |--------------------------------------------------
 
 val ktlintCheck by tasks.creating(JavaExec::class) {
   inputs.files(inputFiles)
@@ -47,28 +49,23 @@ val ktlintFormat by tasks.creating(JavaExec::class) {
   args(ktlintArgs + "--format")
 }
 
-// |--------------------------------------------------
-// | Detekt Setup
-// |--------------------------------------------------
+val detekt: Configuration by configurations.creating
+dependencies {
+  detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.22.0")
+}
 
-val detekt by configurations.creating
-val detektTask = tasks.register<JavaExec>("detekt") {
+val detektCheck = tasks.register<JavaExec>("detekt") {
   mainClass.set("io.gitlab.arturbosch.detekt.cli.Main")
   classpath = detekt
   group = "verification"
 
-  val reportDir = "${rootProject.buildDir}/reports/detekt"
-  val params = listOf(
-    "--input", rootDir.absolutePath,
-    "--excludes", "**/build/** , **/test/** , **/androidTest/**",
-    "--config", "${rootDir.parent}/build-logic/linter/detekt-config.yml",
-    "--report", "xml:$reportDir/checkstyle.xml",
-    "--report", "html:$reportDir/report.html",
+  args(
+    listOf(
+      "--input", rootDir.absolutePath,
+      "--excludes", "**/build/**, **/test/**, **/androidTest/**",
+      "--config", "${rootDir.parent}/build-logic/linter/detekt-config.yml",
+      "--report", "xml:$reportDir/detekt-checkstyle.xml",
+      "--report", "html:$reportDir/detekt-report.html",
+    ),
   )
-
-  args(params)
-}
-
-dependencies {
-  detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.22.0")
 }
