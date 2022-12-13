@@ -7,6 +7,6 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @JsonClass(generateAdapter = true)
 data class MediaEntity(
-    val title: String,
-    val url: String,
+  val title: String,
+  val url: String,
 ) : Parcelable

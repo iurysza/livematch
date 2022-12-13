@@ -10,7 +10,7 @@ package dev.iurysouza.livematch.reddit.data.models.entities.base
  */
 interface Created {
 
-    val created: Long
+  val created: Long
 
-    val createdUtc: Long
+  val createdUtc: Long
 }

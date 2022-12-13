@@ -71,70 +71,70 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Message(
 
-    @Json(name = "id")
-    override val id: String,
+  @Json(name = "id")
+  override val id: String,
 
-    @Json(name = "name")
-    override val fullname: String,
+  @Json(name = "name")
+  override val fullname: String,
 
-    @Json(name = "author")
-    val author: String?,
+  @Json(name = "author")
+  val author: String?,
 
-    @Json(name = "body")
-    val body: String,
+  @Json(name = "body")
+  val body: String,
 
-    @Json(name = "body_html")
-    val bodyHtml: String,
+  @Json(name = "body_html")
+  val bodyHtml: String,
 
-    @Json(name = "context")
-    val context: String,
+  @Json(name = "context")
+  val context: String,
 
-    @Json(name = "created")
-    override val created: Long,
+  @Json(name = "created")
+  override val created: Long,
 
-    @Json(name = "created_utc")
-    override val createdUtc: Long,
+  @Json(name = "created_utc")
+  override val createdUtc: Long,
 
-    @Json(name = "dest")
-    val dest: String,
+  @Json(name = "dest")
+  val dest: String,
 
-    @Json(name = "distinguished")
-    override val distinguishedRaw: String?,
+  @Json(name = "distinguished")
+  override val distinguishedRaw: String?,
 
-    @Json(name = "first_message")
-    val firstMessage: Long?,
+  @Json(name = "first_message")
+  val firstMessage: Long?,
 
-    @Json(name = "first_message_name")
-    val firstMessageName: String?,
+  @Json(name = "first_message_name")
+  val firstMessageName: String?,
 
-    @Json(name = "was_comment")
-    val isComment: Boolean,
+  @Json(name = "was_comment")
+  val isComment: Boolean,
 
-    @Json(name = "new")
-    val isUnread: Boolean,
+  @Json(name = "new")
+  val isUnread: Boolean,
 
-    @Json(name = "likes")
-    override val likes: Boolean?,
+  @Json(name = "likes")
+  override val likes: Boolean?,
 
-    @Json(name = "num_comments")
-    val numComments: Int?,
+  @Json(name = "num_comments")
+  val numComments: Int?,
 
-    @Json(name = "parent_id")
-    val parentId: String?,
+  @Json(name = "parent_id")
+  val parentId: String?,
 
-    @Json(name = "score")
-    override val score: Int,
+  @Json(name = "score")
+  override val score: Int,
 
-    @Json(name = "subject")
-    val subject: String,
+  @Json(name = "subject")
+  val subject: String,
 
-    @Json(name = "subreddit")
-    val subreddit: String?,
+  @Json(name = "subreddit")
+  val subreddit: String?,
 
-    @Json(name = "subreddit_name_prefixed")
-    val subredditNamePrefixed: String?,
+  @Json(name = "subreddit_name_prefixed")
+  val subredditNamePrefixed: String?,
 
-    @Json(name = "type")
-    val type: String,
+  @Json(name = "type")
+  val type: String,
 
-    ) : Thing, Votable, Created, Distinguishable, Replyable, Parcelable
+) : Thing, Votable, Created, Distinguishable, Replyable, Parcelable

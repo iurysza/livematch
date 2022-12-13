@@ -22,18 +22,18 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class Gildings(
 
-    @Json(name = "gid_1")
-    val silverCount: Short?,
+  @Json(name = "gid_1")
+  val silverCount: Short?,
 
-    @Json(name = "gid_2")
-    val goldCount: Short?,
+  @Json(name = "gid_2")
+  val goldCount: Short?,
 
-    @Json(name = "gid_3")
-    val platinumCount: Short?,
+  @Json(name = "gid_3")
+  val platinumCount: Short?,
 
-    ) : Parcelable {
+) : Parcelable {
 
-    fun hasGildings(): Boolean {
-        return silverCount != null || goldCount != null || platinumCount != null
-    }
+  fun hasGildings(): Boolean {
+    return silverCount != null || goldCount != null || platinumCount != null
+  }
 }

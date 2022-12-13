@@ -1,3 +1,4 @@
+// ktlint-disable filename
 package dev.iurysouza.livematch.designsystem.theme
 
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -13,10 +14,10 @@ public object LiveMatchAssets
 private var __AllAssets: ____KtList<ImageVector>? = null
 
 public val LiveMatchAssets.AllAssets: ____KtList<ImageVector>
-    get() {
-        if (__AllAssets != null) {
-            return __AllAssets!!
-        }
-        __AllAssets = listOf(Sub, Goal, Booking, Clock, Kickoff)
-        return __AllAssets!!
+  get() {
+    if (__AllAssets != null) {
+      return __AllAssets!!
     }
+    __AllAssets = listOf(Sub, Goal, Booking, Clock, Kickoff)
+    return __AllAssets!!
+  }

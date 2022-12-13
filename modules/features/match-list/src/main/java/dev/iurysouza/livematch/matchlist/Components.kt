@@ -36,7 +36,7 @@ internal fun MatchesList(
         modifier
           .clickable { onTapMatchItem(matchItem) }
           .padding(vertical = 8.dp, horizontal = 16.dp)
-          .fillMaxWidth()
+          .fillMaxWidth(),
       ) {
         MatchItem(modifier, matchItem)
       }
@@ -49,11 +49,11 @@ internal fun MatchItem(modifier: Modifier, match: MatchUiModel) {
   Row {
     MatchTime(
       modifier = modifier.weight(.15f),
-      match = match
+      match = match,
     )
     Column(
       modifier.weight(.85f),
-      verticalArrangement = Arrangement.Center
+      verticalArrangement = Arrangement.Center,
 
     ) {
       Team(modifier, match.homeTeam)
@@ -66,7 +66,7 @@ internal fun MatchItem(modifier: Modifier, match: MatchUiModel) {
 fun MatchTime(modifier: Modifier, match: MatchUiModel) {
   Column(
     modifier,
-    horizontalAlignment = Alignment.CenterHorizontally
+    horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     Text(
       text = match.startTime,
@@ -89,7 +89,7 @@ fun MatchTime(modifier: Modifier, match: MatchUiModel) {
 internal fun Team(modifier: Modifier, team: Team) {
   Row(
     verticalAlignment = Alignment.CenterVertically,
-    modifier = modifier
+    modifier = modifier,
   ) {
     AsyncImage(
       modifier = modifier
@@ -97,7 +97,7 @@ internal fun Team(modifier: Modifier, team: Team) {
         .clip(RoundedCornerShape(10.dp))
         .padding(4.dp),
       model = team.crestUrl,
-      contentDescription = "${team.name} crest"
+      contentDescription = "${team.name} crest",
     )
     val style = if (team.isAhead) {
       TextStyle(

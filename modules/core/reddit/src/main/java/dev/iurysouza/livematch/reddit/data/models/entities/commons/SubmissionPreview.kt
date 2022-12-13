@@ -9,59 +9,54 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class SubmissionPreview(
 
-    @Json(name = "images")
-    val images: Array<Images>,
+  @Json(name = "images")
+  val images: Array<Images>,
 
-    @Json(name = "reddit_video_preview")
-    val redditVideoPreview: RedditVideo?,
+  @Json(name = "reddit_video_preview")
+  val redditVideoPreview: RedditVideo?,
 
-    @Json(name = "enabled")
-    val isEnabled: Boolean,
+  @Json(name = "enabled")
+  val isEnabled: Boolean,
 
-    ) : Parcelable {
+) : Parcelable {
 
-    fun id(): String? {
-
-        if (images.isEmpty()) {
-            return null
-        }
-
-        return images.firstOrNull()?.id
+  fun id(): String? {
+    if (images.isEmpty()) {
+      return null
     }
 
-    fun source(): ImageDetail? {
+    return images.firstOrNull()?.id
+  }
 
-        if (images.isEmpty()) {
-            return null
-        }
-
-        return images.firstOrNull()?.source
+  fun source(): ImageDetail? {
+    if (images.isEmpty()) {
+      return null
     }
 
-    fun lowerRes(): ImageDetail? {
+    return images.firstOrNull()?.source
+  }
 
-        if (images.isEmpty()) {
-            return null
-        }
-
-        return images.firstOrNull()?.resolutions?.firstOrNull()
+  fun lowerRes(): ImageDetail? {
+    if (images.isEmpty()) {
+      return null
     }
 
-    fun higherRes(): ImageDetail? {
+    return images.firstOrNull()?.resolutions?.firstOrNull()
+  }
 
-        if (images.isEmpty()) {
-            return null
-        }
-
-        return images.firstOrNull()?.resolutions?.lastOrNull()
+  fun higherRes(): ImageDetail? {
+    if (images.isEmpty()) {
+      return null
     }
 
-    fun variants(): ImageVariants? {
+    return images.firstOrNull()?.resolutions?.lastOrNull()
+  }
 
-        if (images.isEmpty()) {
-            return null
-        }
-
-        return images.firstOrNull()?.variants
+  fun variants(): ImageVariants? {
+    if (images.isEmpty()) {
+      return null
     }
+
+    return images.firstOrNull()?.variants
+  }
 }

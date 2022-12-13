@@ -108,107 +108,107 @@ import kotlinx.parcelize.RawValue
 @Parcelize
 data class Comment(
 
-    @Json(name = "id")
-    override val id: String,
+  @Json(name = "id")
+  override val id: String,
 
-    @Json(name = "name")
-    override val fullname: String,
+  @Json(name = "name")
+  override val fullname: String,
 
-    @Json(name = "all_awardings")
-    val allAwarding: List<Awarding>?,
+  @Json(name = "all_awardings")
+  val allAwarding: List<Awarding>?,
 
-    @Json(name = "author")
-    val author: String,
+  @Json(name = "author")
+  val author: String,
 
-    @Json(name = "author_flair_background_color")
-    val authorFlairBackgroundColor: String?,
+  @Json(name = "author_flair_background_color")
+  val authorFlairBackgroundColor: String?,
 
-    @Json(name = "author_flair_css_class")
-    val authorFlairCssClass: String?,
+  @Json(name = "author_flair_css_class")
+  val authorFlairCssClass: String?,
 
-    @Json(name = "author_flair_richtext")
-    val authorFlairRichtext: List<FlairRichtext>?,
+  @Json(name = "author_flair_richtext")
+  val authorFlairRichtext: List<FlairRichtext>?,
 
-    @Json(name = "author_flair_text")
-    val authorFlairtext: String?,
+  @Json(name = "author_flair_text")
+  val authorFlairtext: String?,
 
-    @Json(name = "author_flair_text_color")
-    val authorFlairTextColor: String?,
+  @Json(name = "author_flair_text_color")
+  val authorFlairTextColor: String?,
 
-    @Json(name = "author_flair_template_id")
-    val authorFlairTemplateId: String?,
+  @Json(name = "author_flair_template_id")
+  val authorFlairTemplateId: String?,
 
-    @Json(name = "author_flair_type")
-    val authorFlairType: String?,
+  @Json(name = "author_flair_type")
+  val authorFlairType: String?,
 
-    @Json(name = "body")
-    val body: String,
+  @Json(name = "body")
+  val body: String,
 
-    @Json(name = "body_html")
-    val bodyHtml: String,
+  @Json(name = "body_html")
+  val bodyHtml: String,
 
-    @Json(name = "can_gild")
-    override val canGild: Boolean,
+  @Json(name = "can_gild")
+  override val canGild: Boolean,
 
-    @Json(name = "created")
-    override val created: Long,
+  @Json(name = "created")
+  override val created: Long,
 
-    @Json(name = "created_utc")
-    override val createdUtc: Long,
+  @Json(name = "created_utc")
+  override val createdUtc: Long,
 
-    @Json(name = "edited")
-    override val editedRaw: @RawValue Any,
+  @Json(name = "edited")
+  override val editedRaw: @RawValue Any,
 
-    @Json(name = "depth")
-    override val depth: Int = 0,
+  @Json(name = "depth")
+  override val depth: Int = 0,
 
-    @Json(name = "distinguished")
-    override val distinguishedRaw: String?,
+  @Json(name = "distinguished")
+  override val distinguishedRaw: String?,
 
-    @Json(name = "archived")
-    val isArchived: Boolean,
+  @Json(name = "archived")
+  val isArchived: Boolean,
 
-    @Json(name = "locked")
-    val isLocked: Boolean,
+  @Json(name = "locked")
+  val isLocked: Boolean,
 
-    @Json(name = "saved")
-    override val isSaved: Boolean,
+  @Json(name = "saved")
+  override val isSaved: Boolean,
 
-    @Json(name = "score_hidden")
-    val isScoreHidden: Boolean,
+  @Json(name = "score_hidden")
+  val isScoreHidden: Boolean,
 
-    @Json(name = "stickied")
-    val isStickied: Boolean,
+  @Json(name = "stickied")
+  val isStickied: Boolean,
 
-    @Json(name = "is_submitter")
-    val isSubmitter: Boolean,
+  @Json(name = "is_submitter")
+  val isSubmitter: Boolean,
 
-    @Json(name = "likes")
-    override val likes: Boolean?,
+  @Json(name = "likes")
+  override val likes: Boolean?,
 
-    @Json(name = "link_title")
-    val linkTitle: String?,
+  @Json(name = "link_title")
+  val linkTitle: String?,
 
-    @Json(name = "link_author")
-    val linkAuthor: String?,
+  @Json(name = "link_author")
+  val linkAuthor: String?,
 
-    @Json(name = "link_id")
-    val linkId: String?,
+  @Json(name = "link_id")
+  val linkId: String?,
 
-    @Json(name = "link_url")
-    val linkUrl: String?,
+  @Json(name = "link_url")
+  val linkUrl: String?,
 
-    @Json(name = "link_permalink")
-    val linkPermalink: String?,
+  @Json(name = "link_permalink")
+  val linkPermalink: String?,
 
-    @Json(name = "gildings")
-    override val gildings: Gildings,
+  @Json(name = "gildings")
+  override val gildings: Gildings,
 
-    @Json(name = "parent_id")
-    val parentId: String,
+  @Json(name = "parent_id")
+  val parentId: String,
 
-    @Json(name = "permalink")
-    val permalink: String,
+  @Json(name = "permalink")
+  val permalink: String,
 
 //    @Json(name = "replies")
 //    val repliesRaw: EnvelopedCommentDataListing?,
@@ -217,30 +217,30 @@ data class Comment(
 //    override var replies: List<CommentData>? =
 //        repliesRaw?.data?.children?.map { it.data }?.toList(),
 
-    @Transient
-    override val parentFullname: String = parentId,
+  @Transient
+  override val parentFullname: String = parentId,
 
-    @Json(name = "score")
-    override val score: Int,
+  @Json(name = "score")
+  override val score: Int,
 
-    @Json(name = "subreddit")
-    val subreddit: String,
+  @Json(name = "subreddit")
+  val subreddit: String,
 
-    @Json(name = "subreddit_id")
-    val subredditId: String,
+  @Json(name = "subreddit_id")
+  val subredditId: String,
 
-    @Json(name = "subreddit_name_prefixed")
-    val subredditNamePrefixed: String,
+  @Json(name = "subreddit_name_prefixed")
+  val subredditNamePrefixed: String,
 
-    ) : CommentData, Votable, Saveable, Created, Editable, Distinguishable, Gildable, Replyable {
+) : CommentData, Votable, Saveable, Created, Editable, Distinguishable, Gildable, Replyable {
 
-    override val hasReplies: Boolean
-        get() {
-            return true
-        }
+  override val hasReplies: Boolean
+    get() {
+      return true
+    }
 
-    override val repliesSize: Int
-        get() {
-            return 0
-        }
+  override val repliesSize: Int
+    get() {
+      return 0
+    }
 }

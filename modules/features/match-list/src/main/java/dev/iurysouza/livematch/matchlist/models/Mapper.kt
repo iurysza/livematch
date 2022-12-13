@@ -64,7 +64,7 @@ internal fun createMatchThreadFrom(
 
 internal fun buildMatchThreadWith(
   matchThread: MatchThreadEntity?,
-  matchEntity: MatchEntity
+  matchEntity: MatchEntity,
 ): MatchThread = MatchThread(
   id = matchThread?.id,
   content = matchThread?.content,

@@ -24,41 +24,41 @@ import dev.iurysouza.livematch.reddit.data.models.responses.base.EnvelopeKind
 @JsonClass(generateAdapter = true)
 data class Trophy(
 
-    @Json(name = "id")
-    val id: String?,
+  @Json(name = "id")
+  val id: String?,
 
-    @Json(name = "name")
-    val fullname: String?,
+  @Json(name = "name")
+  val fullname: String?,
 
-    @Json(name = "description")
-    val description: String?,
+  @Json(name = "description")
+  val description: String?,
 
-    @Json(name = "icon_70")
-    val icon70: String,
+  @Json(name = "icon_70")
+  val icon70: String,
 
-    @Json(name = "icon_40")
-    val icon40: String,
+  @Json(name = "icon_40")
+  val icon40: String,
 
-    @Json(name = "url")
-    val url: String?,
+  @Json(name = "url")
+  val url: String?,
 
-    )
+)
 
 @JsonClass(generateAdapter = true)
 data class TrophyList(
 
-    @Json(name = "kind")
-    val kind: EnvelopeKind,
+  @Json(name = "kind")
+  val kind: EnvelopeKind,
 
-    @Json(name = "data")
-    val data: TrophyChildren,
+  @Json(name = "data")
+  val data: TrophyChildren,
 
-    )
+)
 
 @JsonClass(generateAdapter = true)
 data class TrophyChildren(
 
-    @Json(name = "trophies")
-    val trophies: List<EnvelopedTrophy>,
+  @Json(name = "trophies")
+  val trophies: List<EnvelopedTrophy>,
 
-    )
+)

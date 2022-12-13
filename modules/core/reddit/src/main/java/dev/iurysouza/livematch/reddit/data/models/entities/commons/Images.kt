@@ -9,67 +9,66 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Images(
 
-    @Json(name = "id")
-    val id: String?,
+  @Json(name = "id")
+  val id: String?,
 
-    @Json(name = "source")
-    val source: ImageDetail,
+  @Json(name = "source")
+  val source: ImageDetail,
 
-    @Json(name = "resolutions")
-    val resolutions: Array<ImageDetail>,
+  @Json(name = "resolutions")
+  val resolutions: Array<ImageDetail>,
 
-    @Json(name = "variants")
-    val variants: ImageVariants?,
+  @Json(name = "variants")
+  val variants: ImageVariants?,
 
-    ) : Parcelable {
+) : Parcelable {
 
-    override fun hashCode(): Int {
-        return id.hashCode()
+  override fun hashCode(): Int {
+    return id.hashCode()
+  }
+
+  override fun equals(other: Any?): Boolean {
+    if (other == null) {
+      return false
     }
 
-    override fun equals(other: Any?): Boolean {
-
-        if (other == null) {
-            return false
-        }
-
-        if (other !is Images) {
-            return false
-        }
-
-        return id == other.id
+    if (other !is Images) {
+      return false
     }
+
+    return id == other.id
+  }
 }
 
 @JsonClass(generateAdapter = true)
 @Parcelize
 data class ImageDetail(
 
-    @Json(name = "url")
-    val url: String,
+  @Json(name = "url")
+  val url: String,
 
-    @Json(name = "width")
-    val width: Int,
+  @Json(name = "width")
+  val width: Int,
 
-    @Json(name = "height")
-    val height: Int,
+  @Json(name = "height")
+  val height: Int,
 
-    ) : Parcelable
+) : Parcelable
 
 @JsonClass(generateAdapter = true)
 @Parcelize
 data class ImageVariants(
 
-    @Json(name = "gif")
-    val gif: Images?,
+  @Json(name = "gif")
+  val gif: Images?,
 
-    @Json(name = "mp4")
-    val mp4: Images?,
+  @Json(name = "mp4")
+  val mp4: Images?,
 
-    @Json(name = "nsfw")
-    val nsfw: Images?,
+  @Json(name = "nsfw")
+  val nsfw: Images?,
 
-    @Json(name = "obfuscated")
-    val obfuscated: Images?,
+  @Json(name = "obfuscated")
+  val obfuscated: Images?,
 
-    ) : Parcelable
+) : Parcelable

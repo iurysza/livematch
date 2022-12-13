@@ -8,10 +8,10 @@ import dev.iurysouza.livematch.reddit.data.models.responses.base.EnvelopeKind
 @JsonClass(generateAdapter = true)
 class EnvelopedTrophyList(
 
-    @Json(name = "kind")
-    val kind: EnvelopeKind,
+  @Json(name = "kind")
+  val kind: EnvelopeKind,
 
-    @Json(name = "data")
-    val data: TrophyList,
+  @Json(name = "data")
+  val data: TrophyList,
 
-    )
+)

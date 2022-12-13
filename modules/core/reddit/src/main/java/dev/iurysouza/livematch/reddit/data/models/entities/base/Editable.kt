@@ -11,5 +11,5 @@ package dev.iurysouza.livematch.reddit.data.models.entities.base
  */
 interface Editable {
 
-    val editedRaw: Any
+  val editedRaw: Any
 }

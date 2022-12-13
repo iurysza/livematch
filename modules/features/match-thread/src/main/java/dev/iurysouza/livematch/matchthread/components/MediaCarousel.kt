@@ -33,72 +33,71 @@ import timber.log.Timber
 
 @Composable
 fun MediaCarousel(mediaItemList: List<MediaItem>) {
-    Column(
-        Modifier
-            .padding(horizontal = 8.dp)
-            .padding(bottom = 4.dp)
+  Column(
+    Modifier
+      .padding(horizontal = 8.dp)
+      .padding(bottom = 4.dp),
+  ) {
+    val context = LocalContext.current
+    Text(
+      modifier = Modifier.padding(bottom = 4.dp),
+      text = "Highlights",
+      style = TextStyle(fontSize = 18.sp, color = MaterialTheme.colors.onPrimary),
+    )
+    LazyRow(
+      horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        val context = LocalContext.current
-        Text(
-            modifier = Modifier.padding(bottom = 4.dp),
-            text = "Highlights",
-            style = TextStyle(fontSize = 18.sp, color = MaterialTheme.colors.onPrimary)
-        )
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+      itemsIndexed(mediaItemList) { _, item ->
+        Box(
+          Modifier
+            .clickable { context.launchBrowserTabWith(item.url) }
+            .size(80.dp)
+            .background(MaterialTheme.colors.onSurface, RoundedCornerShape(10.dp))
+            .padding(8.dp),
         ) {
-            itemsIndexed(mediaItemList) { _, item ->
-                Box(
-                    Modifier
-                        .clickable { context.launchBrowserTabWith(item.url) }
-                        .size(80.dp)
-                        .background(MaterialTheme.colors.onSurface, RoundedCornerShape(10.dp))
-                        .padding(8.dp)
-                ) {
-                    Text(
-                        text = item.title,
-                        Modifier.align(Alignment.Center),
-                        style = TextStyle(
-                            fontSize = 9.sp,
-                            color = MaterialTheme.colors.onPrimary,
-                            fontWeight = FontWeight.Bold,
-                        )
-                    )
-                }
-            }
+          Text(
+            text = item.title,
+            Modifier.align(Alignment.Center),
+            style = TextStyle(
+              fontSize = 9.sp,
+              color = MaterialTheme.colors.onPrimary,
+              fontWeight = FontWeight.Bold,
+            ),
+          )
         }
+      }
     }
+  }
 }
 
 private fun Context.launchBrowserTabWith(url: String) = runCatching {
-    CustomTabsIntent
-        .Builder()
-        .setUrlBarHidingEnabled(true)
-        .setColorScheme(CustomTabsIntent.COLOR_SCHEME_DARK)
-        .build()
-        .launchUrl(this@launchBrowserTabWith, Uri.parse(url))
+  CustomTabsIntent
+    .Builder()
+    .setUrlBarHidingEnabled(true)
+    .setColorScheme(CustomTabsIntent.COLOR_SCHEME_DARK)
+    .build()
+    .launchUrl(this@launchBrowserTabWith, Uri.parse(url))
 }.onFailure { Timber.e(it) }
 
 @Composable
 fun MatchDetails(content: String, mediaItemList: List<MediaItem>) {
-    Column(
-        modifier = Modifier
-            .background(MaterialTheme.colors.background)
-            .padding(horizontal = 8.dp),
+  Column(
+    modifier = Modifier
+      .background(MaterialTheme.colors.background)
+      .padding(horizontal = 8.dp),
+  ) {
+    RichText(
+      modifier = Modifier.padding(8.dp),
+      style = RichTextStyle.Default.copy(
+        stringStyle = RichTextStringStyle.Default.copy(
+          italicStyle = SpanStyle(
+            fontSize = 12.sp,
+          ),
+        ),
+      ),
     ) {
-        RichText(
-            modifier = Modifier.padding(8.dp),
-            style = RichTextStyle.Default.copy(
-                stringStyle = RichTextStringStyle.Default.copy(
-                    italicStyle = SpanStyle(
-                        fontSize = 12.sp
-                    )
-                )
-            )
-        ) {
-            Markdown(content)
-        }
-        MediaCarousel(mediaItemList)
+      Markdown(content)
     }
-
+    MediaCarousel(mediaItemList)
+  }
 }

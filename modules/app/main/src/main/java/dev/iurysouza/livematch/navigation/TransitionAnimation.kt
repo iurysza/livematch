@@ -8,25 +8,25 @@ import androidx.compose.animation.fadeOut
 import androidx.navigation.NavBackStackEntry
 
 fun AnimatedContentScope<*>.defaultEnterTransition(
-    initial: NavBackStackEntry,
-    target: NavBackStackEntry,
+  initial: NavBackStackEntry,
+  target: NavBackStackEntry,
 ): EnterTransition {
-    val initialNavGraph = initial.destination
-    val targetNavGraph = target.destination
-    if (initialNavGraph.id != targetNavGraph.id) {
-        return fadeIn()
-    }
-    return fadeIn() + slideIntoContainer(AnimatedContentScope.SlideDirection.Start)
+  val initialNavGraph = initial.destination
+  val targetNavGraph = target.destination
+  if (initialNavGraph.id != targetNavGraph.id) {
+    return fadeIn()
+  }
+  return fadeIn() + slideIntoContainer(AnimatedContentScope.SlideDirection.Start)
 }
 
 fun AnimatedContentScope<*>.defaultExitTransition(
-    initial: NavBackStackEntry,
-    target: NavBackStackEntry,
+  initial: NavBackStackEntry,
+  target: NavBackStackEntry,
 ): ExitTransition {
-    val initialNavGraph = initial.destination
-    val targetNavGraph = target.destination
-    if (initialNavGraph.id != targetNavGraph.id) {
-        return fadeOut()
-    }
-    return fadeOut() + slideOutOfContainer(AnimatedContentScope.SlideDirection.Start)
+  val initialNavGraph = initial.destination
+  val targetNavGraph = target.destination
+  if (initialNavGraph.id != targetNavGraph.id) {
+    return fadeOut()
+  }
+  return fadeOut() + slideOutOfContainer(AnimatedContentScope.SlideDirection.Start)
 }

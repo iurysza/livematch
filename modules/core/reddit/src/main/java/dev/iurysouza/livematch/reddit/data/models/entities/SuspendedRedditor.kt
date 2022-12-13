@@ -10,19 +10,19 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class SuspendedRedditor(
 
-    @Json(name = "name")
-    override val fullname: String,
+  @Json(name = "name")
+  override val fullname: String,
 
-    @Json(name = "awarder_karma")
-    val awarderKarma: Int?,
+  @Json(name = "awarder_karma")
+  val awarderKarma: Int?,
 
-    @Json(name = "awardee_karma")
-    val awardeeKarma: Int?,
+  @Json(name = "awardee_karma")
+  val awardeeKarma: Int?,
 
-    @Json(name = "is_suspended")
-    val isSuspended: Boolean,
+  @Json(name = "is_suspended")
+  val isSuspended: Boolean,
 
-    @Json(name = "total_karma")
-    val totalKarma: Int?,
+  @Json(name = "total_karma")
+  val totalKarma: Int?,
 
-    ) : RedditorData, Parcelable
+) : RedditorData, Parcelable

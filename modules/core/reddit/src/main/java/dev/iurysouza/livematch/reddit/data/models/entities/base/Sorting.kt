@@ -12,7 +12,7 @@ package dev.iurysouza.livematch.reddit.data.models.entities.base
  */
 interface Sorting {
 
-    val requiresTimePeriod: Boolean
+  val requiresTimePeriod: Boolean
 
-    val sortingStr: String
+  val sortingStr: String
 }

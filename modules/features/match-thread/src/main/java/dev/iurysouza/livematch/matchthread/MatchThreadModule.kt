@@ -10,8 +10,7 @@ import javax.inject.Singleton
 @Module
 object MatchThreadModule {
 
-    @Provides
-    @Singleton
-    internal fun provideMatchThreadMapper(): MatchEventParser = MatchEventParser()
-
+  @Provides
+  @Singleton
+  internal fun provideMatchThreadMapper(): MatchEventParser = MatchEventParser()
 }

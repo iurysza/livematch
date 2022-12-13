@@ -5,8 +5,8 @@ import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.footballdata.data.models.MatchListResponse
 
 interface FootballDataSource {
-    suspend fun fetchLatestMatches(
-        startDate: String,
-        endDate: String,
-    ): Either<NetworkError, MatchListResponse>
+  suspend fun fetchLatestMatches(
+    startDate: String,
+    endDate: String,
+  ): Either<NetworkError, MatchListResponse>
 }

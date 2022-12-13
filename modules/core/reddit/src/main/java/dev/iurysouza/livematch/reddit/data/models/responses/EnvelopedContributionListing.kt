@@ -9,10 +9,10 @@ import dev.iurysouza.livematch.reddit.data.models.responses.listings.Contributio
 @JsonClass(generateAdapter = true)
 class EnvelopedContributionListing(
 
-    @Json(name = "kind")
-    override val kind: EnvelopeKind,
+  @Json(name = "kind")
+  override val kind: EnvelopeKind,
 
-    @Json(name = "data")
-    override val data: ContributionListing,
+  @Json(name = "data")
+  override val data: ContributionListing,
 
-    ) : Envelope<ContributionListing>
+) : Envelope<ContributionListing>

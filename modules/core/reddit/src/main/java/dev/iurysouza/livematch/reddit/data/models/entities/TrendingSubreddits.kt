@@ -9,13 +9,13 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class TrendingSubreddits(
 
-    @Json(name = "subreddit_names")
-    val subredditNames: List<String>,
+  @Json(name = "subreddit_names")
+  val subredditNames: List<String>,
 
-    @Json(name = "comment_count")
-    val commentCount: Int,
+  @Json(name = "comment_count")
+  val commentCount: Int,
 
-    @Json(name = "comment_url")
-    val commentUrl: String,
+  @Json(name = "comment_url")
+  val commentUrl: String,
 
-    ) : Parcelable
+) : Parcelable

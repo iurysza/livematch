@@ -13,60 +13,59 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.halilibo.richtext.ui.RichTextThemeIntegration
 
 private val DarkColorPalette = darkColors(
-    primary = AppAccent1Dark,
-    primaryVariant = AppAccent2Dark,
-    background = AppBackgroundDark,
-    onPrimary = AppText1Dark,
-    onBackground = AppText2Dark,
-    onSurface = AppText3Dark,
+  primary = AppAccent1Dark,
+  primaryVariant = AppAccent2Dark,
+  background = AppBackgroundDark,
+  onPrimary = AppText1Dark,
+  onBackground = AppText2Dark,
+  onSurface = AppText3Dark,
 )
 
 private val LightColorPalette = lightColors(
-    primary = AppAccent1Light,
-    primaryVariant = AppAccent2Light,
-    background = AppBackgroundLight,
-    onPrimary = AppText1Light,
-    onBackground = AppText2Light,
-    onSurface = AppText3Light,
+  primary = AppAccent1Light,
+  primaryVariant = AppAccent2Light,
+  background = AppBackgroundLight,
+  onPrimary = AppText1Light,
+  onBackground = AppText2Light,
+  onSurface = AppText3Light,
 )
 
 @Composable
 fun LivematchTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit,
+  darkTheme: Boolean = isSystemInDarkTheme(),
+  content: @Composable () -> Unit,
 ) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
+  val colors = if (darkTheme) {
+    DarkColorPalette
+  } else {
+    LightColorPalette
+  }
+
+  MaterialTheme(
+    colors = colors,
+    typography = Typography(),
+    shapes = Shapes,
+  ) {
+    val textColor = MaterialTheme.colors.onBackground
+    val systemUiController = rememberSystemUiController()
+    val backgroundColor = MaterialTheme.colors.background
+
+    SideEffect {
+      systemUiController.setSystemBarsColor(backgroundColor, darkIcons = !darkTheme)
     }
-
-    MaterialTheme(
-        colors = colors,
-        typography = Typography(),
-        shapes = Shapes,
-    ) {
-        val textColor = MaterialTheme.colors.onBackground
-        val systemUiController = rememberSystemUiController()
-        val backgroundColor = MaterialTheme.colors.background
-
-        SideEffect {
-            systemUiController.setSystemBarsColor(backgroundColor, darkIcons = !darkTheme)
+    RichTextThemeIntegration(
+      textStyle = { TextStyle(color = textColor) },
+      ProvideTextStyle = { newTextStyle, content ->
+        CompositionLocalProvider(compositionLocalOf { TextStyle(color = textColor) } provides newTextStyle) {
+          content()
         }
-        RichTextThemeIntegration(
-            textStyle = { TextStyle(color = textColor) },
-            ProvideTextStyle = { newTextStyle, content ->
-                CompositionLocalProvider(compositionLocalOf { TextStyle(color = textColor) } provides newTextStyle) {
-                    content()
-                }
-            },
-            ProvideContentColor = { newColor, content ->
-                CompositionLocalProvider(compositionLocalOf { textColor } provides newColor) {
-                    content()
-                }
-            },
-            content = content
-        )
-
-    }
+      },
+      ProvideContentColor = { newColor, content ->
+        CompositionLocalProvider(compositionLocalOf { textColor } provides newColor) {
+          content()
+        }
+      },
+      content = content,
+    )
+  }
 }

@@ -10,10 +10,10 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun Typography() = Typography(
-    body1 = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        color = MaterialTheme.colors.onBackground,
-    )
+  body1 = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Normal,
+    fontSize = 16.sp,
+    color = MaterialTheme.colors.onBackground,
+  ),
 )

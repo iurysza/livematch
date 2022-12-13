@@ -17,11 +17,11 @@ package dev.iurysouza.livematch.reddit.data.models.entities.base
  */
 interface Votable : Thing {
 
-    override val id: String
+  override val id: String
 
-    override val fullname: String
+  override val fullname: String
 
-    val likes: Boolean?
+  val likes: Boolean?
 
-    val score: Int
+  val score: Int
 }

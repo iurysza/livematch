@@ -5,7 +5,7 @@ import dev.iurysouza.livematch.reddit.data.models.responses.base.EnvelopeKind
 
 interface EnvelopedData {
 
-    val kind: EnvelopeKind
+  val kind: EnvelopeKind
 
-    val data: Thing
+  val data: Thing
 }

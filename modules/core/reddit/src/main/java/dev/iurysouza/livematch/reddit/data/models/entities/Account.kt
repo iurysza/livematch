@@ -31,27 +31,27 @@ import dev.iurysouza.livematch.reddit.data.models.entities.base.Thing
  */
 interface Account : Thing, Created, Parcelable {
 
-    override val id: String
+  override val id: String
 
-    override val fullname: String
+  override val fullname: String
 
-    override val created: Long
+  override val created: Long
 
-    override val createdUtc: Long
+  override val createdUtc: Long
 
-    val commentKarma: Int
+  val commentKarma: Int
 
-    val hasVerifiedEmail: Boolean
+  val hasVerifiedEmail: Boolean
 
-    val isEmployee: Boolean
+  val isEmployee: Boolean
 
-    val isGold: Boolean
+  val isGold: Boolean
 
-    val isHidingFromRobots: Boolean
+  val isHidingFromRobots: Boolean
 
-    val isMod: Boolean
+  val isMod: Boolean
 
-    val linkKarma: Int
+  val linkKarma: Int
 
-    val subreddit: RedditorSubreddit?
+  val subreddit: RedditorSubreddit?
 }

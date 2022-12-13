@@ -44,7 +44,7 @@ fun MatchListScreen(
         title = {
           Text(
             text = stringResource(R.string.matches),
-            color = MaterialTheme.colors.onPrimary
+            color = MaterialTheme.colors.onPrimary,
           )
         },
         backgroundColor = MaterialTheme.colors.background,
@@ -57,12 +57,12 @@ fun MatchListScreen(
               )
             }
           }
-        }
+        },
       )
-    }
+    },
   ) { paddingValues ->
     Box(
-      Modifier.padding(paddingValues)
+      Modifier.padding(paddingValues),
     ) {
       Column(
         Modifier

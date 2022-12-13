@@ -11,17 +11,17 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class CommentDataListing(
 
-    @Json(name = "modhash")
-    override val modhash: String?,
-    @Json(name = "dist")
-    override val dist: Int?,
+  @Json(name = "modhash")
+  override val modhash: String?,
+  @Json(name = "dist")
+  override val dist: Int?,
 
-    @Json(name = "children")
-    override val children: List<EnvelopedCommentData>,
+  @Json(name = "children")
+  override val children: List<EnvelopedCommentData>,
 
-    @Json(name = "after")
-    override val after: String?,
-    @Json(name = "before")
-    override val before: String?,
+  @Json(name = "after")
+  override val after: String?,
+  @Json(name = "before")
+  override val before: String?,
 
-    ) : Listing<EnvelopedCommentData>, Parcelable
+) : Listing<EnvelopedCommentData>, Parcelable

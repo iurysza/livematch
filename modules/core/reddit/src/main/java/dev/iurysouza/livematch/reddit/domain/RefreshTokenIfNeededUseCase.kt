@@ -19,32 +19,32 @@ import javax.inject.Singleton
 
 @Singleton
 class RefreshTokenIfNeededUseCase @Inject constructor(
-    private val networkDataSource: RedditNetworkDataSource,
-    private val storage: AuthStorage,
+  private val networkDataSource: RedditNetworkDataSource,
+  private val storage: AuthStorage,
 ) {
 
-    suspend operator fun invoke(): Either<DomainError, Unit> = either {
-        val token = storage.getToken().bind()
-        ensure(token.expirationDate.isInTheFuture()) {
-            TokenExpired
-        }
-    }.handleErrorWith { error ->
-        when (error) {
-            is TokenNotFound,
-            TokenExpired,
-            -> fetchNewTokenAndSaveIt()
-            else -> error.left()
-        }
+  suspend operator fun invoke(): Either<DomainError, Unit> = either {
+    val token = storage.getToken().bind()
+    ensure(token.expirationDate.isInTheFuture()) {
+      TokenExpired
     }
+  }.handleErrorWith { error ->
+    when (error) {
+      is TokenNotFound,
+      TokenExpired,
+      -> fetchNewTokenAndSaveIt()
+      else -> error.left()
+    }
+  }
 
-    private suspend fun fetchNewTokenAndSaveIt(): Either<DomainError, Unit> = either {
-        networkDataSource.getAccessToken().bind()
-    }.flatMap { (accessToken, expiresIn) ->
-        catch {
-            AuthTokenEntity(
-                value = accessToken,
-                expirationDate = nowPlusMillis(expiresIn)
-            )
-        }.mapLeft { InvalidExpirationDate }
-    }.map { storage.putToken(it) }
+  private suspend fun fetchNewTokenAndSaveIt(): Either<DomainError, Unit> = either {
+    networkDataSource.getAccessToken().bind()
+  }.flatMap { (accessToken, expiresIn) ->
+    catch {
+      AuthTokenEntity(
+        value = accessToken,
+        expirationDate = nowPlusMillis(expiresIn),
+      )
+    }.mapLeft { InvalidExpirationDate }
+  }.map { storage.putToken(it) }
 }

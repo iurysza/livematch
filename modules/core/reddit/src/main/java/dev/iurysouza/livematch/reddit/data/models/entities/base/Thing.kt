@@ -12,7 +12,7 @@ import android.os.Parcelable
  */
 interface Thing : Parcelable {
 
-    val id: String
+  val id: String
 
-    val fullname: String
+  val fullname: String
 }

@@ -9,26 +9,26 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class SubredditRules(
 
-    @Json(name = "rules")
-    val rules: Array<SubredditRule>,
+  @Json(name = "rules")
+  val rules: Array<SubredditRule>,
 
-    @Json(name = "site_rules")
-    val siteRules: Array<String>,
+  @Json(name = "site_rules")
+  val siteRules: Array<String>,
 
-    ) : Parcelable {
+) : Parcelable {
 
-    override fun hashCode(): Int {
-        return rules.contentHashCode()
-    }
+  override fun hashCode(): Int {
+    return rules.contentHashCode()
+  }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (javaClass != other?.javaClass) return false
 
-        other as SubredditRules
+    other as SubredditRules
 
-        if (!rules.contentEquals(other.rules)) return false
+    if (!rules.contentEquals(other.rules)) return false
 
-        return true
-    }
+    return true
+  }
 }

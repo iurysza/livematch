@@ -12,10 +12,10 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class EnvelopedRedditor(
 
-    @Json(name = "kind")
-    override val kind: EnvelopeKind,
+  @Json(name = "kind")
+  override val kind: EnvelopeKind,
 
-    @Json(name = "data")
-    override val data: Redditor,
+  @Json(name = "data")
+  override val data: Redditor,
 
-    ) : Envelope<Redditor>, EnvelopedData, Parcelable
+) : Envelope<Redditor>, EnvelopedData, Parcelable

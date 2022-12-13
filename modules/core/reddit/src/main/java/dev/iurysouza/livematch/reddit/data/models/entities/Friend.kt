@@ -11,35 +11,35 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Friend(
 
-    @Json(name = "id")
-    override val id: String,
+  @Json(name = "id")
+  override val id: String,
 
-    @Json(name = "name")
-    override val fullname: String,
+  @Json(name = "name")
+  override val fullname: String,
 
-    @Json(name = "rel_id")
-    val relId: String,
+  @Json(name = "rel_id")
+  val relId: String,
 
-    @Json(name = "date")
-    val added: Long,
+  @Json(name = "date")
+  val added: Long,
 
-    ) : Thing, Parcelable
+) : Thing, Parcelable
 
 @JsonClass(generateAdapter = true)
 @Parcelize
 data class FriendList(
 
-    @Json(name = "kind")
-    val kind: EnvelopeKind,
+  @Json(name = "kind")
+  val kind: EnvelopeKind,
 
-    val data: FriendListData,
+  val data: FriendListData,
 
-    ) : Parcelable
+) : Parcelable
 
 @JsonClass(generateAdapter = true)
 @Parcelize
 data class FriendListData(
 
-    val children: List<Friend>,
+  val children: List<Friend>,
 
-    ) : Parcelable
+) : Parcelable

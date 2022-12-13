@@ -9,31 +9,31 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class PollVoteReq(
 
-    @Json(name = "id")
-    val id: String,
+  @Json(name = "id")
+  val id: String,
 
-    @Json(name = "variables")
-    val variables: PollVoteVariables,
+  @Json(name = "variables")
+  val variables: PollVoteVariables,
 
-    ) : Parcelable
+) : Parcelable
 
 @JsonClass(generateAdapter = true)
 @Parcelize
 data class PollVoteVariables(
 
-    @Json(name = "input")
-    val input: PollVoteInput,
+  @Json(name = "input")
+  val input: PollVoteInput,
 
-    ) : Parcelable
+) : Parcelable
 
 @JsonClass(generateAdapter = true)
 @Parcelize
 data class PollVoteInput(
 
-    @Json(name = "postId")
-    val postId: String,
+  @Json(name = "postId")
+  val postId: String,
 
-    @Json(name = "optionId")
-    val optionId: String,
+  @Json(name = "optionId")
+  val optionId: String,
 
-    ) : Parcelable
+) : Parcelable

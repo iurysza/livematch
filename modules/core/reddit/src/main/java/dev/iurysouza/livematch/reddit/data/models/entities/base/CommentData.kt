@@ -17,13 +17,13 @@ package dev.iurysouza.livematch.reddit.data.models.entities.base
  */
 interface CommentData : Contribution {
 
-    val depth: Int
+  val depth: Int
 
-    val parentFullname: String
+  val parentFullname: String
 
-    val hasReplies: Boolean
+  val hasReplies: Boolean
 
 //    val replies: List<CommentData>?
 
-    val repliesSize: Int
+  val repliesSize: Int
 }

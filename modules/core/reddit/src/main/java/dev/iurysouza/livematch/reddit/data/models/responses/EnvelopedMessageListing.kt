@@ -9,10 +9,10 @@ import dev.iurysouza.livematch.reddit.data.models.responses.listings.MessageList
 @JsonClass(generateAdapter = true)
 class EnvelopedMessageListing(
 
-    @Json(name = "kind")
-    override val kind: EnvelopeKind,
+  @Json(name = "kind")
+  override val kind: EnvelopeKind,
 
-    @Json(name = "data")
-    override val data: MessageListing,
+  @Json(name = "data")
+  override val data: MessageListing,
 
-    ) : Envelope<MessageListing>
+) : Envelope<MessageListing>

@@ -22,91 +22,90 @@ import timber.log.Timber
 
 @Composable
 internal fun AppNavigation(
-    navController: NavHostController,
-    jsonParser: JsonParser,
+  navController: NavHostController,
+  jsonParser: JsonParser,
 ) {
-    AnimatedNavHost(
-        modifier = Modifier.background(MaterialTheme.colors.background),
-        navController = navController,
-        startDestination = Screen.MatchList.name,
-        enterTransition = { defaultEnterTransition(initialState, targetState) },
-        exitTransition = { defaultExitTransition(initialState, targetState) },
-    ) {
-        addMatchListNavGraph(
-            parent = Screen.Root,
-            navController = navController,
-            jsonParser = jsonParser,
-        )
-        addMatchThreadNavGraph(
-            parent = Screen.MatchList,
-            navController = navController,
-            jsonParser = jsonParser,
-        )
-    }
+  AnimatedNavHost(
+    modifier = Modifier.background(MaterialTheme.colors.background),
+    navController = navController,
+    startDestination = Screen.MatchList.name,
+    enterTransition = { defaultEnterTransition(initialState, targetState) },
+    exitTransition = { defaultExitTransition(initialState, targetState) },
+  ) {
+    addMatchListNavGraph(
+      parent = Screen.Root,
+      navController = navController,
+      jsonParser = jsonParser,
+    )
+    addMatchThreadNavGraph(
+      parent = Screen.MatchList,
+      navController = navController,
+      jsonParser = jsonParser,
+    )
+  }
 }
 
 private fun NavGraphBuilder.addMatchListNavGraph(
-    navController: NavController,
-    jsonParser: JsonParser,
-    parent: Screen,
+  navController: NavController,
+  jsonParser: JsonParser,
+  parent: Screen,
 ) {
-    val route = Screen.MatchList
+  val route = Screen.MatchList
 
-    navigation(
-        route = route.name,
-        startDestination = parent.name,
-    ) {
-        composable(route = parent.name) {
-            MatchLisRoute(
-                onOpenMatchThread = navController.navigateToRoute(jsonParser) { params ->
-                    Screen.MatchThread.createRoute(
-                        origin = route,
-                        content = params
-                    )
-                }
-            )
-        }
+  navigation(
+    route = route.name,
+    startDestination = parent.name,
+  ) {
+    composable(route = parent.name) {
+      MatchLisRoute(
+        onOpenMatchThread = navController.navigateToRoute(jsonParser) { params ->
+          Screen.MatchThread.createRoute(
+            origin = route,
+            content = params,
+          )
+        },
+      )
     }
+  }
 }
 
 private fun NavGraphBuilder.addMatchThreadNavGraph(
-    navController: NavController,
-    jsonParser: JsonParser,
-    parent: Screen,
+  navController: NavController,
+  jsonParser: JsonParser,
+  parent: Screen,
 ) {
-    navigation(
-        route = Screen.MatchThread.name,
-        startDestination = parent.name,
-    ) {
-        val matchThreadScreen = LeafScreen.MatchThread()
-        composable(
-            route = matchThreadScreen.defineRoute(parent),
-            arguments = listOf(
-                navArgument(matchThreadScreen.argument) {
-                    type = MatchThreadParamType(jsonParser)
-                },
-            ),
-        ) { backStackEntry ->
-            MatchThreadScreen(
-                navigateUp = navController::navigateUp,
-                matchThread = backStackEntry.getParcelable(matchThreadScreen.argument)
-            )
-        }
+  navigation(
+    route = Screen.MatchThread.name,
+    startDestination = parent.name,
+  ) {
+    val matchThreadScreen = LeafScreen.MatchThread()
+    composable(
+      route = matchThreadScreen.defineRoute(parent),
+      arguments = listOf(
+        navArgument(matchThreadScreen.argument) {
+          type = MatchThreadParamType(jsonParser)
+        },
+      ),
+    ) { backStackEntry ->
+      MatchThreadScreen(
+        navigateUp = navController::navigateUp,
+        matchThread = backStackEntry.getParcelable(matchThreadScreen.argument),
+      )
     }
+  }
 }
 
 @Suppress("DEPRECATION")
 fun <T : Parcelable> NavBackStackEntry.getParcelable(key: String): T =
-    requireNotNull(arguments?.getParcelable(key))
+  requireNotNull(arguments?.getParcelable(key))
 
 fun <T : Any> NavController.navigateToRoute(
-    jsonParser: JsonParser,
-    routeBuilder: (String) -> String,
+  jsonParser: JsonParser,
+  routeBuilder: (String) -> String,
 ): (T) -> Unit = { argument: T ->
-    either.eager { Uri.encode(jsonParser.toJson(argument).bind()) }
-        .fold(
-            { Timber.e(it.toString()) },
-            { jsonObject -> navigate(routeBuilder(jsonObject)) }
-        )
+  either.eager { Uri.encode(jsonParser.toJson(argument).bind()) }
+    .fold(
+      { Timber.e(it.toString()) },
+      { jsonObject -> navigate(routeBuilder(jsonObject)) },
+    )
 }
-

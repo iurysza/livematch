@@ -11,17 +11,17 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class WikiRevisionListing(
 
-    @Json(name = "modhash")
-    override val modhash: String?,
-    @Json(name = "dist")
-    override val dist: Int?,
+  @Json(name = "modhash")
+  override val modhash: String?,
+  @Json(name = "dist")
+  override val dist: Int?,
 
-    @Json(name = "children")
-    override val children: List<WikiRevision>,
+  @Json(name = "children")
+  override val children: List<WikiRevision>,
 
-    @Json(name = "after")
-    override val after: String?,
-    @Json(name = "before")
-    override val before: String?,
+  @Json(name = "after")
+  override val after: String?,
+  @Json(name = "before")
+  override val before: String?,
 
-    ) : Listing<WikiRevision>, Parcelable
+) : Listing<WikiRevision>, Parcelable

@@ -5,13 +5,13 @@ import androidx.annotation.StringRes
 import javax.inject.Inject
 
 interface ResourceProvider {
-    fun getString(@StringRes id: Int): String
+  fun getString(@StringRes id: Int): String
 }
 
 class SystemResourceProvider @Inject constructor(
-    private val context: Context,
+  private val context: Context,
 ) : ResourceProvider {
-    override fun getString(@StringRes id: Int): String {
-        return context.getString(id)
-    }
+  override fun getString(@StringRes id: Int): String {
+    return context.getString(id)
+  }
 }

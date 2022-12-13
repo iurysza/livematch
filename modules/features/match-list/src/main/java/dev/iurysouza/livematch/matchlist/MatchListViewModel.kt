@@ -19,9 +19,9 @@ import dev.iurysouza.livematch.matchlist.models.toMatchList
 import dev.iurysouza.livematch.reddit.domain.FetchLatestMatchThreadsForTodayUseCase
 import dev.iurysouza.livematch.reddit.domain.RefreshTokenIfNeededUseCase
 import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
-import javax.inject.Inject
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
 class MatchListViewModel @Inject constructor(
@@ -29,16 +29,16 @@ class MatchListViewModel @Inject constructor(
   private val resourceProvider: ResourceProvider,
   private val fetchMatches: FetchMatchesUseCase,
   private val refreshTokenIfNeeded: RefreshTokenIfNeededUseCase,
-  private val fetchLatestMatchThreadsForToday: FetchLatestMatchThreadsForTodayUseCase
+  private val fetchLatestMatchThreadsForToday: FetchLatestMatchThreadsForTodayUseCase,
 ) : BaseViewModel<MatchListViewEvent, MatchListViewState, MatchListViewEffect>() {
 
   private val savedMatchThreads = savedStateHandle.getStateFlow(
     key = KEY_MATCH_THREADS,
-    initialValue = emptyList<MatchThreadEntity>()
+    initialValue = emptyList<MatchThreadEntity>(),
   )
   private val savedMatches = savedStateHandle.getStateFlow(
     key = KEY_MATCHES,
-    initialValue = emptyList<MatchEntity>()
+    initialValue = emptyList<MatchEntity>(),
   )
 
   override fun setInitialState(): MatchListViewState = MatchListViewState()
@@ -59,8 +59,8 @@ class MatchListViewModel @Inject constructor(
         setState {
           copy(
             matchListState = MatchListState.Success(
-              savedMatches.toMatchList(resourceProvider)
-            )
+              savedMatches.toMatchList(resourceProvider),
+            ),
           )
         }
       } else {
@@ -87,12 +87,12 @@ class MatchListViewModel @Inject constructor(
         setState {
           copy(
             matchListState = MatchListState.Success(
-              matchList.toMatchList(resourceProvider)
+              matchList.toMatchList(resourceProvider),
             ),
-            isRefreshing = false
+            isRefreshing = false,
           )
         }
-      }
+      },
     )
 
   private suspend fun fetchRedditContent() = either {
@@ -107,7 +107,7 @@ class MatchListViewModel @Inject constructor(
     { matchThreads ->
       savedStateHandle[KEY_MATCH_THREADS] = matchThreads
       setState { copy(isSyncing = false) }
-    }
+    },
   )
 
   private fun onRefresh() = viewModelScope.launch {
@@ -127,7 +127,7 @@ class MatchListViewModel @Inject constructor(
       ).bind()
     }.fold(
       { setEffect { MatchListViewEffect.NavigationError(it.msg) } },
-      { setEffect { MatchListViewEffect.NavigateToMatchThread(it) } }
+      { setEffect { MatchListViewEffect.NavigateToMatchThread(it) } },
     )
   }
 

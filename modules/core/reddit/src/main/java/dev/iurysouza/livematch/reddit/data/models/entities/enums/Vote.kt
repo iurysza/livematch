@@ -14,7 +14,7 @@ package dev.iurysouza.livematch.reddit.data.models.entities.enums
  */
 enum class Vote(val dir: Int) {
 
-    UPVOTE(1),
-    DOWNVOTE(-1),
-    NONE(0)
+  UPVOTE(1),
+  DOWNVOTE(-1),
+  NONE(0),
 }

@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class UploadFile(
 
-    @Json(name = "file")
-    val file: String,
+  @Json(name = "file")
+  val file: String,
 
-    ) : Parcelable
+) : Parcelable

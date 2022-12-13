@@ -10,28 +10,28 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Reply(
 
-    @Json(name = "json")
-    val json: ReplyJson,
+  @Json(name = "json")
+  val json: ReplyJson,
 
-    ) : Parcelable
+) : Parcelable
 
 @JsonClass(generateAdapter = true)
 @Parcelize
 data class ReplyJson(
 
-    @Json(name = "errors")
-    val errors: List<String>,
+  @Json(name = "errors")
+  val errors: List<String>,
 
-    @Json(name = "data")
-    val data: ReplyData,
+  @Json(name = "data")
+  val data: ReplyData,
 
-    ) : Parcelable
+) : Parcelable
 
 @JsonClass(generateAdapter = true)
 @Parcelize
 data class ReplyData(
 
-    @Json(name = "things")
-    val things: List<EnvelopedComment>,
+  @Json(name = "things")
+  val things: List<EnvelopedComment>,
 
-    ) : Parcelable
+) : Parcelable

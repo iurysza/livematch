@@ -9,10 +9,10 @@ import dev.iurysouza.livematch.reddit.data.models.responses.base.EnvelopeKind
 @JsonClass(generateAdapter = true)
 class EnvelopedMultiDescription(
 
-    @Json(name = "kind")
-    override val kind: EnvelopeKind,
+  @Json(name = "kind")
+  override val kind: EnvelopeKind,
 
-    @Json(name = "data")
-    override val data: MultiDescription,
+  @Json(name = "data")
+  override val data: MultiDescription,
 
-    ) : Envelope<MultiDescription>
+) : Envelope<MultiDescription>

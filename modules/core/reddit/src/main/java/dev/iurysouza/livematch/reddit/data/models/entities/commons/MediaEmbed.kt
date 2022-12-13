@@ -9,13 +9,13 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class MediaEmbed(
 
-    @Json(name = "content")
-    val content: String?,
+  @Json(name = "content")
+  val content: String?,
 
-    @Json(name = "width")
-    val width: Int?,
+  @Json(name = "width")
+  val width: Int?,
 
-    @Json(name = "height")
-    val height: Int?,
+  @Json(name = "height")
+  val height: Int?,
 
-    ) : Parcelable
+) : Parcelable

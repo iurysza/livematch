@@ -9,10 +9,10 @@ import dev.iurysouza.livematch.reddit.data.models.responses.listings.RedditorDat
 @JsonClass(generateAdapter = true)
 class EnvelopedRedditorDataListing(
 
-    @Json(name = "kind")
-    override val kind: EnvelopeKind,
+  @Json(name = "kind")
+  override val kind: EnvelopeKind,
 
-    @Json(name = "data")
-    override val data: RedditorDataListing,
+  @Json(name = "data")
+  override val data: RedditorDataListing,
 
-    ) : Envelope<RedditorDataListing>
+) : Envelope<RedditorDataListing>

@@ -5,34 +5,34 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import dev.iurysouza.livematch.reddit.data.models.MILLIS
 import dev.iurysouza.livematch.reddit.data.models.responses.base.EnvelopeKind
-import java.util.Date
 import kotlinx.parcelize.Parcelize
+import java.util.Date
 
 @JsonClass(generateAdapter = true)
 @Parcelize
 data class WikiPage(
 
-    @Json(name = "content_md")
-    val contentMkdn: String,
+  @Json(name = "content_md")
+  val contentMkdn: String,
 
-    @Json(name = "content_html")
-    val contentHtml: String,
+  @Json(name = "content_html")
+  val contentHtml: String,
 
-    @Json(name = "revision_date")
-    val revisionRaw: Long?,
+  @Json(name = "revision_date")
+  val revisionRaw: Long?,
 
-    ) : Parcelable {
+) : Parcelable {
 
-    val revisionDate: Date
-        get() {
+  val revisionDate: Date
+    get() {
 
-            if (revisionRaw != null) {
-                val milliseconds = revisionRaw / MILLIS
-                return Date(milliseconds)
-            }
+      if (revisionRaw != null) {
+        val milliseconds = revisionRaw / MILLIS
+        return Date(milliseconds)
+      }
 
-            return Date()
-        }
+      return Date()
+    }
 }
 
 /**
@@ -42,10 +42,10 @@ data class WikiPage(
 @Parcelize
 data class WikiPageList(
 
-    @Json(name = "kind")
-    val kind: EnvelopeKind,
+  @Json(name = "kind")
+  val kind: EnvelopeKind,
 
-    @Json(name = "data")
-    val data: List<String>,
+  @Json(name = "data")
+  val data: List<String>,
 
-    ) : Parcelable
+) : Parcelable

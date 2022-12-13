@@ -6,7 +6,7 @@ import dev.iurysouza.livematch.reddit.data.models.responses.base.EnvelopeKind
 
 interface EnvelopedCommentData : EnvelopedContribution, Parcelable {
 
-    override val kind: EnvelopeKind
+  override val kind: EnvelopeKind
 
-    override val data: CommentData
+  override val data: CommentData
 }

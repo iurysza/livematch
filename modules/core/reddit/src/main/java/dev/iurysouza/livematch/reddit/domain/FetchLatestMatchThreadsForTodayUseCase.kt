@@ -9,17 +9,16 @@ import javax.inject.Singleton
 
 @Singleton
 class FetchLatestMatchThreadsForTodayUseCase @Inject constructor(
-    private val networkDataSource: RedditNetworkDataSource,
+  private val networkDataSource: RedditNetworkDataSource,
 ) {
 
-    suspend operator fun invoke(): Either<DomainError, List<MatchThreadEntity>> = either {
-        networkDataSource.searchFor(
-            subreddit = "soccer",
-            query = """flair:match+thread AND NOT flair:post AND NOT flair:pre""",
-            sortBy = "new",
-            timePeriod = "day",
-            restrictedToSubreddit = true,
-        ).bind()
-    }.map { it.matchThreadEntities() }
-
+  suspend operator fun invoke(): Either<DomainError, List<MatchThreadEntity>> = either {
+    networkDataSource.searchFor(
+      subreddit = "soccer",
+      query = """flair:match+thread AND NOT flair:post AND NOT flair:pre""",
+      sortBy = "new",
+      timePeriod = "day",
+      restrictedToSubreddit = true,
+    ).bind()
+  }.map { it.matchThreadEntities() }
 }

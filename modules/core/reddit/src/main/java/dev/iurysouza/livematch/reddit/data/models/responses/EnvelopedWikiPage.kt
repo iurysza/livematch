@@ -9,16 +9,16 @@ import dev.iurysouza.livematch.reddit.data.models.responses.base.EnvelopeKind
 @JsonClass(generateAdapter = true)
 class EnvelopedWikiPage(
 
-    @Json(name = "kind")
-    override val kind: EnvelopeKind?,
+  @Json(name = "kind")
+  override val kind: EnvelopeKind?,
 
-    @Json(name = "data")
-    override val data: WikiPage?,
+  @Json(name = "data")
+  override val data: WikiPage?,
 
-    @Json(name = "reason")
-    val reason: String? = null,
+  @Json(name = "reason")
+  val reason: String? = null,
 
-    @Json(name = "message")
-    val message: String? = null,
+  @Json(name = "message")
+  val message: String? = null,
 
-    ) : Envelope<WikiPage>
+) : Envelope<WikiPage>

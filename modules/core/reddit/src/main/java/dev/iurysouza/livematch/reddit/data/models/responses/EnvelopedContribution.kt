@@ -5,7 +5,7 @@ import dev.iurysouza.livematch.reddit.data.models.responses.base.EnvelopeKind
 
 interface EnvelopedContribution : EnvelopedData {
 
-    override val kind: EnvelopeKind
+  override val kind: EnvelopeKind
 
-    override val data: Contribution
+  override val data: Contribution
 }

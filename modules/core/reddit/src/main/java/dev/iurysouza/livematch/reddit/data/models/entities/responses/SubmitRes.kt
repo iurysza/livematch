@@ -9,31 +9,31 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class SubmitResponse(
 
-    @Json(name = "json")
-    val json: SubmitResponseJson,
+  @Json(name = "json")
+  val json: SubmitResponseJson,
 
-    ) : Parcelable
+) : Parcelable
 
 @JsonClass(generateAdapter = true)
 @Parcelize
 data class SubmitResponseJson(
 
-    @Json(name = "errors")
-    val errors: List<List<String>>?,
+  @Json(name = "errors")
+  val errors: List<List<String>>?,
 
-    @Json(name = "data")
-    val data: SubmitResponseData?,
+  @Json(name = "data")
+  val data: SubmitResponseData?,
 
-    ) : Parcelable
+) : Parcelable
 
 @JsonClass(generateAdapter = true)
 @Parcelize
 data class SubmitResponseData(
 
-    @Json(name = "user_submitted_page")
-    val userSubmittedPage: String?,
+  @Json(name = "user_submitted_page")
+  val userSubmittedPage: String?,
 
-    @Json(name = "websocket_url")
-    val webSocketUrl: String?,
+  @Json(name = "websocket_url")
+  val webSocketUrl: String?,
 
-    ) : Parcelable
+) : Parcelable

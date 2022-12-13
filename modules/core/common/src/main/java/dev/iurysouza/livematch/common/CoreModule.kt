@@ -16,29 +16,29 @@ import javax.inject.Singleton
 @Module
 object CoreModule {
 
-    @Provides
-    @Singleton
-    internal fun provideResourceProvider(
-        @ApplicationContext appContext: Context,
-    ): ResourceProvider = SystemResourceProvider(appContext)
+  @Provides
+  @Singleton
+  internal fun provideResourceProvider(
+    @ApplicationContext appContext: Context,
+  ): ResourceProvider = SystemResourceProvider(appContext)
 
-    @Singleton
-    @Provides
-    fun provideSharedPreference(
-        @ApplicationContext context: Context,
-    ): SharedPreferences = context.getSharedPreferences("livematch", Context.MODE_PRIVATE)
+  @Singleton
+  @Provides
+  fun provideSharedPreference(
+    @ApplicationContext context: Context,
+  ): SharedPreferences = context.getSharedPreferences("livematch", Context.MODE_PRIVATE)
 
-    @Provides
-    @Singleton
-    internal fun provideSystemStorage(
-        sharedPreferences: SharedPreferences,
-    ): KeyValueStorage = SystemStorage(sharedPreferences)
+  @Provides
+  @Singleton
+  internal fun provideSystemStorage(
+    sharedPreferences: SharedPreferences,
+  ): KeyValueStorage = SystemStorage(sharedPreferences)
 
-    @Provides
-    @Singleton
-    fun provideCoroutineContextProvider(): DispatcherProvider = DefaultDispatcherProvider()
+  @Provides
+  @Singleton
+  fun provideCoroutineContextProvider(): DispatcherProvider = DefaultDispatcherProvider()
 
-    @Provides
-    @Singleton
-    internal fun providesJsonParser(moshi: Moshi): JsonParser = MoshiJsonParser(moshi)
+  @Provides
+  @Singleton
+  internal fun providesJsonParser(moshi: Moshi): JsonParser = MoshiJsonParser(moshi)
 }

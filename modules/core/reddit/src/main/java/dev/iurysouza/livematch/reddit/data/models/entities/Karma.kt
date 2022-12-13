@@ -10,25 +10,25 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Karma(
 
-    @Json(name = "sr")
-    val subreddit: String,
+  @Json(name = "sr")
+  val subreddit: String,
 
-    @Json(name = "comment_karma")
-    val commentKarma: Int,
+  @Json(name = "comment_karma")
+  val commentKarma: Int,
 
-    @Json(name = "link_karma")
-    val linkKarma: Int,
+  @Json(name = "link_karma")
+  val linkKarma: Int,
 
-    ) : Parcelable
+) : Parcelable
 
 @JsonClass(generateAdapter = true)
 @Parcelize
 data class KarmaList(
 
-    @Json(name = "kind")
-    val kind: EnvelopeKind,
+  @Json(name = "kind")
+  val kind: EnvelopeKind,
 
-    @Json(name = "data")
-    val data: List<Karma>,
+  @Json(name = "data")
+  val data: List<Karma>,
 
-    ) : Parcelable
+) : Parcelable

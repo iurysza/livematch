@@ -10,25 +10,25 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class WikiRevision(
 
-    @Json(name = "id")
-    val id: String,
+  @Json(name = "id")
+  val id: String,
 
-    @Json(name = "replies")
-    val authorRaw: EnvelopedRedditor?,
+  @Json(name = "replies")
+  val authorRaw: EnvelopedRedditor?,
 
-    @Transient
-    val author: Redditor? = authorRaw?.data,
+  @Transient
+  val author: Redditor? = authorRaw?.data,
 
-    @Json(name = "revision_hidden")
-    val revisionHidden: Boolean,
+  @Json(name = "revision_hidden")
+  val revisionHidden: Boolean,
 
-    @Json(name = "reason")
-    val reason: String?,
+  @Json(name = "reason")
+  val reason: String?,
 
-    @Json(name = "page")
-    val page: String,
+  @Json(name = "page")
+  val page: String,
 
-    @Json(name = "timestamp")
-    val timestamp: Long,
+  @Json(name = "timestamp")
+  val timestamp: Long,
 
-    ) : Parcelable
+) : Parcelable

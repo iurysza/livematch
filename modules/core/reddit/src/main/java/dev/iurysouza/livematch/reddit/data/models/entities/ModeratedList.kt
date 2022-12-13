@@ -11,61 +11,61 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ModeratedList(
 
-    @Json(name = "kind")
-    val kind: EnvelopeKind?,
+  @Json(name = "kind")
+  val kind: EnvelopeKind?,
 
-    @Json(name = "data")
-    val data: List<ModeratedSub>?,
+  @Json(name = "data")
+  val data: List<ModeratedSub>?,
 
-    ) : Parcelable
+) : Parcelable
 
 @JsonClass(generateAdapter = true)
 @Parcelize
 data class ModeratedSub(
 
-    @Json(name = "name")
-    val fullname: String,
+  @Json(name = "name")
+  val fullname: String,
 
-    @Json(name = "banner_img")
-    val bannerImg: String,
+  @Json(name = "banner_img")
+  val bannerImg: String,
 
-    @Json(name = "banner_size")
-    val bannerImgSize: List<Int>?,
+  @Json(name = "banner_size")
+  val bannerImgSize: List<Int>?,
 
-    @Json(name = "created")
-    override val created: Long,
+  @Json(name = "created")
+  override val created: Long,
 
-    @Json(name = "created_utc")
-    override val createdUtc: Long,
+  @Json(name = "created_utc")
+  override val createdUtc: Long,
 
-    @Json(name = "icon_img")
-    val iconImg: String,
+  @Json(name = "icon_img")
+  val iconImg: String,
 
-    @Json(name = "icon_size")
-    val iconImgSize: List<Int>?,
+  @Json(name = "icon_size")
+  val iconImgSize: List<Int>?,
 
-    @Json(name = "user_is_subscriber")
-    val isSubscriber: Boolean?,
+  @Json(name = "user_is_subscriber")
+  val isSubscriber: Boolean?,
 
-    @Json(name = "sr")
-    val displayName: String,
+  @Json(name = "sr")
+  val displayName: String,
 
-    @Json(name = "sr_display_name_prefixed")
-    val displayNamePrefixed: String,
+  @Json(name = "sr_display_name_prefixed")
+  val displayNamePrefixed: String,
 
-    @Json(name = "over_18")
-    val over18: Boolean,
+  @Json(name = "over_18")
+  val over18: Boolean,
 
-    @Json(name = "subreddit_type")
-    val subredditType: String,
+  @Json(name = "subreddit_type")
+  val subredditType: String,
 
-    @Json(name = "subscribers")
-    val subscribers: Int,
+  @Json(name = "subscribers")
+  val subscribers: Int,
 
-    @Json(name = "title")
-    val title: String,
+  @Json(name = "title")
+  val title: String,
 
-    @Json(name = "url")
-    val url: String,
+  @Json(name = "url")
+  val url: String,
 
-    ) : Parcelable, Created
+) : Parcelable, Created

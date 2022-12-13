@@ -10,7 +10,7 @@ import kotlinx.parcelize.RawValue
 @Parcelize
 data class UserlessSelf(
 
-    @Json(name = "features")
-    val features: @RawValue Map<String, Any>,
+  @Json(name = "features")
+  val features: @RawValue Map<String, Any>,
 
-    ) : Parcelable
+) : Parcelable

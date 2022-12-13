@@ -4,13 +4,13 @@ import dev.iurysouza.livematch.reddit.data.models.entities.base.Sorting
 
 enum class ContributionsSorting(
 
-    override val requiresTimePeriod: Boolean = false,
-    override val sortingStr: String,
+  override val requiresTimePeriod: Boolean = false,
+  override val sortingStr: String,
 
-    ) : Sorting {
+) : Sorting {
 
-    HOT(sortingStr = "hot"),
-    NEW(sortingStr = "new"),
-    CONTROVERSIAL(true, "controversial"),
-    TOP(true, "top")
+  HOT(sortingStr = "hot"),
+  NEW(sortingStr = "new"),
+  CONTROVERSIAL(true, "controversial"),
+  TOP(true, "top"),
 }

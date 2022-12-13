@@ -12,9 +12,9 @@ package dev.iurysouza.livematch.reddit.data.models.entities.base
  */
 interface Saveable {
 
-    val id: String
+  val id: String
 
-    val fullname: String
+  val fullname: String
 
-    val isSaved: Boolean
+  val isSaved: Boolean
 }

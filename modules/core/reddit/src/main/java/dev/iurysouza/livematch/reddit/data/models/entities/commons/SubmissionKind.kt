@@ -13,9 +13,9 @@ package dev.iurysouza.livematch.reddit.data.models.entities.commons
  */
 enum class SubmissionKind(val kindStr: String) {
 
-    VIDEOGIF("videogif"),
-    VIDEO("video"),
-    IMAGE("image"),
-    LINK("link"),
-    SELF("self")
+  VIDEOGIF("videogif"),
+  VIDEO("video"),
+  IMAGE("image"),
+  LINK("link"),
+  SELF("self"),
 }

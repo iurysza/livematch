@@ -11,7 +11,7 @@ package dev.iurysouza.livematch.reddit.data.models.entities.base
  */
 interface Contribution : Thing {
 
-    override val id: String
+  override val id: String
 
-    override val fullname: String
+  override val fullname: String
 }

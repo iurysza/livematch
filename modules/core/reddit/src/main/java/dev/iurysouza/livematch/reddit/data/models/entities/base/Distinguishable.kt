@@ -14,5 +14,5 @@ package dev.iurysouza.livematch.reddit.data.models.entities.base
  */
 interface Distinguishable {
 
-    val distinguishedRaw: String?
+  val distinguishedRaw: String?
 }

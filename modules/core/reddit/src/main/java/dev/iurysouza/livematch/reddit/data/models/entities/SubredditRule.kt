@@ -4,8 +4,8 @@ import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import dev.iurysouza.livematch.reddit.data.models.MILLIS
-import java.util.Date
 import kotlinx.parcelize.Parcelize
+import java.util.Date
 
 /**
  * This class is used to represent a rule element in a Subreddit,
@@ -31,32 +31,32 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class SubredditRule(
 
-    @Json(name = "kind")
-    val kind: String,
+  @Json(name = "kind")
+  val kind: String,
 
-    @Json(name = "description")
-    val description: String,
+  @Json(name = "description")
+  val description: String,
 
-    @Json(name = "description_html")
-    val descriptionHtml: String?,
+  @Json(name = "description_html")
+  val descriptionHtml: String?,
 
-    @Json(name = "short_name")
-    val shortName: String,
+  @Json(name = "short_name")
+  val shortName: String,
 
-    @Json(name = "violation_reason")
-    val violationReason: String,
+  @Json(name = "violation_reason")
+  val violationReason: String,
 
-    @Json(name = "priority")
-    val priority: Int,
+  @Json(name = "priority")
+  val priority: Int,
 
-    @Json(name = "created_utc")
-    val createdUtc: Long,
+  @Json(name = "created_utc")
+  val createdUtc: Long,
 
-    ) : Parcelable {
+) : Parcelable {
 
-    val createdDate: Date
-        get() {
-            val milliseconds = createdUtc / MILLIS
-            return Date(milliseconds)
-        }
+  val createdDate: Date
+    get() {
+      val milliseconds = createdUtc / MILLIS
+      return Date(milliseconds)
+    }
 }

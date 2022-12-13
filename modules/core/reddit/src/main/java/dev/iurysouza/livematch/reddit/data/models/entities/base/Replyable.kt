@@ -9,5 +9,5 @@ package dev.iurysouza.livematch.reddit.data.models.entities.base
  */
 interface Replyable {
 
-    val fullname: String
+  val fullname: String
 }

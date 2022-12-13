@@ -9,18 +9,17 @@ import javax.inject.Singleton
 
 @Singleton
 class GetMatchHighlightsUseCase @Inject constructor(
-    private val networkDataSource: RedditNetworkDataSource,
+  private val networkDataSource: RedditNetworkDataSource,
 ) {
 
-    suspend operator fun invoke(): Either<DomainError, List<MatchHighlightEntity>> = either {
-        networkDataSource.searchFor(
-            subreddit = "soccer",
-            query = """flair:media OR flair:Mirror""",
-            sortBy = "hot",
-            timePeriod = "day",
-            restrictedToSubreddit = true,
-            limit = 100
-        ).bind()
-    }.map { response -> response.matchHighlightEntities() }
-
+  suspend operator fun invoke(): Either<DomainError, List<MatchHighlightEntity>> = either {
+    networkDataSource.searchFor(
+      subreddit = "soccer",
+      query = """flair:media OR flair:Mirror""",
+      sortBy = "hot",
+      timePeriod = "day",
+      restrictedToSubreddit = true,
+      limit = 100,
+    ).bind()
+  }.map { response -> response.matchHighlightEntities() }
 }

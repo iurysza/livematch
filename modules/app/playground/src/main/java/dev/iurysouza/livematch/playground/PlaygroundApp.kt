@@ -11,15 +11,15 @@ import timber.log.Timber
 
 @HiltAndroidApp
 class PlaygroundApp : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        Timber.plant(Timber.DebugTree())
-        Coil.setImageLoader(LiveMatchImageLoader(this))
-    }
+  override fun onCreate() {
+    super.onCreate()
+    Timber.plant(Timber.DebugTree())
+    Coil.setImageLoader(LiveMatchImageLoader(this))
+  }
 
-    private class LiveMatchImageLoader(private val context: Context) : ImageLoaderFactory {
-        override fun newImageLoader() = ImageLoader.Builder(context)
-            .components { add(SvgDecoder.Factory()) }
-            .build()
-    }
+  private class LiveMatchImageLoader(private val context: Context) : ImageLoaderFactory {
+    override fun newImageLoader() = ImageLoader.Builder(context)
+      .components { add(SvgDecoder.Factory()) }
+      .build()
+  }
 }

@@ -10,18 +10,17 @@ import javax.inject.Singleton
 
 @Singleton
 class FetchMatchCommentsUseCase @Inject constructor(
-    private val networkDataSource: RedditNetworkDataSource,
+  private val networkDataSource: RedditNetworkDataSource,
 ) {
 
-    suspend operator fun invoke(matchId: String): Either<DomainError, List<CommentsEntity>> =
-        either {
-            networkDataSource.getCommentsForSubmission(
-                id = matchId,
-                sortBy = "hot"
-            )
-                .map { it.toCommentsEntity() }
-                .mapLeft { MappingError(it.message) }
-                .bind()
-        }
+  suspend operator fun invoke(matchId: String): Either<DomainError, List<CommentsEntity>> =
+    either {
+      networkDataSource.getCommentsForSubmission(
+        id = matchId,
+        sortBy = "hot",
+      )
+        .map { it.toCommentsEntity() }
+        .mapLeft { MappingError(it.message) }
+        .bind()
+    }
 }
-

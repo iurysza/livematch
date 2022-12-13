@@ -12,12 +12,12 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun FullScreenProgress() {
-    Box(
-        modifier = Modifier
-            .padding(top = 32.dp)
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator(color = MaterialTheme.colors.primary)
-    }
+  Box(
+    modifier = Modifier
+      .padding(top = 32.dp)
+      .fillMaxSize(),
+    contentAlignment = Alignment.Center,
+  ) {
+    CircularProgressIndicator(color = MaterialTheme.colors.primary)
+  }
 }

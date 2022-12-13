@@ -9,10 +9,10 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun ErrorScreen(msg: String) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(msg)
-    }
+  Box(
+    modifier = Modifier.fillMaxSize(),
+    contentAlignment = Alignment.Center,
+  ) {
+    Text(msg)
+  }
 }

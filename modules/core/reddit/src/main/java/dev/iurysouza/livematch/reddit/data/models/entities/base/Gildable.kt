@@ -12,11 +12,11 @@ import dev.iurysouza.livematch.reddit.data.models.entities.commons.Gildings
  */
 interface Gildable : Thing {
 
-    override val id: String
+  override val id: String
 
-    override val fullname: String
+  override val fullname: String
 
-    val canGild: Boolean
+  val canGild: Boolean
 
-    val gildings: Gildings
+  val gildings: Gildings
 }

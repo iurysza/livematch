@@ -4,5 +4,5 @@ import android.os.Parcelable
 
 interface RedditorData : Parcelable {
 
-    val fullname: String
+  val fullname: String
 }

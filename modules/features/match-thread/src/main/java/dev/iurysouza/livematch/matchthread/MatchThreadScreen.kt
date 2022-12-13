@@ -49,160 +49,157 @@ import kotlinx.coroutines.launch
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun MatchThreadScreen(
-    matchThread: MatchThread,
-    navigateUp: () -> Unit,
+  matchThread: MatchThread,
+  navigateUp: () -> Unit,
 ) {
-    val viewModel = hiltViewModel<MatchThreadViewModel>()
-    LaunchedEffect(Unit) {
-        viewModel.getLatestComments(matchThread, false)
+  val viewModel = hiltViewModel<MatchThreadViewModel>()
+  LaunchedEffect(Unit) {
+    viewModel.getLatestComments(matchThread, false)
+  }
+  val systemUiController = rememberSystemUiController()
+  val isDark = isSystemInDarkTheme()
+  val backgroundColor = MaterialTheme.colors.background
+  SideEffect {
+    systemUiController.setSystemBarsColor(backgroundColor, !isDark)
+  }
+
+  val isRefreshing = viewModel.isRefreshingState.collectAsState(false)
+  val commentsState = viewModel.commentsState.collectAsState().value
+  val state = viewModel.state.collectAsState().value
+
+  val refreshScope = rememberCoroutineScope()
+  val refreshState = rememberPullRefreshState(isRefreshing.value, onRefresh = {
+    refreshScope.launch {
+      viewModel.getLatestComments(matchThread, true)
     }
-    val systemUiController = rememberSystemUiController()
-    val isDark = isSystemInDarkTheme()
-    val backgroundColor = MaterialTheme.colors.background
-    SideEffect {
-        systemUiController.setSystemBarsColor(backgroundColor, !isDark)
-    }
+  },)
 
-    val isRefreshing = viewModel.isRefreshingState.collectAsState(false)
-    val commentsState = viewModel.commentsState.collectAsState().value
-    val state = viewModel.state.collectAsState().value
-
-
-    val refreshScope = rememberCoroutineScope()
-    val refreshState = rememberPullRefreshState(isRefreshing.value, onRefresh = {
-        refreshScope.launch {
-            viewModel.getLatestComments(matchThread, true)
-        }
-    })
-
-    MatchThreadComponent(
-        isRefreshing = isRefreshing.value,
-        refreshState = refreshState,
-        matchThread = matchThread,
-        state = state,
-        commentsState = commentsState,
-        navigateUp = navigateUp,
-    )
-
+  MatchThreadComponent(
+    isRefreshing = isRefreshing.value,
+    refreshState = refreshState,
+    matchThread = matchThread,
+    state = state,
+    commentsState = commentsState,
+    navigateUp = navigateUp,
+  )
 }
 
 @Composable
 fun MatchThreadComponent(
-    isRefreshing: Boolean,
-    refreshState: PullRefreshState,
-    matchThread: MatchThread,
-    state: MatchDescriptionState,
-    commentsState: MatchCommentsState,
-    navigateUp: () -> Unit = {},
+  isRefreshing: Boolean,
+  refreshState: PullRefreshState,
+  matchThread: MatchThread,
+  state: MatchDescriptionState,
+  commentsState: MatchCommentsState,
+  navigateUp: () -> Unit = {},
 ) {
-    val sectionToggleMap = mutableMapOf<String, Boolean>()
-    var showContent by remember { mutableStateOf(sectionToggleMap.toMap()) }
-    Box(
-        modifier = Modifier
-            .pullRefresh(refreshState)
-            .background(MaterialTheme.colors.background)
-            .fillMaxSize()
-    ) {
-        val scrollState = rememberLazyListState()
-        LazyColumn(
-            modifier = Modifier
-                .padding(top = 42.dp),
-            state = scrollState,
-            content = {
-                item {
-                    val homeTeam = Team(
-                        crestUrl = matchThread.homeTeam.crestUrl,
-                        isHomeTeam = matchThread.homeTeam.isHomeTeam,
-                        isAhead = matchThread.homeTeam.isAhead,
-                        name = matchThread.homeTeam.name,
-                        score = matchThread.homeTeam.score,
-                    )
-                    MatchHeader(
-                        homeTeam = homeTeam,
-                        awayTeam = Team(
-                            crestUrl = matchThread.awayTeam.crestUrl,
-                            isHomeTeam = matchThread.awayTeam.isHomeTeam,
-                            isAhead = matchThread.awayTeam.isAhead,
-                            name = matchThread.awayTeam.name,
-                            score = matchThread.awayTeam.score,
-                        ),
-                    )
-                }
-                item {
-                    when (state) {
-                        MatchDescriptionState.Loading -> FullScreenProgress()
-                        is MatchDescriptionState.Error -> ErrorScreen(state.msg)
-                        is MatchDescriptionState.Success -> MatchDetails(
-                            state.matchThread.content!!,
-                            state.matchThread.mediaList,
-                        )
-                    }
-                }
-                when (commentsState) {
-                    MatchCommentsState.Loading -> item { FullScreenProgress() }
-                    is MatchCommentsState.Error -> item { ErrorScreen(commentsState.msg) }
-                    is MatchCommentsState.Success -> {
-                        if (sectionToggleMap.isEmpty()) {
-                            commentsState.commentSectionList.forEach { (_, event) ->
-                                sectionToggleMap[event.description] = true
-                            }
-                            showContent = sectionToggleMap.toMap()
-                        }
-                        commentsState.commentSectionList.forEach { (_: String, event: MatchEvent, comments: List<CommentItem>) ->
-                            stickyHeader {
-                                SectionHeader(
-                                    isExpanded = showContent.isNotEmpty() && showContent[event.description]!!,
-                                    nestedCommentCount = comments.size,
-                                    event = event,
-                                    onClick = {
-                                        showContent = showContent
-                                            .toMutableMap()
-                                            .apply {
-                                                this[event.description] = !this[event.description]!!
-                                            }
-                                    },
-                                )
-                            }
-                            items(comments) { commentItem: CommentItem ->
-                                AnimatedCellExpansion(
-                                    showContentIf = { showContent.isNotEmpty() && showContent[event.description]!! },
-                                    content = {
-                                        CommentItemComponent(commentItem)
-                                    }
-                                )
-                            }
-                        }
-                    }
-                }
-            })
-        PullRefreshIndicator(
-            modifier = Modifier.align(Alignment.TopCenter),
-            refreshing = isRefreshing,
-            state = refreshState,
-        )
-    }
-    ScreenToolbar(navigateUp)
+  val sectionToggleMap = mutableMapOf<String, Boolean>()
+  var showContent by remember { mutableStateOf(sectionToggleMap.toMap()) }
+  Box(
+    modifier = Modifier
+      .pullRefresh(refreshState)
+      .background(MaterialTheme.colors.background)
+      .fillMaxSize(),
+  ) {
+    val scrollState = rememberLazyListState()
+    LazyColumn(
+      modifier = Modifier
+        .padding(top = 42.dp),
+      state = scrollState,
+      content = {
+        item {
+          val homeTeam = Team(
+            crestUrl = matchThread.homeTeam.crestUrl,
+            isHomeTeam = matchThread.homeTeam.isHomeTeam,
+            isAhead = matchThread.homeTeam.isAhead,
+            name = matchThread.homeTeam.name,
+            score = matchThread.homeTeam.score,
+          )
+          MatchHeader(
+            homeTeam = homeTeam,
+            awayTeam = Team(
+              crestUrl = matchThread.awayTeam.crestUrl,
+              isHomeTeam = matchThread.awayTeam.isHomeTeam,
+              isAhead = matchThread.awayTeam.isAhead,
+              name = matchThread.awayTeam.name,
+              score = matchThread.awayTeam.score,
+            ),
+          )
+        }
+        item {
+          when (state) {
+            MatchDescriptionState.Loading -> FullScreenProgress()
+            is MatchDescriptionState.Error -> ErrorScreen(state.msg)
+            is MatchDescriptionState.Success -> MatchDetails(
+              state.matchThread.content!!,
+              state.matchThread.mediaList,
+            )
+          }
+        }
+        when (commentsState) {
+          MatchCommentsState.Loading -> item { FullScreenProgress() }
+          is MatchCommentsState.Error -> item { ErrorScreen(commentsState.msg) }
+          is MatchCommentsState.Success -> {
+            if (sectionToggleMap.isEmpty()) {
+              commentsState.commentSectionList.forEach { (_, event) ->
+                sectionToggleMap[event.description] = true
+              }
+              showContent = sectionToggleMap.toMap()
+            }
+            commentsState.commentSectionList.forEach { (_: String, event: MatchEvent, comments: List<CommentItem>) ->
+              stickyHeader {
+                SectionHeader(
+                  isExpanded = showContent.isNotEmpty() && showContent[event.description]!!,
+                  nestedCommentCount = comments.size,
+                  event = event,
+                  onClick = {
+                    showContent = showContent
+                      .toMutableMap()
+                      .apply {
+                        this[event.description] = !this[event.description]!!
+                      }
+                  },
+                )
+              }
+              items(comments) { commentItem: CommentItem ->
+                AnimatedCellExpansion(
+                  showContentIf = { showContent.isNotEmpty() && showContent[event.description]!! },
+                  content = {
+                    CommentItemComponent(commentItem)
+                  },
+                )
+              }
+            }
+          }
+        }
+      },
+    )
+    PullRefreshIndicator(
+      modifier = Modifier.align(Alignment.TopCenter),
+      refreshing = isRefreshing,
+      state = refreshState,
+    )
+  }
+  ScreenToolbar(navigateUp)
 }
 
 @Composable
 private fun ScreenToolbar(navigateUp: () -> Unit) {
-    Row(
-        horizontalArrangement = Arrangement.Start,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 4.dp)
-            .background(Color.Transparent)
+  Row(
+    horizontalArrangement = Arrangement.Start,
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(bottom = 4.dp)
+      .background(Color.Transparent),
+  ) {
+    IconButton(
+      onClick = navigateUp,
     ) {
-        IconButton(
-            onClick = navigateUp
-        ) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                tint = MaterialTheme.colors.onPrimary,
-                contentDescription = stringResource(R.string.icon_description),
-            )
-        }
-
+      Icon(
+        imageVector = Icons.Filled.ArrowBack,
+        tint = MaterialTheme.colors.onPrimary,
+        contentDescription = stringResource(R.string.icon_description),
+      )
     }
+  }
 }
-

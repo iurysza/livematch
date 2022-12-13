@@ -7,23 +7,23 @@ import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedCommentData
 @JsonClass(generateAdapter = true)
 data class MoreChildrenResponse(
 
-    @Json(name = "json")
-    val json: MoreChildrenResponseJSON,
+  @Json(name = "json")
+  val json: MoreChildrenResponseJSON,
 
-    )
+)
 
 @JsonClass(generateAdapter = true)
 data class MoreChildrenResponseJSON(
 
-    @Json(name = "data")
-    val data: MoreChildrenResponseThings,
+  @Json(name = "data")
+  val data: MoreChildrenResponseThings,
 
-    )
+)
 
 @JsonClass(generateAdapter = true)
 data class MoreChildrenResponseThings(
 
-    @Json(name = "things")
-    val things: List<EnvelopedCommentData>,
+  @Json(name = "things")
+  val things: List<EnvelopedCommentData>,
 
-    )
+)
