@@ -19,9 +19,9 @@ import dev.iurysouza.livematch.matchlist.models.toMatchList
 import dev.iurysouza.livematch.reddit.domain.FetchLatestMatchThreadsForTodayUseCase
 import dev.iurysouza.livematch.reddit.domain.RefreshTokenIfNeededUseCase
 import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class MatchListViewModel @Inject constructor(
@@ -51,22 +51,15 @@ class MatchListViewModel @Inject constructor(
     }
   }
 
-  private fun onGetLatestMatches() {
+  private fun onGetLatestMatches() = viewModelScope.launch {
     setState { copy(matchListState = MatchListState.Loading) }
-    viewModelScope.launch {
-      val savedMatches = savedMatches.value
-      if (savedMatches.isNotEmpty()) {
-        setState {
-          copy(
-            matchListState = MatchListState.Success(
-              savedMatches.toMatchList(resourceProvider),
-            ),
-          )
-        }
-      } else {
-        fetchRedditContent()
-        fetchMatchData()
-      }
+    val savedMatches = savedMatches.value
+    if (savedMatches.isEmpty()) {
+      setState { copy(isSyncing = true) }
+      fetchRedditContent()
+      fetchMatchData()
+    } else {
+      setState { copy(matchListState = MatchListState.Success(savedMatches.toMatchList(resourceProvider))) }
     }
   }
 
@@ -96,7 +89,6 @@ class MatchListViewModel @Inject constructor(
     )
 
   private suspend fun fetchRedditContent() = either {
-    setState { copy(isSyncing = true) }
     refreshTokenIfNeeded().bind()
     fetchLatestMatchThreadsForToday().bind()
   }.fold(

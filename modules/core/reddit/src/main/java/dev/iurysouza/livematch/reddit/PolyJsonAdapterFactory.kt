@@ -1,7 +1,6 @@
 package dev.iurysouza.livematch.reddit
 
 import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.Moshi
@@ -9,7 +8,6 @@ import com.squareup.moshi.Types
 import java.lang.reflect.Type
 
 class PolyJsonAdapterFactory<T>(
-
   private val baseType: Class<T>,
   private val possibleTypes: Array<Type>,
   private inline val selectType: (label: String, value: Any?) -> Type?,
@@ -33,7 +31,6 @@ class PolyJsonAdapterFactory<T>(
   }
 
   internal class PolyJsonAdapter(
-
     private val adaptersMap: Map<Type, JsonAdapter<Any?>>,
     private inline val selectType: (label: String, value: Any?) -> Type?,
   ) : JsonAdapter<Any>() {
@@ -44,23 +41,17 @@ class PolyJsonAdapterFactory<T>(
 
       var type: Type?
       peeked.use {
-        type = matchType(it)
+        type = checkNotNull(matchType(it)) { "No match found in JSON object!" }
       }
 
-      if (type == null) {
-        throw JsonDataException("No match found in JSON object!")
-      }
-
-      val adapter = adaptersMap[type]
-        ?: throw IllegalStateException("Adapter not found!")
+      val adapter = checkNotNull(adaptersMap[type]) { "Adapter not found!" }
 
       return adapter.fromJson(reader)
     }
 
     override fun toJson(writer: JsonWriter, value: Any?) {
       val type = value!!.javaClass
-      val adapter = adaptersMap[type]
-        ?: throw IllegalStateException("Adapter not found!")
+      val adapter = checkNotNull(adaptersMap[type]) { "Adapter not found!" }
 
       writer.beginObject()
       val flattenToken = writer.beginFlatten()
