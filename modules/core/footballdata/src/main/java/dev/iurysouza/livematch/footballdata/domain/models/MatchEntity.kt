@@ -22,7 +22,7 @@ data class MatchEntity(
   val utcDate: LocalDateTime,
   val awayTeam: AwayTeamEntity,
   val homeTeam: HomeTeamEntity,
-  val matchday: Int,
+  val matchday: Int?,
   val lastUpdated: LocalDateTime,
   val competition: CompetitionEntity,
   val referees: List<RefereeEntity>,

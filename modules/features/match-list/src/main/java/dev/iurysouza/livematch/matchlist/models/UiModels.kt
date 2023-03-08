@@ -18,6 +18,7 @@ data class MatchUiModel(
 data class MatchThread(
   val id: String?,
   val startTime: Long?,
+  val mediaList: List<MediaItem>,
   val content: String?,
   val homeTeam: Team,
   val awayTeam: Team,
@@ -43,6 +44,14 @@ data class Competition(
   val name: String,
 ) : Parcelable
 
+@Parcelize
+@JsonClass(generateAdapter = true)
+data class MediaItem(
+  val title: String,
+  val url: String,
+) : Parcelable
+
 sealed class ViewError(val message: String) {
   data class NoMatchFound(val msg: String) : ViewError(msg)
 }
+

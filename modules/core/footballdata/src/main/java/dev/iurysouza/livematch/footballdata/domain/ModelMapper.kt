@@ -43,7 +43,7 @@ fun MatchListResponse.toMatchEntity(): List<MatchEntity> = matches?.mapNotNull {
         id = competition.id!!,
         emblem = competition.emblem!!,
       ),
-      matchday = match.matchday!!,
+      matchday = match.matchday,
       status = Status.valueOf(match.status!!),
       utcDate = LocalDateTime.ofInstant(
         Instant.parse(match.utcDate),
