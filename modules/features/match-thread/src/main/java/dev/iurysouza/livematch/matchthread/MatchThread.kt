@@ -33,11 +33,12 @@ sealed class ViewError(val message: String) {
   data class CommentSectionParsingError(val msg: String) : ViewError(msg)
 }
 
+@Parcelize
 data class CommentSection(
   val name: String,
   val event: MatchEvent,
   val commentList: List<CommentItem>,
-)
+):Parcelable
 
 @Parcelize
 @JsonClass(generateAdapter = true)
