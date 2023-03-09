@@ -27,16 +27,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.iurysouza.livematch.matchthread.EventIcon
-import dev.iurysouza.livematch.matchthread.MatchEvent
+import dev.iurysouza.livematch.matchthread.models.EventIcon
+import dev.iurysouza.livematch.matchthread.models.MatchEvent
 
 @Composable
 fun SectionHeader(
-  modifier: Modifier = Modifier,
-  event: MatchEvent,
-  onClick: ((MatchEvent) -> Unit)?,
-  isExpanded: Boolean = false,
-  nestedCommentCount: Int = 0,
+    modifier: Modifier = Modifier,
+    event: MatchEvent,
+    onClick: ((MatchEvent) -> Unit)?,
+    isExpanded: Boolean = false,
+    nestedCommentCount: Int = 0,
 ) {
   var newModifier = modifier
     .background(MaterialTheme.colors.background)
@@ -70,8 +70,8 @@ fun SectionHeader(
 
 @Composable
 private fun RowScope.HeaderBody(
-  event: MatchEvent,
-  modifier: Modifier,
+    event: MatchEvent,
+    modifier: Modifier,
 ) {
   Text(
     text = event.description,

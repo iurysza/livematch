@@ -28,7 +28,7 @@ import com.halilibo.richtext.markdown.Markdown
 import com.halilibo.richtext.ui.RichText
 import com.halilibo.richtext.ui.RichTextStyle
 import com.halilibo.richtext.ui.string.RichTextStringStyle
-import dev.iurysouza.livematch.matchthread.MediaItem
+import dev.iurysouza.livematch.matchthread.models.MediaItem
 import timber.log.Timber
 
 @Composable

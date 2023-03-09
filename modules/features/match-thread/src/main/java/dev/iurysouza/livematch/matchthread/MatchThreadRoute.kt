@@ -6,6 +6,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.hilt.navigation.compose.hiltViewModel
+import dev.iurysouza.livematch.matchthread.models.MatchThread
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEvent
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewState
 

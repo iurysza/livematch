@@ -15,8 +15,8 @@ class FootballNetworkDataSource @Inject constructor(
     endDate: String,
   ): Either<NetworkError, MatchListResponse> = catch {
     api.fetchLatestMatches(
-      dateFrom = startDate,
-      dateTo = endDate,
+      dateFrom = "2023-03-06",
+      dateTo = "2023-03-07",
     )
   }.mapLeft { NetworkError(it.message) }
 }

@@ -4,9 +4,6 @@ import android.os.Parcelable
 import dev.iurysouza.livematch.common.storage.ViewEvent
 import dev.iurysouza.livematch.common.storage.ViewSideEffect
 import dev.iurysouza.livematch.common.storage.ViewState
-import dev.iurysouza.livematch.matchthread.CommentSection
-import dev.iurysouza.livematch.matchthread.MatchEvent
-import dev.iurysouza.livematch.matchthread.MatchThread
 import kotlinx.parcelize.Parcelize
 
 

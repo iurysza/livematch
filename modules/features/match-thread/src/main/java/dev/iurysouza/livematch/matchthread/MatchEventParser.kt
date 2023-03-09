@@ -2,6 +2,10 @@ package dev.iurysouza.livematch.matchthread
 
 import arrow.core.Either
 import arrow.core.Either.Companion.catch
+import dev.iurysouza.livematch.matchthread.models.CommentItem
+import dev.iurysouza.livematch.matchthread.models.CommentSection
+import dev.iurysouza.livematch.matchthread.models.EventIcon
+import dev.iurysouza.livematch.matchthread.models.MatchEvent
 import dev.iurysouza.livematch.reddit.domain.models.CommentsEntity
 import timber.log.Timber
 import java.time.Duration

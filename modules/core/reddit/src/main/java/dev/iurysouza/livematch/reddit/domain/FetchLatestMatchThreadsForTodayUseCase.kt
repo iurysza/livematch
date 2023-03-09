@@ -17,7 +17,7 @@ class FetchLatestMatchThreadsForTodayUseCase @Inject constructor(
       subreddit = "soccer",
       query = """flair:match+thread AND NOT flair:post AND NOT flair:pre""",
       sortBy = "new",
-      timePeriod = "day",
+      timePeriod = "week",
       restrictedToSubreddit = true,
     ).bind()
   }.map { it.matchThreadEntities() }

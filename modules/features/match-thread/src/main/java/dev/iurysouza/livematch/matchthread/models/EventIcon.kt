@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.matchthread
+package dev.iurysouza.livematch.matchthread.models
 
 import android.os.Parcelable
 import androidx.compose.ui.graphics.vector.ImageVector

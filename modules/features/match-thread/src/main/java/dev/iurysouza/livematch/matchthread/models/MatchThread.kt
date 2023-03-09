@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.matchthread
+package dev.iurysouza.livematch.matchthread.models
 
 import android.os.Parcelable
 import com.squareup.moshi.JsonClass

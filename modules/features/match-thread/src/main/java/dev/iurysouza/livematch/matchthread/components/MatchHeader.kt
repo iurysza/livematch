@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import coil.compose.AsyncImage
-import dev.iurysouza.livematch.matchthread.Team
+import dev.iurysouza.livematch.matchthread.models.Team
 
 @Composable
 @Preview
@@ -51,8 +51,8 @@ private fun MatchHeaderPreview() {
 
 @Composable
 fun MatchHeader(
-  homeTeam: Team,
-  awayTeam: Team,
+    homeTeam: Team,
+    awayTeam: Team,
 ) {
   Row(
     verticalAlignment = Alignment.Bottom,

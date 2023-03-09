@@ -10,9 +10,11 @@ import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.common.storage.BaseViewModel
 import dev.iurysouza.livematch.matchthread.models.MatchCommentsStateMVI
 import dev.iurysouza.livematch.matchthread.models.MatchDescriptionStateVMI
+import dev.iurysouza.livematch.matchthread.models.MatchThread
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEffect
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEvent
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewState
+import dev.iurysouza.livematch.matchthread.models.ViewError
 import dev.iurysouza.livematch.reddit.domain.FetchMatchCommentsUseCase
 import dev.iurysouza.livematch.reddit.domain.FetchNewCommentsUseCase
 import javax.inject.Inject

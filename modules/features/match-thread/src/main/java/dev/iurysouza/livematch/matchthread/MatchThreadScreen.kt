@@ -1,20 +1,13 @@
 package dev.iurysouza.livematch.matchthread
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -25,8 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.iurysouza.livematch.designsystem.components.AnimatedCellExpansion
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
@@ -34,10 +25,15 @@ import dev.iurysouza.livematch.designsystem.components.FullScreenProgress
 import dev.iurysouza.livematch.matchthread.components.CommentItemComponent
 import dev.iurysouza.livematch.matchthread.components.MatchDetails
 import dev.iurysouza.livematch.matchthread.components.MatchHeader
+import dev.iurysouza.livematch.matchthread.components.ScreenToolbar
 import dev.iurysouza.livematch.matchthread.components.SectionHeader
+import dev.iurysouza.livematch.matchthread.models.CommentItem
 import dev.iurysouza.livematch.matchthread.models.MatchCommentsStateMVI
 import dev.iurysouza.livematch.matchthread.models.MatchDescriptionStateVMI
+import dev.iurysouza.livematch.matchthread.models.MatchEvent
+import dev.iurysouza.livematch.matchthread.models.MatchThread
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewState
+import dev.iurysouza.livematch.matchthread.models.Team
 
 @Composable
 fun MatchThreadScreen(
@@ -145,23 +141,4 @@ fun MatchThreadScreen(
   ScreenToolbar(navigateUp)
 }
 
-@Composable
-private fun ScreenToolbar(navigateUp: () -> Unit) {
-  Row(
-    horizontalArrangement = Arrangement.Start,
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(bottom = 4.dp)
-      .background(Color.Transparent),
-  ) {
-    IconButton(
-      onClick = navigateUp,
-    ) {
-      Icon(
-        imageVector = Icons.Filled.ArrowBack,
-        tint = MaterialTheme.colors.onPrimary,
-        contentDescription = stringResource(R.string.icon_description),
-      )
-    }
-  }
-}
+
