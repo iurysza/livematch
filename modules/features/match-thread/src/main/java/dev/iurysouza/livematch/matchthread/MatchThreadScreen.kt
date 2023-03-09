@@ -28,8 +28,8 @@ import dev.iurysouza.livematch.matchthread.components.MatchHeader
 import dev.iurysouza.livematch.matchthread.components.ScreenToolbar
 import dev.iurysouza.livematch.matchthread.components.SectionHeader
 import dev.iurysouza.livematch.matchthread.models.CommentItem
-import dev.iurysouza.livematch.matchthread.models.MatchCommentsStateMVI
-import dev.iurysouza.livematch.matchthread.models.MatchDescriptionStateVMI
+import dev.iurysouza.livematch.matchthread.models.MatchCommentsState
+import dev.iurysouza.livematch.matchthread.models.MatchDescriptionState
 import dev.iurysouza.livematch.matchthread.models.MatchEvent
 import dev.iurysouza.livematch.matchthread.models.MatchThread
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewState
@@ -37,19 +37,19 @@ import dev.iurysouza.livematch.matchthread.models.Team
 
 @Composable
 fun MatchThreadScreen(
-  uiModel: MatchThreadViewState,
+  uiState: MatchThreadViewState,
   matchThread: MatchThread,
   navigateUp: () -> Unit = {},
   onRefresh: () -> Unit = {},
 ) {
   val sectionToggleMap = mutableMapOf<String, Boolean>()
   var showContent by remember { mutableStateOf(sectionToggleMap.toMap()) }
-  val isRefreshing = uiModel.isRefreshing
-  val commentsState = uiModel.commentsState
-  val state = uiModel.descriptionState
+  val isRefreshing = uiState.isRefreshing
+  val commentsState = uiState.commentSectionState
+  val state = uiState.descriptionState
 
   val refreshState = rememberPullRefreshState(
-    refreshing = uiModel.isRefreshing,
+    refreshing = uiState.isRefreshing,
     onRefresh = { onRefresh() },
   )
 
@@ -86,18 +86,18 @@ fun MatchThreadScreen(
         }
         item {
           when (state) {
-            MatchDescriptionStateVMI.Loading -> FullScreenProgress()
-            is MatchDescriptionStateVMI.Error -> ErrorScreen(state.msg)
-            is MatchDescriptionStateVMI.Success -> MatchDetails(
+            MatchDescriptionState.Loading -> FullScreenProgress()
+            is MatchDescriptionState.Error -> ErrorScreen(state.msg)
+            is MatchDescriptionState.Success -> MatchDetails(
               state.matchThread.content!!,
               state.matchThread.mediaList,
             )
           }
         }
         when (commentsState) {
-          MatchCommentsStateMVI.Loading -> item { FullScreenProgress() }
-          is MatchCommentsStateMVI.Error -> item { ErrorScreen(commentsState.msg) }
-          is MatchCommentsStateMVI.Success -> {
+          MatchCommentsState.Loading -> item { FullScreenProgress() }
+          is MatchCommentsState.Error -> item { ErrorScreen(commentsState.msg) }
+          is MatchCommentsState.Success -> {
             if (sectionToggleMap.isEmpty()) {
               commentsState.commentSectionList.forEach { (_, event) ->
                 sectionToggleMap[event.description] = true
@@ -140,5 +140,3 @@ fun MatchThreadScreen(
   }
   ScreenToolbar(navigateUp)
 }
-
-

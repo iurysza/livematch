@@ -8,8 +8,8 @@ import dev.iurysouza.livematch.common.DomainError
 import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.common.storage.BaseViewModel
-import dev.iurysouza.livematch.matchthread.models.MatchCommentsStateMVI
-import dev.iurysouza.livematch.matchthread.models.MatchDescriptionStateVMI
+import dev.iurysouza.livematch.matchthread.models.MatchCommentsState
+import dev.iurysouza.livematch.matchthread.models.MatchDescriptionState
 import dev.iurysouza.livematch.matchthread.models.MatchThread
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEffect
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEvent
@@ -44,7 +44,7 @@ class MatchThreadViewModel @Inject constructor(
         val (matchEvents, content) = eventParser.getMatchEvents(match.content)
         setState {
           copy(
-            descriptionState = MatchDescriptionStateVMI.Success(
+            descriptionState = MatchDescriptionState.Success(
               matchThread = match.copy(content = content),
               matchEvents = matchEvents,
             ),
@@ -54,7 +54,7 @@ class MatchThreadViewModel @Inject constructor(
           setState { copy(isRefreshing = true) }
           fetchLatestMatchThreads(match.id)
         } else {
-          setState { copy(commentsState = MatchCommentsStateMVI.Loading) }
+          setState { copy(commentSectionState = MatchCommentsState.Loading) }
           fetchMatchThreads(match.id)
         }
           .mapLeft { mapErrorMsg(it) }
@@ -83,12 +83,12 @@ class MatchThreadViewModel @Inject constructor(
           .mapLeft { ViewError.CommentSectionParsingError(it.toString()) }
           .fold(
             {
-              setState { copy(commentsState = MatchCommentsStateMVI.Error(parseError(it))) }
+              setState { copy(commentSectionState = MatchCommentsState.Error(parseError(it))) }
             },
             {
               setState {
                 copy(
-                  commentsState = MatchCommentsStateMVI.Success(it),
+                  commentSectionState = MatchCommentsState.Success(it),
                   isRefreshing = false,
                 )
               }
@@ -119,6 +119,4 @@ class MatchThreadViewModel @Inject constructor(
       else -> resourceProvider.getString(R.string.match_screen_error_default)
     }
   }
-
-
 }

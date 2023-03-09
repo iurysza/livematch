@@ -51,8 +51,8 @@ private fun MatchHeaderPreview() {
 
 @Composable
 fun MatchHeader(
-    homeTeam: Team,
-    awayTeam: Team,
+  homeTeam: Team,
+  awayTeam: Team,
 ) {
   Row(
     verticalAlignment = Alignment.Bottom,

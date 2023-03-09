@@ -38,7 +38,7 @@ data class CommentSection(
   val name: String,
   val event: MatchEvent,
   val commentList: List<CommentItem>,
-):Parcelable
+) : Parcelable
 
 @Parcelize
 @JsonClass(generateAdapter = true)

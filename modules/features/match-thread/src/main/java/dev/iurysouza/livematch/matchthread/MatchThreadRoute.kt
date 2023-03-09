@@ -8,7 +8,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.iurysouza.livematch.matchthread.models.MatchThread
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEvent
-import dev.iurysouza.livematch.matchthread.models.MatchThreadViewState
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
@@ -20,13 +19,11 @@ fun MatchThreadRoute(
   LaunchedEffect(Unit) {
     viewModel.handleEvent(MatchThreadViewEvent.GetMatchComments(matchThread))
   }
-  val uiModel: MatchThreadViewState by rememberSaveable(viewModel) { viewModel.viewState }
+  val uiState by rememberSaveable(viewModel) { viewModel.viewState }
   MatchThreadScreen(
-    uiModel = uiModel,
+    uiState = uiState,
     matchThread = matchThread,
     navigateUp = navigateUp,
     onRefresh = { viewModel.handleEvent(MatchThreadViewEvent.GetLatestComments(matchThread)) },
   )
 }
-
-

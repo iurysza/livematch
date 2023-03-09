@@ -29,13 +29,13 @@ import com.halilibo.richtext.ui.RichText
 import com.halilibo.richtext.ui.RichTextStyle
 import com.halilibo.richtext.ui.WithStyle
 import com.halilibo.richtext.ui.string.RichTextStringStyle
-import dev.iurysouza.livematch.matchthread.models.CommentItem
 import dev.iurysouza.livematch.matchthread.R
+import dev.iurysouza.livematch.matchthread.models.CommentItem
 
 @Composable
 fun CommentItemComponent(
-    commentItem: CommentItem,
-    modifier: Modifier = Modifier,
+  commentItem: CommentItem,
+  modifier: Modifier = Modifier,
 ) {
   Row(
     modifier = modifier

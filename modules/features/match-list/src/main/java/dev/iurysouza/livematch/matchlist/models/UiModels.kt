@@ -54,4 +54,3 @@ data class MediaItem(
 sealed class ViewError(val message: String) {
   data class NoMatchFound(val msg: String) : ViewError(msg)
 }
-

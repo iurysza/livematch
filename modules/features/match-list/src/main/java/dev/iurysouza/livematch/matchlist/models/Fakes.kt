@@ -2,6 +2,7 @@ package dev.iurysouza.livematch.matchlist.models
 
 import kotlin.random.Random
 
+@Suppress("MagicNumber")
 object Fakes {
   fun generateMatchList(count: Int): List<MatchUiModel> {
     val list = mutableListOf<MatchUiModel>()

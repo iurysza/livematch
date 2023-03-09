@@ -6,47 +6,42 @@ import dev.iurysouza.livematch.common.storage.ViewSideEffect
 import dev.iurysouza.livematch.common.storage.ViewState
 import kotlinx.parcelize.Parcelize
 
-
 @Parcelize
 data class MatchThreadViewState(
-  val descriptionState: MatchDescriptionStateVMI = MatchDescriptionStateVMI.Loading,
-  val commentsState: MatchCommentsStateMVI = MatchCommentsStateMVI.Loading,
+  val descriptionState: MatchDescriptionState = MatchDescriptionState.Loading,
+  val commentSectionState: MatchCommentsState = MatchCommentsState.Loading,
   val isRefreshing: Boolean = false,
 ) : ViewState, Parcelable
 
 sealed interface MatchThreadViewEvent : ViewEvent {
-
   data class GetLatestComments(val match: MatchThread) : MatchThreadViewEvent
   data class GetMatchComments(val match: MatchThread) : MatchThreadViewEvent
-
 }
 
 @Parcelize
-sealed interface MatchDescriptionStateVMI : Parcelable {
+sealed interface MatchDescriptionState : Parcelable {
   @Parcelize
   data class Success(
     val matchThread: MatchThread,
     val matchEvents: List<MatchEvent>,
-  ) : MatchDescriptionStateVMI
+  ) : MatchDescriptionState
 
   @Parcelize
-  object Loading : MatchDescriptionStateVMI
+  object Loading : MatchDescriptionState
 
   @Parcelize
-  data class Error(val msg: String) : MatchDescriptionStateVMI
+  data class Error(val msg: String) : MatchDescriptionState
 }
 
-sealed interface MatchCommentsStateMVI : Parcelable {
+sealed interface MatchCommentsState : Parcelable {
   @Parcelize
-  data class Success(val commentSectionList: List<CommentSection>) : MatchCommentsStateMVI
+  data class Success(val commentSectionList: List<CommentSection>) : MatchCommentsState
 
   @Parcelize
-  object Loading : MatchCommentsStateMVI
+  object Loading : MatchCommentsState
 
   @Parcelize
-  data class Error(val msg: String) : MatchCommentsStateMVI
+  data class Error(val msg: String) : MatchCommentsState
 }
 
-sealed interface MatchThreadViewEffect : ViewSideEffect {
-
-}
+sealed interface MatchThreadViewEffect : ViewSideEffect

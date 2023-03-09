@@ -19,9 +19,9 @@ import dev.iurysouza.livematch.matchlist.models.toMatchList
 import dev.iurysouza.livematch.reddit.domain.FetchLatestMatchThreadsForTodayUseCase
 import dev.iurysouza.livematch.reddit.domain.RefreshTokenIfNeededUseCase
 import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
-import javax.inject.Inject
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
 class MatchListViewModel @Inject constructor(

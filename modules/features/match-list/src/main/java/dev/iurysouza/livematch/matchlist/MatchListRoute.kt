@@ -32,9 +32,9 @@ fun MatchLisRoute(
     }
   }
 
-  val uiModel by rememberSaveable(viewModel) { viewModel.viewState }
+  val uiState by rememberSaveable(viewModel) { viewModel.viewState }
   MatchListScreen(
-    uiState = uiModel,
+    uiState = uiState,
     onTapItem = { viewModel.handleEvent(NavigateToMatch(it)) },
     onRefresh = { viewModel.handleEvent(Refresh) },
   )

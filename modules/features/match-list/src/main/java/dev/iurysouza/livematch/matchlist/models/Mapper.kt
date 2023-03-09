@@ -77,7 +77,7 @@ internal fun buildMatchThreadWith(
     name = matchEntity.competition.name,
     emblemUrl = matchEntity.competition.emblem,
   ),
-  mediaList = emptyList()
+  mediaList = emptyList(),
 )
 
 internal fun toTeam(
