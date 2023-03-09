@@ -17,7 +17,7 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 import dev.iurysouza.livematch.common.JsonParser
 import dev.iurysouza.livematch.matchlist.MatchLisRoute
-import dev.iurysouza.livematch.matchthread.MatchThreadScreen
+import dev.iurysouza.livematch.matchthread.MatchThreadRoute
 import timber.log.Timber
 
 @Composable
@@ -87,7 +87,7 @@ private fun NavGraphBuilder.addMatchThreadNavGraph(
         },
       ),
     ) { backStackEntry ->
-      MatchThreadScreen(
+      MatchThreadRoute(
         navigateUp = navController::navigateUp,
         matchThread = backStackEntry.getParcelable(matchThreadScreen.argument),
       )

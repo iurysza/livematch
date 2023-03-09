@@ -12,16 +12,15 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MatchThreadViewState(
-  val matchDescriptionStateVMI: MatchDescriptionStateVMI = MatchDescriptionStateVMI.Loading,
-  val matchCommentsStateMVI: MatchCommentsStateMVI = MatchCommentsStateMVI.Loading,
+  val descriptionState: MatchDescriptionStateVMI = MatchDescriptionStateVMI.Loading,
+  val commentsState: MatchCommentsStateMVI = MatchCommentsStateMVI.Loading,
   val isRefreshing: Boolean = false,
 ) : ViewState, Parcelable
 
 sealed interface MatchThreadViewEvent : ViewEvent {
-  data class GetLatestComments(
-    val match: MatchThread,
-    val isRefreshing: Boolean,
-  ) : MatchThreadViewEvent
+
+  data class GetLatestComments(val match: MatchThread) : MatchThreadViewEvent
+  data class GetMatchComments(val match: MatchThread) : MatchThreadViewEvent
 
 }
 

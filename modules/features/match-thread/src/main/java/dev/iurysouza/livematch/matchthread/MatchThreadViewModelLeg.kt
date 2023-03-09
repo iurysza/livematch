@@ -1,5 +1,6 @@
 package dev.iurysouza.livematch.matchthread
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.continuations.either
 import arrow.core.flatMap
@@ -7,53 +8,46 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.iurysouza.livematch.common.DomainError
 import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.common.ResourceProvider
-import dev.iurysouza.livematch.common.storage.BaseViewModel
-import dev.iurysouza.livematch.matchthread.models.MatchCommentsStateMVI
-import dev.iurysouza.livematch.matchthread.models.MatchDescriptionStateVMI
-import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEffect
-import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEvent
-import dev.iurysouza.livematch.matchthread.models.MatchThreadViewState
 import dev.iurysouza.livematch.reddit.domain.FetchMatchCommentsUseCase
 import dev.iurysouza.livematch.reddit.domain.FetchNewCommentsUseCase
-import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
-class MatchThreadViewModelMVI @Inject constructor(
+class MatchThreadViewModelLeg @Inject constructor(
   private val eventParser: MatchEventParser,
   private val resourceProvider: ResourceProvider,
   private val fetchNewMatchComments: FetchNewCommentsUseCase,
   private val fetchMatchComments: FetchMatchCommentsUseCase,
-) : BaseViewModel<MatchThreadViewEvent, MatchThreadViewState, MatchThreadViewEffect>() {
+) : ViewModel() {
 
-  override fun setInitialState(): MatchThreadViewState = MatchThreadViewState()
+  val isRefreshingState = MutableSharedFlow<Boolean>()
+  private val _commentsState =
+    MutableStateFlow<MatchCommentsState>(MatchCommentsState.Loading)
+  val commentsState: StateFlow<MatchCommentsState> = _commentsState.asStateFlow()
 
-  override fun handleEvent(event: MatchThreadViewEvent) {
-    when (event) {
-      is MatchThreadViewEvent.GetLatestComments -> {
-        getLatestComments(event.match, event.isRefreshing)
-      }
-    }
-  }
+  private val _state = MutableStateFlow<MatchDescriptionState>(MatchDescriptionState.Loading)
+  val state: StateFlow<MatchDescriptionState> = _state.asStateFlow()
 
-  private fun getLatestComments(match: MatchThread, isRefreshing: Boolean) =
+  suspend fun getLatestComments(match: MatchThread, isRefreshing: Boolean) =
     viewModelScope.launch {
       if (match.content != null && match.id != null && match.startTime != null) {
         val (matchEvents, content) = eventParser.getMatchEvents(match.content)
-        setState {
-          copy(
-            matchDescriptionStateVMI = MatchDescriptionStateVMI.Success(
-              matchThread = match.copy(content = content),
-              matchEvents = matchEvents,
-            ),
-          )
-        }
+        _state.value = MatchDescriptionState.Success(
+          matchThread = match.copy(content = content),
+          matchEvents = matchEvents,
+        )
+
         if (isRefreshing) {
-          setState { copy(isRefreshing = true) }
+          isRefreshingState.emit(true)
           fetchLatestMatchThreads(match.id)
         } else {
-          setState { copy(matchCommentsStateMVI = MatchCommentsStateMVI.Loading) }
+          _commentsState.value = MatchCommentsState.Loading
           fetchMatchThreads(match.id)
         }
           .mapLeft { mapErrorMsg(it) }
@@ -81,16 +75,10 @@ class MatchThreadViewModelMVI @Inject constructor(
           }
           .mapLeft { ViewError.CommentSectionParsingError(it.toString()) }
           .fold(
+            { _commentsState.emit(MatchCommentsState.Error(parseError(it))) },
             {
-              setState { copy(matchCommentsStateMVI = MatchCommentsStateMVI.Error(parseError(it))) }
-            },
-            {
-              setState {
-                copy(
-                  matchCommentsStateMVI = MatchCommentsStateMVI.Success(it),
-                  isRefreshing = false,
-                )
-              }
+              isRefreshingState.emit(false)
+              _commentsState.emit(MatchCommentsState.Success(it))
             },
           )
       }
@@ -118,6 +106,4 @@ class MatchThreadViewModelMVI @Inject constructor(
       else -> resourceProvider.getString(R.string.match_screen_error_default)
     }
   }
-
-
 }
