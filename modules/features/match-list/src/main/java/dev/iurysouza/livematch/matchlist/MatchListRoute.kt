@@ -23,11 +23,11 @@ fun MatchLisRoute(
   val context = LocalContext.current
   LaunchedEffect(Unit) {
     viewModel.handleEvent(GetLatestMatches)
-    viewModel.effect.collect { event ->
-      when (event) {
-        is Error -> context.shortToast(event.msg)
-        is NavigateToMatchThread -> onOpenMatchThread(event.matchThread)
-        is NavigationError -> context.shortToast(event.msg)
+    viewModel.effect.collect {
+      when (it) {
+        is Error -> context.shortToast(it.msg)
+        is NavigateToMatchThread -> onOpenMatchThread(it.matchThread)
+        is NavigationError -> context.shortToast(it.msg)
       }
     }
   }
