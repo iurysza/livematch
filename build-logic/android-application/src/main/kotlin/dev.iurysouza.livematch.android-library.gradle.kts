@@ -3,10 +3,10 @@
 plugins {
   id("com.android.library")
   id("org.jetbrains.kotlin.android")
-  id("kotlin-kapt")
   id("dagger.hilt.android.plugin")
   id("kotlin-parcelize")
   id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+  id("kotlin-kapt")
 }
 
 group = "dev.iurysouza.livematch"
