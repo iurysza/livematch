@@ -67,14 +67,10 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
   implementation("com.jakewharton.timber:timber:5.0.1")
 
-//    testImplementation(libs.kotlin.reflect)
   testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21")
-//    testImplementation(libs.bundles.kotestBundle)
   testImplementation("io.kotest:kotest-runner-junit5-jvm:5.5.4")
   testImplementation("io.kotest:kotest-assertions-core-jvm:5.5.4")
   testImplementation("io.kotest.extensions:kotest-assertions-arrow:1.3.0")
-//    testImplementation(libs.androidx.test.runner)
   testImplementation("androidx.test:runner:1.5.1")
-//    testImplementation(libs.kotlinx.coroutines.test)
   testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
 }

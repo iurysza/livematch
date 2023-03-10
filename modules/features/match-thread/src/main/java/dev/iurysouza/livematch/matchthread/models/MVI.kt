@@ -46,5 +46,4 @@ sealed interface MatchCommentsState : Parcelable {
 
 sealed interface MatchThreadViewEffect : ViewSideEffect {
   data class Error(val msg: String) : MatchThreadViewEffect
-
 }
