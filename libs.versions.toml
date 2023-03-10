@@ -79,8 +79,8 @@ kotest-kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions
 kotest-kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 kotest-extensions-kotest-assertions-arrow = { group = "io.kotest.extensions", name = "kotest-assertions-arrow", version.ref = "kotestArrow" }
 
-coil-compose = { group = "io.coil-kt", name = "coil-compose", version = "coil" }
-coil-svg = { group = "io.coil-kt", name = "coil-svg", version = "coil" }
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
 
 [bundles]
 composeMinimal = [
