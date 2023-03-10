@@ -52,8 +52,8 @@ dependencies {
     implementation(libs.google.acompanist.navigation.animation)
     implementation(libs.bundles.arrow)
 
-    implementation("io.coil-kt:coil-compose:2.2.2")
-    implementation("io.coil-kt:coil-svg:2.2.2")
+    implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
 }
 
 fun getLocalProperty(key: String) = gradleLocalProperties(rootDir).getProperty(key)

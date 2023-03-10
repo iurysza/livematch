@@ -63,7 +63,7 @@ val detektCheck = tasks.register<JavaExec>("detekt") {
     listOf(
       "--input", rootDir.absolutePath,
       "--excludes", "**/build/**, **/test/**, **/androidTest/**",
-      "--config", "${rootDir.parent}/build-logic/linter/detekt-config.yml",
+      "--config", "${rootDir.parent}/build-logic/android-application/detekt-config.yml",
       "--report", "xml:$reportDir/detekt-checkstyle.xml",
       "--report", "html:$reportDir/detekt-report.html",
     ),

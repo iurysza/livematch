@@ -25,6 +25,7 @@ kotest = "5.4.2"
 kotestArrow = "1.2.5"
 moshiAdapters = "1.12.0"
 richtextCommonmark = "0.15.0"
+coil = "2.2.2"
 
 [libraries]
 arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
@@ -77,6 +78,9 @@ halilibo-composeRichttext-richtextCommonmark = { group = "com.halilibo.compose-r
 kotest-kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
 kotest-kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 kotest-extensions-kotest-assertions-arrow = { group = "io.kotest.extensions", name = "kotest-assertions-arrow", version.ref = "kotestArrow" }
+
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version = "coil" }
+coil-svg = { group = "io.coil-kt", name = "coil-svg", version = "coil" }
 
 [bundles]
 composeMinimal = [

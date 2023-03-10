@@ -19,6 +19,16 @@ android {
     targetSdk = 33
   }
 
+  buildTypes {
+    getByName("release") {
+      isMinifyEnabled = false
+      proguardFiles(
+        getDefaultProguardFile("proguard-android-optimize.txt"),
+        "proguard-rules.pro",
+      )
+    }
+  }
+
   kotlinOptions {
     // Treat all Kotlin warnings as errors (disabled by default)
     allWarningsAsErrors = properties["warningsAsErrors"] as? Boolean ?: false

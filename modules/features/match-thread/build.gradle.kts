@@ -5,15 +5,6 @@ plugins {
 android {
     namespace = "dev.iurysouza.livematch.matchthread"
 
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
-        }
-    }
     buildFeatures {
         compose = true
     }
@@ -51,7 +42,7 @@ dependencies {
     kapt(libs.squareup.moshi.kotlinCodegen)
 
     implementation(libs.halilibo.composeRichttext.richtextCommonmark)
-    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation(libs.coil.compose)
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     implementation("androidx.browser:browser:1.4.0")
 }

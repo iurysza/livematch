@@ -1,25 +1,15 @@
 plugins {
   id("dev.iurysouza.livematch.android-library")
-  id("dev.iurysouza.livematch.linter")
 }
 
 android {
   namespace = "dev.iurysouza.livematch.matchlist"
 
-  buildTypes {
-    getByName("release") {
-      isMinifyEnabled = false
-      proguardFiles(
-        getDefaultProguardFile("proguard-android-optimize.txt"),
-        "proguard-rules.pro",
-      )
-    }
+  composeOptions {
+    kotlinCompilerExtensionVersion = "1.3.2"
   }
   buildFeatures {
     compose = true
-  }
-  composeOptions {
-    kotlinCompilerExtensionVersion = "1.3.2"
   }
 }
 
@@ -51,5 +41,5 @@ dependencies {
   implementation(libs.squareup.moshi.kotlin)
   kapt(libs.squareup.moshi.kotlinCodegen)
 
-  implementation("io.coil-kt:coil-compose:2.2.2")
+  implementation(libs.coil.compose)
 }
