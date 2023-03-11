@@ -2,6 +2,7 @@ package dev.iurysouza.livematch.reddit.domain
 
 import arrow.core.Either
 import arrow.core.continuations.either
+import arrow.core.flatMap
 import dev.iurysouza.livematch.common.DomainError
 import dev.iurysouza.livematch.reddit.domain.models.MatchHighlightEntity
 import javax.inject.Inject
@@ -20,6 +21,6 @@ class GetMatchHighlightsUseCase @Inject constructor(
       timePeriod = "day",
       restrictedToSubreddit = true,
       limit = 100,
-    ).bind()
-  }.map { response -> response.matchHighlightEntities() }
+    ).flatMap { response -> response.matchHighlightEntities() }.bind()
+  }
 }

@@ -2,8 +2,8 @@ package dev.iurysouza.livematch.reddit.domain
 
 import arrow.core.Either
 import arrow.core.continuations.either
+import arrow.core.flatMap
 import dev.iurysouza.livematch.common.DomainError
-import dev.iurysouza.livematch.common.MappingError
 import dev.iurysouza.livematch.reddit.domain.models.CommentsEntity
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,9 +18,6 @@ class FetchMatchCommentsUseCase @Inject constructor(
       networkDataSource.getCommentsForSubmission(
         id = matchId,
         sortBy = "hot",
-      )
-        .map { it.toCommentsEntity() }
-        .mapLeft { MappingError(it.message) }
-        .bind()
+      ).flatMap { it.toCommentsEntity() }.bind()
     }
 }
