@@ -2,8 +2,8 @@ package dev.iurysouza.livematch.footballdata.domain
 
 import arrow.core.Either
 import arrow.core.continuations.either
+import arrow.core.flatMap
 import dev.iurysouza.livematch.common.DomainError
-import dev.iurysouza.livematch.common.MappingError
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
 import java.time.LocalDate
 import java.time.ZoneOffset
@@ -21,10 +21,8 @@ class FetchMatchesUseCase @Inject constructor(
     networkDataSource.fetchLatestMatches(
       startDate = now.format(DATE_PATTERN),
       endDate = now.plusDays(1).format(DATE_PATTERN),
-    ).bind()
+    ).flatMap { it.toMatchEntity() }.bind()
   }
-    .map { it.toMatchEntity() }
-    .mapLeft { MappingError(it.message) }
 
   companion object {
     private val DATE_PATTERN = DateTimeFormatter.ofPattern("yyyy-MM-dd")
