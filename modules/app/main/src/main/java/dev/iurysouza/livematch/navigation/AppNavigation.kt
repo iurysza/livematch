@@ -8,16 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.navArgument
 import arrow.core.continuations.either
 import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.navigation
 import dev.iurysouza.livematch.common.JsonParser
-import dev.iurysouza.livematch.matchlist.MatchLisRoute
-import dev.iurysouza.livematch.matchthread.MatchThreadRoute
 import timber.log.Timber
 
 @Composable
@@ -45,55 +39,6 @@ internal fun AppNavigation(
   }
 }
 
-private fun NavGraphBuilder.addMatchListNavGraph(
-  navController: NavController,
-  jsonParser: JsonParser,
-  parent: Screen,
-) {
-  val route = Screen.MatchList
-
-  navigation(
-    route = route.name,
-    startDestination = parent.name,
-  ) {
-    composable(route = parent.name) {
-      MatchLisRoute(
-        onOpenMatchThread = navController.navigateToRoute(jsonParser) { params ->
-          Screen.MatchThread.createRoute(
-            origin = route,
-            content = params,
-          )
-        },
-      )
-    }
-  }
-}
-
-private fun NavGraphBuilder.addMatchThreadNavGraph(
-  navController: NavController,
-  jsonParser: JsonParser,
-  parent: Screen,
-) {
-  navigation(
-    route = Screen.MatchThread.name,
-    startDestination = parent.name,
-  ) {
-    val matchThreadScreen = LeafScreen.MatchThread()
-    composable(
-      route = matchThreadScreen.defineRoute(parent),
-      arguments = listOf(
-        navArgument(matchThreadScreen.argument) {
-          type = MatchThreadParamType(jsonParser)
-        },
-      ),
-    ) { backStackEntry ->
-      MatchThreadRoute(
-        navigateUp = navController::navigateUp,
-        matchThread = backStackEntry.getParcelable(matchThreadScreen.argument),
-      )
-    }
-  }
-}
 
 @Suppress("DEPRECATION")
 fun <T : Parcelable> NavBackStackEntry.getParcelable(key: String): T =
