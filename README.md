@@ -1,6 +1,6 @@
-<p style="display: flex; align-items: center; font-size: 40px;">
-  <img src="./assets/imgs/app_launcher_icon.png" alt="Live Match" style="max-height: 80px; width: auto;"><strong>Live Match </strong>
-</p>
+<img src="./assets/imgs/app_launcher_icon.png" alt="Live Match" width="80"></img>
+
+# Live Match
 
 This is a POC of a client built specifically for Reddit's [/r/soccer](https://www.reddit.com/r/soccer/) community. The idea is that
 you can use this app to follow any live match happening, besides you will be able to watch goals and other match related media as they're posted with a native video player (WIP).
