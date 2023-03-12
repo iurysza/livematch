@@ -4,18 +4,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
-import dev.iurysouza.livematch.matchlist.MatchListScreen
-import dev.iurysouza.livematch.matchlist.models.Fakes
-import dev.iurysouza.livematch.matchlist.models.MatchListState
-import dev.iurysouza.livematch.matchlist.models.MatchListViewState
+import dev.iurysouza.livematch.matchday.MatchDayScreen
+import dev.iurysouza.livematch.matchday.models.Fakes
+import dev.iurysouza.livematch.matchday.models.MatchListState
+import dev.iurysouza.livematch.matchday.models.MatchDayViewState
 
 class PlaygroundActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
       LivematchTheme {
-        MatchListScreen(
-          uiState = MatchListViewState(
+        MatchDayScreen(
+          uiState = MatchDayViewState(
             matchListState = MatchListState.Success(Fakes.generateMatchList(5)),
             isSyncing = false,
           ),

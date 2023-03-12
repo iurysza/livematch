@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.matchlist
+package dev.iurysouza.livematch.matchday
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -10,12 +10,12 @@ import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.common.storage.BaseViewModel
 import dev.iurysouza.livematch.footballdata.domain.FetchMatchesUseCase
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
-import dev.iurysouza.livematch.matchlist.models.MatchListState
-import dev.iurysouza.livematch.matchlist.models.MatchListViewEffect
-import dev.iurysouza.livematch.matchlist.models.MatchListViewEvent
-import dev.iurysouza.livematch.matchlist.models.MatchListViewState
-import dev.iurysouza.livematch.matchlist.models.createMatchThreadFrom
-import dev.iurysouza.livematch.matchlist.models.toMatchList
+import dev.iurysouza.livematch.matchday.models.MatchListState
+import dev.iurysouza.livematch.matchday.models.MatchDayViewEffect
+import dev.iurysouza.livematch.matchday.models.MatchDayViewEvent
+import dev.iurysouza.livematch.matchday.models.MatchDayViewState
+import dev.iurysouza.livematch.matchday.models.createMatchThreadFrom
+import dev.iurysouza.livematch.matchday.models.toMatchList
 import dev.iurysouza.livematch.reddit.domain.FetchLatestMatchThreadsForTodayUseCase
 import dev.iurysouza.livematch.reddit.domain.RefreshTokenIfNeededUseCase
 import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
@@ -24,13 +24,13 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class MatchListViewModel @Inject constructor(
+class MatchDayViewModel @Inject constructor(
   private val savedStateHandle: SavedStateHandle,
   private val resourceProvider: ResourceProvider,
   private val fetchMatches: FetchMatchesUseCase,
   private val refreshTokenIfNeeded: RefreshTokenIfNeededUseCase,
   private val fetchLatestMatchThreadsForToday: FetchLatestMatchThreadsForTodayUseCase,
-) : BaseViewModel<MatchListViewEvent, MatchListViewState, MatchListViewEffect>() {
+) : BaseViewModel<MatchDayViewEvent, MatchDayViewState, MatchDayViewEffect>() {
 
   private val savedMatchThreads = savedStateHandle.getStateFlow(
     key = KEY_MATCH_THREADS,
@@ -41,13 +41,13 @@ class MatchListViewModel @Inject constructor(
     initialValue = emptyList<MatchEntity>(),
   )
 
-  override fun setInitialState(): MatchListViewState = MatchListViewState()
+  override fun setInitialState(): MatchDayViewState = MatchDayViewState()
 
-  override fun handleEvent(event: MatchListViewEvent) {
+  override fun handleEvent(event: MatchDayViewEvent) {
     when (event) {
-      MatchListViewEvent.GetLatestMatches -> onGetLatestMatches()
-      MatchListViewEvent.Refresh -> onRefresh()
-      is MatchListViewEvent.NavigateToMatch -> onNavigateToMatch(event)
+      MatchDayViewEvent.GetLatestMatches -> onGetLatestMatches()
+      MatchDayViewEvent.Refresh -> onRefresh()
+      is MatchDayViewEvent.NavigateToMatch -> onNavigateToMatch(event)
     }
   }
 
@@ -93,7 +93,7 @@ class MatchListViewModel @Inject constructor(
     fetchLatestMatchThreadsForToday().bind()
   }.fold(
     { error ->
-      setEffect { MatchListViewEffect.Error(error.toErrorMsg()) }
+      setEffect { MatchDayViewEffect.Error(error.toErrorMsg()) }
       setState { copy(isSyncing = false) }
     },
     { matchThreads ->
@@ -109,7 +109,7 @@ class MatchListViewModel @Inject constructor(
   }
 
   private fun onNavigateToMatch(
-    event: MatchListViewEvent.NavigateToMatch,
+    event: MatchDayViewEvent.NavigateToMatch,
   ) = viewModelScope.launch {
     either {
       createMatchThreadFrom(
@@ -118,8 +118,8 @@ class MatchListViewModel @Inject constructor(
         matchList = savedMatches.value,
       ).bind()
     }.fold(
-      { setEffect { MatchListViewEffect.NavigationError(it.msg) } },
-      { setEffect { MatchListViewEffect.NavigateToMatchThread(it) } },
+      { setEffect { MatchDayViewEffect.NavigationError(it.msg) } },
+      { setEffect { MatchDayViewEffect.NavigateToMatchThread(it) } },
     )
   }
 

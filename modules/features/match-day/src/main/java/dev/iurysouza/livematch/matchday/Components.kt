@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.matchlist
+package dev.iurysouza.livematch.matchday
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,8 +21,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import dev.iurysouza.livematch.matchlist.models.MatchUiModel
-import dev.iurysouza.livematch.matchlist.models.Team
+import dev.iurysouza.livematch.matchday.models.MatchUiModel
+import dev.iurysouza.livematch.matchday.models.Team
 
 @Composable
 internal fun MatchesList(

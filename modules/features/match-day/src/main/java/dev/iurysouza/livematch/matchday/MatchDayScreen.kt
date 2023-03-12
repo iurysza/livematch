@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.matchlist
+package dev.iurysouza.livematch.matchday
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -22,15 +22,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
 import dev.iurysouza.livematch.designsystem.components.FullScreenProgress
-import dev.iurysouza.livematch.matchlist.models.MatchListState
-import dev.iurysouza.livematch.matchlist.models.MatchListViewState
-import dev.iurysouza.livematch.matchlist.models.MatchUiModel
+import dev.iurysouza.livematch.matchday.models.MatchListState
+import dev.iurysouza.livematch.matchday.models.MatchDayViewState
+import dev.iurysouza.livematch.matchday.models.MatchUiModel
 
 @Composable
-fun MatchListScreen(
-  uiState: MatchListViewState,
-  onTapItem: (MatchUiModel) -> Unit = {},
-  onRefresh: () -> Unit = {},
+fun MatchDayScreen(
+    uiState: MatchDayViewState,
+    onTapItem: (MatchUiModel) -> Unit = {},
+    onRefresh: () -> Unit = {},
 ) {
   val refreshState = rememberPullRefreshState(uiState.isRefreshing, onRefresh = onRefresh)
 

@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.matchlist.models
+package dev.iurysouza.livematch.matchday.models
 
 import arrow.core.Either
 import dev.iurysouza.livematch.common.ResourceProvider
@@ -7,7 +7,7 @@ import dev.iurysouza.livematch.footballdata.domain.models.HomeTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
 import dev.iurysouza.livematch.footballdata.domain.models.ScoreEntity
 import dev.iurysouza.livematch.footballdata.domain.models.Status
-import dev.iurysouza.livematch.matchlist.R
+import dev.iurysouza.livematch.matchday.R
 import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
 import java.time.LocalDateTime
 import java.time.ZoneOffset

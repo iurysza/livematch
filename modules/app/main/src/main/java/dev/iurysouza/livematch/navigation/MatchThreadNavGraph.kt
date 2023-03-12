@@ -10,7 +10,6 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 import dev.iurysouza.livematch.common.JsonParser
 import dev.iurysouza.livematch.common.fromJson
-import dev.iurysouza.livematch.matchlist.MatchLisRoute
 import dev.iurysouza.livematch.matchthread.MatchThreadRoute
 import dev.iurysouza.livematch.matchthread.models.MatchThread
 

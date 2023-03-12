@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 import dev.iurysouza.livematch.common.JsonParser
-import dev.iurysouza.livematch.matchlist.MatchLisRoute
+import dev.iurysouza.livematch.matchday.MatchLisRoute
 
 fun NavGraphBuilder.addMatchListNavGraph(
   navController: NavController,

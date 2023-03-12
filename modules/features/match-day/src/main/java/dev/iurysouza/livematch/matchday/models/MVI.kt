@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.matchlist.models
+package dev.iurysouza.livematch.matchday.models
 
 import android.os.Parcelable
 import dev.iurysouza.livematch.common.storage.ViewEvent
@@ -7,7 +7,7 @@ import dev.iurysouza.livematch.common.storage.ViewState
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class MatchListViewState(
+data class MatchDayViewState(
   val matchListState: MatchListState = MatchListState.Loading,
   val isSyncing: Boolean = false,
   val isRefreshing: Boolean = false,
@@ -25,14 +25,14 @@ sealed interface MatchListState : Parcelable {
   data class Error(val msg: String) : MatchListState
 }
 
-sealed interface MatchListViewEffect : ViewSideEffect {
-  data class Error(val msg: String) : MatchListViewEffect
-  data class NavigationError(val msg: String) : MatchListViewEffect
-  data class NavigateToMatchThread(val matchThread: MatchThread) : MatchListViewEffect
+sealed interface MatchDayViewEffect : ViewSideEffect {
+  data class Error(val msg: String) : MatchDayViewEffect
+  data class NavigationError(val msg: String) : MatchDayViewEffect
+  data class NavigateToMatchThread(val matchThread: MatchThread) : MatchDayViewEffect
 }
 
-sealed interface MatchListViewEvent : ViewEvent {
-  object Refresh : MatchListViewEvent
-  object GetLatestMatches : MatchListViewEvent
-  data class NavigateToMatch(val match: MatchUiModel) : MatchListViewEvent
+sealed interface MatchDayViewEvent : ViewEvent {
+  object Refresh : MatchDayViewEvent
+  object GetLatestMatches : MatchDayViewEvent
+  data class NavigateToMatch(val match: MatchUiModel) : MatchDayViewEvent
 }

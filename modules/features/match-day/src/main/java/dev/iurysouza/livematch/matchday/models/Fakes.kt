@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.matchlist.models
+package dev.iurysouza.livematch.matchday.models
 
 import kotlin.random.Random
 

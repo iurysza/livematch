@@ -33,7 +33,7 @@ android {
 
 dependencies {
     implementation(project(":features:match-thread"))
-    implementation(project(":features:match-list"))
+    implementation(project(":features:match-day"))
     implementation(project(":core:footballdata"))
     implementation(project(":core:reddit"))
     implementation(project(":core:design-system"))
