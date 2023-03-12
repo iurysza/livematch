@@ -1,5 +1,6 @@
-Live Match
-==================
+<p style="display: flex; align-items: center; font-size: 40px;">
+  <img src="./assets/imgs/app_launcher_icon.png" alt="Live Match" style="max-height: 80px; width: auto;"><strong>Live Match </strong>
+</p>
 
 This is a POC of a client built specifically for Reddit's [/r/soccer](https://www.reddit.com/r/soccer/) community. The idea is that
 you can use this app to follow any live match happening, besides you will be able to watch goals and other match related media as they're posted with a native video player (WIP).
@@ -91,26 +92,9 @@ graph LR
   end
 ```
 
-# Testing
+# Testing with mock-web-server:
 
-For the unit testing app favor faking cover mocking. Most data layer components are defined as interfaces. And these
-components have fake implementation under testing packages.
-
-The reason for favoring faking
-
-* Mocking uses reflection is slower than fake
-
-* Reusability we can reuse fake implementation for other tests
-
-
-
-## Running Tests
-
-You can find unit tests in the `./modules//app/src/test/` folder.
-
-## Testing with mock-web-server:
-
-You can also use mockwebserver `docker` image to run _integration_ tests.
+You can use mockwebserver `docker` image to run _integration_ tests.
 
 To do that you will need only 3 things:
 
@@ -133,6 +117,13 @@ You'll need to provide gradle properties to build it locally.
 CLIENT_ID=# Your Reddit client id
 FOOTBALL_KEY=# The API key for football-data.org
 ```
+# Adding SVG icons
+
+Add the desired svg icon file in `./assets/icons/svgs/` and then run:
+```bash
+$ kotlin svg-to-compose.main.kts
+```
+This will generate a file to programatically create that icon using the compose API and then place it in the `design-system` module, ready to be used.
 
 # Acknowledgements
 
