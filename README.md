@@ -54,7 +54,7 @@ I packaged the UI logic by feature, so all the code related to a specific featur
 | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | `app:main`             | Defines the Application and MainActivity as the main entry point of the application.                                                |
 | `app:playground`       | Enables testing of mocked screens, components, and navigation flows, making it easier to test and debug the application.            |
-| `feature:match-list`   | Contains UI components and UI logic related to the MatchList feature.                                                               |
+| `feature:match-day`   | Contains UI components and UI logic related to the MatchDay feature.                                                               |
 | `feature:match-thread` | Contains UI components and UI logic related to the MatchThread feature.                                                             |
 | `core:common`          | Contains network components and other shared components.                                                                            |
 | `core:design-system`   | Contains shared UI elements used throughout the application.                                                                        |
