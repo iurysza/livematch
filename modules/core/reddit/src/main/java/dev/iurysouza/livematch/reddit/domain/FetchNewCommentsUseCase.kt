@@ -2,6 +2,7 @@ package dev.iurysouza.livematch.reddit.domain
 
 import arrow.core.Either
 import arrow.core.continuations.either
+import arrow.core.flatMap
 import dev.iurysouza.livematch.common.DomainError
 import dev.iurysouza.livematch.common.MappingError
 import dev.iurysouza.livematch.reddit.domain.models.CommentsEntity
@@ -19,8 +20,7 @@ class FetchNewCommentsUseCase @Inject constructor(
         id = matchId,
         sortBy = "new",
       )
-        .map { it.toCommentsEntity() }
-        .mapLeft { MappingError(it.message) }
+        .flatMap { it.toCommentsEntity() }
         .bind()
     }
 }
