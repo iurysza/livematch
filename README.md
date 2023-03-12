@@ -1,7 +1,7 @@
 Live Match
 ==================
 
-This is a POC of a client built specifically for Reddit's `/r/soccer` community. The idea is that
+This is a POC of a client built specifically for Reddit's [/r/soccer](https://www.reddit.com/r/soccer/) community. The idea is that
 you can use this app to follow any live match happening, besides you will be able to watch goals and other match related media as they're posted with a native video player (WIP).
 
 **LiveMatch** is a fully functional Android where I try to apply some ideas and best practices related to android development while also explore new ideas that only a side project would allow. In this small
@@ -22,7 +22,7 @@ The app has three main features:
 | Feature      | Dark Theme                                                               | Light Theme                                                               |
 | ------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------- |
 | Match Day    | <img src="./assets/imgs/match-day-dark.png" width="200" height="400">    | <img src="./assets/imgs/match-day-light.png" width="200" height="400">    |
-| Match Thread | <img src="./assets/imgs/match-thread-dark.png" width="200" height="400"> | <img src="./assets/imgs/match-thread-light.png" width="200" height="400"> | 
+| Match Thread | <img src="./assets/imgs/match-thread-dark.png" width="200" height="400"> | <img src="./assets/imgs/match-thread-light.png" width="200" height="400"> |
 
 # Architecture
 
@@ -61,9 +61,35 @@ I packaged the UI logic by feature, so all the code related to a specific featur
 | `core:reddit`          | Serves as a single source of truth for Reddit data and exposes repository abstractions and use cases related to Reddit.             |
 | `core:footballdata`    | Serves as a single source of truth for Footballdata data and exposes repository abstractions and use cases related to Footballdata. |
 
+### Dependency graph
 
-![](https://i.imgur.com/GTiXIPm.png)
+```mermaid
+graph LR
+  subgraph core
+    common
+    reddit --> common
+    football-data --> common
+    design-system --> common
+  end
 
+  subgraph features
+    match-thread --> common
+    match-thread --> reddit
+    match-thread --> football-data
+    match-thread --> design-system
+    match-day --> common
+    match-day --> reddit
+    match-day --> football-data
+    match-day --> design-system
+  end
+
+  subgraph app
+    main --> match-day
+    playground --> match-day
+    main --> match-thread
+    playground --> match-thread
+  end
+```
 
 # Testing
 
@@ -84,10 +110,6 @@ You can find unit tests in the `./modules//app/src/test/` folder.
 
 ## Testing with mock-web-server:
 
-# Static Analysis
-
-You can run `ktlintFormat` and `detektCheck` to check code style. CI is WIP.
-
 You can also use mockwebserver `docker` image to run _integration_ tests.
 
 To do that you will need only 3 things:
@@ -99,6 +121,19 @@ To do that you will need only 3 things:
 To change the API response, just change the data
 in `./mockwebserver-docker-img/initializerJson.json`.
 
+# Static Analysis
+
+You can run `ktlintFormat` and `detektCheck` to check code style. CI is WIP.
+
+# Building
+
+You'll need to provide gradle properties to build it locally.
+
+```bash
+CLIENT_ID=# Your Reddit client id
+FOOTBALL_KEY=# The API key for football-data.org
+```
+
 # Acknowledgements
 
 The LiveMatch App icon was created using
@@ -106,7 +141,7 @@ The LiveMatch App icon was created using
 
 # TODO
 
-- [x] Match description from dedicated source
+- [x] Use match score from dedicated API
 - [ ] Native video player
 - [ ] Match Stats
 - [ ] Github actions CI
@@ -115,3 +150,4 @@ The LiveMatch App icon was created using
 - [x] Light Theme
 - [ ] Better match events ticker
 - [ ] Reddit comment stream
+
