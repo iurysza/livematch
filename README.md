@@ -62,34 +62,64 @@ I packaged the UI logic by feature, so all the code related to a specific featur
 | `core:reddit`          | Serves as a single source of truth for Reddit data and exposes repository abstractions and use cases related to Reddit.             |
 | `core:footballdata`    | Serves as a single source of truth for Footballdata data and exposes repository abstractions and use cases related to Footballdata. |
 
-### Dependency graph
+
+### Dependency Diagram
+
+
 
 ```mermaid
+%%{
+  init: {
+    'theme': 'dark',
+    'themeVariables': {
+      'primaryColor': '#C4C7B300',
+      'primaryTextColor': '#fff',
+      'primaryBorderColor': '#7C0000',
+      'lineColor': '#FF2F2F2F',
+      'secondaryColor': '#006100',
+      'tertiaryColor': '#fff'
+    }
+  }
+}%%
+
 graph LR
+  subgraph app
+    main
+    playground
+  end
   subgraph core
     common
-    reddit --> common
-    football-data --> common
-    design-system --> common
+    design-system
+    footballdata
+    reddit
   end
-
   subgraph features
-    match-thread --> common
-    match-thread --> reddit
-    match-thread --> football-data
-    match-thread --> design-system
-    match-day --> common
-    match-day --> reddit
-    match-day --> football-data
-    match-day --> design-system
+    match-day
+    match-thread
   end
+  main --> match-thread
+  main --> match-day
+  main --> footballdata
+  main --> reddit
+  main --> design-system
+  main --> common
+  playground --> match-thread
+  playground --> match-day
+  playground --> footballdata
+  playground --> reddit
+  playground --> design-system
+  playground --> common
+  footballdata --> common
+  reddit --> common
+  match-day --> common
+  match-day --> footballdata
+  match-day --> design-system
+  match-day --> reddit
+  match-thread --> common
+  match-thread --> footballdata
+  match-thread --> design-system
+  match-thread --> reddit
 
-  subgraph app
-    main --> match-day
-    playground --> match-day
-    main --> match-thread
-    playground --> match-thread
-  end
 ```
 
 # Testing with mock-web-server:
