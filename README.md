@@ -64,9 +64,6 @@ I packaged the UI logic by feature, so all the code related to a specific featur
 
 
 ### Dependency Diagram
-
-
-
 ```mermaid
 %%{
   init: {
@@ -119,9 +116,7 @@ graph LR
   match-thread --> footballdata
   match-thread --> design-system
   match-thread --> reddit
-
 ```
-
 # Testing with mock-web-server:
 
 You can use mockwebserver `docker` image to run _integration_ tests.
@@ -171,4 +166,3 @@ The LiveMatch App icon was created using
 - [x] Light Theme
 - [ ] Better match events ticker
 - [ ] Reddit comment stream
-
