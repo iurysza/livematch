@@ -21,7 +21,7 @@ The app has three main features:
 ## App Screens
 
 | Feature      | Dark Theme                                                               | Light Theme                                                               |
-| ------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------- |
+|--------------|--------------------------------------------------------------------------|---------------------------------------------------------------------------|
 | Match Day    | <img src="./assets/imgs/match-day-dark.png" width="200" height="400">    | <img src="./assets/imgs/match-day-light.png" width="200" height="400">    |
 | Match Thread | <img src="./assets/imgs/match-thread-dark.png" width="200" height="400"> | <img src="./assets/imgs/match-thread-light.png" width="200" height="400"> |
 
@@ -67,15 +67,7 @@ I packaged the UI logic by feature, so all the code related to a specific featur
 ```mermaid
 %%{
   init: {
-    'theme': 'dark',
-    'themeVariables': {
-      'primaryColor': '#C4C7B300',
-      'primaryTextColor': '#fff',
-      'primaryBorderColor': '#7C0000',
-      'lineColor': '#FF2F2F2F',
-      'secondaryColor': '#006100',
-      'tertiaryColor': '#fff'
-    }
+    'theme': 'neutral'
   }
 }%%
 
@@ -94,20 +86,7 @@ graph LR
     match-day
     match-thread
   end
-  main --> match-thread
-  main --> match-day
-  main --> footballdata
-  main --> reddit
-  main --> design-system
-  main --> common
-  playground --> match-thread
-  playground --> match-day
-  playground --> footballdata
-  playground --> reddit
-  playground --> design-system
-  playground --> common
   footballdata --> common
-  reddit --> common
   match-day --> common
   match-day --> footballdata
   match-day --> design-system
@@ -116,6 +95,20 @@ graph LR
   match-thread --> footballdata
   match-thread --> design-system
   match-thread --> reddit
+  playground --> match-thread
+  playground --> match-day
+  playground --> footballdata
+  playground --> reddit
+  playground --> design-system
+  playground --> common
+  reddit --> common
+  main --> match-thread
+  main --> match-day
+  main --> footballdata
+  main --> reddit
+  main --> design-system
+  main --> common
+
 ```
 # Testing with mock-web-server:
 
