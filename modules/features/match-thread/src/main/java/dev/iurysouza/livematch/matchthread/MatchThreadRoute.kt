@@ -17,6 +17,7 @@ fun MatchThreadRoute(
   viewModel: MatchThreadViewModel = hiltViewModel(),
   navigateUp: () -> Unit,
 ) {
+  println("MatchThreadRoute: $matchThread")
   val context = LocalContext.current
   LaunchedEffect(Unit) {
     viewModel.handleEvent(MatchThreadViewEvent.GetMatchComments(matchThread))

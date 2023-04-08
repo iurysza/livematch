@@ -16,7 +16,7 @@ import dev.iurysouza.livematch.matchday.models.MatchDayViewEvent.Refresh
 import dev.iurysouza.livematch.matchday.models.MatchThread
 
 @Composable
-fun MatchLisRoute(
+fun MatchDayRoute(
   viewModel: MatchDayViewModel = hiltViewModel(),
   onOpenMatchThread: (MatchThread) -> Unit = {},
 ) {

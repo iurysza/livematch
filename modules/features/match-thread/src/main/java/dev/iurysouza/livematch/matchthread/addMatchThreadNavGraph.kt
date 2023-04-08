@@ -1,42 +1,36 @@
-package dev.iurysouza.livematch.navigation
+package dev.iurysouza.livematch.matchthread
 
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
+import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import arrow.core.Either
-import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.navigation
 import dev.iurysouza.livematch.common.JsonParser
 import dev.iurysouza.livematch.common.fromJson
-import dev.iurysouza.livematch.matchthread.MatchThreadRoute
+import dev.iurysouza.livematch.common.getParcelable
 import dev.iurysouza.livematch.matchthread.models.MatchThread
 
+private const val ROUTE_MATCH_DAY = "matchDay"
+private const val ROUTE_MATCH_THREAD = "matchThread"
 
 fun NavGraphBuilder.addMatchThreadNavGraph(
   navController: NavController,
   jsonParser: JsonParser,
-  parent: Screen,
 ) {
-  navigation(
-    route = Screen.MatchThread.name,
-    startDestination = parent.name,
-  ) {
-    val matchThreadScreen = LeafScreen.MatchThread()
-    composable(
-      route = matchThreadScreen.defineRoute(parent),
-      arguments = listOf(
-        navArgument(matchThreadScreen.argument) {
-          type = MatchThreadParamType(jsonParser)
-        },
-      ),
-    ) { backStackEntry ->
-      MatchThreadRoute(
-        navigateUp = navController::navigateUp,
-        matchThread = backStackEntry.getParcelable(matchThreadScreen.argument),
-      )
-    }
+  composable(
+    route = "$ROUTE_MATCH_THREAD/{MatchThread}",
+    arguments = listOf(
+      navArgument("MatchThread") {
+        type = MatchThreadParamType(jsonParser)
+      },
+    ),
+  ) { backStackEntry ->
+    MatchThreadRoute(
+      navigateUp = navController::navigateUp,
+      matchThread = backStackEntry.getParcelable("MatchThread"),
+    )
   }
 }
 

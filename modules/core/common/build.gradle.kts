@@ -20,7 +20,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtimeKtx)
     implementation(libs.androidx.lifecycle.viewModelKtx)
 
-    implementation(libs.squareup.okhttp.loggingInterceptor)
+  implementation(libs.androidx.navigation.compose)
+  implementation(libs.squareup.okhttp.loggingInterceptor)
     implementation(libs.bundles.arrow)
 }
 
