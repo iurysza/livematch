@@ -5,11 +5,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import dev.iurysouza.livematch.designsystem.components.shortToast
 import dev.iurysouza.livematch.matchthread.models.MatchThread
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEffect.Error
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEvent
+import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
 
 @Composable
 fun MatchThreadRoute(
@@ -17,7 +17,6 @@ fun MatchThreadRoute(
   viewModel: MatchThreadViewModel = hiltViewModel(),
   navigateUp: () -> Unit,
 ) {
-  println("MatchThreadRoute: $matchThread")
   val context = LocalContext.current
   LaunchedEffect(Unit) {
     viewModel.handleEvent(MatchThreadViewEvent.GetMatchComments(matchThread))

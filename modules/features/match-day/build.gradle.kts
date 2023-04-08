@@ -37,7 +37,6 @@ dependencies {
 
   implementation(libs.google.acompanist.systemuicontroller)
   implementation(libs.google.acompanist.navigation.animation)
-
   implementation(libs.squareup.moshi.kotlin)
   kapt(libs.squareup.moshi.kotlinCodegen)
 

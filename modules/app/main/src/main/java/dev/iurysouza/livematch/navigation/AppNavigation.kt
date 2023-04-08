@@ -1,28 +1,59 @@
 package dev.iurysouza.livematch.navigation
 
-import androidx.compose.foundation.background
-import androidx.compose.material.MaterialTheme
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.with
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import com.google.accompanist.navigation.animation.AnimatedNavHost
 import dev.iurysouza.livematch.common.JsonParser
-import dev.iurysouza.livematch.matchday.addMatchDayNavGraph
-import dev.iurysouza.livematch.matchthread.addMatchThreadNavGraph
+import dev.iurysouza.livematch.common.remap
+import dev.iurysouza.livematch.matchday.MatchDayRoute
+import dev.iurysouza.livematch.matchday.models.MatchThread
+import dev.iurysouza.livematch.matchthread.MatchThreadRoute
+import dev.olshevski.navigation.reimagined.AnimatedNavHost
+import dev.olshevski.navigation.reimagined.NavAction
+import dev.olshevski.navigation.reimagined.NavBackHandler
+import dev.olshevski.navigation.reimagined.navigate
+import dev.olshevski.navigation.reimagined.pop
+import dev.olshevski.navigation.reimagined.rememberNavController
+import dev.iurysouza.livematch.matchthread.models.MatchThread as TargetMatchThread
 
 @Composable
-internal fun AppNavigation(
-  navController: NavHostController,
+fun NavHostScreen(
   jsonParser: JsonParser,
 ) {
+  val navController = rememberNavController<Destination>(
+    startDestination = Destination.MatchDay,
+  )
+  NavBackHandler(navController)
+
   AnimatedNavHost(
-    modifier = Modifier.background(MaterialTheme.colors.background),
-    navController = navController,
-    startDestination = "matchDay",
-    enterTransition = { defaultEnterTransition(initialState, targetState) },
-    exitTransition = { defaultExitTransition(initialState, targetState) },
-  ) {
-    addMatchDayNavGraph(navController, jsonParser)
-    addMatchThreadNavGraph(navController, jsonParser)
+    controller = navController,
+    transitionSpec = { action, _, _ ->
+      val direction = if (action == NavAction.Pop) {
+        AnimatedContentScope.SlideDirection.End
+      } else {
+        AnimatedContentScope.SlideDirection.Start
+      }
+      slideIntoContainer(direction) with slideOutOfContainer(direction)
+    },
+  ) { screen ->
+    when (screen) {
+      is Destination.MatchDay -> {
+        MatchDayRoute(
+          onOpenMatchThread = { sourceMatchThread ->
+            jsonParser.remap<MatchThread, TargetMatchThread>(sourceMatchThread).fold(
+              ifLeft = { navController.navigate(Destination.Error) },
+              ifRight = { navController.navigate(Destination.MatchThread(it)) },
+            )
+          },
+        )
+      }
+      is Destination.MatchThread -> MatchThreadRoute(
+        matchThread = screen.matchThread,
+        navigateUp = { navController.pop() },
+      )
+      Destination.Error -> Text("Error")
+    }
   }
 }
+

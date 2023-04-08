@@ -2,6 +2,7 @@ package dev.iurysouza.livematch.common
 
 import arrow.core.Either
 import arrow.core.Either.Companion.catch
+import arrow.core.flatMap
 import com.squareup.moshi.Moshi
 import javax.inject.Inject
 
@@ -23,3 +24,10 @@ class MoshiJsonParser @Inject constructor(private val moshi: Moshi) : JsonParser
 
 inline fun <reified T> JsonParser.fromJson(json: String): Either<MappingError, T> =
   fromJson(json, T::class.java)
+
+
+inline fun <F : Any, reified T> JsonParser.remap(from: F): Either<DomainError, T> {
+  return toJson(from).flatMap {
+    fromJson(it, T::class.java)
+  }
+}

@@ -1,5 +1,7 @@
 @file:Suppress("SpellCheckingInspection")
 
+import gradle.kotlin.dsl.accessors._bd723f73787f2cb5ddc977dabf41c49f.implementation
+
 plugins {
   id("com.android.library")
   id("org.jetbrains.kotlin.android")
@@ -67,6 +69,7 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
   implementation("com.jakewharton.timber:timber:5.0.1")
 
+  implementation("dev.olshevski.navigation:reimagined-hilt:1.4.0")
   testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21")
   testImplementation("io.kotest:kotest-runner-junit5-jvm:5.5.4")
   testImplementation("io.kotest:kotest-assertions-core-jvm:5.5.4")

@@ -62,5 +62,6 @@ kotlin {
 
 dependencies {
   implementation(kotlin("stdlib"))
+  implementation("dev.olshevski.navigation:reimagined:1.4.0")
   implementation("com.jakewharton.timber:timber:5.0.1")
 }
