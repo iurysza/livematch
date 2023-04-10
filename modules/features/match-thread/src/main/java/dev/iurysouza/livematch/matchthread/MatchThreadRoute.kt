@@ -5,21 +5,22 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
+import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
 import dev.iurysouza.livematch.designsystem.components.shortToast
-import dev.iurysouza.livematch.matchthread.models.MatchThread
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEffect.Error
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEvent
+import dev.iurysouza.livematch.matchthread.models.toUi
 import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
 
 @Composable
 fun MatchThreadRoute(
-  matchThread: MatchThread,
+  args: MatchThreadArgs,
   viewModel: MatchThreadViewModel = hiltViewModel(),
-  navigateUp: () -> Unit,
+  onNavigateUp: () -> Unit,
 ) {
   val context = LocalContext.current
   LaunchedEffect(Unit) {
-    viewModel.handleEvent(MatchThreadViewEvent.GetMatchComments(matchThread))
+    viewModel.handleEvent(MatchThreadViewEvent.GetMatchComments(args))
     viewModel.effect.collect {
       when (it) {
         is Error -> context.shortToast(it.msg)
@@ -27,11 +28,12 @@ fun MatchThreadRoute(
     }
   }
 
-  val uiState by rememberSaveable(viewModel) { viewModel.viewState }
+  val uiState by rememberSaveable { viewModel.viewState }
+
   MatchThreadScreen(
     uiState = uiState,
-    matchThread = matchThread,
-    navigateUp = navigateUp,
-    onRefresh = { viewModel.handleEvent(MatchThreadViewEvent.GetLatestComments(matchThread)) },
+    matchThread = args.toUi(),
+    onNavigateUp = onNavigateUp,
+    onRefresh = { viewModel.handleEvent(MatchThreadViewEvent.GetLatestComments(args)) },
   )
 }

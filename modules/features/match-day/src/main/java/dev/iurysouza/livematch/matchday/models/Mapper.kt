@@ -2,6 +2,9 @@ package dev.iurysouza.livematch.matchday.models
 
 import arrow.core.Either
 import dev.iurysouza.livematch.common.ResourceProvider
+import dev.iurysouza.livematch.common.navigation.Destination
+import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
+import dev.iurysouza.livematch.common.navigation.models.MediaItem
 import dev.iurysouza.livematch.footballdata.domain.models.AwayTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.HomeTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
@@ -121,4 +124,32 @@ private fun AwayTeamEntity.asHomeTeam() = HomeTeamEntity(
   crest = crest,
   id = id,
   name = name,
+)
+fun MatchThread.toDestination() = Destination.MatchThread(
+  matchThread = MatchThreadArgs(
+    id = id,
+    startTime = startTime,
+    mediaList = mediaList.map { MediaItem(title = it.title, url = it.url) },
+    content = content,
+    homeTeam = dev.iurysouza.livematch.common.navigation.models.Team(
+      crestUrl = homeTeam.crestUrl,
+      name = homeTeam.name,
+      isHomeTeam = homeTeam.isHomeTeam,
+      isAhead = homeTeam.isAhead,
+      score = homeTeam.score,
+    ),
+    awayTeam = dev.iurysouza.livematch.common.navigation.models.Team(
+      crestUrl = awayTeam.crestUrl,
+      name = awayTeam.name,
+      isHomeTeam = awayTeam.isHomeTeam,
+      isAhead = awayTeam.isAhead,
+      score = awayTeam.score,
+    ),
+    refereeList = refereeList,
+    competition = dev.iurysouza.livematch.common.navigation.models.Competition(
+      emblemUrl = competition.emblemUrl,
+      id = competition.id,
+      name = competition.name,
+    ),
+  ),
 )

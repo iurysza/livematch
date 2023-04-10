@@ -39,7 +39,7 @@ import dev.iurysouza.livematch.matchthread.models.Team
 fun MatchThreadScreen(
   uiState: MatchThreadViewState,
   matchThread: MatchThread,
-  navigateUp: () -> Unit = {},
+  onNavigateUp: () -> Unit = {},
   onRefresh: () -> Unit = {},
 ) {
   val sectionToggleMap = mutableMapOf<String, Boolean>()
@@ -138,5 +138,5 @@ fun MatchThreadScreen(
       state = refreshState,
     )
   }
-  ScreenToolbar(navigateUp)
+  ScreenToolbar(onNavigateUp)
 }

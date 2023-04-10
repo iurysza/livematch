@@ -22,15 +22,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
 import dev.iurysouza.livematch.designsystem.components.FullScreenProgress
-import dev.iurysouza.livematch.matchday.models.MatchListState
 import dev.iurysouza.livematch.matchday.models.MatchDayViewState
+import dev.iurysouza.livematch.matchday.models.MatchListState
 import dev.iurysouza.livematch.matchday.models.MatchUiModel
 
 @Composable
 fun MatchDayScreen(
-    uiState: MatchDayViewState,
-    onTapItem: (MatchUiModel) -> Unit = {},
-    onRefresh: () -> Unit = {},
+  uiState: MatchDayViewState,
+  onTapItem: (MatchUiModel) -> Unit = {},
+  onRefresh: () -> Unit = {},
 ) {
   val refreshState = rememberPullRefreshState(uiState.isRefreshing, onRefresh = onRefresh)
 

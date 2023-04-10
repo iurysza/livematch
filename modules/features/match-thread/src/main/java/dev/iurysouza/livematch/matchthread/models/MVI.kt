@@ -1,6 +1,7 @@
 package dev.iurysouza.livematch.matchthread.models
 
 import android.os.Parcelable
+import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
 import dev.iurysouza.livematch.common.storage.ViewEvent
 import dev.iurysouza.livematch.common.storage.ViewSideEffect
 import dev.iurysouza.livematch.common.storage.ViewState
@@ -8,14 +9,15 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MatchThreadViewState(
+  val matchThread: MatchThread? = null,
   val descriptionState: MatchDescriptionState = MatchDescriptionState.Loading,
   val commentSectionState: MatchCommentsState = MatchCommentsState.Loading,
   val isRefreshing: Boolean = false,
 ) : ViewState, Parcelable
 
 sealed interface MatchThreadViewEvent : ViewEvent {
-  data class GetLatestComments(val match: MatchThread) : MatchThreadViewEvent
-  data class GetMatchComments(val match: MatchThread) : MatchThreadViewEvent
+  data class GetLatestComments(val match: MatchThreadArgs) : MatchThreadViewEvent
+  data class GetMatchComments(val match: MatchThreadArgs) : MatchThreadViewEvent
 }
 
 @Parcelize

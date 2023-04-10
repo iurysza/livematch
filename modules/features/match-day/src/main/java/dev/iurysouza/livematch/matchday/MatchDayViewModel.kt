@@ -10,11 +10,12 @@ import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.common.storage.BaseViewModel
 import dev.iurysouza.livematch.footballdata.domain.FetchMatchesUseCase
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
-import dev.iurysouza.livematch.matchday.models.MatchListState
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEffect
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEvent
 import dev.iurysouza.livematch.matchday.models.MatchDayViewState
+import dev.iurysouza.livematch.matchday.models.MatchListState
 import dev.iurysouza.livematch.matchday.models.createMatchThreadFrom
+import dev.iurysouza.livematch.matchday.models.toDestination
 import dev.iurysouza.livematch.matchday.models.toMatchList
 import dev.iurysouza.livematch.reddit.domain.FetchLatestMatchThreadsForTodayUseCase
 import dev.iurysouza.livematch.reddit.domain.RefreshTokenIfNeededUseCase
@@ -119,7 +120,7 @@ class MatchDayViewModel @Inject constructor(
       ).bind()
     }.fold(
       { setEffect { MatchDayViewEffect.NavigationError(it.msg) } },
-      { setEffect { MatchDayViewEffect.NavigateToMatchThread(it) } },
+      { setEffect { MatchDayViewEffect.NavigateToMatchThread(it.toDestination()) } },
     )
   }
 

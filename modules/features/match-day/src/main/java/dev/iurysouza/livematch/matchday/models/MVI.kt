@@ -1,6 +1,7 @@
 package dev.iurysouza.livematch.matchday.models
 
 import android.os.Parcelable
+import dev.iurysouza.livematch.common.navigation.Destination
 import dev.iurysouza.livematch.common.storage.ViewEvent
 import dev.iurysouza.livematch.common.storage.ViewSideEffect
 import dev.iurysouza.livematch.common.storage.ViewState
@@ -28,7 +29,7 @@ sealed interface MatchListState : Parcelable {
 sealed interface MatchDayViewEffect : ViewSideEffect {
   data class Error(val msg: String) : MatchDayViewEffect
   data class NavigationError(val msg: String) : MatchDayViewEffect
-  data class NavigateToMatchThread(val matchThread: MatchThread) : MatchDayViewEffect
+  data class NavigateToMatchThread(val destination: Destination) : MatchDayViewEffect
 }
 
 sealed interface MatchDayViewEvent : ViewEvent {

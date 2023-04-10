@@ -2,6 +2,7 @@ package dev.iurysouza.livematch.matchthread.models
 
 import android.os.Parcelable
 import com.squareup.moshi.JsonClass
+import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -15,6 +16,40 @@ data class MatchThread(
   val awayTeam: Team,
   val refereeList: List<String>,
   val competition: Competition,
+) : Parcelable
+
+@Parcelize
+@JsonClass(generateAdapter = true)
+data class MediaItem(
+  val title: String,
+  val url: String,
+) : Parcelable
+
+@Parcelize
+@JsonClass(generateAdapter = true)
+data class Competition(
+  val emblemUrl: String,
+  val id: Int?,
+  val name: String,
+) : Parcelable
+
+@Parcelize
+@JsonClass(generateAdapter = true)
+data class Team(
+  val crestUrl: String?,
+  val name: String,
+  val isHomeTeam: Boolean,
+  val isAhead: Boolean,
+  val score: String,
+) : Parcelable
+
+@Parcelize
+@JsonClass(generateAdapter = true)
+data class MatchEvent(
+  val relativeTime: String,
+  val icon: EventIcon,
+  val description: String,
+  val keyEvent: Boolean = false,
 ) : Parcelable
 
 @Parcelize
@@ -40,36 +75,29 @@ data class CommentSection(
   val commentList: List<CommentItem>,
 ) : Parcelable
 
-@Parcelize
-@JsonClass(generateAdapter = true)
-data class MediaItem(
-  val title: String,
-  val url: String,
-) : Parcelable
-
-@Parcelize
-@JsonClass(generateAdapter = true)
-data class MatchEvent(
-  val relativeTime: String,
-  val icon: EventIcon,
-  val description: String,
-  val keyEvent: Boolean = false,
-) : Parcelable
-
-@Parcelize
-@JsonClass(generateAdapter = true)
-data class Competition(
-  val emblemUrl: String,
-  val id: Int?,
-  val name: String,
-) : Parcelable
-
-@Parcelize
-@JsonClass(generateAdapter = true)
-data class Team(
-  val crestUrl: String?,
-  val name: String,
-  val isHomeTeam: Boolean,
-  val isAhead: Boolean,
-  val score: String,
-) : Parcelable
+fun MatchThreadArgs.toUi() = MatchThread(
+  id = id,
+  startTime = startTime,
+  mediaList = mediaList.map { MediaItem(title = it.title, url = it.url) },
+  content = content,
+  homeTeam = Team(
+    crestUrl = homeTeam.crestUrl,
+    name = homeTeam.name,
+    isHomeTeam = homeTeam.isHomeTeam,
+    isAhead = homeTeam.isAhead,
+    score = homeTeam.score,
+  ),
+  awayTeam = Team(
+    crestUrl = awayTeam.crestUrl,
+    name = awayTeam.name,
+    isHomeTeam = awayTeam.isHomeTeam,
+    isAhead = awayTeam.isAhead,
+    score = awayTeam.score,
+  ),
+  refereeList = refereeList,
+  competition = Competition(
+    emblemUrl = competition.emblemUrl,
+    id = competition.id,
+    name = competition.name,
+  ),
+)

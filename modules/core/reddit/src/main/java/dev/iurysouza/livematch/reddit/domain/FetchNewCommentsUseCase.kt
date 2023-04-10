@@ -4,7 +4,6 @@ import arrow.core.Either
 import arrow.core.continuations.either
 import arrow.core.flatMap
 import dev.iurysouza.livematch.common.DomainError
-import dev.iurysouza.livematch.common.MappingError
 import dev.iurysouza.livematch.reddit.domain.models.CommentsEntity
 import javax.inject.Inject
 import javax.inject.Singleton

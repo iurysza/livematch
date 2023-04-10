@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
+import dev.iurysouza.livematch.common.navigation.Destination
 import dev.iurysouza.livematch.designsystem.components.shortToast
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEffect.Error
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEffect.NavigateToMatchThread
@@ -12,13 +13,12 @@ import dev.iurysouza.livematch.matchday.models.MatchDayViewEffect.NavigationErro
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEvent.GetLatestMatches
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEvent.NavigateToMatch
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEvent.Refresh
-import dev.iurysouza.livematch.matchday.models.MatchThread
 import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
 
 @Composable
 fun MatchDayRoute(
   viewModel: MatchDayViewModel = hiltViewModel(),
-  onOpenMatchThread: (MatchThread) -> Unit = {},
+  onNavigateMatchThread: (Destination) -> Unit = {},
 ) {
   val context = LocalContext.current
   LaunchedEffect(Unit) {
@@ -26,7 +26,7 @@ fun MatchDayRoute(
     viewModel.effect.collect {
       when (it) {
         is Error -> context.shortToast(it.msg)
-        is NavigateToMatchThread -> onOpenMatchThread(it.matchThread)
+        is NavigateToMatchThread -> onNavigateMatchThread(it.destination)
         is NavigationError -> context.shortToast(it.msg)
       }
     }

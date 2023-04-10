@@ -1,8 +1,8 @@
-package dev.iurysouza.livematch.navigation
+package dev.iurysouza.livematch.common.navigation
 
 import android.os.Parcelable
+import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
 import kotlinx.parcelize.Parcelize
-import dev.iurysouza.livematch.matchthread.models.MatchThread as TargetMatchThread
 
 sealed class Destination : Parcelable {
 
@@ -13,6 +13,5 @@ sealed class Destination : Parcelable {
   object Error : Destination()
 
   @Parcelize
-  data class MatchThread(val matchThread: TargetMatchThread) : Destination()
-
+  data class MatchThread(val matchThread: MatchThreadArgs) : Destination()
 }
