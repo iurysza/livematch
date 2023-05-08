@@ -125,6 +125,7 @@ private fun AwayTeamEntity.asHomeTeam() = HomeTeamEntity(
   id = id,
   name = name,
 )
+
 fun MatchThread.toDestination() = Destination.MatchThread(
   matchThread = MatchThreadArgs(
     id = id,

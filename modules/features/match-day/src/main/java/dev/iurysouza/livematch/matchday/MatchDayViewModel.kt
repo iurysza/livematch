@@ -60,8 +60,33 @@ class MatchDayViewModel @Inject constructor(
       fetchRedditContent()
       fetchMatchData()
     } else {
-      setState { copy(matchListState = MatchListState.Success(savedMatches.toMatchList(resourceProvider))) }
+      setState {
+        copy(
+          matchListState = MatchListState.Success(
+            savedMatches.toMatchList(resourceProvider).filter {
+              findValidMatch(
+                matchId = it.id.toString(),
+                matchThreadList = savedMatchThreads.value,
+                matchList = savedMatches,
+              ) != null
+            },
+          ),
+        )
+      }
     }
+  }
+
+  private fun findValidMatch(
+    matchId: String,
+    matchThreadList: List<MatchThreadEntity>,
+    matchList: List<MatchEntity>,
+  ): MatchEntity? {
+    val matchEntity = matchList.first { it.id.toString() == matchId }
+    val matchThreadEntity = matchThreadList.find { matchThread ->
+      val title = matchThread.title
+      title.contains(matchEntity.homeTeam.name) || title.contains(matchEntity.awayTeam.name)
+    }
+    return if (matchThreadEntity != null) matchEntity else null
   }
 
   private suspend fun fetchMatchData() = either {
@@ -81,7 +106,13 @@ class MatchDayViewModel @Inject constructor(
         setState {
           copy(
             matchListState = MatchListState.Success(
-              matchList.toMatchList(resourceProvider),
+              matchList.toMatchList(resourceProvider).filter {
+                findValidMatch(
+                  matchId = it.id,
+                  matchThreadList = savedMatchThreads.value,
+                  matchList = matchList,
+                ) != null
+              },
             ),
             isRefreshing = false,
           )
@@ -129,6 +160,7 @@ class MatchDayViewModel @Inject constructor(
       Timber.e(this.message.toString())
       resourceProvider.getString(R.string.match_screen_error_no_internet)
     }
+
     else -> resourceProvider.getString(R.string.match_screen_error_default)
   }
 }
