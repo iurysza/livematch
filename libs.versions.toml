@@ -2,9 +2,8 @@
 androidGradlePlugin = "7.3.0"
 androidxCompose = "1.2.0"
 hilt = "2.42"
-kotlinxCoroutines = "1.6.3"
+kotlinxCoroutines = "1.6.4"
 kotlin = "1.7.20"
-androidxComposeCompiler = "1.2.0"
 secrets = "2.0.1"
 retrofit = "2.9.0"
 okhttp = "4.9.3"
@@ -37,14 +36,8 @@ android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", ver
 hilt-gradlePlugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
-
-androidx-compose-ui-uiToolingPreview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "androidxCompose" }
-androidx-compose-ui-uiTooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "androidxCompose" }
-androidx-compose-ui-core = { group = "androidx.compose.ui", name = "ui", version.ref = "androidxCompose" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
-
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
-androidx-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "androidxCompose" }
 google-acompanist-navigation-animation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist" }
 google-acompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
 androidx-compose-ui-testJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "testJunit4" }
@@ -81,6 +74,13 @@ kotest-extensions-kotest-assertions-arrow = { group = "io.kotest.extensions", na
 
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+
+androidx-compose-ui-uiToolingPreview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "androidxCompose" }
+androidx-compose-ui-uiTooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "androidxCompose" }
+androidx-compose-ui-core = { group = "androidx.compose.ui", name = "ui", version.ref = "androidxCompose" }
+
+androidx-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "androidxCompose" }
+
 
 [bundles]
 composeMinimal = [

@@ -53,11 +53,10 @@ tasks.withType<Test>().configureEach {
 }
 
 dependencies {
-  implementation(platform("androidx.compose:compose-bom:2022.11.00"))
-  implementation("androidx.compose.material:material")
+  implementation(platform("androidx.compose:compose-bom:2023.04.01"))
   implementation(libs.bundles.composeMinimal)
-  debugImplementation(libs.androidx.compose.ui.uiTooling)
   implementation(libs.androidx.compose.material)
+  debugImplementation(libs.androidx.compose.ui.uiTooling)
   implementation(libs.androidx.core.ktx)
 
   implementation(libs.google.acompanist.systemuicontroller)
