@@ -25,7 +25,16 @@ android {
     }
   }
 
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+  }
+  composeOptions {
+    kotlinCompilerExtensionVersion = "1.3.2"
+  }
+
   kotlinOptions {
+    jvmTarget = "1.8"
     // Treat all Kotlin warnings as errors (disabled by default)
     allWarningsAsErrors = properties["warningsAsErrors"] as? Boolean ?: false
 
@@ -56,7 +65,7 @@ android {
 
 kotlin {
   jvmToolchain {
-    languageVersion.set(JavaLanguageVersion.of("11"))
+    languageVersion.set(JavaLanguageVersion.of(11))
   }
 }
 

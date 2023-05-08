@@ -13,18 +13,8 @@ android {
 
   defaultConfig {
     minSdk = 26
-    targetSdk = 33
   }
 
-  buildTypes {
-    getByName("release") {
-      isMinifyEnabled = false
-      proguardFiles(
-        getDefaultProguardFile("proguard-android-optimize.txt"),
-        "proguard-rules.pro",
-      )
-    }
-  }
   buildFeatures {
     compose = true
   }
@@ -56,12 +46,6 @@ android {
 }
 tasks.withType<Test>().configureEach {
   useJUnitPlatform()
-}
-
-kotlin {
-  jvmToolchain {
-    languageVersion.set(JavaLanguageVersion.of("11"))
-  }
 }
 
 tasks.withType<Test>().configureEach {
