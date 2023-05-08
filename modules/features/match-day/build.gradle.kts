@@ -5,9 +5,6 @@ plugins {
 android {
   namespace = "dev.iurysouza.livematch.matchday"
 
-  composeOptions {
-    kotlinCompilerExtensionVersion = "1.3.2"
-  }
   buildFeatures {
     compose = true
   }

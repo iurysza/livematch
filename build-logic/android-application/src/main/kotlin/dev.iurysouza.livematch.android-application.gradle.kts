@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection")
+
 plugins {
   id("com.android.application")
   id("org.jetbrains.kotlin.android")
@@ -25,16 +27,7 @@ android {
     }
   }
 
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-  }
-  composeOptions {
-    kotlinCompilerExtensionVersion = "1.3.2"
-  }
-
   kotlinOptions {
-    jvmTarget = "1.8"
     // Treat all Kotlin warnings as errors (disabled by default)
     allWarningsAsErrors = properties["warningsAsErrors"] as? Boolean ?: false
 
@@ -61,11 +54,14 @@ android {
       excludes += mutableSetOf("/META-INF/{AL2.0,LGPL2.1}")
     }
   }
+  hilt {
+    enableAggregatingTask = true
+  }
 }
 
 kotlin {
   jvmToolchain {
-    languageVersion.set(JavaLanguageVersion.of(11))
+    languageVersion.set(JavaLanguageVersion.of(8))
   }
 }
 
