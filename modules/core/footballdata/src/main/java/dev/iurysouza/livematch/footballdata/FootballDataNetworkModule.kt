@@ -8,12 +8,12 @@ import dev.iurysouza.livematch.common.DispatcherProvider
 import dev.iurysouza.livematch.footballdata.data.FootballDataApi
 import dev.iurysouza.livematch.footballdata.data.FootballNetworkDataSource
 import dev.iurysouza.livematch.footballdata.domain.FootballDataSource
+import javax.inject.Named
+import javax.inject.Singleton
 import kotlinx.coroutines.asExecutor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import javax.inject.Named
-import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module

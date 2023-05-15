@@ -31,6 +31,9 @@ import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedSubreddit
 import dev.iurysouza.livematch.reddit.data.models.responses.base.EnvelopeKind
 import dev.iurysouza.livematch.reddit.domain.MatchHighlightParserUseCase
 import dev.iurysouza.livematch.reddit.domain.RedditNetworkDataSource
+import java.util.Base64
+import javax.inject.Named
+import javax.inject.Singleton
 import kotlinx.coroutines.asExecutor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -38,9 +41,6 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
-import java.util.Base64
-import javax.inject.Named
-import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module

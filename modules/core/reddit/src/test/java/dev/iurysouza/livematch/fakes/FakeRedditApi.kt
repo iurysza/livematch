@@ -29,76 +29,76 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 object FakeRedditApi {
-    fun createWith(mockWebServer: MockWebServer): RedditApi {
-        val username = BuildConfig.CLIENT_ID
-        val password = ""
-        val credentials = "Basic ${
-            Base64.getEncoder().encodeToString(
-                "$username:$password".toByteArray()
-            )
-        }"
-        val okhttpClient = OkHttpClient.Builder()
-            .addInterceptor { chain ->
-                chain.proceed(
-                    chain.request()
-                        .newBuilder()
-                        .addHeader("Authorization", credentials).build()
-                )
-            }.build()
-
-        val factory = MoshiConverterFactory.create(provideMoshi())
-
-        return Retrofit.Builder()
-            .baseUrl(mockWebServer.url("/"))
-            .addConverterFactory(factory)
-            .client(okhttpClient)
-            .build().create(RedditApi::class.java)
-    }
-
-    private fun provideMoshi(): Moshi = Moshi.Builder().apply {
-        add(
-            PolymorphicJsonAdapterFactory.of(EnvelopedData::class.java, "kind")
-                .withSubtype(EnvelopedComment::class.java, EnvelopeKind.Comment.value)
-                .withSubtype(EnvelopedMoreComment::class.java, EnvelopeKind.More.value)
-                .withSubtype(EnvelopedMessage::class.java, EnvelopeKind.Message.value)
-                .withSubtype(EnvelopedRedditor::class.java, EnvelopeKind.Account.value)
-                .withSubtype(EnvelopedSubmission::class.java, EnvelopeKind.Link.value)
-                .withSubtype(EnvelopedSubreddit::class.java, EnvelopeKind.Subreddit.value)
+  fun createWith(mockWebServer: MockWebServer): RedditApi {
+    val username = BuildConfig.CLIENT_ID
+    val password = ""
+    val credentials = "Basic ${
+    Base64.getEncoder().encodeToString(
+      "$username:$password".toByteArray(),
+    )
+    }"
+    val okhttpClient = OkHttpClient.Builder()
+      .addInterceptor { chain ->
+        chain.proceed(
+          chain.request()
+            .newBuilder()
+            .addHeader("Authorization", credentials).build(),
         )
-            .add(
-                PolymorphicJsonAdapterFactory.of(EnvelopedContribution::class.java, "kind")
-                    .withSubtype(EnvelopedSubmission::class.java, EnvelopeKind.Link.value)
-                    .withSubtype(EnvelopedComment::class.java, EnvelopeKind.Comment.value)
-                    .withSubtype(EnvelopedMoreComment::class.java, EnvelopeKind.More.value)
-            )
-            .add(
-                PolymorphicJsonAdapterFactory.of(EnvelopedCommentData::class.java, "kind")
-                    .withSubtype(EnvelopedComment::class.java, EnvelopeKind.Comment.value)
-                    .withSubtype(EnvelopedMoreComment::class.java, EnvelopeKind.More.value)
-            )
-            .add(
-                PolymorphicJsonAdapterFactory.of(SubredditData::class.java, "subreddit_type")
-                    .withSubtype(PremiumSubreddit::class.java, "gold_only")
-                    .withSubtype(PremiumSubreddit::class.java, "gold_restricted")
-                    .withSubtype(Subreddit::class.java, "archived")
-                    .withSubtype(Subreddit::class.java, "public")
-                    .withSubtype(Subreddit::class.java, "restricted")
-                    .withSubtype(Subreddit::class.java, "user")
-                    .withSubtype(PrivateSubreddit::class.java, "private")
-            )
-            .add(
-                PolyJsonAdapterFactory(
-                    baseType = RedditorData::class.java,
-                    possibleTypes = arrayOf(Redditor::class.java, SuspendedRedditor::class.java),
-                    selectType = { label, value ->
+      }.build()
 
-                        when {
-                            label == "is_suspended" && value == true -> SuspendedRedditor::class.java
-                            label == "has_verified_email" -> Redditor::class.java
-                            else -> null
-                        }
-                    }
-                )
-            )
-    }.build()
+    val factory = MoshiConverterFactory.create(provideMoshi())
+
+    return Retrofit.Builder()
+      .baseUrl(mockWebServer.url("/"))
+      .addConverterFactory(factory)
+      .client(okhttpClient)
+      .build().create(RedditApi::class.java)
+  }
+
+  private fun provideMoshi(): Moshi = Moshi.Builder().apply {
+    add(
+      PolymorphicJsonAdapterFactory.of(EnvelopedData::class.java, "kind")
+        .withSubtype(EnvelopedComment::class.java, EnvelopeKind.Comment.value)
+        .withSubtype(EnvelopedMoreComment::class.java, EnvelopeKind.More.value)
+        .withSubtype(EnvelopedMessage::class.java, EnvelopeKind.Message.value)
+        .withSubtype(EnvelopedRedditor::class.java, EnvelopeKind.Account.value)
+        .withSubtype(EnvelopedSubmission::class.java, EnvelopeKind.Link.value)
+        .withSubtype(EnvelopedSubreddit::class.java, EnvelopeKind.Subreddit.value),
+    )
+      .add(
+        PolymorphicJsonAdapterFactory.of(EnvelopedContribution::class.java, "kind")
+          .withSubtype(EnvelopedSubmission::class.java, EnvelopeKind.Link.value)
+          .withSubtype(EnvelopedComment::class.java, EnvelopeKind.Comment.value)
+          .withSubtype(EnvelopedMoreComment::class.java, EnvelopeKind.More.value),
+      )
+      .add(
+        PolymorphicJsonAdapterFactory.of(EnvelopedCommentData::class.java, "kind")
+          .withSubtype(EnvelopedComment::class.java, EnvelopeKind.Comment.value)
+          .withSubtype(EnvelopedMoreComment::class.java, EnvelopeKind.More.value),
+      )
+      .add(
+        PolymorphicJsonAdapterFactory.of(SubredditData::class.java, "subreddit_type")
+          .withSubtype(PremiumSubreddit::class.java, "gold_only")
+          .withSubtype(PremiumSubreddit::class.java, "gold_restricted")
+          .withSubtype(Subreddit::class.java, "archived")
+          .withSubtype(Subreddit::class.java, "public")
+          .withSubtype(Subreddit::class.java, "restricted")
+          .withSubtype(Subreddit::class.java, "user")
+          .withSubtype(PrivateSubreddit::class.java, "private"),
+      )
+      .add(
+        PolyJsonAdapterFactory(
+          baseType = RedditorData::class.java,
+          possibleTypes = arrayOf(Redditor::class.java, SuspendedRedditor::class.java),
+          selectType = { label, value ->
+
+            when {
+              label == "is_suspended" && value == true -> SuspendedRedditor::class.java
+              label == "has_verified_email" -> Redditor::class.java
+              else -> null
+            }
+          },
+        ),
+      )
+  }.build()
 }

@@ -12,10 +12,10 @@ import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
 import dev.iurysouza.livematch.footballdata.domain.models.RefereeEntity
 import dev.iurysouza.livematch.footballdata.domain.models.ScoreEntity
 import dev.iurysouza.livematch.footballdata.domain.models.Status
-import timber.log.Timber
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import timber.log.Timber
 
 fun MatchListResponse.toMatchEntity(): Either<MappingError, List<MatchEntity>> = Either.catch {
   matches?.mapNotNull { match ->

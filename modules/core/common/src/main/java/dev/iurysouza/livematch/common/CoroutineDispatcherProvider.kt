@@ -1,8 +1,8 @@
 package dev.iurysouza.livematch.common
 
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import javax.inject.Singleton
 
 interface DispatcherProvider {
   fun main(): CoroutineDispatcher

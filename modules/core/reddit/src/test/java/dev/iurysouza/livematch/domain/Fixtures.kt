@@ -1,7 +1,7 @@
 package dev.iurysouza.livematch.domain
 
 object Fixtures {
-    val authJsonResponse = """ 
+  val authJsonResponse = """ 
             {
                 "access_token": "-RdpHV26leWJU8fVY74EABNdcL30W7A",
                 "token_type": "bearer",
@@ -9,9 +9,9 @@ object Fixtures {
                 "expires_in": 86400,
                 "scope": "*"
             }
-""".trimIndent()
+  """.trimIndent()
 
-    val commentsResponse = """
+  val commentsResponse = """
         
 [
     {
@@ -17616,5 +17616,5 @@ object Fixtures {
         }
     }
 ]
-    """.trimIndent()
+  """.trimIndent()
 }

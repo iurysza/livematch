@@ -18,9 +18,9 @@ import dev.iurysouza.livematch.matchthread.models.ViewError
 import dev.iurysouza.livematch.matchthread.models.toUi
 import dev.iurysouza.livematch.reddit.domain.FetchMatchCommentsUseCase
 import dev.iurysouza.livematch.reddit.domain.FetchNewCommentsUseCase
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class MatchThreadViewModel @Inject constructor(

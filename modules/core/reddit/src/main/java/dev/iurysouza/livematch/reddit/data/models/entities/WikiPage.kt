@@ -5,8 +5,8 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import dev.iurysouza.livematch.reddit.data.models.MILLIS
 import dev.iurysouza.livematch.reddit.data.models.responses.base.EnvelopeKind
-import kotlinx.parcelize.Parcelize
 import java.util.Date
+import kotlinx.parcelize.Parcelize
 
 @JsonClass(generateAdapter = true)
 @Parcelize

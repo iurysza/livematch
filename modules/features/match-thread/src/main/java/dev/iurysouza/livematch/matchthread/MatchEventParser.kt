@@ -7,11 +7,11 @@ import dev.iurysouza.livematch.matchthread.models.CommentSection
 import dev.iurysouza.livematch.matchthread.models.EventIcon
 import dev.iurysouza.livematch.matchthread.models.MatchEvent
 import dev.iurysouza.livematch.reddit.domain.models.CommentsEntity
-import timber.log.Timber
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import timber.log.Timber
 
 open class MatchEventParser {
 

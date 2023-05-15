@@ -13,7 +13,7 @@ dependencies {
   kapt(libs.squareup.moshi.kotlinCodegen)
 
   implementation(platform("androidx.compose:compose-bom:2023.04.01"))
-    implementation(libs.androidx.compose.material)
+  implementation(libs.androidx.compose.material)
   implementation(libs.bundles.composeMinimal)
   debugImplementation(libs.androidx.compose.ui.uiTooling)
   implementation(libs.androidx.core.ktx)
@@ -24,4 +24,3 @@ dependencies {
   implementation(libs.squareup.okhttp.loggingInterceptor)
   implementation(libs.bundles.arrow)
 }
-

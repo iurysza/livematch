@@ -4,8 +4,8 @@ import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import dev.iurysouza.livematch.reddit.data.models.MILLIS
-import kotlinx.parcelize.Parcelize
 import java.util.Date
+import kotlinx.parcelize.Parcelize
 
 /**
  * This class is used to represent a rule element in a Subreddit,
