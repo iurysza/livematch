@@ -62,3 +62,9 @@ task("detektAll") {
   description = "Runs detekt on all modules"
   dependsOn(subprojects.map { it.tasks.named("detekt") })
 }
+
+task("preMergeCheck") {
+  group = "verification"
+  description = "Runs ktlint and detekt on all modules"
+  dependsOn("ktlintAll", "detektAll")
+}
