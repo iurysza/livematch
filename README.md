@@ -64,6 +64,7 @@ I packaged the UI logic by feature, so all the code related to a specific featur
 
 
 ### Dependency Diagram
+
 ```mermaid
 %%{
   init: {

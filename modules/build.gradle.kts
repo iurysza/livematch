@@ -1,6 +1,7 @@
+@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once we bump to Gradle 8.1
 plugins {
   id("dev.iurysouza.livematch.linter")
-  id("dev.iurysouza.modulegraph") version ("0.2.2")
+  alias(libs.plugins.moduleGraph)
 }
 
 moduleGraphConfig {
