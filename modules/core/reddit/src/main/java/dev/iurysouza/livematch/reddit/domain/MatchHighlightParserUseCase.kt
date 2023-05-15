@@ -56,5 +56,3 @@ class MatchHighlightParserUseCase {
     "Paris Saint-Germain" to "PSG",
   )
 }
-
-private const val HOME_VS_AWAY = """Match Thread: (.*) vs (.*)(\| | \[)* (.*)"""

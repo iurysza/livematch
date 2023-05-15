@@ -18,6 +18,7 @@ data class UploadContract(
 
 ) : Parcelable {
 
+  @Suppress("CyclomaticComplexMethod")
   fun toUploadData(): UploadData {
     val acl = args.fields.find { it.name == "acl" }
     val key = args.fields.find { it.name == "key" }

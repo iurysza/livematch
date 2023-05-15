@@ -1,4 +1,5 @@
-// ktlint-disable filename
+@file:Suppress("MatchingDeclarationName")
+
 package dev.iurysouza.livematch.designsystem.theme
 
 import androidx.compose.ui.graphics.vector.ImageVector

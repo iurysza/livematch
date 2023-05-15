@@ -17,6 +17,7 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 import timber.log.Timber
 
+@Suppress("LongMethod")
 fun MatchListResponse.toMatchEntity(): Either<MappingError, List<MatchEntity>> = Either.catch {
   matches?.mapNotNull { match ->
     runCatching {

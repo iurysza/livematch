@@ -1,7 +1,8 @@
 package dev.iurysouza.livematch.domain
 
+@Suppress("LargeClass")
 object Fixtures {
-  val authJsonResponse = """ 
+  val authJsonResponse = """
             {
                 "access_token": "-RdpHV26leWJU8fVY74EABNdcL30W7A",
                 "token_type": "bearer",
@@ -12,7 +13,7 @@ object Fixtures {
   """.trimIndent()
 
   val commentsResponse = """
-        
+
 [
     {
         "kind": "Listing",
