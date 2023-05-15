@@ -1,15 +1,15 @@
 [versions]
 androidGradlePlugin = "7.3.0"
-androidxCompose = "1.2.0"
+androidxCompose = "1.4.3"
 hilt = "2.42"
 kotlinxCoroutines = "1.6.4"
 kotlin = "1.7.20"
 secrets = "2.0.1"
 retrofit = "2.9.0"
-okhttp = "4.9.3"
+okhttp = "4.11.0"
 androidxActivity = "1.7.1"
 androidxAppCompat = "1.6.1"
-androidxCore = "1.10.0"
+androidxCore = "1.10.1"
 androidxHiltNavigationCompose = "1.0.0"
 androidxLifecycle = "2.6.1"
 androidxNavigation = "2.5.3"
@@ -26,11 +26,17 @@ moshiAdapters = "1.12.0"
 richtextCommonmark = "0.15.0"
 coil = "2.2.2"
 
+detekt = "1.22.0"
+
+[plugins]
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt"}
+
 [libraries]
 arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
 arrow-optics = { module = "io.arrow-kt:arrow-optics", version.ref = "arrow" }
 arrow-fx = { module = "io.arrow-kt:arrow-fx-coroutines", version.ref = "arrow" }
 
+detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
 secrets-gradlePlugin = { group = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", name = "secrets-gradle-plugin", version.ref = "secrets" }
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 hilt-gradlePlugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }

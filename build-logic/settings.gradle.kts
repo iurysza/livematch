@@ -1,14 +1,13 @@
-
 dependencyResolutionManagement {
-    versionCatalogs {
-        create("libs") {
-            from(files("../libs.versions.toml"))
-        }
+  versionCatalogs {
+    create("libs") {
+      from(files("../libs.versions.toml"))
     }
-    repositories {
-        gradlePluginPortal()
-        google()
-    }
+  }
+  repositories {
+    gradlePluginPortal()
+    google()
+  }
 }
 
 rootProject.name = "build-logic"
