@@ -61,3 +61,5 @@
 # kept. Suspend functions are wrapped in continuations where the type argument
 # is used.
 -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
+# keep everything in this package from being removed or renamed
+-keep class dev.iurysouza.livematch.reddit.data.models.responses.** { *; }

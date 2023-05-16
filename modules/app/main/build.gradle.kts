@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection", "UnstableApiUsage")
+
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
@@ -27,6 +29,7 @@ android {
     }
     getByName("debug") {
       isDebuggable = true
+      applicationIdSuffix = ".debug"
     }
   }
 }
