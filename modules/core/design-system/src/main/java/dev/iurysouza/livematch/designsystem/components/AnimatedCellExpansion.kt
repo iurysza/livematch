@@ -27,6 +27,7 @@ fun AnimatedCellExpansion(
         fadeIn() with shrinkVertically() // fadeOut animation if targetState changes to false
       }
     },
+    label = "AnimatedCellExpansion",
   ) { show ->
     if (show) {
       content()

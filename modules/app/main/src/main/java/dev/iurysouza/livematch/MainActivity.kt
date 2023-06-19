@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import dagger.hilt.android.AndroidEntryPoint
 import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
-import dev.iurysouza.livematch.navigation.NavHostScreen
+import dev.iurysouza.livematch.navigation.LiveMatchNavHost
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
-      LivematchTheme { NavHostScreen() }
+      LivematchTheme { LiveMatchNavHost() }
     }
   }
 }

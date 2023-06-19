@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LiveMatch</string>
+    <string name="route_not_found">Route not found</string>
 </resources>
