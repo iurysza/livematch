@@ -3,10 +3,10 @@
 plugins {
   id("com.android.application")
   id("org.jetbrains.kotlin.android")
-  id("dagger.hilt.android.plugin")
-  id("kotlin-parcelize")
-  id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
   id("kotlin-kapt")
+  id("kotlin-parcelize")
+  id("dagger.hilt.android.plugin")
+  id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -36,7 +36,7 @@ android {
   composeOptions {
     kotlinCompilerExtensionVersion = Versions.Lib.kotlinCompilerExtensionVersion
   }
-  packagingOptions {
+  packaging {
     resources {
       excludes += mutableSetOf("/META-INF/{AL2.0,LGPL2.1}")
     }

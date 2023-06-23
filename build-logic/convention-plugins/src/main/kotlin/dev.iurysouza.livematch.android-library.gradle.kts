@@ -3,10 +3,10 @@
 plugins {
   id("com.android.library")
   id("org.jetbrains.kotlin.android")
-  id("dagger.hilt.android.plugin")
-  id("kotlin-parcelize")
-  id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
   id("kotlin-kapt")
+  id("kotlin-parcelize")
+  id("dagger.hilt.android.plugin")
+  id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -14,10 +14,14 @@ android {
 
   defaultConfig {
     minSdk = Versions.Android.minSdk
-    targetSdk = Versions.Android.targetSdk
   }
   hilt {
     enableAggregatingTask = true
+  }
+  buildFeatures {
+    // should enable this only when needed,
+    // but I'm currently getting a warning for every moddule that has this disabled, so we're keeping this ON for now
+    buildConfig = true
   }
   buildTypes {
     getByName("release") {
