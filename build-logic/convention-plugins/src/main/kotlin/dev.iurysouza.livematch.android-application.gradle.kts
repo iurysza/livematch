@@ -11,7 +11,10 @@ plugins {
 
 android {
   compileSdk = Versions.Android.compileSdk
-
+  compileOptions {
+    sourceCompatibility = Versions.javaTarget
+    targetCompatibility = Versions.javaTarget
+  }
   defaultConfig {
     applicationId = "dev.iurysouza.livematch"
     minSdk = Versions.Android.minSdk
@@ -32,9 +35,12 @@ android {
   }
   buildFeatures {
     compose = true
+    // should enable this only when needed,
+    // but I'm currently getting a warning for every moddule that has this disabled, so we're keeping this ON for now
+    buildConfig = true
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = Versions.Lib.kotlinCompilerExtensionVersion
+    kotlinCompilerExtensionVersion = Versions.Lib.composeKotlinCompilerExtensionVersion
   }
   packaging {
     resources {
@@ -48,7 +54,7 @@ android {
 
 kotlin {
   jvmToolchain {
-    languageVersion.set(JavaLanguageVersion.of(8))
+    languageVersion.set(JavaLanguageVersion.of(18))
   }
 }
 

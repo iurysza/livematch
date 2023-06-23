@@ -11,7 +11,10 @@ plugins {
 
 android {
   compileSdk = Versions.Android.compileSdk
-
+  compileOptions {
+    sourceCompatibility = Versions.javaTarget
+    targetCompatibility = Versions.javaTarget
+  }
   defaultConfig {
     minSdk = Versions.Android.minSdk
   }
@@ -33,7 +36,7 @@ android {
     }
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = Versions.Lib.kotlinCompilerExtensionVersion
+    kotlinCompilerExtensionVersion = Versions.Lib.composeKotlinCompilerExtensionVersion
   }
 
   kotlinOptions {
@@ -50,7 +53,7 @@ android {
 
 kotlin {
   jvmToolchain {
-    languageVersion.set(JavaLanguageVersion.of(8))
+    languageVersion.set(JavaLanguageVersion.of(18))
   }
 }
 
