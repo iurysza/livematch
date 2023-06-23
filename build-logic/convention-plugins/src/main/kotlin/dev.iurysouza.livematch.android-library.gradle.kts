@@ -64,6 +64,6 @@ dependencies {
   testImplementation("io.kotest.extensions:kotest-assertions-arrow:${Versions.Lib.kotestAssertionsArrow}")
   testImplementation("io.kotest:kotest-assertions-core-jvm:${Versions.Lib.kotestRunnerJunit5Jvm}")
   testImplementation("io.kotest:kotest-runner-junit5-jvm:${Versions.Lib.kotestRunnerJunit5Jvm}")
-  testImplementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.Lib.kotlinReflect}}")
+  testImplementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.Lib.kotlinReflect}")
   testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.Lib.kotlinxCoroutinesAndroid}")
 }
