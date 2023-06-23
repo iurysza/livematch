@@ -1,4 +1,4 @@
-@file:Suppress("SpellCheckingInspection")
+@file:Suppress("SpellCheckingInspection", "UnstableApiUsage")
 
 plugins {
   id("com.android.library")
@@ -9,14 +9,12 @@ plugins {
   id("kotlin-kapt")
 }
 
-group = "dev.iurysouza.livematch"
-
 android {
-  compileSdk = 33
+  compileSdk = Versions.Android.compileSdk
 
   defaultConfig {
-    minSdk = 26
-    targetSdk = 33
+    minSdk = Versions.Android.minSdk
+    targetSdk = Versions.Android.targetSdk
   }
   hilt {
     enableAggregatingTask = true
@@ -31,24 +29,13 @@ android {
     }
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = "1.3.2"
+    kotlinCompilerExtensionVersion = Versions.Lib.kotlinCompilerExtensionVersion
   }
 
   kotlinOptions {
     // Treat all Kotlin warnings as errors (disabled by default)
     allWarningsAsErrors = properties["warningsAsErrors"] as? Boolean ?: false
-
-    freeCompilerArgs = freeCompilerArgs + listOf(
-      "-opt-in=kotlin.RequiresOptIn",
-      // Enable experimental coroutines APIs, including Flow
-      "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-      "-opt-in=kotlinx.coroutines.FlowPreview",
-      "-opt-in=kotlin.Experimental",
-      // Enable experimental compose APIs
-      "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
-      "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
-      "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
-    )
+    freeCompilerArgs = freeCompilerArgs + liveMatchCompilerOptions
   }
   testOptions {
     unitTests.all {
@@ -69,14 +56,14 @@ tasks.withType<Test>().configureEach {
 
 dependencies {
   implementation(kotlin("stdlib"))
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-  implementation("com.jakewharton.timber:timber:5.0.1")
+  implementation("com.jakewharton.timber:timber:${Versions.Lib.timber}")
+  implementation("dev.olshevski.navigation:reimagined-hilt:${Versions.Lib.reimaginedHilt}")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.Lib.kotlinxCoroutinesAndroid}")
 
-  implementation("dev.olshevski.navigation:reimagined-hilt:1.4.0")
-  testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21")
-  testImplementation("io.kotest:kotest-runner-junit5-jvm:5.5.4")
-  testImplementation("io.kotest:kotest-assertions-core-jvm:5.5.4")
-  testImplementation("io.kotest.extensions:kotest-assertions-arrow:1.3.0")
-  testImplementation("androidx.test:runner:1.5.1")
-  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+  testImplementation("androidx.test:runner:${Versions.Lib.testRunner}")
+  testImplementation("io.kotest.extensions:kotest-assertions-arrow:${Versions.Lib.kotestAssertionsArrow}")
+  testImplementation("io.kotest:kotest-assertions-core-jvm:${Versions.Lib.kotestRunnerJunit5Jvm}")
+  testImplementation("io.kotest:kotest-runner-junit5-jvm:${Versions.Lib.kotestRunnerJunit5Jvm}")
+  testImplementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.Lib.kotlinReflect}}")
+  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.Lib.kotlinxCoroutinesAndroid}")
 }

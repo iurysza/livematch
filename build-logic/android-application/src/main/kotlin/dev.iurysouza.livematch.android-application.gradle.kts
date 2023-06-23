@@ -9,17 +9,15 @@ plugins {
   id("kotlin-kapt")
 }
 
-group = "dev.iurysouza.livematch"
-
 android {
-  compileSdk = 33
+  compileSdk = Versions.Android.compileSdk
 
   defaultConfig {
     applicationId = "dev.iurysouza.livematch"
-    minSdk = 26
-    targetSdk = 33
-    versionCode = 1
-    versionName = "0.1.0"
+    minSdk = Versions.Android.minSdk
+    targetSdk = Versions.Android.targetSdk
+    versionCode = Versions.Android.versionCode
+    versionName = Versions.Android.versionName
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables {
@@ -30,24 +28,13 @@ android {
   kotlinOptions {
     // Treat all Kotlin warnings as errors (disabled by default)
     allWarningsAsErrors = properties["warningsAsErrors"] as? Boolean ?: false
-
-    freeCompilerArgs = freeCompilerArgs + listOf(
-      "-opt-in=kotlin.RequiresOptIn",
-      // Enable experimental coroutines APIs, including Flow
-      "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-      "-opt-in=kotlinx.coroutines.FlowPreview",
-      "-opt-in=kotlin.Experimental",
-      // Enable experimental compose APIs
-      "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
-      "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
-      "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
-    )
+    freeCompilerArgs = freeCompilerArgs + liveMatchCompilerOptions
   }
   buildFeatures {
     compose = true
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = "1.3.2"
+    kotlinCompilerExtensionVersion = Versions.Lib.kotlinCompilerExtensionVersion
   }
   packagingOptions {
     resources {
@@ -67,6 +54,6 @@ kotlin {
 
 dependencies {
   implementation(kotlin("stdlib"))
-  implementation("dev.olshevski.navigation:reimagined:1.4.0")
-  implementation("com.jakewharton.timber:timber:5.0.1")
+  implementation("com.jakewharton.timber:timber:${Versions.Lib.timber}")
+  implementation("dev.olshevski.navigation:reimagined:${Versions.Lib.reimaginedHilt}")
 }
