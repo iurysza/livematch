@@ -41,7 +41,7 @@ dependencies {
   implementation(libs.google.dagger.hilt.android)
   kapt(libs.google.dagger.hilt.androidCompiler)
 
-  implementation(libs.retrofit.core)
+  implementation(libs.squareup.retrofit.core)
   implementation(libs.squareup.retrofit.moshi.converter)
 
   implementation(libs.squareup.moshi.kotlin)

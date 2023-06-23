@@ -30,6 +30,6 @@ dependencies {
 
   implementation(libs.halilibo.composeRichttext.richtextCommonmark)
   implementation(libs.coil.compose)
-  implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-  implementation("androidx.browser:browser:1.4.0")
+  implementation(libs.androidx.constraintlayout.constraintlayoutCompose)
+  implementation(libs.androidx.browser.browser)
 }
