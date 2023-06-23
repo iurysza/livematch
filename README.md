@@ -98,18 +98,13 @@ graph LR
   match-thread --> reddit
   playground --> match-thread
   playground --> match-day
-  playground --> footballdata
-  playground --> reddit
   playground --> design-system
   playground --> common
   reddit --> common
   main --> match-thread
   main --> match-day
-  main --> footballdata
-  main --> reddit
   main --> design-system
   main --> common
-
 ```
 # Testing with mock-web-server:
 
