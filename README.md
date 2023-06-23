@@ -99,7 +99,6 @@ graph LR
   playground --> match-thread
   playground --> match-day
   playground --> design-system
-  playground --> common
   reddit --> common
   main --> match-thread
   main --> match-day
