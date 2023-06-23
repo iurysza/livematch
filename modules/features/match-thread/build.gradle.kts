@@ -25,16 +25,6 @@ dependencies {
   implementation(libs.androidx.compose.material)
   debugImplementation(libs.androidx.compose.ui.uiTooling)
 
-  implementation(libs.androidx.core.ktx)
-  implementation(libs.androidx.lifecycle.runtimeKtx)
-  implementation(libs.androidx.lifecycle.viewModelKtx)
-
-  implementation(libs.androidx.navigation.compose)
-  implementation(libs.androidx.hilt.navigation.compose)
-
-  implementation(libs.google.acompanist.systemuicontroller)
-  implementation(libs.google.acompanist.navigation.animation)
-
   implementation(libs.squareup.moshi.kotlin)
   kapt(libs.squareup.moshi.kotlinCodegen)
 
