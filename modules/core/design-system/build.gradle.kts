@@ -53,7 +53,7 @@ tasks.withType<Test>().configureEach {
 }
 
 dependencies {
-  implementation(platform("androidx.compose:compose-bom:2023.04.01"))
+  implementation(platform(libs.androidx.compose.bom))
   implementation(libs.bundles.composeMinimal)
   implementation(libs.androidx.compose.material)
   debugImplementation(libs.androidx.compose.ui.uiTooling)

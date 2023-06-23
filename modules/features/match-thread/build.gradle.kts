@@ -20,7 +20,7 @@ dependencies {
   implementation(libs.google.dagger.hilt.android)
   kapt(libs.google.dagger.hilt.androidCompiler)
 
-  implementation(platform("androidx.compose:compose-bom:2023.04.01"))
+  implementation(platform(libs.androidx.compose.bom))
   implementation(libs.bundles.composeMinimal)
   implementation(libs.androidx.compose.material)
   debugImplementation(libs.androidx.compose.ui.uiTooling)

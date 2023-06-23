@@ -40,7 +40,7 @@ dependencies {
   implementation(project(":core:design-system"))
   implementation(project(":core:common"))
 
-  implementation(platform("androidx.compose:compose-bom:2023.04.01"))
+  implementation(platform(libs.androidx.compose.bom))
   implementation(libs.bundles.composeMinimal)
   implementation(libs.androidx.appcompat)
   debugImplementation(libs.androidx.compose.ui.uiTooling)

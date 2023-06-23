@@ -12,7 +12,7 @@ dependencies {
   implementation(libs.squareup.moshi.kotlin)
   kapt(libs.squareup.moshi.kotlinCodegen)
 
-  implementation(platform("androidx.compose:compose-bom:2023.04.01"))
+  implementation(platform(libs.androidx.compose.bom))
   implementation(libs.androidx.compose.material)
   implementation(libs.bundles.composeMinimal)
   debugImplementation(libs.androidx.compose.ui.uiTooling)
