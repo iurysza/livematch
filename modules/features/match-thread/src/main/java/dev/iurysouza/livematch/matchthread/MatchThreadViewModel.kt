@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.iurysouza.livematch.common.DomainError
 import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.common.ResourceProvider
-import dev.iurysouza.livematch.common.storage.BaseViewModel
+import dev.iurysouza.livematch.common.MVIViewModel
 import dev.iurysouza.livematch.matchthread.models.MatchCommentsState
 import dev.iurysouza.livematch.matchthread.models.MatchDescriptionState
 import dev.iurysouza.livematch.matchthread.models.MatchThread
@@ -28,7 +28,7 @@ class MatchThreadViewModel @Inject constructor(
   private val resourceProvider: ResourceProvider,
   private val fetchNewMatchComments: FetchNewCommentsUseCase,
   private val fetchMatchComments: FetchMatchCommentsUseCase,
-) : BaseViewModel<MatchThreadViewEvent, MatchThreadViewState, MatchThreadViewEffect>() {
+) : MVIViewModel<MatchThreadViewEvent, MatchThreadViewState, MatchThreadViewEffect>() {
 
   override fun setInitialState(): MatchThreadViewState = MatchThreadViewState()
 

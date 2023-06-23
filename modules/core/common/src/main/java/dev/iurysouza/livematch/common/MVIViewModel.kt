@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.common.storage
+package dev.iurysouza.livematch.common
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<
+abstract class MVIViewModel<
   Event : ViewEvent,
   UiState : ViewState,
   Effect : ViewSideEffect,

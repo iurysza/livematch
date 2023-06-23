@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.iurysouza.livematch.common.DomainError
 import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.common.ResourceProvider
-import dev.iurysouza.livematch.common.storage.BaseViewModel
+import dev.iurysouza.livematch.common.MVIViewModel
 import dev.iurysouza.livematch.footballdata.domain.FetchMatchesUseCase
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEffect
@@ -31,7 +31,7 @@ class MatchDayViewModel @Inject constructor(
   private val fetchMatches: FetchMatchesUseCase,
   private val refreshTokenIfNeeded: RefreshTokenIfNeededUseCase,
   private val fetchLatestMatchThreadsForToday: FetchLatestMatchThreadsForTodayUseCase,
-) : BaseViewModel<MatchDayViewEvent, MatchDayViewState, MatchDayViewEffect>() {
+) : MVIViewModel<MatchDayViewEvent, MatchDayViewState, MatchDayViewEffect>() {
 
   private val savedMatchThreads = savedStateHandle.getStateFlow(
     key = KEY_MATCH_THREADS,

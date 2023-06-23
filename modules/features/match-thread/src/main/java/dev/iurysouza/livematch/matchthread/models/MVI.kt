@@ -2,9 +2,9 @@ package dev.iurysouza.livematch.matchthread.models
 
 import android.os.Parcelable
 import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
-import dev.iurysouza.livematch.common.storage.ViewEvent
-import dev.iurysouza.livematch.common.storage.ViewSideEffect
-import dev.iurysouza.livematch.common.storage.ViewState
+import dev.iurysouza.livematch.common.ViewEvent
+import dev.iurysouza.livematch.common.ViewSideEffect
+import dev.iurysouza.livematch.common.ViewState
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
