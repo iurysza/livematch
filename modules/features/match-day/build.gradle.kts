@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
   id("dev.iurysouza.livematch.android-library")
 }

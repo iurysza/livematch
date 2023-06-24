@@ -3,10 +3,6 @@
 plugins {
   id("com.android.library")
   id("org.jetbrains.kotlin.android")
-  id("kotlin-kapt")
-  id("kotlin-parcelize")
-  id("dagger.hilt.android.plugin")
-  id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -17,9 +13,6 @@ android {
   }
   defaultConfig {
     minSdk = Versions.Android.minSdk
-  }
-  hilt {
-    enableAggregatingTask = true
   }
   buildFeatures {
     // should enable this only when needed,
@@ -38,7 +31,6 @@ android {
   composeOptions {
     kotlinCompilerExtensionVersion = Versions.Lib.composeKotlinCompilerExtensionVersion
   }
-
   kotlinOptions {
     // Treat all Kotlin warnings as errors (disabled by default)
     allWarningsAsErrors = properties["warningsAsErrors"] as? Boolean ?: false
