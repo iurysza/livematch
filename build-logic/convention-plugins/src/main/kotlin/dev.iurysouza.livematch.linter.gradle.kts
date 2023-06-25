@@ -15,7 +15,7 @@ allprojects {
     config = rootProject.files("config/detekt/detekt.yml")
   }
   dependencies {
-    detektPlugins("io.nlopez.compose.rules:detekt:${Versions.Lib.detektComposePlugin}")
+    detektPlugins("io.nlopez.compose.rules:detekt:${Versions.detektComposePlugin}")
   }
   ktlint {
     verbose.set(true)

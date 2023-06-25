@@ -2,17 +2,8 @@ import org.gradle.api.JavaVersion
 
 object Versions {
 
-  object Lib {
-    const val composeKotlinCompilerExtensionVersion = "1.4.7"
-    const val detektComposePlugin = "0.1.5"
-    const val kotestAssertionsArrow = "1.3.0"
-    const val kotestRunnerJunit5Jvm = "5.5.4"
-    const val kotlinReflect = "1.8.21"
-    const val kotlinxCoroutinesAndroid = "1.6.4"
-    const val reimaginedHilt = "1.4.0"
-    const val testRunner = "1.5.2"
-    const val timber = "5.0.1"
-  }
+  const val composeKotlinCompilerExtensionVersion = "1.4.7"
+  const val detektComposePlugin = "0.1.5"
   val javaTarget = JavaVersion.VERSION_18
 
   object Android {

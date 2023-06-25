@@ -1,6 +1,6 @@
 [versions]
 accompanist = "0.21.5-rc"
-androidGradlePlugin = "8.0.2"
+androidGradlePlugin = "8.1.0-beta01"
 androidxActivity = "1.7.2"
 androidxAppCompat = "1.6.1"
 androidxBrowser = "1.5.0"
@@ -31,10 +31,12 @@ retrofit = "2.9.0"
 richtextCommonmark = "0.15.0"
 secrets = "2.0.1"
 testJunit4 = "1.4.3"
+timberVersion = "5.0.1"
+navigationReimaginedVersion = "1.4.0"
 [plugins]
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt"}
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 moduleGraph = { id = "dev.iurysouza.modulegraph", version.ref = "module-graph" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle"}
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
 
 [libraries]
 ktlint-gradlePlugin = { group = "org.jlleitschuh.gradle", name = "ktlint-gradle", version.ref = "ktlintGradle" }
@@ -79,7 +81,7 @@ google-dagger-hilt-androidTesting = { group = "com.google.dagger", name = "hilt-
 halilibo-composeRichttext-richtextCommonmark = { group = "com.halilibo.compose-richtext", name = "richtext-commonmark", version.ref = "richtextCommonmark" }
 
 kotest-extensions-kotest-assertions-arrow = { group = "io.kotest.extensions", name = "kotest-assertions-arrow", version.ref = "kotestArrow" }
-kotest-kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
+kotest-kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core-jvm", version.ref = "kotest" }
 kotest-kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
@@ -94,17 +96,20 @@ squareup-okhttp-loggingInterceptor = { group = "com.squareup.okhttp3", name = "l
 squareup-okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp" }
 squareup-retrofit-moshi-converter = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "moshiConverter" }
 
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timberVersion" }
+navigationReimagined = { group = "dev.olshevski.navigation", name = "reimagined-hilt", version.ref = "navigationReimaginedVersion" }
+
 
 [bundles]
 composeMinimal = [
-    "androidx-compose-ui-uiToolingPreview",
-    "androidx-compose-ui-core",
-    "androidx-activity-compose",
+  "androidx-compose-ui-uiToolingPreview",
+  "androidx-compose-ui-core",
+  "androidx-activity-compose",
 ]
 
 arrow = ["arrow-core"]
 kotestBundle = [
-    "kotest-kotest-assertions-core",
-    "kotest-kotest-runner-junit5",
-    "kotest-extensions-kotest-assertions-arrow",
+  "kotest-kotest-assertions-core",
+  "kotest-kotest-runner-junit5",
+  "kotest-extensions-kotest-assertions-arrow",
 ]

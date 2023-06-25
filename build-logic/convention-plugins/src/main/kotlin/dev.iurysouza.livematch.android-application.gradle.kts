@@ -40,7 +40,7 @@ android {
     buildConfig = true
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = Versions.Lib.composeKotlinCompilerExtensionVersion
+    kotlinCompilerExtensionVersion = Versions.composeKotlinCompilerExtensionVersion
   }
   packaging {
     resources {
@@ -60,6 +60,6 @@ kotlin {
 
 dependencies {
   implementation(kotlin("stdlib"))
-  implementation("com.jakewharton.timber:timber:${Versions.Lib.timber}")
-  implementation("dev.olshevski.navigation:reimagined:${Versions.Lib.reimaginedHilt}")
+  implementation(findLibraryAlias("timber"))
+  implementation(findLibraryAlias("navigationReimagined"))
 }

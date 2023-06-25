@@ -29,7 +29,7 @@ android {
     }
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = Versions.Lib.composeKotlinCompilerExtensionVersion
+    kotlinCompilerExtensionVersion = Versions.composeKotlinCompilerExtensionVersion
   }
   kotlinOptions {
     // Treat all Kotlin warnings as errors (disabled by default)
@@ -51,14 +51,14 @@ kotlin {
 
 dependencies {
   implementation(kotlin("stdlib"))
-  implementation("com.jakewharton.timber:timber:${Versions.Lib.timber}")
-  implementation("dev.olshevski.navigation:reimagined-hilt:${Versions.Lib.reimaginedHilt}")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.Lib.kotlinxCoroutinesAndroid}")
+  implementation(findLibraryAlias("timber"))
+  implementation(findLibraryAlias("navigationReimagined"))
+  implementation(findLibraryAlias("kotlinx.coroutines.android"))
 
-  testImplementation("androidx.test:runner:${Versions.Lib.testRunner}")
-  testImplementation("io.kotest.extensions:kotest-assertions-arrow:${Versions.Lib.kotestAssertionsArrow}")
-  testImplementation("io.kotest:kotest-assertions-core-jvm:${Versions.Lib.kotestRunnerJunit5Jvm}")
-  testImplementation("io.kotest:kotest-runner-junit5-jvm:${Versions.Lib.kotestRunnerJunit5Jvm}")
-  testImplementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.Lib.kotlinReflect}")
-  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.Lib.kotlinxCoroutinesAndroid}")
+  testImplementation(findLibraryAlias("kotlinx.coroutines.test"))
+  testImplementation(findLibraryAlias("kotest.extensions.kotest.assertions.arrow"))
+  testImplementation(findLibraryAlias("kotest.kotest.assertions.core"))
+  testImplementation(findLibraryAlias("kotest.kotest.runner.junit5"))
+  testImplementation(findLibraryAlias("androidx.test.runner"))
+  testImplementation(findLibraryAlias("kotlin.reflect"))
 }
