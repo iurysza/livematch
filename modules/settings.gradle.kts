@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import java.net.URI.create
 
 // == Define locations for build logic ==
