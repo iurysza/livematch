@@ -33,6 +33,11 @@ object Fakes {
       ),
       startTime = "${(14..20).random()}:00",
       elapsedMinutes = "${(0..90).random()}",
+      competition = Competition(
+        name = "Euro 2020",
+        id = 1,
+        emblemUrl = "https://crests.football-data.org/770.svg",
+      ),
     )
   }
 }
