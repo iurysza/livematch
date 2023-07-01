@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.continuations.either
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.iurysouza.livematch.common.DomainError
+import dev.iurysouza.livematch.common.MVIViewModel
 import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.common.ResourceProvider
-import dev.iurysouza.livematch.common.MVIViewModel
 import dev.iurysouza.livematch.footballdata.domain.FetchMatchesUseCase
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEffect
@@ -45,6 +45,7 @@ class MatchDayViewModel @Inject constructor(
   override fun setInitialState(): MatchDayViewState = MatchDayViewState()
 
   override fun handleEvent(event: MatchDayViewEvent) {
+    super.handleEvent(event)
     when (event) {
       MatchDayViewEvent.GetLatestMatches -> onGetLatestMatches()
       MatchDayViewEvent.Refresh -> onRefresh()
@@ -64,8 +65,8 @@ class MatchDayViewModel @Inject constructor(
         copy(
           matchListState = MatchListState.Success(
             savedMatches.toMatchList(resourceProvider).filter {
-              findValidMatch(
-                matchId = it.id.toString(),
+              findValidMatchThread(
+                matchId = it.id,
                 matchThreadList = savedMatchThreads.value,
                 matchList = savedMatches,
               ) != null
@@ -76,7 +77,7 @@ class MatchDayViewModel @Inject constructor(
     }
   }
 
-  private fun findValidMatch(
+  private fun findValidMatchThread(
     matchId: String,
     matchThreadList: List<MatchThreadEntity>,
     matchList: List<MatchEntity>,
@@ -107,7 +108,7 @@ class MatchDayViewModel @Inject constructor(
           copy(
             matchListState = MatchListState.Success(
               matchList.toMatchList(resourceProvider).filter {
-                findValidMatch(
+                findValidMatchThread(
                   matchId = it.id,
                   matchThreadList = savedMatchThreads.value,
                   matchList = matchList,
