@@ -5,9 +5,9 @@ import arrow.core.continuations.either
 import arrow.core.flatMap
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.iurysouza.livematch.common.DomainError
+import dev.iurysouza.livematch.common.MVIViewModel
 import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.common.ResourceProvider
-import dev.iurysouza.livematch.common.MVIViewModel
 import dev.iurysouza.livematch.matchthread.models.MatchCommentsState
 import dev.iurysouza.livematch.matchthread.models.MatchDescriptionState
 import dev.iurysouza.livematch.matchthread.models.MatchThread
@@ -33,6 +33,7 @@ class MatchThreadViewModel @Inject constructor(
   override fun setInitialState(): MatchThreadViewState = MatchThreadViewState()
 
   override fun handleEvent(event: MatchThreadViewEvent) {
+    super.handleEvent(event)
     when (event) {
       is MatchThreadViewEvent.GetLatestComments -> getLatestComments(event.match.toUi(), isRefreshing = true)
       is MatchThreadViewEvent.GetMatchComments -> getLatestComments(event.match.toUi(), isRefreshing = false)
