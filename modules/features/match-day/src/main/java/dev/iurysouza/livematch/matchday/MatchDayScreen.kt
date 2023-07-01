@@ -1,5 +1,6 @@
 package dev.iurysouza.livematch.matchday
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
-import dev.iurysouza.livematch.designsystem.components.FullScreenProgress
 import dev.iurysouza.livematch.matchday.models.MatchDayViewState
 import dev.iurysouza.livematch.matchday.models.MatchListState
 import dev.iurysouza.livematch.matchday.models.MatchUiModel
@@ -69,20 +69,25 @@ fun MatchDayScreen(
           .background(MaterialTheme.colors.background)
           .fillMaxHeight(),
       ) {
-        when (uiState.matchListState) {
-          is MatchListState.Error -> ErrorScreen(uiState.matchListState.msg)
-          MatchListState.Loading -> FullScreenProgress()
-          is MatchListState.Success -> MatchDayGroupedByLeague(
-            modifier = Modifier,
-            matchItemList = uiState.matchListState.matches,
-            onTapMatchItem = onTapItem,
-          )
+        Crossfade(targetState = uiState.matchListState, label = "MatchListStateCrossFade") { screen ->
+          when (screen) {
+            is MatchListState.Error -> ErrorScreen(screen.msg)
+            MatchListState.Loading -> MatchDayGroupedByLeaguePlaceHolder()
+            is MatchListState.Success -> {
+              MatchDayGroupedByLeague(
+                modifier = Modifier,
+                matchItemList = screen.matches,
+                onTapMatchItem = onTapItem,
+              )
+            }
+          }
         }
       }
       PullRefreshIndicator(
-        modifier = Modifier.align(Alignment.TopCenter),
+        modifier = Modifier.align(alignment = Alignment.TopCenter),
         refreshing = uiState.isRefreshing,
         state = refreshState,
+        backgroundColor = MaterialTheme.colors.primaryVariant,
       )
     }
   }
