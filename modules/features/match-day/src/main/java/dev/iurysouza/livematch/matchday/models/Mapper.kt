@@ -18,6 +18,11 @@ import java.time.format.DateTimeFormatter
 
 internal fun MatchEntity.toUiModel(resources: ResourceProvider) = MatchUiModel(
   id = id.toString(),
+  competition = Competition(
+    id = competition.id,
+    name = competition.name,
+    emblemUrl = competition.emblem,
+  ),
   homeTeam = toTeam(homeTeam, score, true),
   awayTeam = toTeam(awayTeam.asHomeTeam(), score, false),
   startTime = utcDate.format(DateTimeFormatter.ofPattern("HH:mm")),
