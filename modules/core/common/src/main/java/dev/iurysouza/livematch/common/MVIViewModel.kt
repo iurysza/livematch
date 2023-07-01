@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 abstract class MVIViewModel<
   Event : ViewEvent,
@@ -48,6 +49,7 @@ abstract class MVIViewModel<
    * @param event the event that is emitted by the UI
    */
   fun setEvent(event: Event) {
+    Timber.v("Event Set: $event")
     viewModelScope.launch { _event.emit(event) }
   }
 
@@ -57,7 +59,9 @@ abstract class MVIViewModel<
    * @param reducer a function that takes the current view state and returns a new view state
    */
   protected fun setState(reducer: UiState.() -> UiState) {
+    Timber.v("State Updated: Previous State:\n${_viewState.value.toString().replace(",", "\n")}")
     val newState = viewState.value.reducer()
+    Timber.v("State Update - New state:\n${newState.toString().replace(",", "\n")}")
     _viewState.value = newState
   }
 
@@ -69,7 +73,9 @@ abstract class MVIViewModel<
     }
   }
 
-  abstract fun handleEvent(event: Event)
+  open fun handleEvent(event: Event){
+    Timber.v("Event Handled: $event")
+  }
 
   protected fun setEffect(builder: () -> Effect) {
     val effectValue = builder()
