@@ -11,6 +11,7 @@ data class MatchUiModel(
   val awayTeam: Team,
   val startTime: String,
   val elapsedMinutes: String,
+  val competition: Competition,
 ) : Parcelable
 
 @Parcelize
