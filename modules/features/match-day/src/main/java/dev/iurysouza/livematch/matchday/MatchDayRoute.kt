@@ -3,7 +3,7 @@ package dev.iurysouza.livematch.matchday
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import dev.iurysouza.livematch.common.navigation.Destination
 import dev.iurysouza.livematch.designsystem.components.shortToast
@@ -32,7 +32,7 @@ fun MatchDayRoute(
     }
   }
 
-  val uiState by rememberSaveable(viewModel) { viewModel.viewState }
+  val uiState by remember(viewModel.viewState) { viewModel.viewState }
   MatchDayScreen(
     uiState = uiState,
     onTapItem = { viewModel.handleEvent(NavigateToMatch(it)) },

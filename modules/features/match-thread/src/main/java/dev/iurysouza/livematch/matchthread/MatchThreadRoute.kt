@@ -3,7 +3,7 @@ package dev.iurysouza.livematch.matchthread
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
 import dev.iurysouza.livematch.designsystem.components.shortToast
@@ -28,7 +28,7 @@ fun MatchThreadRoute(
     }
   }
 
-  val uiState by rememberSaveable { viewModel.viewState }
+  val uiState by remember(viewModel.viewState) { viewModel.viewState }
 
   MatchThreadScreen(
     uiState = uiState,
