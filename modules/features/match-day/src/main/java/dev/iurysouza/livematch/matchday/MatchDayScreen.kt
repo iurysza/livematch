@@ -72,7 +72,7 @@ fun MatchDayScreen(
         when (uiState.matchListState) {
           is MatchListState.Error -> ErrorScreen(uiState.matchListState.msg)
           MatchListState.Loading -> FullScreenProgress()
-          is MatchListState.Success -> MatchesList(
+          is MatchListState.Success -> MatchDayGroupedByLeague(
             modifier = Modifier,
             matchItemList = uiState.matchListState.matches,
             onTapMatchItem = onTapItem,
