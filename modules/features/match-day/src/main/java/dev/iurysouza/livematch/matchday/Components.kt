@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.fade
 import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.placeholder.shimmer
 import dev.iurysouza.livematch.matchday.models.Competition
@@ -61,6 +60,7 @@ internal fun MatchDayGroupedByLeague(
       itemsIndexed(matchItemList) { _, matchItem ->
         Column(
           modifier
+            .clip(RoundedCornerShape(10.dp))
             .clickable { onTapMatchItem(matchItem) }
             .padding(vertical = 8.dp, horizontal = 16.dp)
             .fillMaxWidth(),
@@ -78,16 +78,16 @@ fun LeagueDivider(modifier: Modifier, competition: Competition) {
     AsyncImage(
       modifier = modifier
         .clip(CircleShape)
-        .size(32.dp),
+        .size(16.dp),
       model = competition.emblemUrl,
       contentDescription = "${competition.name} emblem",
     )
     Text(
-      text = competition.name,
+      text = competition.name.uppercase(),
       modifier = Modifier
         .wrapContentWidth(Alignment.Start)
         .padding(horizontal = 8.dp, vertical = 16.dp),
-      style = MaterialTheme.typography.h6.copy(color = Color(0xFF7B7B8A)),
+      style = MaterialTheme.typography.subtitle1.copy(color = Color(0xFF7B7B8A)),
     )
   }
 }
