@@ -1,4 +1,5 @@
 [versions]
+lottie = "6.0.1"
 accompanist = "0.21.5-rc"
 androidGradlePlugin = "8.1.0-beta01"
 androidxActivity = "1.7.2"
@@ -73,6 +74,7 @@ coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coi
 coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
 google-acompanist-placeholder-material = { group = "com.google.accompanist", name = "accompanist-placeholder-material", version.ref = "accompanist" }
 google-acompanist-navigation-animation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist" }
+google-acompanist-swiperefresh = { group = "com.google.accompanist", name = "accompanist-swiperefresh", version.ref = "accompanist" }
 google-acompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
 google-dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 google-dagger-hilt-androidCompiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
@@ -98,6 +100,7 @@ squareup-retrofit-moshi-converter = { group = "com.squareup.retrofit2", name = "
 
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timberVersion" }
 navigationReimagined = { group = "dev.olshevski.navigation", name = "reimagined-hilt", version.ref = "navigationReimaginedVersion" }
+lottieCompose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 
 
 [bundles]
