@@ -19,6 +19,7 @@ private val DarkColorPalette = darkColors(
   onPrimary = AppText1Dark,
   onBackground = AppText2Dark,
   onSurface = AppText3Dark,
+  secondaryVariant = AppSecondaryDark,
 )
 
 private val LightColorPalette = lightColors(
@@ -28,6 +29,7 @@ private val LightColorPalette = lightColors(
   onPrimary = AppText1Light,
   onBackground = AppText2Light,
   onSurface = AppText3Light,
+  secondaryVariant = AppSecondaryLight,
 )
 
 @Composable
@@ -48,10 +50,12 @@ fun LivematchTheme(
   ) {
     val textColor = MaterialTheme.colors.onBackground
     val systemUiController = rememberSystemUiController()
+    val secondary = MaterialTheme.colors.secondaryVariant
     val backgroundColor = MaterialTheme.colors.background
 
     SideEffect {
       systemUiController.setSystemBarsColor(backgroundColor, darkIcons = !darkTheme)
+      systemUiController.setNavigationBarColor(secondary, darkIcons = !darkTheme)
     }
     RichTextThemeIntegration(
       textStyle = { TextStyle(color = textColor) },
