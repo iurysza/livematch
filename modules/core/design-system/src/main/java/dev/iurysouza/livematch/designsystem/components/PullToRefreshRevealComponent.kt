@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.matchday
+package dev.iurysouza.livematch.designsystem.components
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
@@ -49,7 +49,7 @@ fun PullToRefreshRevealComponent(
   refreshTriggerDistance: Dp = 120.dp,
   isRefreshing: Boolean,
   onRefresh: () -> Unit,
-  revealedComponentBackgroundColor: Color = Color(0xFF323247),
+  revealedComponentBackgroundColor: Color = MaterialTheme.colors.secondaryVariant,
   revealedComponent: @Composable BoxScope.(Modifier, Boolean) -> Unit = { animationModifier, shouldAnimate ->
     LottieAnimationComp(
       modifier = animationModifier,

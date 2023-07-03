@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
+import dev.iurysouza.livematch.designsystem.components.PullToRefreshRevealComponent
 import dev.iurysouza.livematch.designsystem.theme.gradientBackground
 import dev.iurysouza.livematch.matchday.models.MatchDayViewState
 import dev.iurysouza.livematch.matchday.models.MatchListState

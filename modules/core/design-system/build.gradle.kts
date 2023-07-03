@@ -18,6 +18,8 @@ dependencies {
   debugImplementation(libs.androidx.compose.ui.uiTooling)
   implementation(libs.androidx.core.ktx)
 
+  implementation(libs.lottieCompose)
+  implementation(libs.google.acompanist.swiperefresh)
   implementation(libs.google.acompanist.systemuicontroller)
   implementation(libs.halilibo.composeRichttext.richtextCommonmark)
   implementation(libs.coil.compose)
