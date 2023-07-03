@@ -53,15 +53,16 @@ fun MatchThreadScreen(
     onRefresh = { onRefresh() },
   )
 
+  val modifier = Modifier
   Box(
-    modifier = Modifier
+    modifier = modifier
       .pullRefresh(refreshState)
       .background(MaterialTheme.colors.background)
       .fillMaxSize(),
   ) {
     val scrollState = rememberLazyListState()
     LazyColumn(
-      modifier = Modifier
+      modifier = modifier
         .padding(top = 42.dp),
       state = scrollState,
       content = {
@@ -107,6 +108,7 @@ fun MatchThreadScreen(
             commentsState.commentSectionList.forEach { (_: String, event: MatchEvent, comments: List<CommentItem>) ->
               stickyHeader {
                 SectionHeader(
+                  modifier = modifier,
                   isExpanded = showContent.isNotEmpty() && showContent[event.description]!!,
                   nestedCommentCount = comments.size,
                   event = event,
@@ -133,7 +135,7 @@ fun MatchThreadScreen(
       },
     )
     PullRefreshIndicator(
-      modifier = Modifier.align(Alignment.TopCenter),
+      modifier = modifier.align(Alignment.TopCenter),
       refreshing = isRefreshing,
       state = refreshState,
     )
