@@ -1,10 +1,27 @@
-
 plugins {
   id("dev.iurysouza.livematch.android-library")
 }
 android {
   namespace = "dev.iurysouza.livematch.common"
+  buildTypes {
+    val USE_MOCK_URL: String by project
+    getByName("release") {
+      buildConfigField(
+        type = "Boolean",
+        name = "USE_MOCK_URL",
+        value = false.toString(),
+      )
+    }
+    getByName("debug") {
+      buildConfigField(
+        type = "Boolean",
+        name = "USE_MOCK_URL",
+        value = USE_MOCK_URL,
+      )
+    }
+  }
 }
+
 
 dependencies {
   implementation(libs.google.dagger.hilt.android)

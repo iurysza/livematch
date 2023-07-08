@@ -9,7 +9,6 @@ android {
   buildTypes {
     val USE_MOCK_URL: String by project
     val FOOTBALL_DATA_BASE_URL: String by project
-    val MOCK_API_URL: String by project
 
     getByName("release") {
       isMinifyEnabled = false
@@ -27,7 +26,7 @@ android {
       buildConfigField(
         type = "String",
         name = "FOOTBALL_DATA_BASE_URL",
-        value = if (USE_MOCK_URL.toBoolean()) MOCK_API_URL else FOOTBALL_DATA_BASE_URL,
+        value = if (USE_MOCK_URL.toBoolean()) getMockUrlBasedOnDeviceType() else FOOTBALL_DATA_BASE_URL,
       )
     }
   }

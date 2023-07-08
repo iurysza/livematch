@@ -9,7 +9,6 @@ android {
   buildTypes {
     val USE_MOCK_URL: String by project
     val REDDIT_API_BASE_URL: String by project
-    val MOCK_API_URL: String by project
 
     getByName("release") {
       isMinifyEnabled = false
@@ -27,7 +26,7 @@ android {
       buildConfigField(
         type = "String",
         name = "API_URL",
-        value = if (USE_MOCK_URL.toBoolean()) MOCK_API_URL else REDDIT_API_BASE_URL,
+        value = if (USE_MOCK_URL.toBoolean()) getMockUrlBasedOnDeviceType() else REDDIT_API_BASE_URL,
       )
     }
   }
