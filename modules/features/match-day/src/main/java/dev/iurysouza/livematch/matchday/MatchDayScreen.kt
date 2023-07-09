@@ -21,7 +21,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
-import dev.iurysouza.livematch.designsystem.components.PullToRefreshRevealComponent
+import dev.iurysouza.livematch.designsystem.components.LottieAsset
+import dev.iurysouza.livematch.designsystem.components.LottiePullToReveal
 import dev.iurysouza.livematch.designsystem.theme.gradientBackground
 import dev.iurysouza.livematch.matchday.models.MatchDayViewState
 import dev.iurysouza.livematch.matchday.models.MatchListState
@@ -37,8 +38,8 @@ fun MatchDayScreen(
 
   Scaffold(
     modifier = Modifier
-      .fillMaxHeight()
-      .pullRefresh(refreshState),
+        .fillMaxHeight()
+        .pullRefresh(refreshState),
     topBar = {
       TopAppBar(
         elevation = 0.dp,
@@ -47,8 +48,8 @@ fun MatchDayScreen(
             text = stringResource(R.string.app_name),
             color = MaterialTheme.colors.onPrimary,
             modifier = Modifier
-              .fillMaxWidth()
-              .padding(16.dp),
+                .fillMaxWidth()
+                .padding(16.dp),
             textAlign = TextAlign.Center,
           )
         },
@@ -66,30 +67,34 @@ fun MatchDayScreen(
       )
     },
   ) { paddingValues ->
-    PullToRefreshRevealComponent(
+    LottiePullToReveal(
       modifier = Modifier.padding(paddingValues),
       isRefreshing = uiState.isRefreshing,
       onRefresh = onRefresh,
-      revealedComponentBackgroundColor = MaterialTheme.colors.secondaryVariant,
-    ) {
-      Box(
-        Modifier
-          .gradientBackground()
-          .fillMaxHeight(),
-      ) {
-        Crossfade(targetState = uiState.matchListState, label = "MatchListStateCrossFade") { screen ->
-          when (screen) {
-            is MatchListState.Error -> ErrorScreen(screen.msg)
-            MatchListState.Loading -> MatchDayGroupedByLeaguePlaceHolder()
-            is MatchListState.Success -> MatchDayGroupedByLeague(
-              modifier = Modifier,
-              matchItemList = screen.matches,
-              onTapMatchItem = onTapItem,
-            )
+      lottieAsset = LottieAsset.FootballFans,
+      content = {
+        Box(
+            Modifier
+                .gradientBackground()
+                .fillMaxHeight(),
+        ) {
+          Crossfade(
+            targetState = uiState.matchListState,
+            label = "MatchListStateCrossFade",
+          ) { state ->
+            when (state) {
+              is MatchListState.Error -> ErrorScreen(state.msg)
+              is MatchListState.Loading -> MatchDayGroupedByLeaguePlaceHolder()
+              is MatchListState.Success -> MatchDayGroupedByLeague(
+                modifier = Modifier,
+                matchItemList = state.matches,
+                onTapMatchItem = onTapItem,
+              )
+            }
           }
         }
-      }
-    }
+      },
+    )
   }
 }
 

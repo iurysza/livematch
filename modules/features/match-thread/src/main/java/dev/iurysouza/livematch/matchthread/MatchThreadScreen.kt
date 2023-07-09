@@ -18,7 +18,8 @@ import androidx.compose.ui.unit.dp
 import dev.iurysouza.livematch.designsystem.components.AnimatedCellExpansion
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
 import dev.iurysouza.livematch.designsystem.components.FullScreenProgress
-import dev.iurysouza.livematch.designsystem.components.PullToRefreshRevealComponent
+import dev.iurysouza.livematch.designsystem.components.LottieAsset
+import dev.iurysouza.livematch.designsystem.components.LottiePullToReveal
 import dev.iurysouza.livematch.matchthread.components.CommentItemComponent
 import dev.iurysouza.livematch.matchthread.components.MatchDetails
 import dev.iurysouza.livematch.matchthread.components.MatchHeader
@@ -45,93 +46,93 @@ fun MatchThreadScreen(
   val state = uiState.descriptionState
 
   val modifier = Modifier
-  PullToRefreshRevealComponent(
+  LottiePullToReveal(
     modifier = modifier,
     isRefreshing = uiState.isRefreshing,
     onRefresh = onRefresh,
-    revealedComponentBackgroundColor = MaterialTheme.colors.secondaryVariant,
-  ) {
-
-    Box(
-      modifier = modifier
-        .background(MaterialTheme.colors.background)
-        .fillMaxSize(),
-    ) {
-      val scrollState = rememberLazyListState()
-      LazyColumn(
+    lottieAsset = LottieAsset.FootballFans,
+    content = {
+      Box(
         modifier = modifier
-          .padding(top = 42.dp),
-        state = scrollState,
-        content = {
-          item {
-            val homeTeam = Team(
-              crestUrl = matchThread.homeTeam.crestUrl,
-              isHomeTeam = matchThread.homeTeam.isHomeTeam,
-              isAhead = matchThread.homeTeam.isAhead,
-              name = matchThread.homeTeam.name,
-              score = matchThread.homeTeam.score,
-            )
-            MatchHeader(
-              homeTeam = homeTeam,
-              awayTeam = Team(
-                crestUrl = matchThread.awayTeam.crestUrl,
-                isHomeTeam = matchThread.awayTeam.isHomeTeam,
-                isAhead = matchThread.awayTeam.isAhead,
-                name = matchThread.awayTeam.name,
-                score = matchThread.awayTeam.score,
-              ),
-            )
-          }
-          item {
-            when (state) {
-              MatchDescriptionState.Loading -> FullScreenProgress()
-              is MatchDescriptionState.Error -> ErrorScreen(state.msg)
-              is MatchDescriptionState.Success -> MatchDetails(
-                state.matchThread.content!!,
-                state.matchThread.mediaList,
+          .background(MaterialTheme.colors.background)
+          .fillMaxSize(),
+      ) {
+        val scrollState = rememberLazyListState()
+        LazyColumn(
+          modifier = modifier
+            .padding(top = 42.dp),
+          state = scrollState,
+          content = {
+            item {
+              val homeTeam = Team(
+                crestUrl = matchThread.homeTeam.crestUrl,
+                isHomeTeam = matchThread.homeTeam.isHomeTeam,
+                isAhead = matchThread.homeTeam.isAhead,
+                name = matchThread.homeTeam.name,
+                score = matchThread.homeTeam.score,
+              )
+              MatchHeader(
+                homeTeam = homeTeam,
+                awayTeam = Team(
+                  crestUrl = matchThread.awayTeam.crestUrl,
+                  isHomeTeam = matchThread.awayTeam.isHomeTeam,
+                  isAhead = matchThread.awayTeam.isAhead,
+                  name = matchThread.awayTeam.name,
+                  score = matchThread.awayTeam.score,
+                ),
               )
             }
-          }
-          when (commentsState) {
-            MatchCommentsState.Loading -> item { FullScreenProgress() }
-            is MatchCommentsState.Error -> item { ErrorScreen(commentsState.msg) }
-            is MatchCommentsState.Success -> {
-              if (sectionToggleMap.isEmpty()) {
-                commentsState.commentSectionList.forEach { (_, event) ->
-                  sectionToggleMap[event.description] = true
-                }
-                showContent = sectionToggleMap.toMap()
+            item {
+              when (state) {
+                MatchDescriptionState.Loading -> FullScreenProgress()
+                is MatchDescriptionState.Error -> ErrorScreen(state.msg)
+                is MatchDescriptionState.Success -> MatchDetails(
+                  state.matchThread.content!!,
+                  state.matchThread.mediaList,
+                )
               }
-              commentsState.commentSectionList.forEach { (_: String, event: MatchEvent, comments: List<CommentItem>) ->
-                stickyHeader {
-                  SectionHeader(
-                    modifier = modifier,
-                    isExpanded = showContent.isNotEmpty() && showContent[event.description]!!,
-                    nestedCommentCount = comments.size,
-                    event = event,
-                    onClick = {
-                      showContent = showContent
-                        .toMutableMap()
-                        .apply {
-                          this[event.description] = !this[event.description]!!
-                        }
-                    },
-                  )
+            }
+            when (commentsState) {
+              MatchCommentsState.Loading -> item { FullScreenProgress() }
+              is MatchCommentsState.Error -> item { ErrorScreen(commentsState.msg) }
+              is MatchCommentsState.Success -> {
+                if (sectionToggleMap.isEmpty()) {
+                  commentsState.commentSectionList.forEach { (_, event) ->
+                    sectionToggleMap[event.description] = true
+                  }
+                  showContent = sectionToggleMap.toMap()
                 }
-                items(comments) { commentItem: CommentItem ->
-                  AnimatedCellExpansion(
-                    showContentIf = { showContent.isNotEmpty() && showContent[event.description]!! },
-                    content = {
-                      CommentItemComponent(commentItem)
-                    },
-                  )
+                commentsState.commentSectionList.forEach { (_: String, event: MatchEvent, comments: List<CommentItem>) ->
+                  stickyHeader {
+                    SectionHeader(
+                      modifier = modifier,
+                      isExpanded = showContent.isNotEmpty() && showContent[event.description]!!,
+                      nestedCommentCount = comments.size,
+                      event = event,
+                      onClick = {
+                        showContent = showContent
+                          .toMutableMap()
+                          .apply {
+                            this[event.description] = !this[event.description]!!
+                          }
+                      },
+                    )
+                  }
+                  items(comments) { commentItem: CommentItem ->
+                    AnimatedCellExpansion(
+                      showContentIf = { showContent.isNotEmpty() && showContent[event.description]!! },
+                      content = {
+                        CommentItemComponent(commentItem)
+                      },
+                    )
+                  }
                 }
               }
             }
-          }
-        },
-      )
-    }
-  }
+          },
+        )
+      }
+    },
+  )
   ScreenToolbar(onNavigateUp)
 }
