@@ -7,12 +7,22 @@ import dagger.hilt.components.SingletonComponent
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import okhttp3.Dispatcher
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import timber.log.Timber
 
 @InstallIn(SingletonComponent::class)
 @Module
 object NetworkModule {
+
+  @Provides
+  @Singleton
+  fun provideHttpDelayInterceptor() = Interceptor { chain ->
+    Thread.sleep(1000)
+    Timber.w("=============Delaying request by 1s=============")
+    chain.proceed(chain.request())
+  }
 
   @Provides
   @Singleton
@@ -23,11 +33,13 @@ object NetworkModule {
   @Provides
   @Singleton
   fun provideOkHttpClient(
+    delayer: Interceptor,
     loggingInterceptor: HttpLoggingInterceptor,
   ): OkHttpClient = OkHttpClient.Builder()
     .dispatcher(Dispatcher().apply { maxRequestsPerHost = MAX_REQUESTS })
     .connectTimeout(HTTP_CONNECTION_TIMEOUT.toLong(), TimeUnit.SECONDS)
     .readTimeout(HTTP_CONNECTION_TIMEOUT.toLong(), TimeUnit.SECONDS)
+    .apply { if (BuildConfig.USE_MOCK_URL) addInterceptor(delayer) }
     .apply { if (BuildConfig.DEBUG) addInterceptor(loggingInterceptor) }
     .build()
 }
