@@ -37,7 +37,6 @@ internal fun MatchItem(
     Column(
       Modifier.weight(.85f),
       verticalArrangement = Arrangement.Center,
-
       ) {
       Team(match.homeTeam, match.homeTeam.name)
       Team(match.awayTeam, match.awayTeam.name)
@@ -173,5 +172,3 @@ fun TeamPreview() {
     homeTeamName = team.name,
   )
 }
-
-

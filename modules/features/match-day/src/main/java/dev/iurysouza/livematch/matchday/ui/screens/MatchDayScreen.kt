@@ -24,7 +24,6 @@ fun MatchDayScreen(
   onItemTap: (MatchUiModel) -> Unit = {},
   onRefresh: () -> Unit = {},
 ) {
-
   Scaffold(
     modifier = modifier
       .fillMaxHeight(),
@@ -49,9 +48,7 @@ fun MatchDayScreen(
               is MatchListState.Error -> ErrorScreen(msg = state.msg)
               is MatchListState.Empty -> EmptyMatchDay()
               is MatchListState.Loading -> MatchDayGroupedByLeague(shouldUsePlaceHolder = true)
-              is MatchListState.Success -> MatchDayGroupedByLeague(
-                matchItemList = state.matches, onItemTap = onItemTap,
-              )
+              is MatchListState.Success -> MatchDayGroupedByLeague(matchList = state.matches, onItemTap = onItemTap)
             }
           }
         }

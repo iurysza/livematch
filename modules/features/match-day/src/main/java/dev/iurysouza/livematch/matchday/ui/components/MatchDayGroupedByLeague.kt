@@ -24,7 +24,7 @@ import kotlinx.collections.immutable.ImmutableList
 @Composable
 internal fun MatchDayGroupedByLeague(
   modifier: Modifier = Modifier,
-  matchItemList: ImmutableList<MatchUiModel> = Fakes.generateMatchList(),
+  matchList: ImmutableList<MatchUiModel> = Fakes.generateMatchList(),
   onItemTap: (MatchUiModel) -> Unit = {},
   shouldUsePlaceHolder: Boolean = false,
 ) {
@@ -33,7 +33,7 @@ internal fun MatchDayGroupedByLeague(
       .fillMaxHeight()
       .padding(horizontal = 16.dp),
   ) {
-    matchItemList.groupBy { it.competition }.forEach { (competition, matchItemList) ->
+    matchList.groupBy { it.competition }.forEach { (competition, matchItemList) ->
       stickyHeader {
         if (shouldUsePlaceHolder) PlaceHolderDivider(competition) else LeagueDivider(competition, Modifier)
       }

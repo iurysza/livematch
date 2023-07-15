@@ -73,7 +73,8 @@ private fun Modifier.liveMatchPlaceHolder(color: Color = Color(0xFF7B7B8A)): Mod
     .width(100.dp)
     .height(30.dp)
     .placeholder(
-      visible = true, color = color,
+      visible = true,
+      color = color,
       highlight = highlight,
     )
 }

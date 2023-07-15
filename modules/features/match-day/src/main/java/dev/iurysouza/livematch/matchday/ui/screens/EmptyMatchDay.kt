@@ -1,6 +1,5 @@
 package dev.iurysouza.livematch.matchday.ui.screens
 
-
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
