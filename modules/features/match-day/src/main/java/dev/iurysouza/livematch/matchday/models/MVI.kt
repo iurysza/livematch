@@ -1,29 +1,22 @@
 package dev.iurysouza.livematch.matchday.models
 
-import android.os.Parcelable
-import dev.iurysouza.livematch.common.navigation.Destination
 import dev.iurysouza.livematch.common.ViewEvent
 import dev.iurysouza.livematch.common.ViewSideEffect
 import dev.iurysouza.livematch.common.ViewState
-import kotlinx.parcelize.Parcelize
+import dev.iurysouza.livematch.common.navigation.Destination
+import kotlinx.collections.immutable.ImmutableList
 
-@Parcelize
 data class MatchDayViewState(
   val matchListState: MatchListState = MatchListState.Loading,
   val isSyncing: Boolean = false,
   val isRefreshing: Boolean = false,
-) : ViewState, Parcelable
+) : ViewState
 
-@Parcelize
-sealed interface MatchListState : Parcelable {
-  @Parcelize
-  data class Success(val matches: List<MatchUiModel>) : MatchListState
-  @Parcelize
+sealed interface MatchListState {
+  data class Success(val matches: ImmutableList<MatchUiModel>) : MatchListState
   object Empty : MatchListState
-  @Parcelize
   object Loading : MatchListState
 
-  @Parcelize
   data class Error(val msg: String) : MatchListState
 }
 

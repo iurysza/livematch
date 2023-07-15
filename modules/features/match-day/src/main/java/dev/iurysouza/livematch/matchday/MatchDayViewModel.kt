@@ -21,6 +21,7 @@ import dev.iurysouza.livematch.reddit.domain.FetchLatestMatchThreadsForTodayUseC
 import dev.iurysouza.livematch.reddit.domain.RefreshTokenIfNeededUseCase
 import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
 import javax.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -71,7 +72,7 @@ class MatchDayViewModel @Inject constructor(
         matchListState = if (validMatchList.isEmpty()) {
           MatchListState.Empty
         } else {
-          MatchListState.Success(validMatchList)
+          MatchListState.Success(validMatchList.toImmutableList())
         },
         isRefreshing = false,
         isSyncing = false,

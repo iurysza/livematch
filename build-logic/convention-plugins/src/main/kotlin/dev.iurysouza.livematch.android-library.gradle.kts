@@ -62,6 +62,7 @@ dependencies {
   implementation(findLibraryAlias("timber"))
   implementation(findLibraryAlias("navigationReimagined"))
   implementation(findLibraryAlias("kotlinx.coroutines.android"))
+  implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
 
   testImplementation(findLibraryAlias("kotlinx.coroutines.test"))
   testImplementation(findLibraryAlias("kotest.extensions.kotest.assertions.arrow"))
