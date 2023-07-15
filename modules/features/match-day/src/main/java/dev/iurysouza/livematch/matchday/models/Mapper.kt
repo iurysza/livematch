@@ -48,8 +48,29 @@ private fun Status.toText(matchEntity: MatchEntity, resources: ResourceProvider)
   }
 
 internal fun List<MatchEntity>.toMatchList(
+  savedMatchThreads: List<MatchThreadEntity>,
   resources: ResourceProvider,
 ): List<MatchUiModel> = map { it.toUiModel(resources) }
+  .filter {
+    findValidMatchThread(
+      matchId = it.id,
+      matchThreadList = savedMatchThreads,
+      matchList = this,
+    ) != null
+  }
+
+private fun findValidMatchThread(
+  matchId: String,
+  matchThreadList: List<MatchThreadEntity>,
+  matchList: List<MatchEntity>,
+): MatchEntity? {
+  val matchEntity = matchList.first { it.id.toString() == matchId }
+  val matchThreadEntity = matchThreadList.find { matchThread ->
+    val title = matchThread.title
+    title.contains(matchEntity.homeTeam.name) || title.contains(matchEntity.awayTeam.name)
+  }
+  return if (matchThreadEntity != null) matchEntity else null
+}
 
 internal fun createMatchThreadFrom(
   matchId: String,

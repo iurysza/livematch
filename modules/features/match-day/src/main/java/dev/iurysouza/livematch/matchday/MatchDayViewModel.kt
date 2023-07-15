@@ -54,40 +54,29 @@ class MatchDayViewModel @Inject constructor(
   }
 
   private fun onGetLatestMatches() = viewModelScope.launch {
-    setState { copy(matchListState = MatchListState.Loading) }
     val savedMatches = savedMatches.value
     if (savedMatches.isEmpty()) {
-      setState { copy(isSyncing = true) }
+      setState { copy(matchListState = MatchListState.Loading, isSyncing = true) }
       fetchRedditContent()
       fetchMatchData()
     } else {
-      setState {
-        copy(
-          matchListState = MatchListState.Success(
-            savedMatches.toMatchList(resourceProvider).filter {
-              findValidMatchThread(
-                matchId = it.id,
-                matchThreadList = savedMatchThreads.value,
-                matchList = savedMatches,
-              ) != null
-            },
-          ),
-        )
-      }
+      updateMatchSuccessOrEmpty(savedMatches)
     }
   }
 
-  private fun findValidMatchThread(
-    matchId: String,
-    matchThreadList: List<MatchThreadEntity>,
-    matchList: List<MatchEntity>,
-  ): MatchEntity? {
-    val matchEntity = matchList.first { it.id.toString() == matchId }
-    val matchThreadEntity = matchThreadList.find { matchThread ->
-      val title = matchThread.title
-      title.contains(matchEntity.homeTeam.name) || title.contains(matchEntity.awayTeam.name)
+  private fun updateMatchSuccessOrEmpty(savedMatches: List<MatchEntity>) {
+    val validMatchList = savedMatches.toMatchList(savedMatchThreads.value, resourceProvider)
+    setState {
+      copy(
+        matchListState = if (validMatchList.isEmpty()) {
+          MatchListState.Empty
+        } else {
+          MatchListState.Success(validMatchList)
+        },
+        isRefreshing = false,
+        isSyncing = false,
+      )
     }
-    return if (matchThreadEntity != null) matchEntity else null
   }
 
   private suspend fun fetchMatchData() = either {
@@ -104,20 +93,7 @@ class MatchDayViewModel @Inject constructor(
       },
       { matchList ->
         savedStateHandle[KEY_MATCHES] = matchList
-        setState {
-          copy(
-            matchListState = MatchListState.Success(
-              matchList.toMatchList(resourceProvider).filter {
-                findValidMatchThread(
-                  matchId = it.id,
-                  matchThreadList = savedMatchThreads.value,
-                  matchList = matchList,
-                ) != null
-              },
-            ),
-            isRefreshing = false,
-          )
-        }
+        updateMatchSuccessOrEmpty(matchList)
       },
     )
 

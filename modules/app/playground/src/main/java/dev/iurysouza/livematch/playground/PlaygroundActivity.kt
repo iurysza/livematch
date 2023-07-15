@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
-import dev.iurysouza.livematch.matchday.MatchDayScreen
+import dev.iurysouza.livematch.matchday.ui.screens.MatchDayScreen
 import dev.iurysouza.livematch.matchday.models.Fakes
 import dev.iurysouza.livematch.matchday.models.MatchDayViewState
 import dev.iurysouza.livematch.matchday.models.MatchListState
