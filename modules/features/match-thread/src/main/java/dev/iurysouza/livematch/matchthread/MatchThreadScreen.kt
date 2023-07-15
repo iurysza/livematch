@@ -85,7 +85,7 @@ fun MatchThreadScreen(
             item {
               when (state) {
                 MatchDescriptionState.Loading -> FullScreenProgress()
-                is MatchDescriptionState.Error -> ErrorScreen(state.msg)
+                is MatchDescriptionState.Error -> ErrorScreen(msg = state.msg)
                 is MatchDescriptionState.Success -> MatchDetails(
                   state.matchThread.content!!,
                   state.matchThread.mediaList,
@@ -94,7 +94,7 @@ fun MatchThreadScreen(
             }
             when (commentsState) {
               MatchCommentsState.Loading -> item { FullScreenProgress() }
-              is MatchCommentsState.Error -> item { ErrorScreen(commentsState.msg) }
+              is MatchCommentsState.Error -> item { ErrorScreen(msg = commentsState.msg) }
               is MatchCommentsState.Success -> {
                 if (sectionToggleMap.isEmpty()) {
                   commentsState.commentSectionList.forEach { (_, event) ->

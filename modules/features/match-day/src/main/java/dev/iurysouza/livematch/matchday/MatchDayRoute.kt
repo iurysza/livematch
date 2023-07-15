@@ -13,6 +13,7 @@ import dev.iurysouza.livematch.matchday.models.MatchDayViewEffect.NavigationErro
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEvent.GetLatestMatches
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEvent.NavigateToMatch
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEvent.Refresh
+import dev.iurysouza.livematch.matchday.ui.screens.MatchDayScreen
 import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
 
 @Composable

@@ -18,7 +18,8 @@ data class MatchDayViewState(
 sealed interface MatchListState : Parcelable {
   @Parcelize
   data class Success(val matches: List<MatchUiModel>) : MatchListState
-
+  @Parcelize
+  object Empty : MatchListState
   @Parcelize
   object Loading : MatchListState
 

@@ -30,7 +30,7 @@ fun LiveMatchNavHost() {
         args = screen.matchThread,
         onNavigateUp = { navController.pop() },
       )
-      else -> ErrorScreen(stringResource(R.string.route_not_found))
+      else -> ErrorScreen(msg = stringResource(R.string.route_not_found))
     }
   }
 }
