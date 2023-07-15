@@ -33,9 +33,10 @@ fun PlaceHolderDivider(
 
 @Composable
 fun PlaceHolderItem(
+  modifier: Modifier = Modifier,
 ) {
   Column(
-    Modifier
+    modifier
       .padding(vertical = 8.dp, horizontal = 16.dp)
       .fillMaxWidth(),
   ) {

@@ -17,7 +17,10 @@ import androidx.compose.ui.unit.dp
 import dev.iurysouza.livematch.matchday.R
 
 @Composable
-fun MatchDayTopBar(isSyncing: Boolean) {
+fun MatchDayTopBar(
+  isSyncing: Boolean,
+  modifier: Modifier = Modifier,
+) {
   TopAppBar(
     elevation = 0.dp,
     title = {
