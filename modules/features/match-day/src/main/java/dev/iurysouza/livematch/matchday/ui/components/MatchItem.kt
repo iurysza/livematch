@@ -25,28 +25,32 @@ import dev.iurysouza.livematch.matchday.models.Team
 
 @Composable
 internal fun MatchItem(
-  modifier: Modifier = Modifier,
   match: MatchUiModel,
+  modifier: Modifier = Modifier,
 ) {
-  Row {
+  Row(modifier) {
     MatchTime(
-      modifier = modifier.weight(.15f),
       startTime = match.startTime,
       elapsedMinutes = match.elapsedMinutes,
+      modifier = Modifier.weight(.15f),
     )
     Column(
       Modifier.weight(.85f),
       verticalArrangement = Arrangement.Center,
 
       ) {
-      Team(Modifier, match.homeTeam, match.homeTeam.name)
-      Team(Modifier, match.awayTeam, match.awayTeam.name)
+      Team(match.homeTeam, match.homeTeam.name)
+      Team(match.awayTeam, match.awayTeam.name)
     }
   }
 }
 
 @Composable
-fun MatchTime(modifier: Modifier, startTime: String, elapsedMinutes: String) {
+fun MatchTime(
+  startTime: String,
+  elapsedMinutes: String,
+  modifier: Modifier = Modifier,
+) {
   Column(
     modifier,
     horizontalAlignment = Alignment.CenterHorizontally,
@@ -69,7 +73,11 @@ fun MatchTime(modifier: Modifier, startTime: String, elapsedMinutes: String) {
 }
 
 @Composable
-internal fun Team(modifier: Modifier, team: Team, homeTeamName: String) {
+internal fun Team(
+  team: Team,
+  homeTeamName: String,
+  modifier: Modifier = Modifier,
+) {
   Row(
     verticalAlignment = Alignment.CenterVertically,
     modifier = modifier,
@@ -138,10 +146,7 @@ fun OtherPreview() {
       id = 1,
     ),
   )
-  MatchItem(
-    modifier = Modifier,
-    match = match,
-  )
+  MatchItem(match)
 }
 
 @Preview(

@@ -19,8 +19,8 @@ import dev.iurysouza.livematch.matchday.models.Competition
 
 @Composable
 fun LeagueDivider(
-  modifier: Modifier = Modifier,
   competition: Competition,
+  modifier: Modifier = Modifier,
 ) {
   Row(
     modifier.fillMaxWidth(),

@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.iurysouza.livematch.matchday.models.Fakes
 import dev.iurysouza.livematch.matchday.models.MatchUiModel
+import kotlinx.collections.immutable.ImmutableList
 
 @Preview(
   uiMode = Configuration.UI_MODE_NIGHT_NO,
@@ -23,8 +24,9 @@ import dev.iurysouza.livematch.matchday.models.MatchUiModel
 @Composable
 internal fun MatchDayGroupedByLeague(
   modifier: Modifier = Modifier,
-  matchItemList: List<MatchUiModel> = Fakes.generateMatchList(10),
-  onTapMatchItem: (MatchUiModel) -> Unit = {},
+  matchItemList: ImmutableList<MatchUiModel> = Fakes.generateMatchList(),
+  onItemTap: (MatchUiModel) -> Unit = {},
+  shouldUsePlaceHolder: Boolean = false,
 ) {
   LazyColumn(
     modifier = modifier
@@ -33,17 +35,17 @@ internal fun MatchDayGroupedByLeague(
   ) {
     matchItemList.groupBy { it.competition }.forEach { (competition, matchItemList) ->
       stickyHeader {
-        LeagueDivider(modifier, competition)
+        if (shouldUsePlaceHolder) PlaceHolderDivider(competition) else LeagueDivider(competition, Modifier)
       }
       itemsIndexed(matchItemList) { _, matchItem ->
         Column(
-          modifier
+          Modifier
             .clip(RoundedCornerShape(10.dp))
-            .clickable { onTapMatchItem(matchItem) }
+            .clickable { onItemTap(matchItem) }
             .padding(vertical = 8.dp, horizontal = 16.dp)
             .fillMaxWidth(),
         ) {
-          MatchItem(modifier, matchItem)
+          if (shouldUsePlaceHolder) PlaceHolderItem() else MatchItem(matchItem)
         }
       }
     }

@@ -36,7 +36,7 @@ fun MatchDayRoute(
   val uiState by remember(viewModel.viewState) { viewModel.viewState }
   MatchDayScreen(
     uiState = uiState,
-    onTapItem = { viewModel.handleEvent(NavigateToMatch(it)) },
+    onItemTap = { viewModel.handleEvent(NavigateToMatch(it)) },
     onRefresh = { viewModel.handleEvent(Refresh) },
   )
 }
