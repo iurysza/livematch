@@ -31,13 +31,14 @@ import dev.iurysouza.livematch.matchday.ui.components.MatchDayPlaceHolder
 
 @Composable
 fun MatchDayScreen(
+  modifier: Modifier = Modifier,
   uiState: MatchDayViewState,
   onTapItem: (MatchUiModel) -> Unit = {},
   onRefresh: () -> Unit = {},
 ) {
 
   Scaffold(
-    modifier = Modifier
+    modifier = modifier
       .fillMaxHeight(),
     topBar = {
       TopAppBar(

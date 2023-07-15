@@ -18,10 +18,16 @@ import coil.compose.AsyncImage
 import dev.iurysouza.livematch.matchday.models.Competition
 
 @Composable
-fun LeagueDivider(modifier: Modifier, competition: Competition) {
-  Row(modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+fun LeagueDivider(
+  modifier: Modifier = Modifier,
+  competition: Competition,
+) {
+  Row(
+    modifier.fillMaxWidth(),
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
     AsyncImage(
-      modifier = modifier
+      modifier = Modifier
         .clip(CircleShape)
         .size(16.dp),
       model = competition.emblemUrl,

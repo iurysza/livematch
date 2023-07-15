@@ -1,15 +1,17 @@
 package dev.iurysouza.livematch.matchday.models
 
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlin.random.Random
 
 @Suppress("MagicNumber")
 object Fakes {
-  fun generateMatchList(count: Int): List<MatchUiModel> {
+  fun generateMatchList(count: Int): ImmutableList<MatchUiModel> {
     val list = mutableListOf<MatchUiModel>()
     repeat(count) {
       list.add(generateMatch(it))
     }
-    return list
+    return list.toImmutableList()
   }
 
   private fun generateMatch(seed: Int): MatchUiModel {

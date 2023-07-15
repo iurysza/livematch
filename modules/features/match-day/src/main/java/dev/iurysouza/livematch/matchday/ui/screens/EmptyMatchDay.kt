@@ -14,8 +14,8 @@ import dev.iurysouza.livematch.designsystem.components.AppColumn
 import dev.iurysouza.livematch.matchday.R
 
 @Composable
-fun EmptyMatchDay() {
-  AppColumn() {
+fun EmptyMatchDay(modifier: Modifier = Modifier) {
+  AppColumn(modifier = modifier) {
     Text(
       text = stringResource(R.string.empty_match_day),
       color = MaterialTheme.colors.onPrimary,

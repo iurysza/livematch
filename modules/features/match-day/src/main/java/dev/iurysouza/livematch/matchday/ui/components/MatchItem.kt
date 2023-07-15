@@ -24,7 +24,10 @@ import dev.iurysouza.livematch.matchday.models.MatchUiModel
 import dev.iurysouza.livematch.matchday.models.Team
 
 @Composable
-internal fun MatchItem(modifier: Modifier, match: MatchUiModel) {
+internal fun MatchItem(
+  modifier: Modifier = Modifier,
+  match: MatchUiModel,
+) {
   Row {
     MatchTime(
       modifier = modifier.weight(.15f),
@@ -32,12 +35,12 @@ internal fun MatchItem(modifier: Modifier, match: MatchUiModel) {
       elapsedMinutes = match.elapsedMinutes,
     )
     Column(
-      modifier.weight(.85f),
+      Modifier.weight(.85f),
       verticalArrangement = Arrangement.Center,
 
       ) {
-      Team(modifier, match.homeTeam, match.homeTeam.name)
-      Team(modifier, match.awayTeam, match.awayTeam.name)
+      Team(Modifier, match.homeTeam, match.homeTeam.name)
+      Team(Modifier, match.awayTeam, match.awayTeam.name)
     }
   }
 }
@@ -72,7 +75,7 @@ internal fun Team(modifier: Modifier, team: Team, homeTeamName: String) {
     modifier = modifier,
   ) {
     AsyncImage(
-      modifier = modifier
+      modifier = Modifier
         .size(24.dp)
         .clip(RoundedCornerShape(10.dp))
         .padding(4.dp),
@@ -95,10 +98,10 @@ internal fun Team(modifier: Modifier, team: Team, homeTeamName: String) {
     Text(
       text = homeTeamName,
       style = style,
-      modifier = modifier.weight(.75f),
+      modifier = Modifier.weight(.75f),
     )
     Text(
-      modifier = modifier.weight(.25F),
+      modifier = Modifier.weight(.25F),
       text = team.score,
       style = style,
       textAlign = TextAlign.Right,
