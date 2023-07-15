@@ -1,6 +1,14 @@
 import java.util.concurrent.TimeUnit
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
-fun getMockUrlBasedOnDeviceType(): String = runCatching {
+fun getMockUrlBasedOnDeviceType(project: Project): String = runCatching {
+  val rootProj = project.rootProject
+  if (
+    rootProj.extraProperties.properties.containsKey("isMockUrlConfigured") &&
+    rootProj.extraProperties["isMockUrlConfigured"] == true
+  ) return rootProj.extraProperties["mockUrl"] as String
+
   val adbDevicesOutput = "adb devices".execute().trim()
   if (adbDevicesOutput.lines().size > 2) {
     println("Found more than one device/emulator connected, please disconnect all but one to get automatic mock url setup")
@@ -12,8 +20,10 @@ fun getMockUrlBasedOnDeviceType(): String = runCatching {
     "adb reverse tcp:1080 tcp:1080".execute()
     """"http://localhost:1080/""""
   }.also {
-    println("Building app for device: $deviceName, using mockUrl: $it")
-    println("Don't forget to start mockserver")
+    println("App configured for running on device: $deviceName, using mockUrl: $it")
+    println("Don't forget to start mockserver docker image.")
+    rootProj.extraProperties["mockUrl"] = it
+    rootProj.extraProperties["isMockUrlConfigured"] = true
   }
 }.onFailure {
   if (it is IndexOutOfBoundsException) {

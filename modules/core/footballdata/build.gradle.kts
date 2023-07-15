@@ -26,7 +26,7 @@ android {
       buildConfigField(
         type = "String",
         name = "FOOTBALL_DATA_BASE_URL",
-        value = if (USE_MOCK_URL.toBoolean()) getMockUrlBasedOnDeviceType() else FOOTBALL_DATA_BASE_URL,
+        value = if (USE_MOCK_URL.toBoolean()) getMockUrlBasedOnDeviceType(project) else FOOTBALL_DATA_BASE_URL,
       )
     }
   }
