@@ -41,7 +41,7 @@ fun CommentItemComponent(
     modifier = modifier
       .background(MaterialTheme.colors.background)
       .padding(vertical = 8.dp)
-      .padding(start = 64.dp)
+      .padding(start = 64.dp, end = 8.dp)
       .background(MaterialTheme.colors.primary),
   ) {
     Column(

@@ -20,6 +20,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -41,7 +42,10 @@ fun SectionHeader(
   var newModifier = modifier
     .background(MaterialTheme.colors.background)
   if (onClick != null) {
-    newModifier = newModifier.clickable { onClick(event) }
+    newModifier = newModifier
+      .padding(horizontal = 8.dp)
+      .clip(RoundedCornerShape(10.dp))
+      .clickable { onClick(event) }
   }
   Row(
     modifier = newModifier
