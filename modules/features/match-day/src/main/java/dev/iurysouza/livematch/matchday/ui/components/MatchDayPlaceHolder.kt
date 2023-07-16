@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package dev.iurysouza.livematch.matchday.ui.components
 
 import androidx.compose.foundation.layout.Column
@@ -16,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.placeholder.shimmer
+import dev.iurysouza.livematch.designsystem.theme.Space.S200
 import dev.iurysouza.livematch.matchday.models.Competition
 import kotlin.random.Random
 
@@ -50,7 +53,7 @@ fun PlaceHolderItem(
 ) {
   Column(
     modifier
-      .padding(vertical = 8.dp, horizontal = 16.dp)
+      .padding(vertical = 8.dp, horizontal = S200)
       .fillMaxWidth(),
   ) {
     Column(

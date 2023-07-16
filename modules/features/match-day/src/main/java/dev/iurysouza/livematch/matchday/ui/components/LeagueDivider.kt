@@ -16,6 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import dev.iurysouza.livematch.designsystem.theme.Space.S100
+import dev.iurysouza.livematch.designsystem.theme.Space.S200
 import dev.iurysouza.livematch.matchday.models.Competition
 
 @Composable
@@ -30,7 +32,7 @@ fun LeagueDivider(
     AsyncImage(
       modifier = Modifier
         .clip(CircleShape)
-        .size(16.dp),
+        .size(S200),
       model = competition.emblemUrl,
       contentDescription = "${competition.name} emblem",
     )
@@ -38,7 +40,7 @@ fun LeagueDivider(
       text = competition.name.uppercase(),
       modifier = Modifier
         .wrapContentWidth(Alignment.Start)
-        .padding(horizontal = 8.dp, vertical = 16.dp),
+        .padding(horizontal = S100, vertical = S200),
       style = MaterialTheme.typography.subtitle1.copy(color = Color(0xFF7B7B8A)),
     )
   }

@@ -15,6 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.iurysouza.livematch.designsystem.theme.Space.S0
+import dev.iurysouza.livematch.designsystem.theme.Space.S200
 import dev.iurysouza.livematch.matchday.R
 
 @Composable
@@ -24,14 +26,14 @@ fun MatchDayTopBar(
 ) {
   TopAppBar(
     modifier = modifier,
-    elevation = 0.dp,
+    elevation = S0,
     title = {
       Text(
         text = stringResource(R.string.app_name),
         color = MaterialTheme.colors.onPrimary,
         modifier = Modifier
           .fillMaxWidth()
-          .padding(16.dp),
+          .padding(S200),
         textAlign = TextAlign.Center,
       )
     },

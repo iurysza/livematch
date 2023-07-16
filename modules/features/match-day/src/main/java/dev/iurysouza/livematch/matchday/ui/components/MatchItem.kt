@@ -18,6 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import dev.iurysouza.livematch.designsystem.components.roundedClip
+import dev.iurysouza.livematch.designsystem.theme.Space.S300
+import dev.iurysouza.livematch.designsystem.theme.Space.S50
 import dev.iurysouza.livematch.matchday.models.Competition
 import dev.iurysouza.livematch.matchday.models.MatchUiModel
 import dev.iurysouza.livematch.matchday.models.Team
@@ -81,9 +83,9 @@ internal fun Team(
   ) {
     AsyncImage(
       modifier = Modifier
-        .size(24.dp)
+        .size(S300)
         .roundedClip()
-        .padding(4.dp),
+        .padding(S50),
       model = team.crestUrl,
       contentDescription = "$team.name crest",
     )
@@ -114,9 +116,7 @@ internal fun Team(
   }
 }
 
-@Preview(
-  uiMode = Configuration.UI_MODE_NIGHT_NO,
-)
+@Preview
 @Composable
 fun MatchItemPreview() {
   val match = MatchUiModel(

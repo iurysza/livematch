@@ -10,8 +10,9 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import dev.iurysouza.livematch.designsystem.components.roundedClip
+import dev.iurysouza.livematch.designsystem.theme.Space.S100
+import dev.iurysouza.livematch.designsystem.theme.Space.S200
 import dev.iurysouza.livematch.matchday.models.Fakes
 import dev.iurysouza.livematch.matchday.models.MatchUiModel
 import kotlinx.collections.immutable.ImmutableList
@@ -27,7 +28,7 @@ internal fun MatchDayGroupedByLeague(
   LazyColumn(
     modifier = modifier
       .fillMaxHeight()
-      .padding(horizontal = 16.dp),
+      .padding(horizontal = S200),
   ) {
     matchList.groupBy { it.competition }.forEach { (competition, matchItemList) ->
       stickyHeader {
@@ -38,7 +39,7 @@ internal fun MatchDayGroupedByLeague(
           Modifier
             .roundedClip()
             .clickable { onItemTap(matchItem) }
-            .padding(vertical = 8.dp, horizontal = 16.dp)
+            .padding(vertical = S100, horizontal = S200)
             .fillMaxWidth(),
         ) {
           if (shouldUsePlaceHolder) PlaceHolderItem() else MatchItem(matchItem)
