@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
 import dev.iurysouza.livematch.designsystem.components.LottieAsset
 import dev.iurysouza.livematch.designsystem.components.LottiePullToReveal
-import dev.iurysouza.livematch.designsystem.theme.gradientBackground
+import dev.iurysouza.livematch.designsystem.components.gradientBackground
 import dev.iurysouza.livematch.matchday.models.MatchDayViewState
 import dev.iurysouza.livematch.matchday.models.MatchListState
 import dev.iurysouza.livematch.matchday.models.MatchUiModel

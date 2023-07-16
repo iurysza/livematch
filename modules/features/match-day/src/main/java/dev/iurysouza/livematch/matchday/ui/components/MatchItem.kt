@@ -6,19 +6,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import dev.iurysouza.livematch.designsystem.components.roundedClip
 import dev.iurysouza.livematch.matchday.models.Competition
 import dev.iurysouza.livematch.matchday.models.MatchUiModel
 import dev.iurysouza.livematch.matchday.models.Team
@@ -38,8 +37,8 @@ internal fun MatchItem(
       Modifier.weight(.85f),
       verticalArrangement = Arrangement.Center,
     ) {
-      Team(match.homeTeam, match.homeTeam.name)
-      Team(match.awayTeam, match.awayTeam.name)
+      Team(match.homeTeam)
+      Team(match.awayTeam)
     }
   }
 }
@@ -74,7 +73,6 @@ fun MatchTime(
 @Composable
 internal fun Team(
   team: Team,
-  homeTeamName: String,
   modifier: Modifier = Modifier,
 ) {
   Row(
@@ -84,10 +82,10 @@ internal fun Team(
     AsyncImage(
       modifier = Modifier
         .size(24.dp)
-        .clip(RoundedCornerShape(10.dp))
+        .roundedClip()
         .padding(4.dp),
       model = team.crestUrl,
-      contentDescription = "$homeTeamName crest",
+      contentDescription = "$team.name crest",
     )
     val style = if (team.isAhead) {
       TextStyle(
@@ -103,7 +101,7 @@ internal fun Team(
       )
     }
     Text(
-      text = homeTeamName,
+      text = team.name,
       style = style,
       modifier = Modifier.weight(.75f),
     )
@@ -120,7 +118,7 @@ internal fun Team(
   uiMode = Configuration.UI_MODE_NIGHT_NO,
 )
 @Composable
-fun OtherPreview() {
+fun MatchItemPreview() {
   val match = MatchUiModel(
     id = "1",
     homeTeam = Team(
@@ -169,6 +167,5 @@ fun TeamPreview() {
       isAhead = true,
       isHomeTeam = false,
     ),
-    homeTeamName = team.name,
   )
 }

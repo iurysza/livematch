@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import dev.iurysouza.livematch.matchday.models.Competition
@@ -41,4 +42,16 @@ fun LeagueDivider(
       style = MaterialTheme.typography.subtitle1.copy(color = Color(0xFF7B7B8A)),
     )
   }
+}
+
+@Preview
+@Composable
+fun LeagueDividerPreview() {
+  LeagueDivider(
+    competition = Competition(
+      id = 1,
+      name = "Premier League",
+      emblemUrl = "https://crests.football-data.org/2051.png",
+    ),
+  )
 }

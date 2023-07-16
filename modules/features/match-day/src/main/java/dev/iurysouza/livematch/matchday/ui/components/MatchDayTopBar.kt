@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.iurysouza.livematch.matchday.R
 
@@ -22,6 +23,7 @@ fun MatchDayTopBar(
   modifier: Modifier = Modifier,
 ) {
   TopAppBar(
+    modifier = modifier,
     elevation = 0.dp,
     title = {
       Text(
@@ -45,4 +47,10 @@ fun MatchDayTopBar(
       }
     },
   )
+}
+
+@Preview
+@Composable
+fun MatchDayTopBarPreview() {
+  MatchDayTopBar(isSyncing = true)
 }
