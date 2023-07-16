@@ -1,10 +1,5 @@
 package dev.iurysouza.livematch.designsystem.theme
 
-import androidx.compose.foundation.background
-import androidx.compose.material.MaterialTheme
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 val AppAccent1Dark = Color(0xFFFAEA00)
@@ -22,15 +17,3 @@ val AppText1Light = Color(0xFF2F2F2F)
 val AppText2Light = Color(0xFF383736)
 val AppText3Light = Color(0xBE777776)
 val AppSecondaryLight = Color(0xFFFFFFFF)
-fun Modifier.gradientBackground(
-  colors: List<Color>? = null,
-): Modifier = composed {
-  background(
-    brush = Brush.verticalGradient(
-      colors ?: listOf(
-        MaterialTheme.colors.background,
-        MaterialTheme.colors.secondaryVariant,
-      ),
-    ),
-  )
-}

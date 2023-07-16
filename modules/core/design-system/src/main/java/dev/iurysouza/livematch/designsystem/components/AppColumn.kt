@@ -8,7 +8,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import dev.iurysouza.livematch.designsystem.theme.gradientBackground
 
 @Composable
 fun AppColumn(modifier: Modifier = Modifier, content: @Composable () -> Unit = {}) {

@@ -20,7 +20,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -28,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.iurysouza.livematch.designsystem.components.roundedClip
 import dev.iurysouza.livematch.matchthread.models.EventIcon
 import dev.iurysouza.livematch.matchthread.models.MatchEvent
 
@@ -44,7 +44,7 @@ fun SectionHeader(
   if (onClick != null) {
     newModifier = newModifier
       .padding(horizontal = 8.dp)
-      .clip(RoundedCornerShape(10.dp))
+      .roundedClip()
       .clickable { onClick(event) }
   }
   Row(
