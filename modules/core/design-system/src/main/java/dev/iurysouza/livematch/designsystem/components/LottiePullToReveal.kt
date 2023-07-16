@@ -64,7 +64,6 @@ fun LottieAnimationComposable(modifier: Modifier, isRefreshing: Boolean, assetNa
   }
 }
 
-
 sealed class LottieAsset(val name: String) {
   object FootballFans : LottieAsset("football-fans.json")
 }

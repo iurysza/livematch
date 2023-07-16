@@ -56,7 +56,3 @@ fun MatchDayScreen(
     )
   }
 }
-
-
-
-

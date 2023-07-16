@@ -17,4 +17,3 @@ fun ErrorScreen(modifier: Modifier = Modifier, msg: String = "Error Screen") {
 fun ErrorScreenPreview() {
   ErrorScreen()
 }
-

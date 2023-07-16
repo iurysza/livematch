@@ -73,7 +73,7 @@ abstract class MVIViewModel<
     }
   }
 
-  open fun handleEvent(event: Event){
+  open fun handleEvent(event: Event) {
     Timber.v("Event Handled: $event")
   }
 

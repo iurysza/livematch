@@ -7,7 +7,11 @@ import dev.iurysouza.livematch.common.navigation.Destination
 import dev.olshevski.navigation.reimagined.NavAction
 import dev.olshevski.navigation.reimagined.NavTransitionScope
 
-internal val SlideTransitionSpec: NavTransitionScope.(action: NavAction, from: Destination, to: Destination) -> ContentTransform =
+internal val SlideTransitionSpec: NavTransitionScope.(
+  action: NavAction,
+  from: Destination,
+  to: Destination,
+) -> ContentTransform =
   { action, _, _ ->
     val direction = if (action == NavAction.Pop) {
       AnimatedContentScope.SlideDirection.End

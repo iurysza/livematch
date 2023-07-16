@@ -22,7 +22,6 @@ android {
   }
 }
 
-
 dependencies {
   implementation(libs.google.dagger.hilt.android)
   kapt(libs.google.dagger.hilt.androidCompiler)

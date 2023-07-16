@@ -35,7 +35,6 @@ import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlin.math.roundToInt
 
-
 @Composable
 fun PullToReveal(
   modifier: Modifier = Modifier,
@@ -46,7 +45,6 @@ fun PullToReveal(
   revealedComponent: @Composable BoxScope.(Modifier, Boolean) -> Unit,
   content: @Composable () -> Unit,
 ) {
-
   val pullState = rememberSwipeRefreshState(isRefreshing = isRefreshing)
   var offset by remember { mutableStateOf(0) }
   val animatedOffset by animateIntAsState(

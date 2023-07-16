@@ -19,6 +19,8 @@ dependencies {
   implementation(project(":features:match-day"))
   implementation(project(":core:design-system"))
 
+  implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
+
   implementation(platform(libs.androidx.compose.bom))
   implementation(libs.bundles.composeMinimal)
   implementation(libs.androidx.appcompat)
