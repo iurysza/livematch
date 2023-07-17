@@ -25,7 +25,7 @@ class AuthUseCaseTest : BehaviorSpec({
       storage = AuthStorage(InMemoryKeyValueStorage(localStorage)),
     )
     `when`("the user tries to refresh the token") {
-      sut()
+      sut.execute()
       then("the local storage should be updated with the token fetched from the network") {
         localStorage shouldContain ("accessToken" to accessToken)
       }
@@ -43,7 +43,7 @@ class AuthUseCaseTest : BehaviorSpec({
     )
 
     `when`("the user tries to refresh the token") {
-      sut()
+      sut.execute()
       then("the local storage token should be updated") {
         localStorage["accessToken"] shouldNotBe expiredToken
       }
@@ -62,7 +62,7 @@ class AuthUseCaseTest : BehaviorSpec({
     )
 
     `when`("the user tries to refresh the token") {
-      sut()
+      sut.execute()
       then("the token in storage should be the same") {
         localStorage shouldContain Pair("accessToken", accessToken)
       }
@@ -76,7 +76,7 @@ class AuthUseCaseTest : BehaviorSpec({
           networkDataSource = networkDataSource,
           storage = AuthStorage(InMemoryKeyValueStorage()),
         )
-        val result = sut()
+        val result = sut.execute()
         then("the result should be a NetworkError") {
           result shouldBeLeft NetworkError()
         }

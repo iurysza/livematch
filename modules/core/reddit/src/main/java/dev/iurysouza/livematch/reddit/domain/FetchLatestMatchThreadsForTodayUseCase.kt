@@ -13,7 +13,7 @@ class FetchLatestMatchThreadsForTodayUseCase @Inject constructor(
   private val networkDataSource: RedditNetworkDataSource,
 ) {
 
-  suspend operator fun invoke(): Either<DomainError, List<MatchThreadEntity>> = either {
+  suspend fun execute(): Either<DomainError, List<MatchThreadEntity>> = either {
     networkDataSource.searchFor(
       subreddit = "soccer",
       query = """flair:match+thread AND NOT flair:post AND NOT flair:pre""",

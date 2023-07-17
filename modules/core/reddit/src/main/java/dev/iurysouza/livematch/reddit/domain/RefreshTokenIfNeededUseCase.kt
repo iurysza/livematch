@@ -23,7 +23,7 @@ class RefreshTokenIfNeededUseCase @Inject constructor(
   private val storage: AuthStorage,
 ) {
 
-  suspend operator fun invoke(): Either<DomainError, Unit> = either {
+  suspend fun execute(): Either<DomainError, Unit> = either {
     val token = storage.getToken().bind()
     ensure(token.expirationDate.isInTheFuture()) {
       TokenExpired
