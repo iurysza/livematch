@@ -1,7 +1,6 @@
 package dev.iurysouza.livematch.footballdata.domain
 
 import arrow.core.Either
-import arrow.core.right
 import dev.iurysouza.livematch.common.MappingError
 import dev.iurysouza.livematch.footballdata.data.models.MatchListResponse
 import dev.iurysouza.livematch.footballdata.domain.models.AreaEntity

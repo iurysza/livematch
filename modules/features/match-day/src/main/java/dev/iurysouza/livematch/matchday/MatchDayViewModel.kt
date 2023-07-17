@@ -63,19 +63,25 @@ class MatchDayViewModel @Inject constructor(
     }
   }
 
-  private fun updateMatchSuccessOrEmpty(savedMatches: List<MatchEntity>) {
-    val matchList = getValidMatchList(savedMatches, savedMatchThreads.value, resourceProvider)
-    setState {
-      copy(
-        matchDayState = if (matchList.isEmpty()) {
-          MatchDayState.Empty
-        } else {
-          MatchDayState.Success(matchList)
-        },
-        isRefreshing = false,
-        isSyncing = false,
-      )
-    }
+  private fun onRefresh() = viewModelScope.launch {
+    setState { copy(isRefreshing = true) }
+    fetchRedditContent()
+    fetchMatchData()
+  }
+
+  private fun onNavigateToMatch(
+    event: MatchDayViewEvent.NavigateToMatch,
+  ) = viewModelScope.launch {
+    either {
+      createMatchThreadFrom(
+        matchId = event.match.id,
+        matchThreadList = savedMatchThreads.value,
+        matchList = savedMatches.value,
+      ).bind()
+    }.fold(
+      { setEffect { MatchDayViewEffect.NavigationError(it.message) } },
+      { setEffect { MatchDayViewEffect.NavigateToMatchThread(it.toDestination()) } },
+    )
   }
 
   private suspend fun fetchMatchData() = either {
@@ -97,8 +103,8 @@ class MatchDayViewModel @Inject constructor(
     )
 
   private suspend fun fetchRedditContent() = either {
-    refreshTokenIfNeeded().bind()
-    fetchLatestMatchThreadsForToday().bind()
+    refreshTokenIfNeeded.execute().bind()
+    fetchLatestMatchThreadsForToday.execute().bind()
   }.fold(
     { error ->
       setEffect { MatchDayViewEffect.Error(error.toErrorMsg()) }
@@ -110,25 +116,19 @@ class MatchDayViewModel @Inject constructor(
     },
   )
 
-  private fun onRefresh() = viewModelScope.launch {
-    setState { copy(isRefreshing = true) }
-    fetchMatchData()
-    fetchRedditContent()
-  }
-
-  private fun onNavigateToMatch(
-    event: MatchDayViewEvent.NavigateToMatch,
-  ) = viewModelScope.launch {
-    either {
-      createMatchThreadFrom(
-        matchId = event.match.id,
-        matchThreadList = savedMatchThreads.value,
-        matchList = savedMatches.value,
-      ).bind()
-    }.fold(
-      { setEffect { MatchDayViewEffect.NavigationError(it.message) } },
-      { setEffect { MatchDayViewEffect.NavigateToMatchThread(it.toDestination()) } },
-    )
+  private fun updateMatchSuccessOrEmpty(savedMatches: List<MatchEntity>) {
+    val matchList = getValidMatchList(savedMatches, savedMatchThreads.value, resourceProvider)
+    setState {
+      copy(
+        matchDayState = if (matchList.isEmpty()) {
+          MatchDayState.Empty
+        } else {
+          MatchDayState.Success(matchList)
+        },
+        isRefreshing = false,
+        isSyncing = false,
+      )
+    }
   }
 
   private fun DomainError.toErrorMsg(): String {
