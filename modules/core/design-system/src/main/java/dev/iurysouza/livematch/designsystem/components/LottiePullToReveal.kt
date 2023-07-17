@@ -18,18 +18,19 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun LottiePullToReveal(
-  modifier: Modifier = Modifier,
   isRefreshing: Boolean,
   onRefresh: () -> Unit,
-  revealedComponentBackgroundColor: Color = MaterialTheme.colors.secondaryVariant,
   content: @Composable () -> Unit,
   lottieAsset: LottieAsset,
+  modifier: Modifier = Modifier,
+  revealedComponentBackgroundColor: Color = MaterialTheme.colors.secondaryVariant,
 ) {
   PullToReveal(
     modifier = modifier,
     revealedComponentBackgroundColor = revealedComponentBackgroundColor,
     isRefreshing = isRefreshing,
     onRefresh = onRefresh,
+    content = content,
     revealedComponent = { animationModifier, shouldAnimate ->
       LottieAnimationComposable(
         modifier = animationModifier,
@@ -37,13 +38,15 @@ fun LottiePullToReveal(
         assetName = lottieAsset.name,
       )
     },
-  ) {
-    content()
-  }
+  )
 }
 
 @Composable
-fun LottieAnimationComposable(modifier: Modifier, isRefreshing: Boolean, assetName: String) {
+fun LottieAnimationComposable(
+  isRefreshing: Boolean,
+  assetName: String,
+  modifier: Modifier = Modifier,
+) {
   val composition by rememberLottieComposition(LottieCompositionSpec.Asset(assetName))
   val shouldRefresh = remember { mutableStateOf(false) }
   LaunchedEffect(isRefreshing) {
@@ -59,7 +62,7 @@ fun LottieAnimationComposable(modifier: Modifier, isRefreshing: Boolean, assetNa
       isPlaying = shouldRefresh.value,
       restartOnPlay = true,
       iterations = 99,
-      modifier = modifier.align(Alignment.Center),
+      modifier = Modifier.align(Alignment.Center),
     )
   }
 }

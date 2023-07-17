@@ -37,13 +37,13 @@ import kotlin.math.roundToInt
 
 @Composable
 fun PullToReveal(
-  modifier: Modifier = Modifier,
-  refreshTriggerDistance: Dp = 120.dp,
   isRefreshing: Boolean,
   onRefresh: () -> Unit,
-  revealedComponentBackgroundColor: Color = MaterialTheme.colors.secondaryVariant,
   revealedComponent: @Composable BoxScope.(Modifier, Boolean) -> Unit,
   content: @Composable () -> Unit,
+  modifier: Modifier = Modifier,
+  refreshTriggerDistance: Dp = 120.dp,
+  revealedComponentBackgroundColor: Color = MaterialTheme.colors.secondaryVariant,
 ) {
   val pullState = rememberSwipeRefreshState(isRefreshing = isRefreshing)
   var offset by remember { mutableStateOf(0) }
@@ -74,36 +74,30 @@ fun PullToReveal(
     ) {
       val animatedCornerRadius by animateDpAsState(
         targetValue = if (shouldRefresh || isRefreshing) 20.dp else 0.dp,
-        animationSpec = tween(
-          durationMillis = 300,
-        ),
+        animationSpec = tween(durationMillis = 300),
         label = "PullToRevealCornerRadius",
       )
       Box(
-        modifier.background(revealedComponentBackgroundColor),
+        Modifier.background(revealedComponentBackgroundColor),
       ) {
         val scale by animateFloatAsState(
           targetValue = if (offset > triggerPx) .95f else 1f,
-          animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-          ),
+          animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
           label = "PullToRevealScale",
         )
         revealedComponent(
-          modifier.height((refreshTriggerDistance + 20.dp)),
+          Modifier.height((refreshTriggerDistance + 20.dp)),
           isRefreshing,
         )
         Box(
-          modifier = modifier
+          modifier = Modifier
             .scale(scale)
             .offset { IntOffset(x = 0, y = animatedOffset) }
             .clip(RoundedCornerShape(animatedCornerRadius))
             .fillMaxSize()
             .shadow(4.dp)
             .background(MaterialTheme.colors.surface),
-        ) {
-          content()
-        }
+        ) { content() }
       }
     }
   }

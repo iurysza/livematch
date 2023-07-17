@@ -12,9 +12,9 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun AnimatedCellExpansion(
-  modifier: Modifier = Modifier,
   showContentIf: () -> Boolean,
   content: @Composable () -> Unit,
+  modifier: Modifier = Modifier,
   collapsedContent: @Composable () -> Unit = {},
 ) {
   AnimatedContent(

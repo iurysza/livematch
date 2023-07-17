@@ -11,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun FullScreenProgress() {
+fun FullScreenProgress(modifier: Modifier = Modifier) {
   Box(
-    modifier = Modifier
+    modifier = modifier
       .padding(top = 32.dp)
       .fillMaxSize(),
     contentAlignment = Alignment.Center,
