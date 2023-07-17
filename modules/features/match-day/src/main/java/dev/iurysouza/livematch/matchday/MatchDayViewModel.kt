@@ -132,13 +132,12 @@ class MatchDayViewModel @Inject constructor(
     )
   }
 
-  private fun DomainError.toErrorMsg(): String = when (this) {
-    is NetworkError -> {
-      Timber.e(this.message.toString())
-      resourceProvider.getString(R.string.match_screen_error_no_internet)
+  private fun DomainError.toErrorMsg(): String {
+    Timber.e(this.throwable)
+    return when (this) {
+      is NetworkError -> resourceProvider.getString(R.string.match_screen_error_no_internet)
+      else -> resourceProvider.getString(R.string.match_screen_error_default)
     }
-
-    else -> resourceProvider.getString(R.string.match_screen_error_default)
   }
 }
 
