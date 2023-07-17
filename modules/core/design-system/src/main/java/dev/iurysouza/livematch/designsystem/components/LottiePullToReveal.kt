@@ -41,6 +41,7 @@ fun LottiePullToReveal(
   )
 }
 
+@Suppress("MagicNumber")
 @Composable
 fun LottieAnimationComposable(
   isRefreshing: Boolean,

@@ -16,7 +16,7 @@ class PlaygroundActivity : ComponentActivity() {
       LivematchTheme {
         MatchDayScreen(
           uiState = MatchDayViewState(
-            matchDayState = MatchDayState.Success(Fakes.generateMatchList(5)),
+            matchDayState = MatchDayState.Success(Fakes.generateMatchList()),
             isSyncing = false,
           ),
         )

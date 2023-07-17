@@ -35,6 +35,7 @@ import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlin.math.roundToInt
 
+@Suppress("MagicNumber")
 @Composable
 fun PullToReveal(
   isRefreshing: Boolean,

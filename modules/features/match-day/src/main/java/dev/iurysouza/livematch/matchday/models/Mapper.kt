@@ -29,13 +29,14 @@ internal fun MatchEntity.toUiModel(resources: ResourceProvider) = MatchUiModel(
   elapsedMinutes = status.toText(this, resources),
 )
 
+@Suppress("MagicNumber")
 private fun MatchEntity.calculatePlayTime(): String {
   val nowInMilli = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()
   val matchStartTimeInMilli = utcDate.toInstant(ZoneOffset.UTC).toEpochMilli()
   // to convert timeDifference from Millis to Minutes:
   // millis -> seconds = divide by 1000
   // seconds -> minutes = divide by 60
-  val diffMin = (nowInMilli - matchStartTimeInMilli) / 60000
+  val diffMin = (nowInMilli - matchStartTimeInMilli) / 60_000
   return "$diffMin'"
 }
 

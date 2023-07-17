@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import dev.iurysouza.livematch.designsystem.theme.Space.S100
@@ -40,7 +39,7 @@ fun LeagueDivider(
       modifier = Modifier
         .wrapContentWidth(Alignment.Start)
         .padding(horizontal = S100, vertical = S200),
-      style = MaterialTheme.typography.subtitle1.copy(color = Color(0xFF7B7B8A)),
+      style = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.onSurface),
     )
   }
 }

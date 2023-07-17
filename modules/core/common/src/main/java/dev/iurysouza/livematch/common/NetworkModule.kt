@@ -18,9 +18,11 @@ object NetworkModule {
 
   @Provides
   @Singleton
+  @Suppress("MagicNumber")
   fun provideHttpDelayInterceptor() = Interceptor { chain ->
-    Thread.sleep(1000)
-    Timber.w("=============Delaying request by 1s=============")
+    val delay: Long = 1000
+    Thread.sleep(delay)
+    Timber.w("=============Delaying request by ${delay}ms=============")
     chain.proceed(chain.request())
   }
 

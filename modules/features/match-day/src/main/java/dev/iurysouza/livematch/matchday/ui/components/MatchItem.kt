@@ -32,10 +32,10 @@ internal fun MatchItem(
     MatchTime(
       startTime = match.startTime,
       elapsedMinutes = match.elapsedMinutes,
-      modifier = Modifier.weight(.15f),
+      modifier = Modifier.weight(weight = .15f),
     )
     Column(
-      Modifier.weight(.85f),
+      Modifier.weight(weight = .85f),
       verticalArrangement = Arrangement.Center,
     ) {
       Team(match.homeTeam)
@@ -104,10 +104,10 @@ internal fun Team(
     Text(
       text = team.name,
       style = style,
-      modifier = Modifier.weight(.75f),
+      modifier = Modifier.weight(weight = .75f),
     )
     Text(
-      modifier = Modifier.weight(.25F),
+      modifier = Modifier.weight(weight = .25F),
       text = team.score,
       style = style,
       textAlign = TextAlign.Right,

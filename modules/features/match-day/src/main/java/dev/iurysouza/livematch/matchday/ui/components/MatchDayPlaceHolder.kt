@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -88,14 +90,16 @@ fun PlaceHolderItemPreview() {
   PlaceHolderItem()
 }
 
-private fun Modifier.liveMatchPlaceHolder(color: Color = Color(0xFF7B7B8A)): Modifier = this
-  .width(100.dp)
-  .height(30.dp)
-  .placeholder(
-    visible = true,
-    color = color,
-    highlight = PlaceholderHighlight.shimmer(
-      highlightColor = Color.White.copy(alpha = 0.9f),
-      progressForMaxAlpha = 0.9f,
-    ),
-  )
+private fun Modifier.liveMatchPlaceHolder(): Modifier = composed {
+  this
+    .width(100.dp)
+    .height(30.dp)
+    .placeholder(
+      visible = true,
+      color = MaterialTheme.colors.onSurface,
+      highlight = PlaceholderHighlight.shimmer(
+        highlightColor = Color.White.copy(alpha = 0.9f),
+        progressForMaxAlpha = 0.9f,
+      ),
+    )
+}
