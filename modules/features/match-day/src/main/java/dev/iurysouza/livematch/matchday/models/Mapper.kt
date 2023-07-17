@@ -4,6 +4,7 @@ import arrow.core.Either
 import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.common.navigation.Destination
 import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
+import dev.iurysouza.livematch.common.navigation.models.Team as NavTeams
 import dev.iurysouza.livematch.footballdata.domain.models.AwayTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.HomeTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
@@ -14,7 +15,6 @@ import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
-import dev.iurysouza.livematch.common.navigation.models.Team as NavTeams
 
 internal fun MatchEntity.toUiModel(resources: ResourceProvider) = MatchUiModel(
   id = id.toString(),

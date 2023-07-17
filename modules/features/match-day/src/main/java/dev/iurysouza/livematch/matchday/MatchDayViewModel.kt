@@ -10,10 +10,10 @@ import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.footballdata.domain.FetchMatchesUseCase
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
+import dev.iurysouza.livematch.matchday.models.MatchDayState
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEffect
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEvent
 import dev.iurysouza.livematch.matchday.models.MatchDayViewState
-import dev.iurysouza.livematch.matchday.models.MatchDayState
 import dev.iurysouza.livematch.matchday.models.createMatchThreadFrom
 import dev.iurysouza.livematch.matchday.models.toDestination
 import dev.iurysouza.livematch.matchday.models.toMatchList

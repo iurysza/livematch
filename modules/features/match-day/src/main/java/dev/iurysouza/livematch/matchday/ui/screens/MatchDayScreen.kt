@@ -11,8 +11,8 @@ import dev.iurysouza.livematch.designsystem.components.ErrorScreen
 import dev.iurysouza.livematch.designsystem.components.LottieAsset
 import dev.iurysouza.livematch.designsystem.components.LottiePullToReveal
 import dev.iurysouza.livematch.designsystem.components.gradientBackground
-import dev.iurysouza.livematch.matchday.models.MatchDayViewState
 import dev.iurysouza.livematch.matchday.models.MatchDayState
+import dev.iurysouza.livematch.matchday.models.MatchDayViewState
 import dev.iurysouza.livematch.matchday.models.MatchUiModel
 import dev.iurysouza.livematch.matchday.ui.components.MatchDayGroupedByLeague
 import dev.iurysouza.livematch.matchday.ui.components.MatchDayTopBar
