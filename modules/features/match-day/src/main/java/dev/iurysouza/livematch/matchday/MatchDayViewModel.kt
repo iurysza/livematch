@@ -15,13 +15,12 @@ import dev.iurysouza.livematch.matchday.models.MatchDayViewEffect
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEvent
 import dev.iurysouza.livematch.matchday.models.MatchDayViewState
 import dev.iurysouza.livematch.matchday.models.createMatchThreadFrom
+import dev.iurysouza.livematch.matchday.models.getValidMatchList
 import dev.iurysouza.livematch.matchday.models.toDestination
-import dev.iurysouza.livematch.matchday.models.toMatchList
 import dev.iurysouza.livematch.reddit.domain.FetchLatestMatchThreadsForTodayUseCase
 import dev.iurysouza.livematch.reddit.domain.RefreshTokenIfNeededUseCase
 import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
 import javax.inject.Inject
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -65,13 +64,13 @@ class MatchDayViewModel @Inject constructor(
   }
 
   private fun updateMatchSuccessOrEmpty(savedMatches: List<MatchEntity>) {
-    val validMatchList = savedMatches.toMatchList(savedMatchThreads.value, resourceProvider)
+    val matchList = getValidMatchList(savedMatches, savedMatchThreads.value, resourceProvider)
     setState {
       copy(
-        matchDayState = if (validMatchList.isEmpty()) {
+        matchDayState = if (matchList.isEmpty()) {
           MatchDayState.Empty
         } else {
-          MatchDayState.Success(validMatchList.toImmutableList())
+          MatchDayState.Success(matchList)
         },
         isRefreshing = false,
         isSyncing = false,

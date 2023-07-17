@@ -3,8 +3,9 @@ package dev.iurysouza.livematch.matchday.models
 import arrow.core.Either
 import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.common.navigation.Destination
+import dev.iurysouza.livematch.common.navigation.models.Competition as NavCompetition
 import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
-import dev.iurysouza.livematch.common.navigation.models.Team as NavTeams
+import dev.iurysouza.livematch.common.navigation.models.Team as NavTeam
 import dev.iurysouza.livematch.footballdata.domain.models.AwayTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.HomeTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
@@ -15,63 +16,20 @@ import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
-internal fun MatchEntity.toUiModel(resources: ResourceProvider) = MatchUiModel(
-  id = id.toString(),
-  competition = Competition(
-    id = competition.id,
-    name = competition.name,
-    emblemUrl = competition.emblem,
-  ),
-  homeTeam = toTeam(homeTeam, score, true),
-  awayTeam = toTeam(awayTeam.asHomeTeam(), score, false),
-  startTime = utcDate.format(DateTimeFormatter.ofPattern("HH:mm")),
-  elapsedMinutes = status.toText(this, resources),
-)
-
-@Suppress("MagicNumber")
-private fun MatchEntity.calculatePlayTime(): String {
-  val nowInMilli = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()
-  val matchStartTimeInMilli = utcDate.toInstant(ZoneOffset.UTC).toEpochMilli()
-  // to convert timeDifference from Millis to Minutes:
-  // millis -> seconds = divide by 1000
-  // seconds -> minutes = divide by 60
-  val diffMin = (nowInMilli - matchStartTimeInMilli) / 60_000
-  return "$diffMin'"
-}
-
-private fun Status.toText(matchEntity: MatchEntity, resources: ResourceProvider): String =
-  when (this) {
-    Status.FINISHED -> resources.getString(R.string.match_status_finished)
-    Status.IN_PLAY -> matchEntity.calculatePlayTime()
-    Status.PAUSED -> resources.getString(R.string.match_status_paused)
-    Status.TIMED -> resources.getString(R.string.match_status_timed)
-  }
-
-internal fun List<MatchEntity>.toMatchList(
+internal fun getValidMatchList(
+  matchEntities: List<MatchEntity>,
   savedMatchThreads: List<MatchThreadEntity>,
   resources: ResourceProvider,
-): List<MatchUiModel> = map { it.toUiModel(resources) }
-  .filter {
-    findValidMatchThread(
-      matchId = it.id,
-      matchThreadList = savedMatchThreads,
-      matchList = this,
-    ) != null
-  }
-
-private fun findValidMatchThread(
-  matchId: String,
-  matchThreadList: List<MatchThreadEntity>,
-  matchList: List<MatchEntity>,
-): MatchEntity? {
-  val matchEntity = matchList.first { it.id.toString() == matchId }
-  val matchThreadEntity = matchThreadList.find { matchThread ->
-    val title = matchThread.title
-    title.contains(matchEntity.homeTeam.name) || title.contains(matchEntity.awayTeam.name)
-  }
-  return if (matchThreadEntity != null) matchEntity else null
-}
+): ImmutableList<MatchUiModel> = matchEntities.filter {
+  findValidMatchThread(
+    matchId = it.id.toString(),
+    matchThreadList = savedMatchThreads,
+    matchList = matchEntities,
+  ) != null
+}.map { it.toUiModel(resources) }.toImmutableList()
 
 internal fun createMatchThreadFrom(
   matchId: String,
@@ -92,7 +50,33 @@ internal fun createMatchThreadFrom(
     )
   }
 
-internal fun buildMatchThreadWith(
+private fun MatchEntity.toUiModel(resources: ResourceProvider) = MatchUiModel(
+  id = id.toString(),
+  competition = Competition(
+    id = competition.id,
+    name = competition.name,
+    emblemUrl = competition.emblem,
+  ),
+  homeTeam = toTeam(homeTeam, score, true),
+  awayTeam = toTeam(awayTeam.asHomeTeam(), score, false),
+  startTime = utcDate.format(DateTimeFormatter.ofPattern("HH:mm")),
+  elapsedMinutes = status.toText(this, resources),
+)
+
+private fun findValidMatchThread(
+  matchId: String,
+  matchThreadList: List<MatchThreadEntity>,
+  matchList: List<MatchEntity>,
+): MatchEntity? {
+  val matchEntity = matchList.first { it.id.toString() == matchId }
+  val matchThreadEntity = matchThreadList.find { matchThread ->
+    val title = matchThread.title
+    title.contains(matchEntity.homeTeam.name) || title.contains(matchEntity.awayTeam.name)
+  }
+  return if (matchThreadEntity != null) matchEntity else null
+}
+
+private fun buildMatchThreadWith(
   matchThread: MatchThreadEntity?,
   matchEntity: MatchEntity,
 ): MatchThread = MatchThread(
@@ -109,7 +93,7 @@ internal fun buildMatchThreadWith(
   ),
 )
 
-internal fun toTeam(
+private fun toTeam(
   homeTeam: HomeTeamEntity,
   score: ScoreEntity,
   isHome: Boolean,
@@ -157,14 +141,14 @@ fun MatchThread.toDestination() = Destination.MatchThread(
     id = id,
     startTime = startTime,
     content = content,
-    homeTeam = NavTeams(
+    homeTeam = NavTeam(
       crestUrl = homeTeam.crestUrl,
       name = homeTeam.name,
       isHomeTeam = homeTeam.isHomeTeam,
       isAhead = homeTeam.isAhead,
       score = homeTeam.score,
     ),
-    awayTeam = NavTeams(
+    awayTeam = NavTeam(
       crestUrl = awayTeam.crestUrl,
       name = awayTeam.name,
       isHomeTeam = awayTeam.isHomeTeam,
@@ -172,10 +156,29 @@ fun MatchThread.toDestination() = Destination.MatchThread(
       score = awayTeam.score,
     ),
     refereeList = refereeList,
-    competition = dev.iurysouza.livematch.common.navigation.models.Competition(
+    competition = NavCompetition(
       emblemUrl = competition.emblemUrl,
       id = competition.id,
       name = competition.name,
     ),
   ),
 )
+
+@Suppress("MagicNumber")
+private fun MatchEntity.calculatePlayTime(): String {
+  val nowInMilli = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()
+  val matchStartTimeInMilli = utcDate.toInstant(ZoneOffset.UTC).toEpochMilli()
+  // to convert timeDifference from Millis to Minutes:
+  // millis -> seconds = divide by 1000
+  // seconds -> minutes = divide by 60
+  val diffMin = (nowInMilli - matchStartTimeInMilli) / 60_000
+  return "$diffMin'"
+}
+
+private fun Status.toText(matchEntity: MatchEntity, resources: ResourceProvider): String =
+  when (this) {
+    Status.FINISHED -> resources.getString(R.string.match_status_finished)
+    Status.IN_PLAY -> matchEntity.calculatePlayTime()
+    Status.PAUSED -> resources.getString(R.string.match_status_paused)
+    Status.TIMED -> resources.getString(R.string.match_status_timed)
+  }
