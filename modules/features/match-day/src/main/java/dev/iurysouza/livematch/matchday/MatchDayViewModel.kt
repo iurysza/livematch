@@ -13,7 +13,7 @@ import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEffect
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEvent
 import dev.iurysouza.livematch.matchday.models.MatchDayViewState
-import dev.iurysouza.livematch.matchday.models.MatchListState
+import dev.iurysouza.livematch.matchday.models.MatchDayState
 import dev.iurysouza.livematch.matchday.models.createMatchThreadFrom
 import dev.iurysouza.livematch.matchday.models.toDestination
 import dev.iurysouza.livematch.matchday.models.toMatchList
@@ -48,20 +48,19 @@ class MatchDayViewModel @Inject constructor(
   override fun handleEvent(event: MatchDayViewEvent) {
     super.handleEvent(event)
     when (event) {
-      MatchDayViewEvent.GetLatestMatches -> onGetLatestMatches()
-      MatchDayViewEvent.Refresh -> onRefresh()
+      is MatchDayViewEvent.GetLatestMatches -> onGetLatestMatches()
+      is MatchDayViewEvent.Refresh -> onRefresh()
       is MatchDayViewEvent.NavigateToMatch -> onNavigateToMatch(event)
     }
   }
 
   private fun onGetLatestMatches() = viewModelScope.launch {
-    val savedMatches = savedMatches.value
-    if (savedMatches.isEmpty()) {
-      setState { copy(matchListState = MatchListState.Loading, isSyncing = true) }
+    if (savedMatches.value.isEmpty()) {
+      setState { copy(matchDayState = MatchDayState.Loading, isSyncing = true) }
       fetchRedditContent()
       fetchMatchData()
     } else {
-      updateMatchSuccessOrEmpty(savedMatches)
+      updateMatchSuccessOrEmpty(savedMatches.value)
     }
   }
 
@@ -69,10 +68,10 @@ class MatchDayViewModel @Inject constructor(
     val validMatchList = savedMatches.toMatchList(savedMatchThreads.value, resourceProvider)
     setState {
       copy(
-        matchListState = if (validMatchList.isEmpty()) {
-          MatchListState.Empty
+        matchDayState = if (validMatchList.isEmpty()) {
+          MatchDayState.Empty
         } else {
-          MatchListState.Success(validMatchList.toImmutableList())
+          MatchDayState.Success(validMatchList.toImmutableList())
         },
         isRefreshing = false,
         isSyncing = false,
@@ -87,7 +86,7 @@ class MatchDayViewModel @Inject constructor(
       { errorMsg ->
         setState {
           copy(
-            matchListState = MatchListState.Error(errorMsg),
+            matchDayState = MatchDayState.Error(errorMsg),
             isRefreshing = false,
           )
         }
@@ -128,7 +127,7 @@ class MatchDayViewModel @Inject constructor(
         matchList = savedMatches.value,
       ).bind()
     }.fold(
-      { setEffect { MatchDayViewEffect.NavigationError(it.msg) } },
+      { setEffect { MatchDayViewEffect.NavigationError(it.message) } },
       { setEffect { MatchDayViewEffect.NavigateToMatchThread(it.toDestination()) } },
     )
   }

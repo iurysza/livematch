@@ -12,7 +12,7 @@ import dev.iurysouza.livematch.designsystem.components.LottieAsset
 import dev.iurysouza.livematch.designsystem.components.LottiePullToReveal
 import dev.iurysouza.livematch.designsystem.components.gradientBackground
 import dev.iurysouza.livematch.matchday.models.MatchDayViewState
-import dev.iurysouza.livematch.matchday.models.MatchListState
+import dev.iurysouza.livematch.matchday.models.MatchDayState
 import dev.iurysouza.livematch.matchday.models.MatchUiModel
 import dev.iurysouza.livematch.matchday.ui.components.MatchDayGroupedByLeague
 import dev.iurysouza.livematch.matchday.ui.components.MatchDayTopBar
@@ -41,14 +41,14 @@ fun MatchDayScreen(
             .fillMaxHeight(),
         ) {
           Crossfade(
-            targetState = uiState.matchListState,
-            label = "MatchListStateCrossFade",
+            targetState = uiState.matchDayState,
+            label = "MatchDayStateCrossFade",
           ) { state ->
             when (state) {
-              is MatchListState.Error -> ErrorScreen(msg = state.msg)
-              is MatchListState.Empty -> EmptyMatchDay()
-              is MatchListState.Loading -> MatchDayGroupedByLeague(shouldUsePlaceHolder = true)
-              is MatchListState.Success -> MatchDayGroupedByLeague(matchList = state.matches, onItemTap = onItemTap)
+              is MatchDayState.Error -> ErrorScreen(msg = state.msg)
+              is MatchDayState.Empty -> EmptyMatchDay()
+              is MatchDayState.Loading -> MatchDayGroupedByLeague(shouldUsePlaceHolder = true)
+              is MatchDayState.Success -> MatchDayGroupedByLeague(matchList = state.matches, onItemTap = onItemTap)
             }
           }
         }

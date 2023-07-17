@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
 import dev.iurysouza.livematch.matchday.models.Fakes
 import dev.iurysouza.livematch.matchday.models.MatchDayViewState
-import dev.iurysouza.livematch.matchday.models.MatchListState
+import dev.iurysouza.livematch.matchday.models.MatchDayState
 import dev.iurysouza.livematch.matchday.ui.screens.MatchDayScreen
 
 class PlaygroundActivity : ComponentActivity() {
@@ -16,7 +16,7 @@ class PlaygroundActivity : ComponentActivity() {
       LivematchTheme {
         MatchDayScreen(
           uiState = MatchDayViewState(
-            matchListState = MatchListState.Success(Fakes.generateMatchList(5)),
+            matchDayState = MatchDayState.Success(Fakes.generateMatchList(5)),
             isSyncing = false,
           ),
         )

@@ -78,7 +78,7 @@ data class CommentSection(
 fun MatchThreadArgs.toUi() = MatchThread(
   id = id,
   startTime = startTime,
-  mediaList = mediaList.map { MediaItem(title = it.title, url = it.url) },
+  mediaList = emptyList(),
   content = content,
   homeTeam = Team(
     crestUrl = homeTeam.crestUrl,

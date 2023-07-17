@@ -4,7 +4,6 @@ import arrow.core.Either
 import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.common.navigation.Destination
 import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
-import dev.iurysouza.livematch.common.navigation.models.MediaItem
 import dev.iurysouza.livematch.footballdata.domain.models.AwayTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.HomeTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
@@ -15,6 +14,7 @@ import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import dev.iurysouza.livematch.common.navigation.models.Team as NavTeams
 
 internal fun MatchEntity.toUiModel(resources: ResourceProvider) = MatchUiModel(
   id = id.toString(),
@@ -106,7 +106,6 @@ internal fun buildMatchThreadWith(
     name = matchEntity.competition.name,
     emblemUrl = matchEntity.competition.emblem,
   ),
-  mediaList = emptyList(),
 )
 
 internal fun toTeam(
@@ -156,16 +155,15 @@ fun MatchThread.toDestination() = Destination.MatchThread(
   matchThread = MatchThreadArgs(
     id = id,
     startTime = startTime,
-    mediaList = mediaList.map { MediaItem(title = it.title, url = it.url) },
     content = content,
-    homeTeam = dev.iurysouza.livematch.common.navigation.models.Team(
+    homeTeam = NavTeams(
       crestUrl = homeTeam.crestUrl,
       name = homeTeam.name,
       isHomeTeam = homeTeam.isHomeTeam,
       isAhead = homeTeam.isAhead,
       score = homeTeam.score,
     ),
-    awayTeam = dev.iurysouza.livematch.common.navigation.models.Team(
+    awayTeam = NavTeams(
       crestUrl = awayTeam.crestUrl,
       name = awayTeam.name,
       isHomeTeam = awayTeam.isHomeTeam,

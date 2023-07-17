@@ -9,19 +9,11 @@ import kotlinx.parcelize.Parcelize
 data class MatchThreadArgs(
   val id: String?,
   val startTime: Long?,
-  val mediaList: List<MediaItem>,
   val content: String?,
   val homeTeam: Team,
   val awayTeam: Team,
   val refereeList: List<String>,
   val competition: Competition,
-) : Parcelable
-
-@Parcelize
-@JsonClass(generateAdapter = true)
-data class MediaItem(
-  val title: String,
-  val url: String,
 ) : Parcelable
 
 @Parcelize

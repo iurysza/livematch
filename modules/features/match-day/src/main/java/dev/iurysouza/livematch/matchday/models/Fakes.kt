@@ -30,7 +30,7 @@ object Fakes {
         crestUrl = "https://crests.football-data.org/770.svg",
         randomWordWithMaxChars(15),
         isHomeTeam = false,
-        isAhead = homeScore > awayScore,
+        isAhead = homeScore < awayScore,
         score = "$awayScore",
       ),
       startTime = "${(14..20).random()}:00",

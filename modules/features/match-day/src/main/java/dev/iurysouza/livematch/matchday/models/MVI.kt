@@ -7,17 +7,16 @@ import dev.iurysouza.livematch.common.navigation.Destination
 import kotlinx.collections.immutable.ImmutableList
 
 data class MatchDayViewState(
-  val matchListState: MatchListState = MatchListState.Loading,
+  val matchDayState: MatchDayState = MatchDayState.Loading,
   val isSyncing: Boolean = false,
   val isRefreshing: Boolean = false,
 ) : ViewState
 
-sealed interface MatchListState {
-  data class Success(val matches: ImmutableList<MatchUiModel>) : MatchListState
-  object Empty : MatchListState
-  object Loading : MatchListState
-
-  data class Error(val msg: String) : MatchListState
+sealed interface MatchDayState {
+  data class Success(val matches: ImmutableList<MatchUiModel>) : MatchDayState
+  object Empty : MatchDayState
+  object Loading : MatchDayState
+  data class Error(val msg: String) : MatchDayState
 }
 
 sealed interface MatchDayViewEffect : ViewSideEffect {
