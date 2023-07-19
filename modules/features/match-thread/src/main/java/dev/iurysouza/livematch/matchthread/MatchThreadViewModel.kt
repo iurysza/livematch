@@ -42,13 +42,15 @@ class MatchThreadViewModel @Inject constructor(
 
   private fun getLatestComments(match: MatchThread, isRefreshing: Boolean) = viewModelScope.launch {
     setState { copy(matchThread = matchThread) }
-    if (match.content != null && match.id != null && match.startTime != null) {
       val (matchEvents, content) = eventParser.getMatchEvents(match.content)
       setState {
         copy(
           descriptionState = MatchDescriptionState.Success(
-            matchThread = match.copy(content = content),
+            content = content,
+            mediaList = match.mediaList,
+            homeTeam = match.homeTeam,
             matchEvents = matchEvents,
+            awayTeam = match.awayTeam,
           ),
         )
       }
@@ -96,7 +98,6 @@ class MatchThreadViewModel @Inject constructor(
             }
           },
         )
-    }
   }
 
   private suspend fun fetchLatestMatchThreads(id: String) =
@@ -118,6 +119,7 @@ class MatchThreadViewModel @Inject constructor(
       is ViewError.CommentSectionParsingError -> resourceProvider.getString(
         R.string.match_screen_error_comment_parsing,
       )
+
       else -> resourceProvider.getString(R.string.match_screen_error_default)
     }
   }

@@ -5,6 +5,8 @@ import dev.iurysouza.livematch.common.ViewEvent
 import dev.iurysouza.livematch.common.ViewSideEffect
 import dev.iurysouza.livematch.common.ViewState
 import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
+import dev.iurysouza.livematch.footballdata.data.models.AwayTeam
+import dev.iurysouza.livematch.footballdata.data.models.HomeTeam
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -24,7 +26,10 @@ sealed interface MatchThreadViewEvent : ViewEvent {
 sealed interface MatchDescriptionState : Parcelable {
   @Parcelize
   data class Success(
-    val matchThread: MatchThread,
+    val content:String,
+    val mediaList: List<MediaItem>,
+    val homeTeam: Team,
+    val awayTeam: Team,
     val matchEvents: List<MatchEvent>,
   ) : MatchDescriptionState
 

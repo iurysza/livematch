@@ -26,34 +26,32 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import coil.compose.AsyncImage
-import dev.iurysouza.livematch.matchthread.models.Team
+import dev.iurysouza.livematch.matchthread.models.MatchHeader
+import dev.iurysouza.livematch.matchthread.models.HeaderTeam
 
 @Composable
 @Preview
 private fun MatchHeaderPreview() {
   MatchHeader(
-    homeTeam = Team(
+    homeTeam = HeaderTeam(
       name = "England",
       crestUrl = "https://crests.football-data.org/770.svg",
       score = "3",
-      isAhead = false,
-      isHomeTeam = false,
     ),
-    awayTeam = Team(
+    awayTeam = HeaderTeam(
       name = "England",
       crestUrl = "https://crests.football-data.org/770.svg",
       score = "3",
-      isAhead = false,
-      isHomeTeam = false,
     ),
+    competition = "Premier League",
+    competitionLogo = "https://crests.football-data.org/770.svg",
   )
 }
 
 @Composable
-fun MatchHeader(
-  homeTeam: Team,
-  awayTeam: Team,
-) {
+fun MatchHeaderNew(matchHeader: MatchHeader) {
+  val awayTeam = matchHeader.awayTeam
+  val homeTeam = matchHeader.homeTeam
   Row(
     verticalAlignment = Alignment.Bottom,
     horizontalArrangement = Arrangement.Center,
@@ -64,7 +62,7 @@ fun MatchHeader(
   ) {
     HomeMatchHeader(
       team = homeTeam.name,
-      teamCrestUrl = homeTeam.crestUrl!!,
+      teamCrestUrl = homeTeam.crestUrl,
       score = homeTeam.score,
     )
     Text(
@@ -76,7 +74,7 @@ fun MatchHeader(
     )
     AwayMatchHeader(
       team = awayTeam.name,
-      teamCrestUrl = awayTeam.crestUrl!!,
+      teamCrestUrl = awayTeam.crestUrl,
       score = awayTeam.score,
     )
   }

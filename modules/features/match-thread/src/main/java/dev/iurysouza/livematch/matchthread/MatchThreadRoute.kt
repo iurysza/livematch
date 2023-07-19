@@ -9,7 +9,7 @@ import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
 import dev.iurysouza.livematch.designsystem.components.shortToast
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEffect.Error
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEvent
-import dev.iurysouza.livematch.matchthread.models.toUi
+import dev.iurysouza.livematch.matchthread.models.toMatchHeader
 import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
 
 @Composable
@@ -30,9 +30,9 @@ fun MatchThreadRoute(
 
   val uiState by remember(viewModel.viewState) { viewModel.viewState }
 
-  MatchThreadScreen(
+  MatchThreadScreenNew(
     uiState = uiState,
-    matchThread = args.toUi(),
+    matchHeader = args.toMatchHeader(),
     onNavigateUp = onNavigateUp,
     onRefresh = { viewModel.handleEvent(MatchThreadViewEvent.GetLatestComments(args)) },
   )

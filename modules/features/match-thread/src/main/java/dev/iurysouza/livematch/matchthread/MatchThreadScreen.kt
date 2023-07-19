@@ -22,7 +22,6 @@ import dev.iurysouza.livematch.designsystem.components.LottieAsset
 import dev.iurysouza.livematch.designsystem.components.LottiePullToReveal
 import dev.iurysouza.livematch.matchthread.components.CommentItemComponent
 import dev.iurysouza.livematch.matchthread.components.MatchDetails
-import dev.iurysouza.livematch.matchthread.components.MatchHeader
 import dev.iurysouza.livematch.matchthread.components.ScreenToolbar
 import dev.iurysouza.livematch.matchthread.components.SectionHeader
 import dev.iurysouza.livematch.matchthread.models.CommentItem
@@ -71,25 +70,22 @@ fun MatchThreadScreen(
                 name = matchThread.homeTeam.name,
                 score = matchThread.homeTeam.score,
               )
-              MatchHeader(
-                homeTeam = homeTeam,
-                awayTeam = Team(
-                  crestUrl = matchThread.awayTeam.crestUrl,
-                  isHomeTeam = matchThread.awayTeam.isHomeTeam,
-                  isAhead = matchThread.awayTeam.isAhead,
-                  name = matchThread.awayTeam.name,
-                  score = matchThread.awayTeam.score,
-                ),
-              )
+//              MatchHeader(
+//                homeTeam = homeTeam,
+//                awayTeam = Team(
+//                  crestUrl = matchThread.awayTeam.crestUrl,
+//                  isHomeTeam = matchThread.awayTeam.isHomeTeam,
+//                  isAhead = matchThread.awayTeam.isAhead,
+//                  name = matchThread.awayTeam.name,
+//                  score = matchThread.awayTeam.score,
+//                ),
+//              )
             }
             item {
               when (state) {
                 MatchDescriptionState.Loading -> FullScreenProgress(Modifier)
                 is MatchDescriptionState.Error -> ErrorScreen(msg = state.msg)
-                is MatchDescriptionState.Success -> MatchDetails(
-                  state.matchThread.content!!,
-                  state.matchThread.mediaList,
-                )
+                is MatchDescriptionState.Success -> MatchDetails(state.content, state.mediaList)
               }
             }
             when (commentsState) {
