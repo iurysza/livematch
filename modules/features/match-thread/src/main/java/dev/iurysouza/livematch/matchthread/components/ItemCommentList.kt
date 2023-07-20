@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import dev.iurysouza.livematch.designsystem.components.AnimatedCellExpansion
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
 import dev.iurysouza.livematch.designsystem.components.FullScreenProgress
-import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
+import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.matchthread.models.CommentItem
 import dev.iurysouza.livematch.matchthread.models.CommentSection
 import dev.iurysouza.livematch.matchthread.models.Fake
@@ -21,16 +21,16 @@ import kotlinx.collections.immutable.ImmutableList
 
 fun LazyListScope.itemCommentList(
   state: MatchCommentsState,
+  onToggleStateInit: (Map<String, Boolean>) -> Unit = {},
   expandedSectionMap: Map<String, Boolean> = emptyMap(),
-  onSectionTapped: (String) -> Unit = {},
   expandCommentsIf: (String) -> Boolean = { true },
-  onInit: (Map<String, Boolean>) -> Unit = {},
+  onSectionTapped: (String) -> Unit = {},
 ) {
   when (state) {
     MatchCommentsState.Loading -> item { FullScreenProgress() }
     is MatchCommentsState.Error -> item { ErrorScreen(msg = state.msg, isScrollable = false) }
     is MatchCommentsState.Success -> {
-      onInit(initToggledCommentsState(expandedSectionMap, state.sectionList))
+      onToggleStateInit(initToggledCommentsState(expandedSectionMap, state.sectionList))
       state.sectionList.forEach { (_, event, comments) ->
         stickyHeader {
           SectionHeader(
@@ -53,15 +53,14 @@ fun LazyListScope.itemCommentList(
 
 @Preview
 @Composable
-private fun ItemCommentListPreview() = LivematchTheme(isPreview = true) {
+private fun ItemCommentListPreview() = LiveMatchThemePreview {
   LazyColumn(
     modifier = Modifier
       .background(MaterialTheme.colors.background)
       .fillMaxSize(),
-    content = {
-      itemCommentList(MatchCommentsState.Success(Fake.generateCommentSection()))
-    },
-  )
+  ) {
+    itemCommentList(MatchCommentsState.Success(Fake.generateCommentSection()))
+  }
 }
 
 fun Map<String, Boolean>.toggleValue(
@@ -73,11 +72,11 @@ fun Map<String, Boolean>.isValueTrueForKey(description: String): Boolean {
 }
 
 private fun initToggledCommentsState(
-  showContent: Map<String, Boolean>,
+  expandedSectionMap: Map<String, Boolean>,
   commentSections: ImmutableList<CommentSection>,
   defaultToggleState: Boolean = true,
 ): Map<String, Boolean> {
-  if (showContent.isNotEmpty()) return showContent
+  if (expandedSectionMap.isNotEmpty()) return expandedSectionMap
 
   val sectionToggleMap: MutableMap<String, Boolean> = mutableMapOf()
   commentSections.forEach { (_, event) ->
