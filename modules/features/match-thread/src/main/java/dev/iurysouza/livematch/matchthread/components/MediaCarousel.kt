@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -22,38 +23,47 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.halilibo.richtext.markdown.Markdown
 import com.halilibo.richtext.ui.RichText
 import com.halilibo.richtext.ui.RichTextStyle
 import com.halilibo.richtext.ui.string.RichTextStringStyle
+import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
+import dev.iurysouza.livematch.designsystem.theme.Space.S100
+import dev.iurysouza.livematch.designsystem.theme.Space.S1000
+import dev.iurysouza.livematch.designsystem.theme.Space.S200
+import dev.iurysouza.livematch.designsystem.theme.Space.S50
+import dev.iurysouza.livematch.matchthread.models.Fake
 import dev.iurysouza.livematch.matchthread.models.MediaItem
 import timber.log.Timber
 
 @Composable
 fun MediaCarousel(mediaItemList: List<MediaItem>) {
+  if (mediaItemList.isEmpty()) return
   Column(
     Modifier
-      .padding(horizontal = 8.dp)
-      .padding(bottom = 4.dp),
+      .padding(horizontal = S100)
+      .padding(vertical = S200)
+      .padding(bottom = S50),
   ) {
     val context = LocalContext.current
     Text(
-      modifier = Modifier.padding(bottom = 4.dp),
+      modifier = Modifier.padding(bottom = S50),
       text = "Highlights",
       style = TextStyle(fontSize = 18.sp, color = MaterialTheme.colors.onPrimary),
     )
     LazyRow(
-      horizontalArrangement = Arrangement.spacedBy(8.dp),
+      horizontalArrangement = Arrangement.spacedBy(S100),
     ) {
       itemsIndexed(mediaItemList) { _, item ->
         Box(
           Modifier
             .clickable { context.launchBrowserTabWith(item.url) }
-            .size(80.dp)
+            .size(S1000)
             .background(MaterialTheme.colors.onSurface, RoundedCornerShape(10.dp))
-            .padding(8.dp),
+            .padding(S100),
         ) {
           Text(
             text = item.title,
@@ -80,24 +90,43 @@ private fun Context.launchBrowserTabWith(url: String) = runCatching {
 }.onFailure { Timber.e(it) }
 
 @Composable
-fun MatchDetails(content: String, mediaItemList: List<MediaItem>) {
+fun MatchDetails(
+  content: String,
+  mediaItemList: List<MediaItem>,
+  modifier: Modifier = Modifier,
+) {
   Column(
-    modifier = Modifier
+    modifier = modifier
+      .fillMaxWidth()
       .background(MaterialTheme.colors.background)
-      .padding(horizontal = 8.dp),
+      .padding(horizontal = S100),
   ) {
-    RichText(
-      modifier = Modifier.padding(8.dp),
-      style = RichTextStyle.Default.copy(
-        stringStyle = RichTextStringStyle.Default.copy(
-          italicStyle = SpanStyle(
-            fontSize = 12.sp,
-          ),
-        ),
-      ),
-    ) {
-      Markdown(content)
-    }
+    MatchDescription(content)
     MediaCarousel(mediaItemList)
   }
+}
+
+@Composable
+private fun MatchDescription(content: String) {
+  RichText(
+    modifier = Modifier.padding(S100),
+    style = RichTextStyle.Default.copy(
+      stringStyle = RichTextStringStyle.Default.copy(
+        italicStyle = SpanStyle(
+          fontSize = 12.sp,
+        ),
+      ),
+    ),
+  ) {
+    Markdown(content)
+  }
+}
+
+@Preview
+@Composable
+fun MatchDetailsPreview() = LiveMatchThemePreview {
+  MatchDetails(
+    content = "#**FT: RB Leipzig  [3-0](#bar-3-white)  Borussia Dortmund**\n\n*RB Leipzig scorers: Willi Orban (6'), Dominik Szoboszlai (45'), Amadou Haidara (84')*",
+    mediaItemList = Fake.generateMediaList(),
+  )
 }
