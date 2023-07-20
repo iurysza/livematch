@@ -1,5 +1,6 @@
 package dev.iurysouza.livematch.designsystem.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -25,13 +26,14 @@ fun Modifier.gradientBackground(
   )
 }
 
-@Composable
+@SuppressLint("UnnecessaryComposedModifier")
 fun Modifier.thenIf(
-  scrollable: Boolean,
+  condition: Boolean,
   applyModifier: @Composable Modifier.() -> Modifier,
-): Modifier =
-  if (scrollable) {
+): Modifier = composed {
+  if (condition) {
     this.applyModifier()
   } else {
     this
   }
+}
