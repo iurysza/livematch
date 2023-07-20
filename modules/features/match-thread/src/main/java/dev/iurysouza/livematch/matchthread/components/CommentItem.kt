@@ -30,6 +30,10 @@ import com.halilibo.richtext.ui.RichTextStyle
 import com.halilibo.richtext.ui.WithStyle
 import com.halilibo.richtext.ui.string.RichTextStringStyle
 import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
+import dev.iurysouza.livematch.designsystem.theme.Space.S100
+import dev.iurysouza.livematch.designsystem.theme.Space.S150
+import dev.iurysouza.livematch.designsystem.theme.Space.S50
+import dev.iurysouza.livematch.designsystem.theme.Space.S800
 import dev.iurysouza.livematch.matchthread.R
 import dev.iurysouza.livematch.matchthread.models.CommentItem
 
@@ -41,68 +45,80 @@ fun CommentItemComponent(
   Row(
     modifier = modifier
       .background(MaterialTheme.colors.background)
-      .padding(vertical = 8.dp)
-      .padding(start = 64.dp, end = 8.dp)
+      .padding(vertical = S100)
+      .padding(start = S800, end = S100)
       .background(MaterialTheme.colors.primary),
   ) {
     Column(
-      modifier = modifier
-        .padding(start = 4.dp)
+      modifier = Modifier
+        .padding(start = S50)
         .background(MaterialTheme.colors.background)
-        .padding(horizontal = 4.dp, vertical = 4.dp),
+        .padding(S50),
     ) {
-      Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.fillMaxWidth(),
-      ) {
-        val authorStyle = TextStyle(
-          fontSize = 12.sp,
-          color = MaterialTheme.colors.onSurface,
-          fontWeight = FontWeight.Bold,
-        )
-        Text(
-          text = commentItem.author,
-          fontWeight = FontWeight.Bold,
-          style = authorStyle,
-        )
-        if (commentItem.flairUrl != null) {
-          Box(
-            Modifier.padding(horizontal = 2.dp),
-          ) {
-            AsyncImage(
-              modifier = Modifier
-                .size(12.dp)
-                .clip(CircleShape),
-              model = commentItem.flairUrl,
-              contentDescription = commentItem.flairName,
-            )
-          }
-        }
-        Text(
-          text = " • ",
-          style = authorStyle,
-        )
-        Text(
-          text = stringResource(id = R.string.minutes, commentItem.relativeTime),
-          style = authorStyle.copy(fontWeight = FontWeight.Normal),
-        )
-        Spacer(modifier.weight(1f))
-        Text(
-          modifier = Modifier.wrapContentSize(),
-          text = commentItem.score,
-          style = authorStyle.copy(
-            fontWeight = FontWeight.Normal,
-            color = MaterialTheme.colors.primary,
-          ),
-        )
-        Text(
-          modifier = Modifier.wrapContentSize(),
-          text = " pts",
-          style = authorStyle.copy(fontWeight = FontWeight.Normal),
-        )
-      }
-
+      CommentHeader(commentItem)
       CommentBody(commentItem.body)
+    }
+  }
+}
+
+@Composable
+private fun CommentHeader(
+  comment: CommentItem,
+  modifier: Modifier = Modifier,
+) {
+  Row(
+    verticalAlignment = Alignment.CenterVertically,
+    modifier = modifier.fillMaxWidth(),
+  ) {
+    val authorStyle = TextStyle(
+      fontSize = 12.sp,
+      color = MaterialTheme.colors.onSurface,
+      fontWeight = FontWeight.Bold,
+    )
+    Text(
+      text = comment.author,
+      fontWeight = FontWeight.Bold,
+      style = authorStyle,
+    )
+    FlairImage(comment.flairUrl, comment.flairName)
+    Text(
+      text = " • ",
+      style = authorStyle,
+    )
+    Text(
+      text = stringResource(id = R.string.minutes, comment.relativeTime),
+      style = authorStyle.copy(fontWeight = FontWeight.Normal),
+    )
+    Spacer(modifier.weight(1f))
+    Text(
+      modifier = Modifier.wrapContentSize(),
+      text = comment.score,
+      style = authorStyle.copy(
+        fontWeight = FontWeight.Normal,
+        color = MaterialTheme.colors.primary,
+      ),
+    )
+    Text(
+      modifier = Modifier.wrapContentSize(),
+      text = " pts",
+      style = authorStyle.copy(fontWeight = FontWeight.Normal),
+    )
+  }
+}
+
+@Composable
+private fun FlairImage(flair: String?, flairName: String) {
+  if (flair != null) {
+    Box(
+      Modifier.padding(horizontal = 2.dp),
+    ) {
+      AsyncImage(
+        modifier = Modifier
+          .size(S150)
+          .clip(CircleShape),
+        model = flair,
+        contentDescription = flairName,
+      )
     }
   }
 }
@@ -110,7 +126,7 @@ fun CommentItemComponent(
 @Composable
 private fun CommentBody(content: String) {
   RichText(
-    modifier = Modifier.padding(bottom = 8.dp),
+    modifier = Modifier.padding(bottom = S100),
   ) {
     WithStyle(
       style = RichTextStyle(

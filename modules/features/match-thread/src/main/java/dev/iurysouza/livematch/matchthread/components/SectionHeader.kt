@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,7 +29,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.iurysouza.livematch.designsystem.components.roundedClip
+import dev.iurysouza.livematch.designsystem.components.thenIf
 import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
+import dev.iurysouza.livematch.designsystem.theme.Space.S100
+import dev.iurysouza.livematch.designsystem.theme.Space.S150
+import dev.iurysouza.livematch.designsystem.theme.Space.S200
+import dev.iurysouza.livematch.designsystem.theme.Space.S300
+import dev.iurysouza.livematch.designsystem.theme.Space.S50
 import dev.iurysouza.livematch.matchthread.models.EventIcon
 import dev.iurysouza.livematch.matchthread.models.MatchEvent
 
@@ -40,33 +47,30 @@ fun SectionHeader(
   isExpanded: Boolean = false,
   nestedCommentCount: Int = 0,
 ) {
-  var newModifier = modifier
-    .background(MaterialTheme.colors.background)
-  if (onClick != null) {
-    newModifier = newModifier
-      .padding(horizontal = 8.dp)
-      .roundedClip()
-      .clickable { onClick(event) }
-  }
   Row(
-    modifier = newModifier
-      .padding(horizontal = 12.dp)
+    modifier = modifier
+      .background(MaterialTheme.colors.background)
+      .thenIf(onClick != null) {
+        padding(horizontal = S100)
+          .roundedClip()
+          .clickable { onClick?.let { it(event) } }
+      }
+      .padding(horizontal = S150)
       .fillMaxWidth(),
     verticalAlignment = Alignment.CenterVertically,
   ) {
-    Row(modifier = modifier.weight(.85f)) {
+    Row(modifier = Modifier.weight(.85f)) {
       Timeline(
-        modifier = modifier,
         icon = event.icon,
         time = event.relativeTime,
         isKeyEvent = event.keyEvent,
       )
-      HeaderBody(event, modifier)
+      HeaderBody(event)
     }
     CommentCounterIndicator(
       isExpanded,
       nestedCommentCount,
-      modifier
+      Modifier
         .padding(start = 4.dp, bottom = 14.dp)
         .width(IntrinsicSize.Min),
     )
@@ -76,14 +80,14 @@ fun SectionHeader(
 @Composable
 private fun RowScope.HeaderBody(
   event: MatchEvent,
-  modifier: Modifier,
+  modifier: Modifier = Modifier,
 ) {
   Text(
     text = event.description,
     modifier = modifier
       .weight(.15f)
-      .padding(start = 4.dp)
-      .padding(bottom = 14.dp)
+      .padding(start = S50)
+      .padding(bottom = S200)
       .align(Alignment.CenterVertically),
     style = if (event.keyEvent) {
       TextStyle(
@@ -100,13 +104,12 @@ private fun RowScope.HeaderBody(
 private fun CommentCounterIndicator(
   isExpanded: Boolean,
   nestedCommentCount: Int,
-  modifier: Modifier,
+  modifier: Modifier = Modifier,
 ) {
   if (!isExpanded && nestedCommentCount > 0) {
     Box(
       modifier = modifier
-        .width(28.dp)
-        .height(24.dp)
+        .size(S300)
         .background(MaterialTheme.colors.primaryVariant, RoundedCornerShape(10.dp)),
     ) {
       Text(
@@ -128,40 +131,47 @@ fun Timeline(modifier: Modifier = Modifier, icon: EventIcon, time: String, isKey
     modifier.background(MaterialTheme.colors.background),
   ) {
     Column(
-      modifier.align(Alignment.CenterHorizontally),
+      Modifier.align(Alignment.CenterHorizontally),
     ) {
       Text(
-        modifier = modifier.align(Alignment.CenterHorizontally),
+        modifier = Modifier.align(Alignment.CenterHorizontally),
         fontSize = 12.sp,
         color = MaterialTheme.colors.onPrimary,
         text = time,
       )
       MatchEventIcon(
-        modifier = modifier.align(Alignment.CenterHorizontally),
+        modifier = Modifier.align(Alignment.CenterHorizontally),
         eventIcon = icon,
         isKeyEvent = isKeyEvent,
       )
     }
     Line(
-      modifier = modifier.padding(top = 8.dp),
+      modifier = Modifier.padding(top = 8.dp),
       color = MaterialTheme.colors.onBackground,
     )
   }
 }
 
 @Composable
-private fun ColumnScope.Line(modifier: Modifier, color: Color) {
+private fun ColumnScope.Line(
+  modifier: Modifier = Modifier,
+  color: Color,
+) {
   Box(
     modifier = modifier
       .align(Alignment.CenterHorizontally)
       .background(color = color)
       .height(30.dp)
-      .width(3.dp),
+      .width(S50),
   )
 }
 
 @Composable
-private fun MatchEventIcon(modifier: Modifier, eventIcon: EventIcon, isKeyEvent: Boolean) {
+private fun MatchEventIcon(
+  modifier: Modifier = Modifier,
+  eventIcon: EventIcon,
+  isKeyEvent: Boolean,
+) {
   val tint = if (isKeyEvent) {
     MaterialTheme.colors.primaryVariant
   } else {
@@ -172,11 +182,11 @@ private fun MatchEventIcon(modifier: Modifier, eventIcon: EventIcon, isKeyEvent:
       .background(tint, CircleShape)
       .padding(2.dp)
       .background(MaterialTheme.colors.background, CircleShape)
-      .padding(4.dp),
+      .padding(S50),
   ) {
     Icon(
-      modifier = modifier
-        .height(16.dp)
+      modifier = Modifier
+        .height(S200)
         .padding(1.dp),
       imageVector = eventIcon.toImageVector(),
       contentDescription = "Home",
@@ -198,7 +208,7 @@ private fun MatchIconPreview() = LivematchTheme {
 
 @Composable
 @Preview
-fun CommentHeaderPreview2() = LivematchTheme {
+private fun SectionHeaderWithNestedCommentsPreview() = LivematchTheme {
   SectionHeader(
     nestedCommentCount = 23,
     isExpanded = false,
@@ -215,7 +225,7 @@ fun CommentHeaderPreview2() = LivematchTheme {
 
 @Composable
 @Preview
-fun CommentHeaderPreview() = LivematchTheme {
+private fun SectionHeaderPreview() = LivematchTheme {
   SectionHeader(
     nestedCommentCount = 23,
     isExpanded = true,
