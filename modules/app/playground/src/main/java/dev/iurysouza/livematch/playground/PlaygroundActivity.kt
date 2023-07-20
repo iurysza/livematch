@@ -13,7 +13,7 @@ class PlaygroundActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
-      LivematchTheme(isPreview = false) {
+      LivematchTheme {
         MatchDayScreen(
           uiState = MatchDayViewState(
             matchDayState = MatchDayState.Success(Fakes.generateMatchList()),
