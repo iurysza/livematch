@@ -6,8 +6,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ErrorScreen(modifier: Modifier = Modifier, msg: String = "Error Screen") {
-  AppColumn(modifier) {
+fun ErrorScreen(
+  modifier: Modifier = Modifier,
+  msg: String = "Error Screen",
+  isScrollable: Boolean = true,
+) {
+  AppColumn(modifier, isScrollable) {
     Text(msg)
   }
 }

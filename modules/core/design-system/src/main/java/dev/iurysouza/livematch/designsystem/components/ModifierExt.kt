@@ -3,6 +3,7 @@ package dev.iurysouza.livematch.designsystem.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
@@ -23,3 +24,14 @@ fun Modifier.gradientBackground(
     ),
   )
 }
+
+@Composable
+fun Modifier.thenIf(
+  scrollable: Boolean,
+  applyModifier: @Composable Modifier.() -> Modifier,
+): Modifier =
+  if (scrollable) {
+    this.applyModifier()
+  } else {
+    this
+  }

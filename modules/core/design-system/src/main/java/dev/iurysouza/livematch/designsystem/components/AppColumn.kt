@@ -9,13 +9,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+
 @Composable
-fun AppColumn(modifier: Modifier = Modifier, content: @Composable () -> Unit = {}) {
+fun AppColumn(
+  modifier: Modifier = Modifier,
+  isScrollable: Boolean = true,
+  content: @Composable () -> Unit = {},
+) {
   Column(
     modifier = modifier
       .fillMaxSize()
       .gradientBackground()
-      .verticalScroll(rememberScrollState()),
+      .thenIf(isScrollable) { verticalScroll(rememberScrollState()) },
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
