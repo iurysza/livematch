@@ -2,7 +2,6 @@ package dev.iurysouza.livematch.matchthread.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
@@ -14,15 +13,11 @@ import dev.iurysouza.livematch.designsystem.components.AnimatedCellExpansion
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
 import dev.iurysouza.livematch.designsystem.components.FullScreenProgress
 import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
-import dev.iurysouza.livematch.designsystem.theme.Space.S500
 import dev.iurysouza.livematch.matchthread.models.CommentItem
 import dev.iurysouza.livematch.matchthread.models.CommentSection
-import dev.iurysouza.livematch.matchthread.models.EventIcon
+import dev.iurysouza.livematch.matchthread.models.Fake
 import dev.iurysouza.livematch.matchthread.models.MatchCommentsState
-import dev.iurysouza.livematch.matchthread.models.MatchEvent
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 
 fun LazyListScope.itemCommentList(
   state: MatchCommentsState,
@@ -58,64 +53,15 @@ fun LazyListScope.itemCommentList(
 
 @Preview
 @Composable
-fun ItemCommentListPreview() {
-  LivematchTheme(isPreview = true) {
-    LazyColumn(
-      modifier = Modifier
-        .background(MaterialTheme.colors.background)
-        .fillMaxSize()
-        .padding(top = S500),
-      content = {
-        itemCommentList(
-          state = MatchCommentsState.Success(
-            sectionList = generateCommentSection().toImmutableList(),
-          ),
-        )
-      },
-    )
-
-  }
-}
-
-
-private fun generateCommentSection(): List<CommentSection> {
-  val events = listOf(
-    "87, Substitution, Borussia Dortmund. Emre Can replaces Anthony Modeste.",
-    "85, Substitution, RB Leipzig. André Silva replaces Timo Werner.",
-    "85, Substitution, RB Leipzig. Kevin Kampl replaces Konrad Laimer.",
-    "84, Goal! RB Leipzig 3. Borussia Dortmund 0. Amadou Haldara (RB Leipzig) right footed shot from the centre of the box to the high centre of the goal. Assisted by Timo Werner.",
-    "78, Substitution. RB Leipzig. Amadou Haidara replaces Emil Forsberg.",
-    "77, Substitution. RB Leipzig. Josko Gvardiol replaces Abdou Diallo.",
-    "75, Konrad Laimer (RB Leipzig) is shown the yellow card.",
+fun ItemCommentListPreview() = LivematchTheme(isPreview = true) {
+  LazyColumn(
+    modifier = Modifier
+      .background(MaterialTheme.colors.background)
+      .fillMaxSize(),
+    content = {
+      itemCommentList(MatchCommentsState.Success(Fake.generateCommentSection()))
+    },
   )
-
-  val commentSections = mutableListOf<CommentSection>()
-
-  for ((i, event) in events.withIndex()) {
-    val (relativeTime, description) = event.split(",", limit = 2)
-    commentSections.add(
-      CommentSection(
-        event = MatchEvent(
-          description = description.trim(),
-          icon = EventIcon.Goal, // Update this based on your need
-          relativeTime = relativeTime.trim(),
-        ),
-        name = "Event $i",
-        commentList = persistentListOf(
-          CommentItem(
-            relativeTime = i,
-            author = "Iury Souza",
-            body = "This is a comment $i",
-            flairName = "Flamengo",
-            flairUrl = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/1039.png&w=40&h=40&transparent=true",
-            score = "$i",
-          ),
-        ),
-      ),
-    )
-  }
-
-  return commentSections
 }
 
 
