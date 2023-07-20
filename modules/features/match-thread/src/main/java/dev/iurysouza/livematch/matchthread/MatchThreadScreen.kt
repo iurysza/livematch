@@ -16,7 +16,7 @@ import dev.iurysouza.livematch.designsystem.components.LottieAsset
 import dev.iurysouza.livematch.designsystem.components.LottiePullToReveal
 import dev.iurysouza.livematch.designsystem.theme.Space.S500
 import dev.iurysouza.livematch.matchthread.components.MatchDescription
-import dev.iurysouza.livematch.matchthread.components.MatchHeaderNew
+import dev.iurysouza.livematch.matchthread.components.MatchHeader
 import dev.iurysouza.livematch.matchthread.components.ScreenToolbar
 import dev.iurysouza.livematch.matchthread.components.isValueTrueForKey
 import dev.iurysouza.livematch.matchthread.components.itemCommentList
@@ -33,9 +33,8 @@ fun MatchThreadScreen(
   onRefresh: () -> Unit = {},
 ) {
   var expandedSectionMap by remember { mutableStateOf(mapOf<String, Boolean>()) }
-  Box {
+  Box(modifier) {
     LottiePullToReveal(
-      modifier = modifier,
       isRefreshing = uiState.isRefreshing,
       onRefresh = onRefresh,
       lottieAsset = LottieAsset.FootballFans,
@@ -46,18 +45,16 @@ fun MatchThreadScreen(
             .fillMaxSize()
             .padding(top = S500),
           content = {
-            item { MatchHeaderNew(matchHeader) }
+            item { MatchHeader(matchHeader) }
             item { MatchDescription(uiState.descriptionState) }
             itemCommentList(
               state = uiState.commentSectionState,
+              onToggleStateInit = { expandedSectionMap = it },
               expandedSectionMap = expandedSectionMap,
+              expandCommentsIf = { sectionName -> expandedSectionMap.isValueTrueForKey(sectionName) },
               onSectionTapped = { sectionName ->
                 expandedSectionMap = expandedSectionMap.toggleValue(sectionName)
               },
-              expandCommentsIf = { sectionName ->
-                expandedSectionMap.isValueTrueForKey(sectionName)
-              },
-              onInit = { expandedSectionMap = it },
             )
           },
         )

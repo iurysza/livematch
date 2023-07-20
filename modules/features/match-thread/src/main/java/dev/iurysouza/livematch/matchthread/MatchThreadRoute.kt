@@ -29,11 +29,9 @@ fun MatchThreadRoute(
   }
 
   val uiState by remember(viewModel.viewState) { viewModel.viewState }
-
-//  MatchThreadScreen(
+  val matchHeader = remember(Unit) { args.toMatchHeader() }
   MatchThreadScreen(
-    matchHeader = args.toMatchHeader(),
-//    matchThread = args.toUi(),
+    matchHeader = matchHeader,
     uiState = uiState,
     onNavigateUp = onNavigateUp,
     onRefresh = { viewModel.handleEvent(MatchThreadViewEvent.GetLatestComments(args)) },
