@@ -26,12 +26,12 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import coil.compose.AsyncImage
-import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
+import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.matchthread.models.HeaderTeam
 import dev.iurysouza.livematch.matchthread.models.MatchHeader
 
 @Composable
-fun MatchHeaderNew(matchHeader: MatchHeader) {
+fun MatchHeader(matchHeader: MatchHeader) {
   val awayTeam = matchHeader.awayTeam
   val homeTeam = matchHeader.homeTeam
   Row(
@@ -197,8 +197,8 @@ private fun TeamCrest(teamCrestUrl: String) {
 
 @Composable
 @Preview
-private fun MatchHeaderPreview() = LivematchTheme {
-  MatchHeaderNew(
+private fun MatchHeaderPreview() = LiveMatchThemePreview {
+  MatchHeader(
     MatchHeader(
       homeTeam = HeaderTeam(
         name = "England",

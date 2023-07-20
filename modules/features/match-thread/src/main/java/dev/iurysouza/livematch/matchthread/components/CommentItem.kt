@@ -29,7 +29,7 @@ import com.halilibo.richtext.ui.RichText
 import com.halilibo.richtext.ui.RichTextStyle
 import com.halilibo.richtext.ui.WithStyle
 import com.halilibo.richtext.ui.string.RichTextStringStyle
-import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
+import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.designsystem.theme.Space.S100
 import dev.iurysouza.livematch.designsystem.theme.Space.S150
 import dev.iurysouza.livematch.designsystem.theme.Space.S50
@@ -44,7 +44,6 @@ fun CommentItemComponent(
 ) {
   Row(
     modifier = modifier
-      .background(MaterialTheme.colors.background)
       .padding(vertical = S100)
       .padding(start = S800, end = S100)
       .background(MaterialTheme.colors.primary),
@@ -142,15 +141,15 @@ private fun CommentBody(content: String) {
 
 @Preview
 @Composable
-private fun CommentItemComponentPreview() = LivematchTheme {
+private fun CommentItemComponentPreview() = LiveMatchThemePreview {
   CommentItemComponent(
     commentItem = CommentItem(
-      author = "elrubiojefe",
+      author = "Chaos_Theory_",
       relativeTime = 62,
-      body = "Fede is just getting better and better. Qatar can't come come soon enough.",
+      body = "# Fede is just getting better and better. Qatar can't come come soon enough.",
       score = "11",
-      flairUrl = "",
-      flairName = "",
+      flairUrl = "https://styles.redditmedia.com/t5_2qjfi/styles/image_widget_purple2x/1q9q3q9q9qj61/",
+      flairName = "Federer",
     ),
   )
 }

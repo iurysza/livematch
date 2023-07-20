@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.placeholder.shimmer
+import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
+import dev.iurysouza.livematch.designsystem.theme.Space.S100
 import dev.iurysouza.livematch.designsystem.theme.Space.S200
 import dev.iurysouza.livematch.matchday.models.Competition
 import kotlin.random.Random
@@ -37,25 +39,13 @@ fun PlaceHolderDivider(
   )
 }
 
-@Preview
-@Composable
-private fun PlaceHolderDividerPreview() {
-  PlaceHolderDivider(
-    Competition(
-      id = 1,
-      name = "Premier League",
-      emblemUrl = "https://media.api-sports.io/football/leagues/39.png",
-    ),
-  )
-}
-
 @Composable
 fun PlaceHolderItem(
   modifier: Modifier = Modifier,
 ) {
   Column(
     modifier
-      .padding(vertical = 8.dp, horizontal = S200)
+      .padding(vertical = S100, horizontal = S200)
       .fillMaxWidth(),
   ) {
     Column(
@@ -86,7 +76,7 @@ fun PlaceHolderItem(
 
 @Preview
 @Composable
-private fun PlaceHolderItemPreview() {
+private fun PlaceHolderItemPreview() = LiveMatchThemePreview {
   PlaceHolderItem()
 }
 
@@ -102,4 +92,16 @@ private fun Modifier.liveMatchPlaceHolder(): Modifier = composed {
         progressForMaxAlpha = 0.9f,
       ),
     )
+}
+
+@Preview
+@Composable
+private fun PlaceHolderDividerPreview() = LiveMatchThemePreview {
+  PlaceHolderDivider(
+    Competition(
+      id = 1,
+      name = "Premier League",
+      emblemUrl = "https://media.api-sports.io/football/leagues/39.png",
+    ),
+  )
 }

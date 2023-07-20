@@ -4,6 +4,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 
 @Composable
 fun ErrorScreen(
@@ -18,6 +19,6 @@ fun ErrorScreen(
 
 @Preview
 @Composable
-private fun ErrorScreenPreview() {
+private fun ErrorScreenPreview() = LiveMatchThemePreview {
   ErrorScreen()
 }

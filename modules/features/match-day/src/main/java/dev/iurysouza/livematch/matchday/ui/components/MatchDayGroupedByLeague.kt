@@ -11,13 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dev.iurysouza.livematch.designsystem.components.roundedClip
+import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.designsystem.theme.Space.S100
 import dev.iurysouza.livematch.designsystem.theme.Space.S200
 import dev.iurysouza.livematch.matchday.models.Fakes
 import dev.iurysouza.livematch.matchday.models.MatchUiModel
 import kotlinx.collections.immutable.ImmutableList
 
-@Preview
 @Composable
 internal fun MatchDayGroupedByLeague(
   modifier: Modifier = Modifier,
@@ -47,4 +47,16 @@ internal fun MatchDayGroupedByLeague(
       }
     }
   }
+}
+
+@Preview
+@Composable
+private fun MatchDayGroupedByLeaguePreview() = LiveMatchThemePreview {
+  MatchDayGroupedByLeague()
+}
+
+@Preview
+@Composable
+private fun MatchDayGroupedByLeaguePlaceHolderPreview() = LiveMatchThemePreview {
+  MatchDayGroupedByLeague(shouldUsePlaceHolder = true)
 }

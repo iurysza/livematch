@@ -8,8 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.iurysouza.livematch.designsystem.components.AppColumn
+import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.matchday.R
 
 @Composable
@@ -24,4 +26,10 @@ fun EmptyMatchDay(modifier: Modifier = Modifier) {
       textAlign = TextAlign.Center,
     )
   }
+}
+
+@Preview
+@Composable
+fun EmptyMatchDayPreview() = LiveMatchThemePreview {
+  EmptyMatchDay()
 }

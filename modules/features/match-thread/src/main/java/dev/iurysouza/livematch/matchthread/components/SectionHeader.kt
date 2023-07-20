@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.iurysouza.livematch.designsystem.components.roundedClip
 import dev.iurysouza.livematch.designsystem.components.thenIf
-import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
+import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.designsystem.theme.Space.S100
 import dev.iurysouza.livematch.designsystem.theme.Space.S150
 import dev.iurysouza.livematch.designsystem.theme.Space.S200
@@ -197,7 +197,7 @@ private fun MatchEventIcon(
 
 @Preview
 @Composable
-private fun MatchIconPreview() = LivematchTheme {
+private fun MatchIconPreview() = LiveMatchThemePreview {
   Timeline(
     modifier = Modifier,
     icon = EventIcon.KickOff,
@@ -208,7 +208,7 @@ private fun MatchIconPreview() = LivematchTheme {
 
 @Composable
 @Preview
-private fun SectionHeaderWithNestedCommentsPreview() = LivematchTheme {
+private fun SectionHeaderWithNestedCommentsPreview() = LiveMatchThemePreview {
   SectionHeader(
     nestedCommentCount = 23,
     isExpanded = false,
@@ -225,7 +225,7 @@ private fun SectionHeaderWithNestedCommentsPreview() = LivematchTheme {
 
 @Composable
 @Preview
-private fun SectionHeaderPreview() = LivematchTheme {
+private fun SectionHeaderPreview() = LiveMatchThemePreview {
   SectionHeader(
     nestedCommentCount = 23,
     isExpanded = true,

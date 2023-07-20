@@ -8,16 +8,24 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
+import dev.iurysouza.livematch.designsystem.theme.Space.S400
 
 @Composable
 fun FullScreenProgress(modifier: Modifier = Modifier) {
   Box(
     modifier = modifier
-      .padding(top = 32.dp)
+      .padding(top = S400)
       .fillMaxSize(),
     contentAlignment = Alignment.Center,
   ) {
     CircularProgressIndicator(color = MaterialTheme.colors.primary)
   }
+}
+
+@Preview
+@Composable
+private fun FullScreenProgressPreview() = LiveMatchThemePreview {
+  FullScreenProgress()
 }

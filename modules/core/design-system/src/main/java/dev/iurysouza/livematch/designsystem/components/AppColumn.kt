@@ -8,6 +8,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 
 @Composable
 fun AppColumn(
@@ -25,4 +27,10 @@ fun AppColumn(
   ) {
     content()
   }
+}
+
+@Preview
+@Composable
+private fun AppColumnPreview() = LiveMatchThemePreview {
+  AppColumn()
 }
