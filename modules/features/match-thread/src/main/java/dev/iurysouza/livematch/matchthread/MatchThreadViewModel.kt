@@ -19,6 +19,7 @@ import dev.iurysouza.livematch.matchthread.models.toUi
 import dev.iurysouza.livematch.reddit.domain.FetchMatchCommentsUseCase
 import dev.iurysouza.livematch.reddit.domain.FetchNewCommentsUseCase
 import javax.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -42,62 +43,62 @@ class MatchThreadViewModel @Inject constructor(
 
   private fun getLatestComments(match: MatchThread, isRefreshing: Boolean) = viewModelScope.launch {
     setState { copy(matchThread = matchThread) }
-      val (matchEvents, content) = eventParser.getMatchEvents(match.content)
-      setState {
-        copy(
-          descriptionState = MatchDescriptionState.Success(
-            content = content,
-            mediaList = match.mediaList,
-            homeTeam = match.homeTeam,
-            matchEvents = matchEvents,
-            awayTeam = match.awayTeam,
-          ),
+    val (matchEvents, content) = eventParser.getMatchEvents(match.content)
+    setState {
+      copy(
+        descriptionState = MatchDescriptionState.Success(
+          content = content,
+          mediaList = match.mediaList,
+          homeTeam = match.homeTeam,
+          matchEvents = matchEvents,
+          awayTeam = match.awayTeam,
+        ),
+      )
+    }
+    if (isRefreshing) {
+      setState { copy(isRefreshing = true) }
+      fetchLatestMatchThreads(match.id)
+    } else {
+      setState { copy(commentSectionState = MatchCommentsState.Loading) }
+      fetchMatchThreads(match.id)
+    }
+      .mapLeft { mapErrorMsg(it) }
+      .flatMap { eventParser.toCommentItemList(it, match.startTime) }
+      .mapLeft { ViewError.CommentItemParsingError(it.toString()) }
+      .flatMap { commentItemList ->
+        eventParser.toCommentSectionListEvents(
+          commentList = commentItemList,
+          eventList = matchEvents,
+          isRefreshing = isRefreshing,
         )
       }
-      if (isRefreshing) {
-        setState { copy(isRefreshing = true) }
-        fetchLatestMatchThreads(match.id)
-      } else {
-        setState { copy(commentSectionState = MatchCommentsState.Loading) }
-        fetchMatchThreads(match.id)
-      }
-        .mapLeft { mapErrorMsg(it) }
-        .flatMap { eventParser.toCommentItemList(it, match.startTime) }
-        .mapLeft { ViewError.CommentItemParsingError(it.toString()) }
-        .flatMap { commentItemList ->
-          eventParser.toCommentSectionListEvents(
-            commentList = commentItemList,
-            eventList = matchEvents,
-            isRefreshing = isRefreshing,
-          )
-        }
-        .map {
-          it.mapIndexed { index, commentSection ->
-            if (index == 0) {
-              commentSection.copy(event = commentSection.event.copy(relativeTime = ""))
-            } else {
-              commentSection.copy(
-                event = commentSection.event.copy(
-                  relativeTime = "${commentSection.event.relativeTime}'",
-                ),
-              )
-            }
+      .map {
+        it.mapIndexed { index, commentSection ->
+          if (index == 0) {
+            commentSection.copy(event = commentSection.event.copy(relativeTime = ""))
+          } else {
+            commentSection.copy(
+              event = commentSection.event.copy(
+                relativeTime = "${commentSection.event.relativeTime}'",
+              ),
+            )
           }
         }
-        .mapLeft { ViewError.CommentSectionParsingError(it.toString()) }
-        .fold(
-          {
-            setState { copy(commentSectionState = MatchCommentsState.Error(parseError(it))) }
-          },
-          {
-            setState {
-              copy(
-                commentSectionState = MatchCommentsState.Success(it),
-                isRefreshing = false,
-              )
-            }
-          },
-        )
+      }
+      .mapLeft { ViewError.CommentSectionParsingError(it.toString()) }
+      .fold(
+        {
+          setState { copy(commentSectionState = MatchCommentsState.Error(parseError(it))) }
+        },
+        {
+          setState {
+            copy(
+              commentSectionState = MatchCommentsState.Success(it.toImmutableList()),
+              isRefreshing = false,
+            )
+          }
+        },
+      )
   }
 
   private suspend fun fetchLatestMatchThreads(id: String) =

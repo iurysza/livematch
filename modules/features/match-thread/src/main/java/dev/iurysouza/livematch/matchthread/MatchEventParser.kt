@@ -11,6 +11,7 @@ import java.time.Duration
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import kotlinx.collections.immutable.toImmutableList
 import timber.log.Timber
 
 open class MatchEventParser {
@@ -182,7 +183,7 @@ open class MatchEventParser {
                   .sortedBy { it.score }
                   .take(20)
                   .sortedBy { it.relativeTime }
-              },
+              }.toImmutableList(),
             ),
           )
           eventStack.removeLast()
@@ -198,8 +199,7 @@ open class MatchEventParser {
             sectionStack.removeLast()
             add(
               lastSection.copy(
-                commentList = sectionStack.lastOrNull()?.commentList?.reversed()
-                  ?: emptyList(),
+                commentList = (sectionStack.lastOrNull()?.commentList?.reversed() ?: emptyList()).toImmutableList(),
               ),
             )
           }

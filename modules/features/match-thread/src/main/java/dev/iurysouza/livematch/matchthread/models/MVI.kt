@@ -1,53 +1,42 @@
 package dev.iurysouza.livematch.matchthread.models
 
-import android.os.Parcelable
 import dev.iurysouza.livematch.common.ViewEvent
 import dev.iurysouza.livematch.common.ViewSideEffect
 import dev.iurysouza.livematch.common.ViewState
 import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
-import dev.iurysouza.livematch.footballdata.data.models.AwayTeam
-import dev.iurysouza.livematch.footballdata.data.models.HomeTeam
-import kotlinx.parcelize.Parcelize
+import kotlinx.collections.immutable.ImmutableList
 
-@Parcelize
 data class MatchThreadViewState(
   val matchThread: MatchThread? = null,
   val descriptionState: MatchDescriptionState = MatchDescriptionState.Loading,
   val commentSectionState: MatchCommentsState = MatchCommentsState.Loading,
   val isRefreshing: Boolean = false,
-) : ViewState, Parcelable
+) : ViewState
 
 sealed interface MatchThreadViewEvent : ViewEvent {
   data class GetLatestComments(val match: MatchThreadArgs) : MatchThreadViewEvent
   data class GetMatchComments(val match: MatchThreadArgs) : MatchThreadViewEvent
 }
 
-@Parcelize
-sealed interface MatchDescriptionState : Parcelable {
-  @Parcelize
+sealed interface MatchDescriptionState {
   data class Success(
-    val content:String,
+    val content: String,
     val mediaList: List<MediaItem>,
     val homeTeam: Team,
     val awayTeam: Team,
     val matchEvents: List<MatchEvent>,
   ) : MatchDescriptionState
 
-  @Parcelize
   object Loading : MatchDescriptionState
 
-  @Parcelize
   data class Error(val msg: String) : MatchDescriptionState
 }
 
-sealed interface MatchCommentsState : Parcelable {
-  @Parcelize
-  data class Success(val commentSectionList: List<CommentSection>) : MatchCommentsState
+sealed interface MatchCommentsState {
+  data class Success(val sectionList: ImmutableList<CommentSection>) : MatchCommentsState
 
-  @Parcelize
   object Loading : MatchCommentsState
 
-  @Parcelize
   data class Error(val msg: String) : MatchCommentsState
 }
 
