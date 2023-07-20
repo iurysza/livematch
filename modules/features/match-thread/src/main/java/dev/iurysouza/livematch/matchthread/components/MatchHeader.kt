@@ -26,25 +26,28 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import coil.compose.AsyncImage
-import dev.iurysouza.livematch.matchthread.models.MatchHeader
+import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
 import dev.iurysouza.livematch.matchthread.models.HeaderTeam
+import dev.iurysouza.livematch.matchthread.models.MatchHeader
 
 @Composable
 @Preview
-private fun MatchHeaderPreview() {
-  MatchHeader(
-    homeTeam = HeaderTeam(
-      name = "England",
-      crestUrl = "https://crests.football-data.org/770.svg",
-      score = "3",
+private fun MatchHeaderPreview() = LivematchTheme {
+  MatchHeaderNew(
+    MatchHeader(
+      homeTeam = HeaderTeam(
+        name = "England",
+        crestUrl = "https://crests.football-data.org/770.svg",
+        score = "3",
+      ),
+      awayTeam = HeaderTeam(
+        name = "England",
+        crestUrl = "https://crests.football-data.org/770.svg",
+        score = "3",
+      ),
+      competition = "Premier League",
+      competitionLogo = "https://crests.football-data.org/770.svg",
     ),
-    awayTeam = HeaderTeam(
-      name = "England",
-      crestUrl = "https://crests.football-data.org/770.svg",
-      score = "3",
-    ),
-    competition = "Premier League",
-    competitionLogo = "https://crests.football-data.org/770.svg",
   )
 }
 
