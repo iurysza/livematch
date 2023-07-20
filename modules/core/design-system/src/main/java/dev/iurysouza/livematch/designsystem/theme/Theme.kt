@@ -35,6 +35,7 @@ private val LightColorPalette = lightColors(
 @Composable
 fun LivematchTheme(
   darkTheme: Boolean = isSystemInDarkTheme(),
+  isPreview: Boolean = true,
   content: @Composable () -> Unit,
 ) {
   val colors = if (darkTheme) {
@@ -49,13 +50,16 @@ fun LivematchTheme(
     shapes = Shapes,
   ) {
     val textColor = MaterialTheme.colors.onBackground
-    val systemUiController = rememberSystemUiController()
     val secondary = MaterialTheme.colors.secondaryVariant
     val backgroundColor = MaterialTheme.colors.background
 
-    SideEffect {
-      systemUiController.setSystemBarsColor(backgroundColor, darkIcons = !darkTheme)
-      systemUiController.setNavigationBarColor(secondary, darkIcons = !darkTheme)
+    if (!isPreview) {
+      // Fixes issue with Compose Previews breaking
+      val systemUiController = rememberSystemUiController()
+      SideEffect {
+        systemUiController.setSystemBarsColor(backgroundColor, darkIcons = !darkTheme)
+        systemUiController.setNavigationBarColor(secondary, darkIcons = !darkTheme)
+      }
     }
     RichTextThemeIntegration(
       textStyle = { TextStyle(color = textColor) },
