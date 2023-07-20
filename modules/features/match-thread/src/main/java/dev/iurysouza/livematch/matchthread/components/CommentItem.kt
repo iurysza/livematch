@@ -29,6 +29,7 @@ import com.halilibo.richtext.ui.RichText
 import com.halilibo.richtext.ui.RichTextStyle
 import com.halilibo.richtext.ui.WithStyle
 import com.halilibo.richtext.ui.string.RichTextStringStyle
+import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
 import dev.iurysouza.livematch.matchthread.R
 import dev.iurysouza.livematch.matchthread.models.CommentItem
 
@@ -125,7 +126,7 @@ private fun CommentBody(content: String) {
 
 @Preview
 @Composable
-fun CommentItemComponentPreview() {
+fun CommentItemComponentPreview() = LivematchTheme {
   CommentItemComponent(
     commentItem = CommentItem(
       author = "elrubiojefe",
