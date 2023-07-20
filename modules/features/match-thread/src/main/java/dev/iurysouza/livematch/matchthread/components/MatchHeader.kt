@@ -30,26 +30,6 @@ import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
 import dev.iurysouza.livematch.matchthread.models.HeaderTeam
 import dev.iurysouza.livematch.matchthread.models.MatchHeader
 
-@Composable
-@Preview
-private fun MatchHeaderPreview() = LivematchTheme {
-  MatchHeaderNew(
-    MatchHeader(
-      homeTeam = HeaderTeam(
-        name = "England",
-        crestUrl = "https://crests.football-data.org/770.svg",
-        score = "3",
-      ),
-      awayTeam = HeaderTeam(
-        name = "England",
-        crestUrl = "https://crests.football-data.org/770.svg",
-        score = "3",
-      ),
-      competition = "Premier League",
-      competitionLogo = "https://crests.football-data.org/770.svg",
-    ),
-  )
-}
 
 @Composable
 fun MatchHeaderNew(matchHeader: MatchHeader) {
@@ -213,5 +193,26 @@ private fun TeamCrest(teamCrestUrl: String) {
     contentScale = ContentScale.Crop,
     model = teamCrestUrl,
     contentDescription = "teamCrest",
+  )
+}
+
+@Composable
+@Preview
+private fun MatchHeaderPreview() = LivematchTheme {
+  MatchHeaderNew(
+    MatchHeader(
+      homeTeam = HeaderTeam(
+        name = "England",
+        crestUrl = "https://crests.football-data.org/770.svg",
+        score = "3",
+      ),
+      awayTeam = HeaderTeam(
+        name = "England",
+        crestUrl = "https://crests.football-data.org/770.svg",
+        score = "3",
+      ),
+      competition = "Premier League",
+      competitionLogo = "https://crests.football-data.org/770.svg",
+    ),
   )
 }

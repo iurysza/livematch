@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.iurysouza.livematch.designsystem.components.roundedClip
+import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
 import dev.iurysouza.livematch.matchthread.models.EventIcon
 import dev.iurysouza.livematch.matchthread.models.MatchEvent
 
@@ -186,7 +187,7 @@ private fun MatchEventIcon(modifier: Modifier, eventIcon: EventIcon, isKeyEvent:
 
 @Preview
 @Composable
-fun MatchIconPreview() {
+fun MatchIconPreview() = LivematchTheme {
   Timeline(
     modifier = Modifier,
     icon = EventIcon.KickOff,
@@ -197,17 +198,15 @@ fun MatchIconPreview() {
 
 @Composable
 @Preview
-fun CommentHeaderPreview2() {
+fun CommentHeaderPreview2() = LivematchTheme {
   SectionHeader(
     nestedCommentCount = 23,
     isExpanded = false,
     event = MatchEvent(
       relativeTime = "89+2'",
       icon = EventIcon.Goal,
-      description = """
-        |Goal! Japan 0, Costa RIca 1, Keysher Fuller (Costa Rica) left footed shot from the centre of
-        | the box to the top left corner. Assisted by Yeltsin Tejeda.
-      """.trimMargin(),
+      description = " Goal! Japan 0, Costa RIca 1, Keysher Fuller (Costa Rica) left footed shot from the centre " +
+        "of the box to the top left corner. Assisted by Yeltsin Tejeda.",
       keyEvent = true,
     ),
     onClick = {},
@@ -216,7 +215,7 @@ fun CommentHeaderPreview2() {
 
 @Composable
 @Preview
-fun CommentHeaderPreview() {
+fun CommentHeaderPreview() = LivematchTheme {
   SectionHeader(
     nestedCommentCount = 23,
     isExpanded = true,

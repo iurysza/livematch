@@ -64,7 +64,6 @@ fun ItemCommentListPreview() = LivematchTheme(isPreview = true) {
   )
 }
 
-
 fun Map<String, Boolean>.toggleValue(
   value: String,
 ) = plus(value to !getOrDefault(value, true))
@@ -87,4 +86,3 @@ private fun initToggledCommentsState(
 
   return sectionToggleMap.toMap()
 }
-
