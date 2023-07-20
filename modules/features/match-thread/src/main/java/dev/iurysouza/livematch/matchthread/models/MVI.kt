@@ -22,8 +22,6 @@ sealed interface MatchDescriptionState {
   data class Success(
     val content: String,
     val mediaList: List<MediaItem>,
-    val homeTeam: Team,
-    val awayTeam: Team,
     val matchEvents: List<MatchEvent>,
   ) : MatchDescriptionState
 

@@ -49,9 +49,7 @@ class MatchThreadViewModel @Inject constructor(
         descriptionState = MatchDescriptionState.Success(
           content = content,
           mediaList = match.mediaList,
-          homeTeam = match.homeTeam,
           matchEvents = matchEvents,
-          awayTeam = match.awayTeam,
         ),
       )
     }
