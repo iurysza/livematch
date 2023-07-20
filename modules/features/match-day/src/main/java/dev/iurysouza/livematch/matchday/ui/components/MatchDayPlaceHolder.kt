@@ -39,7 +39,7 @@ fun PlaceHolderDivider(
 
 @Preview
 @Composable
-fun PlaceHolderDividerPreview() {
+private fun PlaceHolderDividerPreview() {
   PlaceHolderDivider(
     Competition(
       id = 1,
@@ -86,7 +86,7 @@ fun PlaceHolderItem(
 
 @Preview
 @Composable
-fun PlaceHolderItemPreview() {
+private fun PlaceHolderItemPreview() {
   PlaceHolderItem()
 }
 

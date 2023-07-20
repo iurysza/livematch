@@ -53,7 +53,7 @@ fun LazyListScope.itemCommentList(
 
 @Preview
 @Composable
-fun ItemCommentListPreview() = LivematchTheme(isPreview = true) {
+private fun ItemCommentListPreview() = LivematchTheme(isPreview = true) {
   LazyColumn(
     modifier = Modifier
       .background(MaterialTheme.colors.background)

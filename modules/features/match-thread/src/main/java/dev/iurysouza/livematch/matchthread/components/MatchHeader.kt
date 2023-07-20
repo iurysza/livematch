@@ -30,7 +30,6 @@ import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
 import dev.iurysouza.livematch.matchthread.models.HeaderTeam
 import dev.iurysouza.livematch.matchthread.models.MatchHeader
 
-
 @Composable
 fun MatchHeaderNew(matchHeader: MatchHeader) {
   val awayTeam = matchHeader.awayTeam

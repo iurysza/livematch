@@ -126,7 +126,7 @@ private fun CommentBody(content: String) {
 
 @Preview
 @Composable
-fun CommentItemComponentPreview() = LivematchTheme {
+private fun CommentItemComponentPreview() = LivematchTheme {
   CommentItemComponent(
     commentItem = CommentItem(
       author = "elrubiojefe",

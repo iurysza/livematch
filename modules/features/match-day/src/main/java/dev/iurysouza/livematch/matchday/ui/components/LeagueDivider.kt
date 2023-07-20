@@ -46,7 +46,7 @@ fun LeagueDivider(
 
 @Preview
 @Composable
-fun LeagueDividerPreview() {
+private fun LeagueDividerPreview() {
   LeagueDivider(
     competition = Competition(
       id = 1,

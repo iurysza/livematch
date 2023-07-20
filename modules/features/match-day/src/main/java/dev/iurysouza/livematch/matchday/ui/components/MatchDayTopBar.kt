@@ -52,6 +52,6 @@ fun MatchDayTopBar(
 
 @Preview
 @Composable
-fun MatchDayTopBarPreview() {
+private fun MatchDayTopBarPreview() {
   MatchDayTopBar(isSyncing = true)
 }

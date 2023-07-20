@@ -42,6 +42,6 @@ fun ScreenToolbar(navigateUp: () -> Unit = {}) {
 
 @Preview
 @Composable
-fun ScreenToolbarPreview() = LivematchTheme {
+private fun ScreenToolbarPreview() = LivematchTheme {
   ScreenToolbar()
 }

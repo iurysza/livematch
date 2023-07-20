@@ -187,7 +187,7 @@ private fun MatchEventIcon(modifier: Modifier, eventIcon: EventIcon, isKeyEvent:
 
 @Preview
 @Composable
-fun MatchIconPreview() = LivematchTheme {
+private fun MatchIconPreview() = LivematchTheme {
   Timeline(
     modifier = Modifier,
     icon = EventIcon.KickOff,

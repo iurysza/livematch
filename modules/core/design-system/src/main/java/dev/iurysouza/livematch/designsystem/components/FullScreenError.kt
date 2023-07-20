@@ -18,6 +18,6 @@ fun ErrorScreen(
 
 @Preview
 @Composable
-fun ErrorScreenPreview() {
+private fun ErrorScreenPreview() {
   ErrorScreen()
 }

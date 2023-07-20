@@ -117,7 +117,7 @@ internal fun Team(
 
 @Preview
 @Composable
-fun MatchItemPreview() {
+private fun MatchItemPreview() {
   val match = MatchUiModel(
     id = "1",
     homeTeam = Team(
