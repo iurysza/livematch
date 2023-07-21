@@ -1,4 +1,4 @@
-@file:Suppress("SpellCheckingInspection", "UnstableApiUsage")
+@file:Suppress("SpellCheckingInspection", "UnstableApiUsage", "LocalVariableName")
 
 plugins {
   id("com.android.library")

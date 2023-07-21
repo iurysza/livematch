@@ -1,11 +1,19 @@
+@file:Suppress("LocalVariableName")
+
 plugins {
   id("dev.iurysouza.livematch.android-library")
 }
 android {
   namespace = "dev.iurysouza.livematch.common"
   buildTypes {
+    val LOCAL_SERVER_DELAY: String by project
     val USE_MOCK_URL: String by project
     getByName("release") {
+      buildConfigField(
+        type = "Integer",
+        name = "LOCAL_SERVER_DELAY",
+        value = LOCAL_SERVER_DELAY,
+      )
       buildConfigField(
         type = "Boolean",
         name = "USE_MOCK_URL",
@@ -13,6 +21,11 @@ android {
       )
     }
     getByName("debug") {
+      buildConfigField(
+        type = "Integer",
+        name = "LOCAL_SERVER_DELAY",
+        value = LOCAL_SERVER_DELAY,
+      )
       buildConfigField(
         type = "Boolean",
         name = "USE_MOCK_URL",
