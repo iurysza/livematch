@@ -22,7 +22,6 @@ sealed interface MatchDescriptionState {
   data class Success(
     val content: String,
     val mediaList: List<MediaItem>,
-    val matchEvents: List<MatchEvent>,
   ) : MatchDescriptionState
 
   object Loading : MatchDescriptionState

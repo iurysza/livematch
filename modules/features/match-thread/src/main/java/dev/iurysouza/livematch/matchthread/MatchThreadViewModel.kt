@@ -45,13 +45,7 @@ class MatchThreadViewModel @Inject constructor(
     setState { copy(matchThread = matchThread) }
     val (matchEvents, content) = eventParser.getMatchEvents(match.content)
     setState {
-      copy(
-        descriptionState = MatchDescriptionState.Success(
-          content = content,
-          mediaList = match.mediaList,
-          matchEvents = matchEvents,
-        ),
-      )
+      copy(descriptionState = MatchDescriptionState.Success(content, match.mediaList))
     }
     if (isRefreshing) {
       setState { copy(isRefreshing = true) }

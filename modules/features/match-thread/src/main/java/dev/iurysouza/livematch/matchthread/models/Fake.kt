@@ -56,4 +56,8 @@ object Fake {
       )
     }
   }
+
+  fun generateMatchDescription(): String = """*RB Leipzig scorers: Willi Orban (6')
+    Dominik Szoboszlai (45')
+    Amadou Haidara (84')*"""
 }
