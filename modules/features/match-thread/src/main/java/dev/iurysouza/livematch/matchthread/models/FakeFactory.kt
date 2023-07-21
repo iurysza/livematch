@@ -1,8 +1,9 @@
 package dev.iurysouza.livematch.matchthread.models
 
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toPersistentList
+import kotlin.random.Random
 
 object FakeFactory {
   @Suppress("LongMethod", "MaxLineLength")
@@ -23,6 +24,21 @@ object FakeFactory {
 
     for ((i, event) in events.withIndex()) {
       val (relativeTime, icon, description) = event.split(",", limit = 3)
+
+      val comments = mutableListOf<CommentItem>()
+      for (j in 0 until 20) {
+        comments.add(
+          CommentItem(
+            relativeTime = relativeTime.trim().toInt() - i,
+            author = "Iury Souza",
+            body = generateBody(j).take(Random.nextInt(50, 300)),
+            flairName = "Flamengo",
+            flairUrl = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/1039.png",
+            score = "$j",
+          ),
+        )
+      }
+
       commentSections.add(
         CommentSection(
           event = MatchEvent(
@@ -31,22 +47,17 @@ object FakeFactory {
             relativeTime = "${relativeTime.trim()}'",
           ),
           name = "Event $i",
-          commentList = persistentListOf(
-            CommentItem(
-              relativeTime = relativeTime.trim().toInt() - i,
-              author = "Iury Souza",
-              body = "This is a comment $i",
-              flairName = "Flamengo",
-              flairUrl = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/1039.png",
-              score = "$i",
-            ),
-          ),
+          commentList = comments.toPersistentList(),
         ),
       )
     }
 
     return commentSections.toImmutableList()
   }
+
+  private fun generateBody(j: Int): String = """PSG would not be better without Mbappe.
+      In a high press, high line like most other top teams, Mbappe is absolutely crucial. This is a comment $j"""
+    .repeat(Random.nextInt(1, 10))
 
   fun generateMediaList(): ImmutableList<MediaItem> {
     return (0..10).map {

@@ -1,8 +1,8 @@
 package dev.iurysouza.livematch.matchday.models
 
-import kotlin.random.Random
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlin.random.Random
 
 @Suppress("MagicNumber")
 object Fakes {
@@ -37,6 +37,34 @@ object Fakes {
       elapsedMinutes = "${(0..90).random()}",
       competition = competition(randomWordWithMaxChars(10)),
     )
+  }
+
+  fun generateMatchThread(): MatchThread {
+    return MatchThread(
+      id = "vero", title = "ius", startTime = 8586, content = "adolescens",
+      homeTeam = Team(
+        crestUrl = null,
+        name = "Rodrick Bray",
+        isHomeTeam = false,
+        isAhead = false,
+        score = "1",
+      ),
+      awayTeam = Team(
+        crestUrl = null,
+        name = "Rosetta Sexton",
+        isHomeTeam = false,
+        isAhead = false,
+        score = "3",
+      ),
+      refereeList = listOf(),
+      competition = Competition(
+        emblemUrl = "https://duckduckgo.com/?q=torquent",
+        id = null,
+        name = "Ariel Barr",
+      ),
+
+      )
+
   }
 
   private fun randomWordWithMaxChars(max: Int): String =
