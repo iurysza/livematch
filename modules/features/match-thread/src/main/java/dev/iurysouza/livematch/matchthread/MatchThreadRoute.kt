@@ -10,6 +10,7 @@ import dev.iurysouza.livematch.designsystem.components.shortToast
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEffect.Error
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEvent
 import dev.iurysouza.livematch.matchthread.models.toMatchHeader
+import dev.iurysouza.livematch.matchthread.models.toParams
 import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
 
 @Composable
@@ -20,7 +21,7 @@ fun MatchThreadRoute(
 ) {
   val context = LocalContext.current
   LaunchedEffect(Unit) {
-    viewModel.handleEvent(MatchThreadViewEvent.GetMatchComments(args))
+    viewModel.handleEvent(MatchThreadViewEvent.GetMatchComments(args.toParams()))
     viewModel.effect.collect {
       when (it) {
         is Error -> context.shortToast(it.msg)
@@ -34,6 +35,6 @@ fun MatchThreadRoute(
     matchHeader = matchHeader,
     uiState = uiState,
     onNavigateUp = onNavigateUp,
-    onRefresh = { viewModel.handleEvent(MatchThreadViewEvent.GetLatestComments(args)) },
+    onRefresh = { viewModel.handleEvent(MatchThreadViewEvent.GetLatestComments(args.toParams())) },
   )
 }

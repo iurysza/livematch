@@ -2,10 +2,12 @@ package dev.iurysouza.livematch.matchthread
 
 import arrow.core.Either
 import arrow.core.Either.Companion.catch
+import arrow.core.flatMap
 import dev.iurysouza.livematch.matchthread.models.CommentItem
 import dev.iurysouza.livematch.matchthread.models.CommentSection
 import dev.iurysouza.livematch.matchthread.models.EventIcon
 import dev.iurysouza.livematch.matchthread.models.MatchEvent
+import dev.iurysouza.livematch.matchthread.models.ViewError
 import dev.iurysouza.livematch.reddit.domain.models.CommentsEntity
 import java.time.Duration
 import java.time.Instant
@@ -108,10 +110,12 @@ open class MatchEventParser {
 
   private fun String.remove(text: String): String = replace(text, "")
 
-  fun toCommentItemList(
+  fun createEventSecionsWithComments(
     commentList: List<CommentsEntity>,
     matchStartTime: Long,
-  ): Either<Throwable, List<CommentItem>> = catch {
+    matchEvents: List<MatchEvent>,
+    isRefreshing: Boolean,
+  ): Either<Any, List<CommentSection>> = catch {
     commentList.map { comment ->
       CommentItem(
         author = comment.author,
@@ -123,6 +127,27 @@ open class MatchEventParser {
       )
     }.sortedBy { it.relativeTime }
   }
+    .mapLeft { ViewError.CommentItemParsingError(it.toString()) }
+    .flatMap { commentItemList ->
+      toCommentSectionListEvents(
+        commentList = commentItemList,
+        eventList = matchEvents,
+        isRefreshing = isRefreshing,
+      )
+    }
+    .map {
+      it.mapIndexed { index, commentSection ->
+        if (index == 0) {
+          commentSection.copy(event = commentSection.event.copy(relativeTime = ""))
+        } else {
+          commentSection.copy(
+            event = commentSection.event.copy(
+              relativeTime = "${commentSection.event.relativeTime}'",
+            ),
+          )
+        }
+      }
+    }
 
   private fun calculateRelativeTime(
     commentTime: Long,

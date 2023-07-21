@@ -14,8 +14,8 @@ data class MatchThreadViewState(
 ) : ViewState
 
 sealed interface MatchThreadViewEvent : ViewEvent {
-  data class GetLatestComments(val match: MatchThreadArgs) : MatchThreadViewEvent
-  data class GetMatchComments(val match: MatchThreadArgs) : MatchThreadViewEvent
+  data class GetLatestComments(val params: MatchThreadParams) : MatchThreadViewEvent
+  data class GetMatchComments(val params: MatchThreadParams) : MatchThreadViewEvent
 }
 
 sealed interface MatchDescriptionState {
@@ -40,3 +40,19 @@ sealed interface MatchCommentsState {
 sealed interface MatchThreadViewEffect : ViewSideEffect {
   data class Error(val msg: String) : MatchThreadViewEffect
 }
+
+fun MatchThreadArgs.toParams(): MatchThreadParams {
+  return MatchThreadParams(
+    id = id,
+    title = title,
+    content = content,
+    startTime = startTime,
+  )
+}
+
+data class MatchThreadParams(
+  val id: String,
+  val title: String,
+  val content: String,
+  val startTime: Long,
+)

@@ -10,7 +10,7 @@ import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.matchthread.models.MatchCommentsState
 import dev.iurysouza.livematch.matchthread.models.MatchDescriptionState
-import dev.iurysouza.livematch.matchthread.models.MatchThread
+import dev.iurysouza.livematch.matchthread.models.MatchThreadParams
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEffect
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEvent
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewState
@@ -40,45 +40,28 @@ class MatchThreadViewModel @Inject constructor(
   override fun handleEvent(event: MatchThreadViewEvent) {
     super.handleEvent(event)
     when (event) {
-      is MatchThreadViewEvent.GetLatestComments -> getLatestComments(event.match.toUi(), isRefreshing = true)
-      is MatchThreadViewEvent.GetMatchComments -> getLatestComments(event.match.toUi(), isRefreshing = false)
+      is MatchThreadViewEvent.GetLatestComments -> getLatestComments(event.params, isRefreshing = true)
+      is MatchThreadViewEvent.GetMatchComments -> getLatestComments(event.params, isRefreshing = false)
     }
   }
 
-  private fun getLatestComments(match: MatchThread, isRefreshing: Boolean) {
-    val (matchEvents, content) = eventParser.getMatchEvents(match.content)
+  private fun getLatestComments(
+    params: MatchThreadParams,
+    isRefreshing: Boolean,
+  ) {
+    val (matchEvents, content) = eventParser.getMatchEvents(params.content)
     viewModelScope.launch {
-      setState { copy(matchThread = matchThread) }
-      if (isRefreshing) {
-        setState { copy(isRefreshing = true) }
-        fetchLatestMatchThreads(match.id)
-      } else {
-        setState { copy(commentSectionState = MatchCommentsState.Loading) }
-        fetchMatchThreads(match.id)
+      either {
+        if (isRefreshing) {
+          setState { copy(isRefreshing = true) }
+          fetchNewMatchComments.execute(MatchId(params.id)).bind()
+        } else {
+          setState { copy(commentSectionState = MatchCommentsState.Loading) }
+          fetchMatchComments.execute(MatchId(params.id)).bind()
+        }
       }
         .mapLeft { mapErrorMsg(it) }
-        .flatMap { eventParser.toCommentItemList(it, match.startTime) }
-        .mapLeft { ViewError.CommentItemParsingError(it.toString()) }
-        .flatMap { commentItemList ->
-          eventParser.toCommentSectionListEvents(
-            commentList = commentItemList,
-            eventList = matchEvents,
-            isRefreshing = isRefreshing,
-          )
-        }
-        .map {
-          it.mapIndexed { index, commentSection ->
-            if (index == 0) {
-              commentSection.copy(event = commentSection.event.copy(relativeTime = ""))
-            } else {
-              commentSection.copy(
-                event = commentSection.event.copy(
-                  relativeTime = "${commentSection.event.relativeTime}'",
-                ),
-              )
-            }
-          }
-        }
+        .flatMap { eventParser.createEventSecionsWithComments(it, params.startTime, matchEvents, isRefreshing) }
         .mapLeft { ViewError.CommentSectionParsingError(it.toString()) }
         .fold(
           {
@@ -97,7 +80,7 @@ class MatchThreadViewModel @Inject constructor(
     viewModelScope.launch {
       setState { copy(descriptionState = MatchDescriptionState.Loading) }
       either {
-        fetchMatchHighlightsUseCase.execute(MatchTitle(match.title)).bind()
+        fetchMatchHighlightsUseCase.execute(MatchTitle(params.title)).bind()
       }.mapLeft { mapErrorMsg(it) }
         .map { it.toUi() }
         .fold(
@@ -112,12 +95,6 @@ class MatchThreadViewModel @Inject constructor(
         )
     }
   }
-
-  private suspend fun fetchLatestMatchThreads(id: String) =
-    either { fetchNewMatchComments.execute(MatchId(id)).bind() }
-
-  private suspend fun fetchMatchThreads(id: String) =
-    either { fetchMatchComments.execute(MatchId(id)).bind() }
 
   private fun mapErrorMsg(error: DomainError?): String {
     Timber.e("mapErrorMsg: $error")
