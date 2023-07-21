@@ -19,6 +19,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -38,56 +39,6 @@ import dev.iurysouza.livematch.designsystem.theme.Space.S50
 import dev.iurysouza.livematch.matchthread.models.Fake
 import dev.iurysouza.livematch.matchthread.models.MediaItem
 import timber.log.Timber
-
-@Composable
-fun MediaCarousel(mediaItemList: List<MediaItem>) {
-  if (mediaItemList.isEmpty()) return
-  Column(
-    Modifier
-      .padding(horizontal = S100)
-      .padding(vertical = S200)
-      .padding(bottom = S50),
-  ) {
-    val context = LocalContext.current
-    Text(
-      modifier = Modifier.padding(bottom = S50),
-      text = "Highlights",
-      style = TextStyle(fontSize = 18.sp, color = MaterialTheme.colors.onPrimary),
-    )
-    LazyRow(
-      horizontalArrangement = Arrangement.spacedBy(S100),
-    ) {
-      itemsIndexed(mediaItemList) { _, item ->
-        Box(
-          Modifier
-            .clickable { context.launchBrowserTabWith(item.url) }
-            .size(S1000)
-            .background(MaterialTheme.colors.onSurface, RoundedCornerShape(10.dp))
-            .padding(S100),
-        ) {
-          Text(
-            text = item.title,
-            Modifier.align(Alignment.Center),
-            style = TextStyle(
-              fontSize = 9.sp,
-              color = MaterialTheme.colors.onPrimary,
-              fontWeight = FontWeight.Bold,
-            ),
-          )
-        }
-      }
-    }
-  }
-}
-
-private fun Context.launchBrowserTabWith(url: String) = runCatching {
-  CustomTabsIntent
-    .Builder()
-    .setUrlBarHidingEnabled(true)
-    .setColorScheme(CustomTabsIntent.COLOR_SCHEME_DARK)
-    .build()
-    .launchUrl(this@launchBrowserTabWith, Uri.parse(url))
-}.onFailure { Timber.e(it) }
 
 @Composable
 fun MatchDetails(
@@ -122,6 +73,48 @@ private fun MatchDescription(content: String) {
   }
 }
 
+@Composable
+private fun MediaCarousel(mediaItemList: List<MediaItem>) {
+  if (mediaItemList.isEmpty()) return
+  Column(
+    Modifier
+      .padding(horizontal = S100)
+      .padding(vertical = S200)
+      .padding(bottom = S50),
+  ) {
+    val context = LocalContext.current
+    Text(
+      modifier = Modifier.padding(bottom = S50),
+      text = "Highlights",
+      style = TextStyle(fontSize = 18.sp, color = MaterialTheme.colors.onPrimary),
+    )
+    LazyRow(
+      horizontalArrangement = Arrangement.spacedBy(S100),
+    ) {
+      itemsIndexed(mediaItemList) { _, item ->
+        Box(
+          Modifier
+            .size(S1000)
+            .background(MaterialTheme.colors.secondaryVariant, RoundedCornerShape(10.dp))
+            .clip(RoundedCornerShape(10.dp))
+            .clickable { context.launchBrowserTabWith(item.url) }
+            .padding(S100),
+        ) {
+          Text(
+            text = item.title,
+            Modifier.align(Alignment.Center),
+            style = TextStyle(
+              fontSize = 9.sp,
+              color = MaterialTheme.colors.onPrimary,
+              fontWeight = FontWeight.Bold,
+            ),
+          )
+        }
+      }
+    }
+  }
+}
+
 @Preview
 @Composable
 fun MatchDetailsPreview() = LiveMatchThemePreview {
@@ -130,3 +123,12 @@ fun MatchDetailsPreview() = LiveMatchThemePreview {
     mediaItemList = Fake.generateMediaList(),
   )
 }
+
+private fun Context.launchBrowserTabWith(url: String) = runCatching {
+  CustomTabsIntent
+    .Builder()
+    .setUrlBarHidingEnabled(true)
+    .setColorScheme(CustomTabsIntent.COLOR_SCHEME_DARK)
+    .build()
+    .launchUrl(this@launchBrowserTabWith, Uri.parse(url))
+}.onFailure { Timber.e(it) }
