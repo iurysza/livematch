@@ -18,6 +18,7 @@ import dev.iurysouza.livematch.matchthread.models.ViewError
 import dev.iurysouza.livematch.matchthread.models.toUi
 import dev.iurysouza.livematch.reddit.domain.FetchMatchCommentsUseCase
 import dev.iurysouza.livematch.reddit.domain.FetchNewCommentsUseCase
+import dev.iurysouza.livematch.reddit.domain.MatchId
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
@@ -94,9 +95,10 @@ class MatchThreadViewModel @Inject constructor(
   }
 
   private suspend fun fetchLatestMatchThreads(id: String) =
-    either { fetchNewMatchComments(id).bind() }
+    either { fetchNewMatchComments.execute(MatchId(id)).bind() }
 
-  private suspend fun fetchMatchThreads(id: String) = either { fetchMatchComments(id).bind() }
+  private suspend fun fetchMatchThreads(id: String) =
+    either { fetchMatchComments.execute(MatchId(id)).bind() }
 
   private fun mapErrorMsg(error: DomainError?): String {
     Timber.e("mapErrorMsg: $error")

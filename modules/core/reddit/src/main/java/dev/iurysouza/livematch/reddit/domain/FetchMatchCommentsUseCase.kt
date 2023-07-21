@@ -13,10 +13,10 @@ class FetchMatchCommentsUseCase @Inject constructor(
   private val networkDataSource: RedditNetworkDataSource,
 ) {
 
-  suspend operator fun invoke(matchId: String): Either<DomainError, List<CommentsEntity>> =
+  suspend fun execute(matchId: MatchId): Either<DomainError, List<CommentsEntity>> =
     either {
       networkDataSource.getCommentsForSubmission(
-        id = matchId,
+        id = matchId.value,
         sortBy = "hot",
       ).flatMap { it.toCommentsEntity() }.bind()
     }
