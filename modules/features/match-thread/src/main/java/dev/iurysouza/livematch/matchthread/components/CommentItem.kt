@@ -74,12 +74,12 @@ private fun CommentHeader(
       color = MaterialTheme.colors.onSurface,
       fontWeight = FontWeight.Bold,
     )
+    FlairImage(comment.flairUrl, comment.flairName)
     Text(
       text = comment.author,
       fontWeight = FontWeight.Bold,
       style = authorStyle,
     )
-    FlairImage(comment.flairUrl, comment.flairName)
     Text(
       text = " • ",
       style = authorStyle,
