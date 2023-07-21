@@ -21,7 +21,7 @@ sealed interface MatchThreadViewEvent : ViewEvent {
 sealed interface MatchDescriptionState {
   data class Success(
     val content: String,
-    val mediaList: List<MediaItem>,
+    val mediaList: ImmutableList<MediaItem>,
   ) : MatchDescriptionState
 
   object Loading : MatchDescriptionState

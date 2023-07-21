@@ -17,7 +17,8 @@ data class MatchUiModel(
 @Parcelize
 @JsonClass(generateAdapter = true)
 data class MatchThread(
-  val id: String?,
+  val id: String,
+  val title: String,
   val startTime: Long?,
   val content: String?,
   val homeTeam: Team,

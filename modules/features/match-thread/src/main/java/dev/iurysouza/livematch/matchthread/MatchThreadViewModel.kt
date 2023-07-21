@@ -18,7 +18,9 @@ import dev.iurysouza.livematch.matchthread.models.ViewError
 import dev.iurysouza.livematch.matchthread.models.toUi
 import dev.iurysouza.livematch.reddit.domain.FetchMatchCommentsUseCase
 import dev.iurysouza.livematch.reddit.domain.FetchNewCommentsUseCase
+import dev.iurysouza.livematch.reddit.domain.GetMatchHighlightsUseCase
 import dev.iurysouza.livematch.reddit.domain.MatchId
+import dev.iurysouza.livematch.reddit.domain.MatchTitle
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
@@ -30,6 +32,7 @@ class MatchThreadViewModel @Inject constructor(
   private val resourceProvider: ResourceProvider,
   private val fetchNewMatchComments: FetchNewCommentsUseCase,
   private val fetchMatchComments: FetchMatchCommentsUseCase,
+  private val fetchMatchHighlightsUseCase: GetMatchHighlightsUseCase,
 ) : MVIViewModel<MatchThreadViewEvent, MatchThreadViewState, MatchThreadViewEffect>() {
 
   override fun setInitialState(): MatchThreadViewState = MatchThreadViewState()
@@ -42,56 +45,72 @@ class MatchThreadViewModel @Inject constructor(
     }
   }
 
-  private fun getLatestComments(match: MatchThread, isRefreshing: Boolean) = viewModelScope.launch {
-    setState { copy(matchThread = matchThread) }
+  private fun getLatestComments(match: MatchThread, isRefreshing: Boolean) {
     val (matchEvents, content) = eventParser.getMatchEvents(match.content)
-    setState {
-      copy(descriptionState = MatchDescriptionState.Success(content, match.mediaList))
-    }
-    if (isRefreshing) {
-      setState { copy(isRefreshing = true) }
-      fetchLatestMatchThreads(match.id)
-    } else {
-      setState { copy(commentSectionState = MatchCommentsState.Loading) }
-      fetchMatchThreads(match.id)
-    }
-      .mapLeft { mapErrorMsg(it) }
-      .flatMap { eventParser.toCommentItemList(it, match.startTime) }
-      .mapLeft { ViewError.CommentItemParsingError(it.toString()) }
-      .flatMap { commentItemList ->
-        eventParser.toCommentSectionListEvents(
-          commentList = commentItemList,
-          eventList = matchEvents,
-          isRefreshing = isRefreshing,
-        )
+    viewModelScope.launch {
+      setState { copy(matchThread = matchThread) }
+      if (isRefreshing) {
+        setState { copy(isRefreshing = true) }
+        fetchLatestMatchThreads(match.id)
+      } else {
+        setState { copy(commentSectionState = MatchCommentsState.Loading) }
+        fetchMatchThreads(match.id)
       }
-      .map {
-        it.mapIndexed { index, commentSection ->
-          if (index == 0) {
-            commentSection.copy(event = commentSection.event.copy(relativeTime = ""))
-          } else {
-            commentSection.copy(
-              event = commentSection.event.copy(
-                relativeTime = "${commentSection.event.relativeTime}'",
-              ),
-            )
+        .mapLeft { mapErrorMsg(it) }
+        .flatMap { eventParser.toCommentItemList(it, match.startTime) }
+        .mapLeft { ViewError.CommentItemParsingError(it.toString()) }
+        .flatMap { commentItemList ->
+          eventParser.toCommentSectionListEvents(
+            commentList = commentItemList,
+            eventList = matchEvents,
+            isRefreshing = isRefreshing,
+          )
+        }
+        .map {
+          it.mapIndexed { index, commentSection ->
+            if (index == 0) {
+              commentSection.copy(event = commentSection.event.copy(relativeTime = ""))
+            } else {
+              commentSection.copy(
+                event = commentSection.event.copy(
+                  relativeTime = "${commentSection.event.relativeTime}'",
+                ),
+              )
+            }
           }
         }
-      }
-      .mapLeft { ViewError.CommentSectionParsingError(it.toString()) }
-      .fold(
-        {
-          setState { copy(commentSectionState = MatchCommentsState.Error(parseError(it))) }
-        },
-        {
-          setState {
-            copy(
-              commentSectionState = MatchCommentsState.Success(it.toImmutableList()),
-              isRefreshing = false,
-            )
-          }
-        },
-      )
+        .mapLeft { ViewError.CommentSectionParsingError(it.toString()) }
+        .fold(
+          {
+            setState { copy(commentSectionState = MatchCommentsState.Error(parseError(it))) }
+          },
+          {
+            setState {
+              copy(
+                commentSectionState = MatchCommentsState.Success(it.toImmutableList()),
+                isRefreshing = false,
+              )
+            }
+          },
+        )
+    }
+    viewModelScope.launch {
+      setState { copy(descriptionState = MatchDescriptionState.Loading) }
+      either {
+        fetchMatchHighlightsUseCase.execute(MatchTitle(match.title)).bind()
+      }.mapLeft { mapErrorMsg(it) }
+        .map { it.toUi() }
+        .fold(
+          { error ->
+            setState { copy(descriptionState = MatchDescriptionState.Error(error)) }
+          },
+          { mediaList ->
+            setState {
+              copy(descriptionState = MatchDescriptionState.Success(content, mediaList))
+            }
+          },
+        )
+    }
   }
 
   private suspend fun fetchLatestMatchThreads(id: String) =

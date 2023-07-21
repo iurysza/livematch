@@ -2,13 +2,15 @@ package dev.iurysouza.livematch.matchthread.models
 
 import com.squareup.moshi.JsonClass
 import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
+import dev.iurysouza.livematch.reddit.domain.models.MediaEntity
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @JsonClass(generateAdapter = true)
 data class MatchThread(
   val id: String,
+  val title: String,
   val startTime: Long,
-  val mediaList: List<MediaItem>,
   val content: String,
   val homeTeam: Team,
   val awayTeam: Team,
@@ -68,9 +70,9 @@ data class CommentSection(
 )
 
 fun MatchThreadArgs.toUi() = MatchThread(
-  id = id!!,
+  id = id,
+  title = title,
   startTime = startTime!!,
-  mediaList = emptyList(),
   content = content!!,
   homeTeam = Team(
     crestUrl = homeTeam.crestUrl,
@@ -93,3 +95,11 @@ fun MatchThreadArgs.toUi() = MatchThread(
     name = competition.name,
   ),
 )
+
+
+fun List<MediaEntity>.toUi() = map {
+  MediaItem(
+    title = it.title,
+    url = it.url,
+  )
+}.toImmutableList()

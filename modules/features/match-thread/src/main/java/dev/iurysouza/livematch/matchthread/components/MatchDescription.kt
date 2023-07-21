@@ -13,7 +13,7 @@ fun MatchDescription(state: MatchDescriptionState) {
   when (state) {
     MatchDescriptionState.Loading -> FullScreenProgress()
     is MatchDescriptionState.Error -> ErrorScreen(msg = state.msg, isScrollable = false)
-    is MatchDescriptionState.Success -> MatchDetails(state.content, Fake.generateMediaList())
+    is MatchDescriptionState.Success -> MatchDetails(state.content, state.mediaList)
   }
 }
 

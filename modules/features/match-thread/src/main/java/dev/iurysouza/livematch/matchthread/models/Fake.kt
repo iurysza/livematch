@@ -48,13 +48,13 @@ object Fake {
     return commentSections.toImmutableList()
   }
 
-  fun generateMediaList(): List<MediaItem> {
+  fun generateMediaList(): ImmutableList<MediaItem> {
     return (0..10).map {
       MediaItem(
         url = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/1039.png",
         title = "Media $it",
       )
-    }
+    }.toImmutableList()
   }
 
   fun generateMatchDescription(): String = """*RB Leipzig scorers: Willi Orban (6')

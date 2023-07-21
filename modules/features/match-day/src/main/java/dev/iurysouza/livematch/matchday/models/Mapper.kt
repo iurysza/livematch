@@ -3,9 +3,7 @@ package dev.iurysouza.livematch.matchday.models
 import arrow.core.Either
 import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.common.navigation.Destination
-import dev.iurysouza.livematch.common.navigation.models.Competition as NavCompetition
 import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
-import dev.iurysouza.livematch.common.navigation.models.Team as NavTeam
 import dev.iurysouza.livematch.footballdata.domain.models.AwayTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.HomeTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
@@ -18,6 +16,8 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import dev.iurysouza.livematch.common.navigation.models.Competition as NavCompetition
+import dev.iurysouza.livematch.common.navigation.models.Team as NavTeam
 
 internal fun getValidMatchList(
   matchEntities: List<MatchEntity>,
@@ -77,12 +77,13 @@ private fun findValidMatchThread(
 }
 
 private fun buildMatchThreadWith(
-  matchThread: MatchThreadEntity?,
+  matchThread: MatchThreadEntity,
   matchEntity: MatchEntity,
 ): MatchThread = MatchThread(
-  id = matchThread?.id,
-  content = matchThread?.content,
-  startTime = matchThread?.createdAt,
+  id = matchThread.id,
+  title = matchThread.title,
+  content = matchThread.content,
+  startTime = matchThread.createdAt,
   homeTeam = toTeam(matchEntity.homeTeam, matchEntity.score, true),
   awayTeam = toTeam(matchEntity.awayTeam.asHomeTeam(), matchEntity.score, false),
   refereeList = matchEntity.referees.map { it.name },
@@ -139,6 +140,7 @@ private fun AwayTeamEntity.asHomeTeam() = HomeTeamEntity(
 fun MatchThread.toDestination() = Destination.MatchThread(
   matchThread = MatchThreadArgs(
     id = id,
+    title = title,
     startTime = startTime,
     content = content,
     homeTeam = NavTeam(

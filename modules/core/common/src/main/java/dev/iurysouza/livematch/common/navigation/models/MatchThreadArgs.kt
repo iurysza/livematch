@@ -7,7 +7,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @JsonClass(generateAdapter = true)
 data class MatchThreadArgs(
-  val id: String?,
+  val id: String,
+  val title: String,
   val startTime: Long?,
   val content: String?,
   val homeTeam: Team,
