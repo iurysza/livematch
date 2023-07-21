@@ -10,6 +10,7 @@ import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.matchthread.models.MatchCommentsState
 import dev.iurysouza.livematch.matchthread.models.MatchDescriptionState
+import dev.iurysouza.livematch.matchthread.models.MatchEvent
 import dev.iurysouza.livematch.matchthread.models.MatchThreadParams
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEffect
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEvent
@@ -40,61 +41,69 @@ class MatchThreadViewModel @Inject constructor(
   override fun handleEvent(event: MatchThreadViewEvent) {
     super.handleEvent(event)
     when (event) {
-      is MatchThreadViewEvent.GetLatestComments -> getLatestComments(event.params, isRefreshing = true)
-      is MatchThreadViewEvent.GetMatchComments -> getLatestComments(event.params, isRefreshing = false)
+      is MatchThreadViewEvent.GetLatestComments -> getMatchThreadData(event.params, isRefreshing = true)
+      is MatchThreadViewEvent.GetMatchComments -> getMatchThreadData(event.params, isRefreshing = false)
     }
   }
 
-  private fun getLatestComments(
+  private fun getMatchThreadData(
     params: MatchThreadParams,
     isRefreshing: Boolean,
   ) {
     val (matchEvents, content) = eventParser.getMatchEvents(params.content)
-    viewModelScope.launch {
-      either {
-        if (isRefreshing) {
-          setState { copy(isRefreshing = true) }
-          fetchNewMatchComments.execute(MatchId(params.id)).bind()
-        } else {
-          setState { copy(commentSectionState = MatchCommentsState.Loading) }
-          fetchMatchComments.execute(MatchId(params.id)).bind()
-        }
-      }
-        .mapLeft { mapErrorMsg(it) }
-        .flatMap { eventParser.createEventSecionsWithComments(it, params.startTime, matchEvents, isRefreshing) }
-        .mapLeft { ViewError.CommentSectionParsingError(it.toString()) }
-        .fold(
-          {
-            setState { copy(commentSectionState = MatchCommentsState.Error(parseError(it))) }
-          },
-          {
-            setState {
-              copy(
-                commentSectionState = MatchCommentsState.Success(it.toImmutableList()),
-                isRefreshing = false,
-              )
-            }
-          },
-        )
-    }
-    viewModelScope.launch {
-      setState { copy(descriptionState = MatchDescriptionState.Loading) }
-      either {
-        fetchMatchHighlightsUseCase.execute(MatchTitle(params.title)).bind()
-      }.mapLeft { mapErrorMsg(it) }
-        .map { it.toUi() }
-        .fold(
-          { error ->
-            setState { copy(descriptionState = MatchDescriptionState.Error(error)) }
-          },
-          { mediaList ->
-            setState {
-              copy(descriptionState = MatchDescriptionState.Success(content, mediaList))
-            }
-          },
-        )
+    viewModelScope.launch { fetchMatchComments(isRefreshing, params, matchEvents) }
+    viewModelScope.launch { fetchMatchHighlights(params, content) }
+  }
+
+  private suspend fun fetchMatchComments(
+    isRefreshing: Boolean,
+    params: MatchThreadParams,
+    matchEvents: List<MatchEvent>,
+  ) = either {
+    if (isRefreshing) {
+      setState { copy(isRefreshing = true) }
+      fetchNewMatchComments.execute(MatchId(params.id)).bind()
+    } else {
+      setState { copy(commentSectionState = MatchCommentsState.Loading) }
+      fetchMatchComments.execute(MatchId(params.id)).bind()
     }
   }
+    .mapLeft { mapErrorMsg(it) }
+    .flatMap { eventParser.createEventSecionsWithComments(it, params.startTime, matchEvents, isRefreshing) }
+    .mapLeft { ViewError.CommentSectionParsingError(it.toString()) }
+    .fold(
+      {
+        setState { copy(commentSectionState = MatchCommentsState.Error(parseError(it))) }
+      },
+      {
+        setState {
+          copy(
+            commentSectionState = MatchCommentsState.Success(it.toImmutableList()),
+            isRefreshing = false,
+          )
+        }
+      },
+    )
+
+  private suspend fun fetchMatchHighlights(
+    params: MatchThreadParams,
+    content: String,
+  ) = either {
+    setState { copy(descriptionState = MatchDescriptionState.Loading) }
+    fetchMatchHighlightsUseCase.execute(MatchTitle(params.title)).bind()
+  }
+    .mapLeft { mapErrorMsg(it) }
+    .map { it.toUi() }
+    .fold(
+      { error ->
+        setState { copy(descriptionState = MatchDescriptionState.Error(error)) }
+      },
+      { mediaList ->
+        setState {
+          copy(descriptionState = MatchDescriptionState.Success(content, mediaList))
+        }
+      },
+    )
 
   private fun mapErrorMsg(error: DomainError?): String {
     Timber.e("mapErrorMsg: $error")

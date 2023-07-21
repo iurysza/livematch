@@ -160,7 +160,7 @@ open class MatchEventParser {
   private fun Long.toUTCLocalDateTime() =
     LocalDateTime.ofInstant(Instant.ofEpochSecond(this), ZoneId.systemDefault())
 
-  fun toCommentSectionListEvents(
+  private fun toCommentSectionListEvents(
     commentList: List<CommentItem>,
     eventList: List<MatchEvent>,
     isRefreshing: Boolean,
