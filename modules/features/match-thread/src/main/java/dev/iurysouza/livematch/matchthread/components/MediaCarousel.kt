@@ -36,7 +36,7 @@ import dev.iurysouza.livematch.designsystem.theme.Space.S100
 import dev.iurysouza.livematch.designsystem.theme.Space.S1000
 import dev.iurysouza.livematch.designsystem.theme.Space.S200
 import dev.iurysouza.livematch.designsystem.theme.Space.S50
-import dev.iurysouza.livematch.matchthread.models.Fake
+import dev.iurysouza.livematch.matchthread.models.FakeFactory
 import dev.iurysouza.livematch.matchthread.models.MediaItem
 import timber.log.Timber
 
@@ -119,8 +119,8 @@ private fun MediaCarousel(mediaItemList: List<MediaItem>) {
 @Composable
 fun MatchDetailsPreview() = LiveMatchThemePreview {
   MatchDetails(
-    content = "#**FT: RB Leipzig  [3-0](#bar-3-white)  Borussia Dortmund**\n\n*RB Leipzig scorers: Willi Orban (6'), Dominik Szoboszlai (45'), Amadou Haidara (84')*",
-    mediaItemList = Fake.generateMediaList(),
+    content = FakeFactory.generateMatchDescription(),
+    mediaItemList = FakeFactory.generateMediaList(),
   )
 }
 

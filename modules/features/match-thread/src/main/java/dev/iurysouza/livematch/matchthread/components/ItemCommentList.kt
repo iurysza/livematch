@@ -15,7 +15,7 @@ import dev.iurysouza.livematch.designsystem.components.FullScreenProgress
 import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.matchthread.models.CommentItem
 import dev.iurysouza.livematch.matchthread.models.CommentSection
-import dev.iurysouza.livematch.matchthread.models.Fake
+import dev.iurysouza.livematch.matchthread.models.FakeFactory
 import dev.iurysouza.livematch.matchthread.models.MatchCommentsState
 import kotlinx.collections.immutable.ImmutableList
 
@@ -59,7 +59,7 @@ private fun ItemCommentListPreview() = LiveMatchThemePreview {
       .background(MaterialTheme.colors.background)
       .fillMaxSize(),
   ) {
-    itemCommentList(MatchCommentsState.Success(Fake.generateCommentSection()))
+    itemCommentList(MatchCommentsState.Success(FakeFactory.generateCommentSection()))
   }
 }
 

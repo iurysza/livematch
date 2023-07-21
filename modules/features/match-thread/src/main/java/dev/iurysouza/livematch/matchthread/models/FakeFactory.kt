@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
-object Fake {
+object FakeFactory {
   @Suppress("LongMethod", "MaxLineLength")
   fun generateCommentSection(): ImmutableList<CommentSection> {
     val events = listOf(
@@ -56,6 +56,22 @@ object Fake {
       )
     }.toImmutableList()
   }
+
+  fun generateMatchHeader() = MatchHeader(
+    homeTeam = HeaderTeam(
+      name = "England",
+      crestUrl = "https://crests.football-data.org/770.svg",
+      score = "3",
+    ),
+    awayTeam = HeaderTeam(
+      name = "England",
+      crestUrl = "https://crests.football-data.org/770.svg",
+      score = "3",
+    ),
+    competition = "Premier League",
+    competitionLogo = "https://crests.football-data.org/770.svg",
+  )
+
 
   fun generateMatchDescription(): String = """*RB Leipzig scorers: Willi Orban (6')
     Dominik Szoboszlai (45')
