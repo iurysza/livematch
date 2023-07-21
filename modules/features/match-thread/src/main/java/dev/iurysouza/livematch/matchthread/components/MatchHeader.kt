@@ -183,9 +183,12 @@ private fun Team(team: String, style: TextStyle) {
 }
 
 @Composable
-private fun TeamCrest(teamCrestUrl: String) {
+fun TeamCrest(
+  teamCrestUrl: String,
+  modifier: Modifier = Modifier,
+) {
   AsyncImage(
-    modifier = Modifier
+    modifier = modifier
       .size(56.dp)
       .clip(CircleShape)
       .border(width = 2.dp, MaterialTheme.colors.onPrimary, CircleShape),
@@ -200,4 +203,3 @@ private fun TeamCrest(teamCrestUrl: String) {
 private fun MatchHeaderPreview() = LiveMatchThemePreview {
   MatchHeader(FakeFactory.generateMatchHeader())
 }
-
