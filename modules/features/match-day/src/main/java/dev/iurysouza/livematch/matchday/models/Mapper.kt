@@ -3,21 +3,27 @@ package dev.iurysouza.livematch.matchday.models
 import arrow.core.Either
 import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.common.navigation.Destination
+import dev.iurysouza.livematch.common.navigation.models.Competition as NavCompetition
 import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
+import dev.iurysouza.livematch.common.navigation.models.Team as NavTeam
+import dev.iurysouza.livematch.footballdata.domain.models.AreaEntity
 import dev.iurysouza.livematch.footballdata.domain.models.AwayTeamEntity
+import dev.iurysouza.livematch.footballdata.domain.models.CompetitionEntity
+import dev.iurysouza.livematch.footballdata.domain.models.HalfEntity
 import dev.iurysouza.livematch.footballdata.domain.models.HomeTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
+import dev.iurysouza.livematch.footballdata.domain.models.RefereeEntity
 import dev.iurysouza.livematch.footballdata.domain.models.ScoreEntity
 import dev.iurysouza.livematch.footballdata.domain.models.Status
+import dev.iurysouza.livematch.footballinfo.domain.newmodel.Match
 import dev.iurysouza.livematch.matchday.R
 import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import dev.iurysouza.livematch.common.navigation.models.Competition as NavCompetition
-import dev.iurysouza.livematch.common.navigation.models.Team as NavTeam
 
 internal fun getValidMatchList(
   matchEntities: List<MatchEntity>,
@@ -184,3 +190,55 @@ private fun Status.toText(matchEntity: MatchEntity, resources: ResourceProvider)
     Status.PAUSED -> resources.getString(R.string.match_status_paused)
     Status.TIMED -> resources.getString(R.string.match_status_timed)
   }
+
+fun List<Match>.toMatchEntity(): List<MatchEntity> {
+  return map { match ->
+    val toLocalDateTime: LocalDateTime = OffsetDateTime.parse(match.fixture.date).toLocalDateTime()
+    MatchEntity(
+      id = match.fixture.id,
+      area = AreaEntity(
+        name = match.league.country,
+        flagUrl = match.league.flag,
+      ),
+      score = ScoreEntity(
+        duration = null,
+        fullTime = HalfEntity(
+          home = match.score.fulltime.home,
+          away = match.score.fulltime.away,
+        ),
+        halfTime = HalfEntity(
+          home = match.score.halftime.home,
+          away = match.score.halftime.away,
+        ),
+        winner = if (match.teams.home.winner == true) match.teams.home.name else match.teams.away.name,
+      ),
+      status = when (match.fixture.status.short) {
+        "FT" -> Status.FINISHED
+        "HT" -> Status.PAUSED
+        "2H" -> Status.IN_PLAY
+        else -> Status.TIMED
+      },
+      utcDate = toLocalDateTime,
+      awayTeam = AwayTeamEntity(
+        crest = match.teams.away.logo,
+        id = match.teams.away.id,
+        name = match.teams.away.name,
+      ),
+      homeTeam = HomeTeamEntity(
+        crest = match.teams.home.logo,
+        id = match.teams.home.id,
+        name = match.teams.home.name,
+      ),
+      matchday = null, // This field is not available in `Match`
+      lastUpdated = LocalDateTime.now(), // This field is not available in `Match`, use the current time instead
+      competition = CompetitionEntity(
+        name = match.league.name,
+        id = match.league.id,
+        emblem = match.league.logo,
+      ),
+      referees = match.fixture.referee?.let {
+        listOf(RefereeEntity(it, ""))
+      } ?: emptyList(), // This field is not available in `Match`
+    )
+  }
+}

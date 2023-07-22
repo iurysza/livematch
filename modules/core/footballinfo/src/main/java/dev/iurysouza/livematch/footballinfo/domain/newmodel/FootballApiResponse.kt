@@ -1,6 +1,5 @@
 package dev.iurysouza.livematch.footballinfo.domain.newmodel
 
-
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

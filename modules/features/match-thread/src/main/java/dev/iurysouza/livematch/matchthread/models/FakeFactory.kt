@@ -1,9 +1,9 @@
 package dev.iurysouza.livematch.matchthread.models
 
+import kotlin.random.Random
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
-import kotlin.random.Random
 
 object FakeFactory {
   @Suppress("LongMethod", "MaxLineLength")

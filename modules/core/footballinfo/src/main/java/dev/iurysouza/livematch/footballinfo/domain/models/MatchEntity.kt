@@ -69,7 +69,7 @@ data class HalfEntity(
 ) : Parcelable
 
 enum class Status {
-  IN_PLAY, PAUSED, TIMED, FINISHED, 
+  IN_PLAY, PAUSED, TIMED, FINISHED,
 }
 
 @Parcelize
