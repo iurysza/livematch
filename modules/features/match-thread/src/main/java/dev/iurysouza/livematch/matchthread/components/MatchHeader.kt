@@ -144,7 +144,7 @@ private fun HeaderContent(
   team: String,
   teamCrestUrl: String,
   score: String,
-  modifier: Modifier,
+  modifier: Modifier = Modifier,
 ) {
   ConstraintLayout(
     constraintSet = constraintSet,

@@ -38,12 +38,13 @@ import dev.iurysouza.livematch.designsystem.theme.Space.S200
 import dev.iurysouza.livematch.designsystem.theme.Space.S50
 import dev.iurysouza.livematch.matchthread.models.FakeFactory
 import dev.iurysouza.livematch.matchthread.models.MediaItem
+import kotlinx.collections.immutable.ImmutableList
 import timber.log.Timber
 
 @Composable
 fun MatchDetails(
   content: String,
-  mediaItemList: List<MediaItem>,
+  mediaItemList: ImmutableList<MediaItem>,
   modifier: Modifier = Modifier,
 ) {
   Column(
@@ -74,7 +75,7 @@ private fun MatchDescription(content: String) {
 }
 
 @Composable
-private fun MediaCarousel(mediaItemList: List<MediaItem>) {
+private fun MediaCarousel(mediaItemList: ImmutableList<MediaItem>) {
   if (mediaItemList.isEmpty()) return
   Column(
     Modifier
@@ -119,7 +120,7 @@ private fun MediaCarousel(mediaItemList: List<MediaItem>) {
 @Composable
 fun MatchDetailsPreview() = LiveMatchThemePreview {
   MatchDetails(
-    content = FakeFactory.generateMatchDescription(),
+    content = FakeFactory.generateMatchDescription,
     mediaItemList = FakeFactory.generateMediaList(),
   )
 }

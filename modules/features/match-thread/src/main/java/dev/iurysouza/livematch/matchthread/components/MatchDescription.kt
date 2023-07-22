@@ -22,7 +22,7 @@ fun MatchDescription(state: MatchDescriptionState) {
 private fun MatchDescriptionPreview() = LiveMatchThemePreview {
   MatchDescription(
     MatchDescriptionState.Success(
-      FakeFactory.generateMatchDescription(),
+      FakeFactory.generateMatchDescription,
       FakeFactory.generateMediaList(),
     ),
   )

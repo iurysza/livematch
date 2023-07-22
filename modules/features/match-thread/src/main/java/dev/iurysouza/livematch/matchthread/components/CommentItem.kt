@@ -88,7 +88,7 @@ private fun CommentHeader(
       text = stringResource(id = R.string.minutes, comment.relativeTime),
       style = authorStyle.copy(fontWeight = FontWeight.Normal),
     )
-    Spacer(modifier.weight(1f))
+    Spacer(Modifier.weight(1f))
     Text(
       modifier = Modifier.wrapContentSize(),
       text = comment.score,
