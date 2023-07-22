@@ -14,6 +14,7 @@ android {
 
 dependencies {
   implementation(project(":core:common"))
+  implementation(project(":core:footballinfo"))
   implementation(project(":core:footballdata"))
   implementation(project(":core:design-system"))
   implementation(project(":core:reddit"))

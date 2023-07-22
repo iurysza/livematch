@@ -2,10 +2,10 @@ package dev.iurysouza.livematch.footballinfo.domain
 
 import arrow.core.Either
 import dev.iurysouza.livematch.common.NetworkError
-import dev.iurysouza.livematch.footballinfo.domain.models.FootballInfoResponse
+import dev.iurysouza.livematch.footballinfo.domain.newmodel.FootballApiResponse
 
 interface FootballInfoSource {
   suspend fun fetchLatestMatches(
     date: String,
-  ): Either<NetworkError, FootballInfoResponse>
+  ): Either<NetworkError, FootballApiResponse>
 }

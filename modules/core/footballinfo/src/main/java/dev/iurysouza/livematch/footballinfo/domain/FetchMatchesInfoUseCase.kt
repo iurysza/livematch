@@ -3,7 +3,7 @@ package dev.iurysouza.livematch.footballinfo.domain
 import arrow.core.Either
 import arrow.core.continuations.either
 import dev.iurysouza.livematch.common.DomainError
-import dev.iurysouza.livematch.footballinfo.domain.models.Match
+import dev.iurysouza.livematch.footballinfo.domain.newmodel.Match
 import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -18,11 +18,11 @@ class FetchMatchesInfoUseCase @Inject constructor(
     networkDataSource
       .fetchLatestMatches(
         LocalDate.now(ZoneOffset.UTC).format(DATE_PATTERN),
-      ).map { it.result }
+      ).map { it.response }
       .bind()
   }
 
   companion object {
-    private val DATE_PATTERN = DateTimeFormatter.ofPattern("yyyyMMdd")
+    private val DATE_PATTERN = DateTimeFormatter.ofPattern("yyyy-MM-dd")
   }
 }
