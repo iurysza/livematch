@@ -35,10 +35,10 @@ android {
 }
 
 dependencies {
-  implementation(project(":features:match-thread"))
-  implementation(project(":features:match-day"))
-  implementation(project(":core:design-system"))
-  implementation(project(":core:common"))
+  implementation(project(ProjectModule.MatchThread))
+  implementation(project(ProjectModule.MatchDay))
+  implementation(project(ProjectModule.DesignSystem))
+  implementation(project(ProjectModule.Common))
 
   implementation(platform(libs.androidx.compose.bom))
   implementation(libs.bundles.composeMinimal)

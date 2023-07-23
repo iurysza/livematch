@@ -15,9 +15,9 @@ android {
 }
 
 dependencies {
-  implementation(project(":features:match-thread"))
-  implementation(project(":features:match-day"))
-  implementation(project(":core:design-system"))
+  implementation(project(ProjectModule.MatchThread))
+  implementation(project(ProjectModule.MatchDay))
+  implementation(project(ProjectModule.DesignSystem))
 
   implementation(libs.kotlinx.collections.immutable)
 

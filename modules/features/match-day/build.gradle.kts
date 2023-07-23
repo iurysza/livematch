@@ -13,11 +13,11 @@ android {
 }
 
 dependencies {
-  implementation(project(":core:common"))
-  implementation(project(":core:footballinfo"))
-  implementation(project(":core:footballdata"))
-  implementation(project(":core:design-system"))
-  implementation(project(":core:reddit"))
+  implementation(project(ProjectModule.Common))
+  implementation(project(ProjectModule.FootballInfo))
+  implementation(project(ProjectModule.FootballData))
+  implementation(project(ProjectModule.DesignSystem))
+  implementation(project(ProjectModule.Reddit))
 
   implementation(libs.bundles.arrow)
   implementation(libs.google.dagger.hilt.android)
