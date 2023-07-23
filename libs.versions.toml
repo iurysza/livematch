@@ -34,6 +34,8 @@ secrets = "2.0.1"
 testJunit4 = "1.4.3"
 timberVersion = "5.0.1"
 navigationReimaginedVersion = "1.4.0"
+kotlinxCollectionsImmutable="0.3.5"
+
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 moduleGraph = { id = "dev.iurysouza.modulegraph", version.ref = "module-graph" }
@@ -101,7 +103,7 @@ squareup-retrofit-moshi-converter = { group = "com.squareup.retrofit2", name = "
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timberVersion" }
 navigationReimagined = { group = "dev.olshevski.navigation", name = "reimagined-hilt", version.ref = "navigationReimaginedVersion" }
 lottieCompose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
-
+kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 
 [bundles]
 composeMinimal = [

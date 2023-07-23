@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection")
+
 import io.gitlab.arturbosch.detekt.Detekt
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 

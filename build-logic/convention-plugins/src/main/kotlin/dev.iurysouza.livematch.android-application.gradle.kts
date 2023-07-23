@@ -1,5 +1,7 @@
 @file:Suppress("SpellCheckingInspection", "UnstableApiUsage")
 
+import Versions.Lib
+
 plugins {
   id("com.android.application")
   id("org.jetbrains.kotlin.android")
@@ -60,6 +62,6 @@ kotlin {
 
 dependencies {
   implementation(kotlin("stdlib"))
-  implementation(findLibraryAlias("timber"))
-  implementation(findLibraryAlias("navigationReimagined"))
+  implementation(findLibraryAlias(Lib.Timber))
+  implementation(findLibraryAlias(Lib.NavigationReimagined))
 }

@@ -8,10 +8,12 @@ import org.gradle.kotlin.dsl.getByType
 private val Project.versionCatalogLibs
   get(): VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
-fun Project.findLibraryAlias(library: String): Provider<MinimalExternalModuleDependency> {
+fun Project.findLibraryAlias(library: Versions.Lib): Provider<MinimalExternalModuleDependency> {
   return runCatching {
-  versionCatalogLibs.findLibrary(library).get()
+    versionCatalogLibs.findLibrary(library.alias).get()
   }.onFailure {
     println("Library $library not found in version catalog")
   }.getOrNull()!!
 }
+
+

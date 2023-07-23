@@ -1,5 +1,7 @@
 @file:Suppress("SpellCheckingInspection", "UnstableApiUsage")
 
+import Versions.Lib
+
 plugins {
   id("com.android.library")
   id("org.jetbrains.kotlin.android")
@@ -51,14 +53,14 @@ kotlin {
 
 dependencies {
   implementation(kotlin("stdlib"))
-  implementation(findLibraryAlias("timber"))
-  implementation(findLibraryAlias("navigationReimagined"))
-  implementation(findLibraryAlias("kotlinx.coroutines.android"))
+  implementation(findLibraryAlias(Lib.Timber))
+  implementation(findLibraryAlias(Lib.NavigationReimagined))
+  implementation(findLibraryAlias(Lib.CoroutinesAndroid))
 
-  testImplementation(findLibraryAlias("kotlinx.coroutines.test"))
-  testImplementation(findLibraryAlias("kotest.extensions.kotest.assertions.arrow"))
-  testImplementation(findLibraryAlias("kotest.kotest.assertions.core"))
-  testImplementation(findLibraryAlias("kotest.kotest.runner.junit5"))
-  testImplementation(findLibraryAlias("androidx.test.runner"))
-  testImplementation(findLibraryAlias("kotlin.reflect"))
+  testImplementation(findLibraryAlias(Lib.CoroutinesTest))
+  testImplementation(findLibraryAlias(Lib.KotestExtensions))
+  testImplementation(findLibraryAlias(Lib.KotestAssertions))
+  testImplementation(findLibraryAlias(Lib.KotestRunner))
+  testImplementation(findLibraryAlias(Lib.AndroidTestRunner))
+  testImplementation(findLibraryAlias(Lib.KotlinReflect))
 }
