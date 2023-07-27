@@ -81,14 +81,17 @@ graph LR
     common
     design-system
     footballdata
+    footballinfo
     reddit
   end
   subgraph features
     match-day
     match-thread
   end
+  footballinfo --> common
   footballdata --> common
   match-day --> common
+  match-day --> footballinfo
   match-day --> footballdata
   match-day --> design-system
   match-day --> reddit
@@ -149,7 +152,6 @@ The LiveMatch App icon was created using
 - [ ] Native video player
 - [ ] Match Stats
 - [ ] Github actions CI
-- [ ] Performance Improvement
 - [ ] Match highlight comments
 - [x] Light Theme
 - [ ] Better match events ticker
