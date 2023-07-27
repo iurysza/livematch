@@ -34,14 +34,8 @@ class MatchDayViewModel @Inject constructor(
   private val fetchLatestMatchThreadsForToday: FetchLatestMatchThreadsForTodayUseCase,
 ) : MVIViewModel<MatchDayViewEvent, MatchDayViewState, MatchDayViewEffect>() {
 
-  private val savedMatchThreads = savedStateHandle.getStateFlow(
-    key = KEY_MATCH_THREADS,
-    initialValue = emptyList<MatchThreadEntity>(),
-  )
-  private val savedMatches = savedStateHandle.getStateFlow(
-    key = KEY_MATCHES,
-    initialValue = emptyList<MatchEntity>(),
-  )
+  private var savedMatchThreads = emptyList<MatchThreadEntity>()
+  private var savedMatches = emptyList<MatchEntity>()
 
   override fun setInitialState(): MatchDayViewState = MatchDayViewState()
 
@@ -55,12 +49,12 @@ class MatchDayViewModel @Inject constructor(
   }
 
   private fun onGetLatestMatches() = viewModelScope.launch {
-    if (savedMatches.value.isEmpty()) {
+    if (savedMatches.isEmpty()) {
       setState { copy(matchDayState = MatchDayState.Loading, isSyncing = true) }
       fetchRedditContent()
       fetchMatchData()
     } else {
-      updateMatchSuccessOrEmpty(savedMatches.value)
+      updateMatchSuccessOrEmpty()
     }
   }
 
@@ -76,8 +70,8 @@ class MatchDayViewModel @Inject constructor(
     either {
       createMatchThreadFrom(
         matchId = event.match.id,
-        matchThreadList = savedMatchThreads.value,
-        matchList = savedMatches.value,
+        matchThreadList = savedMatchThreads,
+        matchList = savedMatches,
       ).bind()
     }.fold(
       { setEffect { MatchDayViewEffect.NavigationError(it.message) } },
@@ -99,8 +93,8 @@ class MatchDayViewModel @Inject constructor(
         }
       },
       { matchList ->
-        savedStateHandle[KEY_MATCHES] = matchList
-        updateMatchSuccessOrEmpty(matchList)
+        savedMatches = matchList
+        updateMatchSuccessOrEmpty()
       },
     )
 
@@ -113,13 +107,13 @@ class MatchDayViewModel @Inject constructor(
       setState { copy(isSyncing = false) }
     },
     { matchThreads ->
-      savedStateHandle[KEY_MATCH_THREADS] = matchThreads
+      savedMatchThreads = matchThreads
       setState { copy(isSyncing = false) }
     },
   )
 
-  private fun updateMatchSuccessOrEmpty(savedMatches: List<MatchEntity>) {
-    val matchList = getValidMatchList(savedMatches, savedMatchThreads.value, resourceProvider)
+  private fun updateMatchSuccessOrEmpty() {
+    val matchList = getValidMatchList(savedMatches, savedMatchThreads, resourceProvider)
     setState {
       copy(
         matchDayState = if (matchList.isEmpty()) {
@@ -141,6 +135,3 @@ class MatchDayViewModel @Inject constructor(
     }
   }
 }
-
-private const val KEY_MATCH_THREADS = "matchThreads"
-private const val KEY_MATCHES = "matches"
