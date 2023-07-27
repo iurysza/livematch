@@ -44,8 +44,11 @@ internal fun createMatchThreadFrom(
 ) = Either.catch {
   val matchEntity = matchList.first { it.id.toString() == matchId }
   val matchThreadEntity = matchThreadList.first { matchThread ->
-    val title = matchThread.title
-    title.contains(matchEntity.homeTeam.name) || title.contains(matchEntity.awayTeam.name)
+    isMatchRelated(
+      homeTeam = matchEntity.homeTeam.name,
+      awayTeam = matchEntity.awayTeam.name,
+      title = matchThread.title
+    )
   }
   Pair(matchThreadEntity, matchEntity)
 }.mapLeft { ViewError.NoMatchFound(it.message.toString()) }
@@ -76,10 +79,34 @@ private fun findValidMatchThread(
 ): MatchEntity? {
   val matchEntity = matchList.first { it.id.toString() == matchId }
   val matchThreadEntity = matchThreadList.find { matchThread ->
-    val title = matchThread.title
-    title.contains(matchEntity.homeTeam.name) || title.contains(matchEntity.awayTeam.name)
+    isMatchRelated(
+      homeTeam = matchEntity.homeTeam.name,
+      awayTeam = matchEntity.awayTeam.name,
+      title = matchThread.title
+    )
   }
   return if (matchThreadEntity != null) matchEntity else null
+}
+
+private val teamNickNameDictionary = mapOf(
+  "Paris Saint-Germain" to "PSG",
+)
+
+private fun containsTeamName(title: String, teamName: String): Boolean {
+  val wordsToCheck = buildList {
+    add(teamName)
+    teamNickNameDictionary[teamName]?.let { add(it) }
+    teamName.split(" ").maxByOrNull { it.length }?.let { add(it) }
+  }
+  return wordsToCheck.any { title.contains(it) }
+}
+
+private fun isMatchRelated(
+  homeTeam: String,
+  awayTeam: String,
+  title: String,
+): Boolean {
+  return containsTeamName(title, homeTeam) || title.contains(awayTeam)
 }
 
 private fun buildMatchThreadWith(
