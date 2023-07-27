@@ -15,15 +15,31 @@ import androidx.compose.ui.unit.dp
 fun Modifier.roundedClip() = this.clip(RoundedCornerShape(10.dp))
 fun Modifier.gradientBackground(
   colors: List<Color>? = null,
+  orientation: GradientOrientation = GradientOrientation.Vertical,
 ): Modifier = composed {
-  background(
-    brush = Brush.verticalGradient(
-      colors ?: listOf(
-        MaterialTheme.colors.background,
-        MaterialTheme.colors.secondaryVariant,
-      ),
-    ),
+  val colorList = colors ?: listOf(
+    MaterialTheme.colors.background,
+    MaterialTheme.colors.secondaryVariant,
   )
+  background(
+    brush = when (orientation) {
+      GradientOrientation.Vertical -> Brush.verticalGradient(colorList)
+      GradientOrientation.Horizontal -> Brush.horizontalGradient(colorList)
+    },
+  )
+}
+
+fun Modifier.verticalGradient(
+  colors: List<Color>? = null,
+): Modifier = gradientBackground(colors, GradientOrientation.Vertical)
+
+fun Modifier.horizontalGradient(
+  colors: List<Color>? = null,
+): Modifier = gradientBackground(colors, GradientOrientation.Horizontal)
+
+sealed class GradientOrientation {
+  object Vertical : GradientOrientation()
+  object Horizontal : GradientOrientation()
 }
 
 @SuppressLint("UnnecessaryComposedModifier")
