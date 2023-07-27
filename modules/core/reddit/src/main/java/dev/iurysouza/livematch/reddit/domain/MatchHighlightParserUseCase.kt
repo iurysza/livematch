@@ -26,7 +26,7 @@ class MatchHighlightParserUseCase {
   private fun isMediaRelatedToTeams(
     media: MatchHighlightEntity,
     matchTitle: MatchTitle,
-  ): Boolean = containsTeamName(media.title ?: "", matchTitle.homeTeam)||
+  ): Boolean = containsTeamName(media.title ?: "", matchTitle.homeTeam) ||
     containsTeamName(media.title ?: "", matchTitle.awayTeam)
 
   private fun parseTitle(media: MatchHighlightEntity): String {

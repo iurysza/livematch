@@ -47,7 +47,7 @@ internal fun createMatchThreadFrom(
     isMatchRelated(
       homeTeam = matchEntity.homeTeam.name,
       awayTeam = matchEntity.awayTeam.name,
-      title = matchThread.title
+      title = matchThread.title,
     )
   }
   Pair(matchThreadEntity, matchEntity)
@@ -82,7 +82,7 @@ private fun findValidMatchThread(
     isMatchRelated(
       homeTeam = matchEntity.homeTeam.name,
       awayTeam = matchEntity.awayTeam.name,
-      title = matchThread.title
+      title = matchThread.title,
     )
   }
   return if (matchThreadEntity != null) matchEntity else null

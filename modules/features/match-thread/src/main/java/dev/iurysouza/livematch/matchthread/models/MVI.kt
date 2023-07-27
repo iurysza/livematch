@@ -55,8 +55,8 @@ fun MatchThreadArgs.toParams(): MatchThreadParams {
 data class MatchThreadParams(
   val id: String,
   val title: String,
-  val homeTeam:String,
-  val awayTeam:String,
+  val homeTeam: String,
+  val awayTeam: String,
   val content: String,
   val startTime: Long,
 )

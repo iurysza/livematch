@@ -47,7 +47,7 @@ fun LeagueDivider(
 
 @Preview
 @Composable
-private fun LeagueDividerPreview() = LiveMatchThemePreview{
+private fun LeagueDividerPreview() = LiveMatchThemePreview {
   LeagueDivider(
     competition = Competition(
       id = 1,
