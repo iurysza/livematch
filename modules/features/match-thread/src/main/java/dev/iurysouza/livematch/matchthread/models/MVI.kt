@@ -47,12 +47,16 @@ fun MatchThreadArgs.toParams(): MatchThreadParams {
     title = title,
     content = content,
     startTime = startTime,
+    homeTeam = homeTeam.name,
+    awayTeam = awayTeam.name,
   )
 }
 
 data class MatchThreadParams(
   val id: String,
   val title: String,
+  val homeTeam:String,
+  val awayTeam:String,
   val content: String,
   val startTime: Long,
 )

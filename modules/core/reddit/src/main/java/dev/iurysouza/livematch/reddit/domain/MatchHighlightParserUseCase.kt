@@ -10,18 +10,24 @@ class MatchHighlightParserUseCase {
 
   fun getMatchHighlights(
     matchMedias: List<MatchHighlightEntity>,
-    matchTitle: String,
+    matchTitle: MatchTitle,
   ): Either<DomainError, List<MediaEntity>> = Either.catch {
-    val (homeTeam, awayTeam) = matchTitle.parseTeamNames()
-    matchMedias.sortedBy { it.createdAt }.filter { media ->
-      containsTeamName(media.title!!, homeTeam) || containsTeamName(media.title, awayTeam)
-    }.map { media ->
-      MediaEntity(
-        title = parseTitle(media),
-        url = media.html!!,
-      )
-    }
+    matchMedias
+      .sortedBy { it.createdAt }
+      .filter { media -> isMediaRelatedToTeams(media, matchTitle) }
+      .map {
+        MediaEntity(
+          title = parseTitle(it),
+          url = it.html!!,
+        )
+      }
   }.mapLeft { MappingError(it.message.toString()) }
+
+  private fun isMediaRelatedToTeams(
+    media: MatchHighlightEntity,
+    matchTitle: MatchTitle,
+  ): Boolean = containsTeamName(media.title ?: "", matchTitle.homeTeam)||
+    containsTeamName(media.title ?: "", matchTitle.awayTeam)
 
   private fun parseTitle(media: MatchHighlightEntity): String {
     if (media.title!!.contains("href")) {

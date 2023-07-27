@@ -23,7 +23,7 @@ class GetMatchHighlightsUseCase @Inject constructor(
       restrictedToSubreddit = true,
       limit = 100,
     ).flatMap { response -> response.matchHighlightEntities() }
-      .flatMap { matchHighlightParserUseCase.getMatchHighlights(it, matchTitle.value) }
+      .flatMap { matchHighlightParserUseCase.getMatchHighlights(it, matchTitle) }
       .bind()
   }
 }

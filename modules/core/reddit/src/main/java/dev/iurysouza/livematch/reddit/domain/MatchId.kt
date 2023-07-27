@@ -1,11 +1,10 @@
 package dev.iurysouza.livematch.reddit.domain
 
-@JvmInline
-value class MatchTitle(val value: String) {
-  init {
-    require(value.isNotEmpty()) { "MatchTitle must not be empty" }
-  }
-}
+data class MatchTitle(
+  val homeTeam:String,
+  val awayTeam:String,
+)
+
 
 @JvmInline
 value class MatchId(val value: String) {

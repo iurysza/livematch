@@ -90,7 +90,9 @@ class MatchThreadViewModel @Inject constructor(
     content: String,
   ) = either {
     setState { copy(descriptionState = MatchDescriptionState.Loading) }
-    fetchMatchHighlightsUseCase.execute(MatchTitle(params.title)).bind()
+    fetchMatchHighlightsUseCase.execute(
+      MatchTitle(params.homeTeam, params.awayTeam),
+    ).bind()
   }
     .mapLeft { mapErrorMsg(it) }
     .map { it.toUi() }
