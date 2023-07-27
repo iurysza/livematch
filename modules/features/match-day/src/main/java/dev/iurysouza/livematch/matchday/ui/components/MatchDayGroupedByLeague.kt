@@ -31,7 +31,7 @@ internal fun MatchDayGroupedByLeague(
       .padding(horizontal = S200),
   ) {
     matchList.groupBy { it.competition }.forEach { (competition, matchItemList) ->
-      stickyHeader {
+      item {
         if (shouldUsePlaceHolder) PlaceHolderDivider(competition) else LeagueDivider(competition, Modifier)
       }
       itemsIndexed(matchItemList) { _, matchItem ->

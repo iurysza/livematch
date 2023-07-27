@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
+import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.designsystem.theme.Space.S100
 import dev.iurysouza.livematch.designsystem.theme.Space.S200
 import dev.iurysouza.livematch.matchday.models.Competition
@@ -46,7 +47,7 @@ fun LeagueDivider(
 
 @Preview
 @Composable
-private fun LeagueDividerPreview() {
+private fun LeagueDividerPreview() = LiveMatchThemePreview{
   LeagueDivider(
     competition = Competition(
       id = 1,
