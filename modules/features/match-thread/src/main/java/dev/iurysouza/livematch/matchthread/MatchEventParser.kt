@@ -164,6 +164,8 @@ open class MatchEventParser {
     commentList: List<CommentItem>,
     eventList: List<MatchEvent>,
     isRefreshing: Boolean,
+    maxNewComments: Int = 200,
+    maxComments: Int = 60,
   ): Either<Throwable, List<CommentSection>> {
     fun MatchEvent.relativeTime(): Int = runCatching {
       relativeTime.toInt()
@@ -201,12 +203,12 @@ open class MatchEventParser {
               commentList = if (isRefreshing) {
                 sectionComments
                   .sortedBy { it.score }
-                  .take(50)
+                  .take(maxNewComments)
                   .sortedBy { it.relativeTime }
               } else {
                 sectionComments
                   .sortedBy { it.score }
-                  .take(20)
+                  .take(maxComments)
                   .sortedBy { it.relativeTime }
               }.toImmutableList(),
             ),
