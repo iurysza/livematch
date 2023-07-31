@@ -40,6 +40,7 @@ dependencies {
   implementation(project(ProjectModule.DesignSystem))
   implementation(project(ProjectModule.Common))
 
+  implementation(libs.androidx.compose.material)
   implementation(platform(libs.androidx.compose.bom))
   implementation(libs.bundles.composeMinimal)
   implementation(libs.androidx.appcompat)

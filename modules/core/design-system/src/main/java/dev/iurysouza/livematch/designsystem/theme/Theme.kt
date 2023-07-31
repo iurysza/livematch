@@ -6,10 +6,8 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.text.TextStyle
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.halilibo.richtext.ui.RichTextThemeIntegration
 
 private val DarkColorPalette = darkColors(
@@ -58,17 +56,7 @@ fun LivematchTheme(
     shapes = Shapes,
   ) {
     val textColor = MaterialTheme.colors.onBackground
-    val secondary = MaterialTheme.colors.secondaryVariant
-    val backgroundColor = MaterialTheme.colors.background
 
-    if (!isPreview) {
-      // Fixes issue with Compose Previews breaking
-      val systemUiController = rememberSystemUiController()
-      SideEffect {
-        systemUiController.setSystemBarsColor(backgroundColor, darkIcons = !darkTheme)
-        systemUiController.setNavigationBarColor(secondary, darkIcons = !darkTheme)
-      }
-    }
     RichTextThemeIntegration(
       textStyle = { TextStyle(color = textColor) },
       ProvideTextStyle = { newTextStyle, content ->
