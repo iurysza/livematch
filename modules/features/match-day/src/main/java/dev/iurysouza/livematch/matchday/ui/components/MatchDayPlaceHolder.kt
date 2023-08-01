@@ -13,19 +13,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.placeholder
-import com.google.accompanist.placeholder.shimmer
+import dev.iurysouza.livematch.designsystem.components.liveMatchPlaceHolder
 import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.designsystem.theme.Space.S100
 import kotlin.random.Random
@@ -177,17 +172,6 @@ private fun TeamPlaceHolderPreview() = LiveMatchThemePreview {
   }
 }
 
-private fun Modifier.liveMatchPlaceHolder(): Modifier = composed {
-  this
-    .placeholder(
-      visible = true,
-      color = MaterialTheme.colors.onSurface,
-      highlight = PlaceholderHighlight.shimmer(
-        highlightColor = Color.White.copy(alpha = 0.5f),
-        progressForMaxAlpha = 0.5f,
-      ),
-    )
-}
 
 @Preview
 @Composable

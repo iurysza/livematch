@@ -36,7 +36,6 @@ dependencies {
   implementation(libs.androidx.navigation.compose)
   implementation(libs.androidx.hilt.navigation.compose)
 
-  implementation(libs.google.acompanist.placeholder.material)
   implementation(libs.google.acompanist.systemuicontroller)
   implementation(libs.google.acompanist.navigation.animation)
   implementation(libs.squareup.moshi.kotlin)

@@ -19,6 +19,7 @@ dependencies {
   implementation(libs.androidx.core.ktx)
 
   implementation(libs.lottieCompose)
+  implementation(libs.google.acompanist.placeholder.material)
   implementation(libs.google.acompanist.swiperefresh)
   implementation(libs.google.acompanist.systemuicontroller)
   implementation(libs.halilibo.composeRichttext.richtextCommonmark)
