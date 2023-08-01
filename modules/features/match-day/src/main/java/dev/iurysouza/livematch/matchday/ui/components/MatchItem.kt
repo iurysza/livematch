@@ -88,19 +88,7 @@ internal fun Team(
       model = team.crestUrl,
       contentDescription = "$team.name crest",
     )
-    val style = if (team.isAhead) {
-      TextStyle(
-        fontSize = 19.sp,
-        textAlign = TextAlign.Left,
-        color = MaterialTheme.colors.onPrimary,
-      )
-    } else {
-      TextStyle(
-        fontSize = 19.sp,
-        textAlign = TextAlign.Left,
-        color = MaterialTheme.colors.onSurface,
-      )
-    }
+    val style = textStyle(team)
     Text(
       text = team.name,
       style = style,
@@ -113,6 +101,24 @@ internal fun Team(
       textAlign = TextAlign.Right,
     )
   }
+}
+
+@Composable
+private fun textStyle(team: Team): TextStyle {
+  val style = if (team.isAhead) {
+    TextStyle(
+      fontSize = 19.sp,
+      textAlign = TextAlign.Left,
+      color = MaterialTheme.colors.onPrimary,
+    )
+  } else {
+    TextStyle(
+      fontSize = 19.sp,
+      textAlign = TextAlign.Left,
+      color = MaterialTheme.colors.onSurface,
+    )
+  }
+  return style
 }
 
 @Preview

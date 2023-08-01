@@ -21,7 +21,7 @@ import kotlinx.collections.immutable.ImmutableList
 @Composable
 internal fun MatchDayGroupedByLeague(
   modifier: Modifier = Modifier,
-  matchList: ImmutableList<MatchUiModel> = Fakes.generateMatchList(),
+  matchList: ImmutableList<MatchUiModel> = Fakes.generateMatchList(6),
   onItemTap: (MatchUiModel) -> Unit = {},
   shouldUsePlaceHolder: Boolean = false,
 ) {
@@ -32,7 +32,7 @@ internal fun MatchDayGroupedByLeague(
   ) {
     matchList.groupBy { it.competition }.forEach { (competition, matchItemList) ->
       item {
-        if (shouldUsePlaceHolder) PlaceHolderDivider(competition) else LeagueDivider(competition, Modifier)
+        if (shouldUsePlaceHolder) PlaceHolderDivider() else LeagueDivider(competition, Modifier)
       }
       itemsIndexed(matchItemList) { _, matchItem ->
         Column(

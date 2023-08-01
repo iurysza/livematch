@@ -2,10 +2,16 @@
 
 package dev.iurysouza.livematch.matchday.ui.components
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -22,21 +28,29 @@ import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.placeholder.shimmer
 import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.designsystem.theme.Space.S100
-import dev.iurysouza.livematch.designsystem.theme.Space.S200
-import dev.iurysouza.livematch.matchday.models.Competition
 import kotlin.random.Random
+import kotlin.random.nextInt
 
 @Composable
-fun PlaceHolderDivider(
-  competition: Competition,
-) {
-  LeagueDivider(
-    competition,
-    Modifier
-      .width(100.dp)
-      .height(30.dp)
-      .liveMatchPlaceHolder(),
-  )
+fun PlaceHolderDivider() {
+  Row(Modifier.padding(vertical = 16.dp)) {
+    Box(
+      modifier = Modifier
+        .size(30.dp)
+        .liveMatchPlaceHolder(),
+    )
+    Spacer(
+      modifier =
+      Modifier
+        .size(4.dp),
+    )
+    Box(
+      modifier = Modifier
+        .height(30.dp)
+        .width(Random.nextInt(50..150).dp)
+        .liveMatchPlaceHolder(),
+    )
+  }
 }
 
 @Composable
@@ -45,32 +59,107 @@ fun PlaceHolderItem(
 ) {
   Column(
     modifier
-      .padding(vertical = S100, horizontal = S200)
+      .padding(bottom = S100)
       .fillMaxWidth(),
   ) {
-    Column(
-      Modifier,
-      horizontalAlignment = Alignment.Start,
+    Row(
+      horizontalArrangement = Arrangement.SpaceAround,
     ) {
-      Text(
-        modifier = Modifier
-          .width(Random.nextInt(48, 200).dp)
-          .padding(4.dp)
-          .liveMatchPlaceHolder(),
-        maxLines = 1,
-        text = ".....................",
-        textAlign = TextAlign.Center,
+      MatchTimePlaceHolder(
+        startTime = "00:00",
+        elapsedMinutes = "45'",
+        modifier = Modifier.padding(end = 4.dp),
       )
-      Text(
-        modifier = Modifier
-          .width(Random.nextInt(48, 200).dp)
-          .padding(4.dp)
-          .liveMatchPlaceHolder(),
-        maxLines = 1,
-        text = ".....................",
-        textAlign = TextAlign.Center,
-      )
+      TeamPlace(Modifier)
     }
+  }
+}
+
+@Composable
+private fun TeamPlace(modifier: Modifier = Modifier) {
+  Column(
+    modifier = modifier,
+    verticalArrangement = Arrangement.Center,
+  ) {
+    Row(
+      verticalAlignment = Alignment.CenterVertically,
+      horizontalArrangement = Arrangement.SpaceBetween,
+      modifier = Modifier.padding(bottom = 2.dp),
+    ) {
+      TeamPlaceHolder()
+    }
+    Row(
+      verticalAlignment = Alignment.CenterVertically,
+      horizontalArrangement = Arrangement.Start,
+      modifier = Modifier,
+    ) {
+      TeamPlaceHolder()
+    }
+  }
+}
+
+@Composable
+private fun RowScope.TeamPlaceHolder() {
+  Box(
+    modifier = Modifier
+      .size(21.dp)
+      .liveMatchPlaceHolder(),
+  )
+  Spacer(
+    modifier =
+    Modifier
+      .size(4.dp),
+  )
+  Box(
+    modifier = Modifier
+      .height(21.dp)
+      .width(Random.nextInt(50..150).dp)
+      .liveMatchPlaceHolder(),
+  )
+  Spacer(
+    modifier = Modifier
+      .size(21.dp)
+      .weight(.1f),
+  )
+  Box(
+    modifier = Modifier
+      .size(21.dp)
+      .liveMatchPlaceHolder(),
+  )
+}
+
+@Preview
+@Composable
+fun MatchTimePlaceHolderPreview() = LiveMatchThemePreview {
+  MatchTimePlaceHolder(
+    startTime = "00:00",
+    elapsedMinutes = "00'",
+  )
+}
+
+@Composable
+fun MatchTimePlaceHolder(
+  startTime: String,
+  elapsedMinutes: String,
+  modifier: Modifier = Modifier,
+) {
+  Column(
+    modifier,
+    horizontalAlignment = Alignment.CenterHorizontally,
+  ) {
+    Text(
+      modifier = Modifier
+        .padding(bottom = 2.dp)
+        .liveMatchPlaceHolder(),
+
+      text = startTime,
+      textAlign = TextAlign.Center,
+    )
+    Text(
+      modifier = Modifier.liveMatchPlaceHolder(),
+      text = elapsedMinutes,
+      textAlign = TextAlign.Center,
+    )
   }
 }
 
@@ -80,16 +169,22 @@ private fun PlaceHolderItemPreview() = LiveMatchThemePreview {
   PlaceHolderItem()
 }
 
+@Preview
+@Composable
+private fun TeamPlaceHolderPreview() = LiveMatchThemePreview {
+  Row {
+    TeamPlaceHolder()
+  }
+}
+
 private fun Modifier.liveMatchPlaceHolder(): Modifier = composed {
   this
-    .width(100.dp)
-    .height(30.dp)
     .placeholder(
       visible = true,
       color = MaterialTheme.colors.onSurface,
       highlight = PlaceholderHighlight.shimmer(
-        highlightColor = Color.White.copy(alpha = 0.9f),
-        progressForMaxAlpha = 0.9f,
+        highlightColor = Color.White.copy(alpha = 0.5f),
+        progressForMaxAlpha = 0.5f,
       ),
     )
 }
@@ -97,11 +192,5 @@ private fun Modifier.liveMatchPlaceHolder(): Modifier = composed {
 @Preview
 @Composable
 private fun PlaceHolderDividerPreview() = LiveMatchThemePreview {
-  PlaceHolderDivider(
-    Competition(
-      id = 1,
-      name = "Premier League",
-      emblemUrl = "https://media.api-sports.io/football/leagues/39.png",
-    ),
-  )
+  PlaceHolderDivider()
 }

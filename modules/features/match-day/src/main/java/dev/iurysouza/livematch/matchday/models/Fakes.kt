@@ -1,6 +1,7 @@
 package dev.iurysouza.livematch.matchday.models
 
 import kotlin.random.Random
+import kotlin.random.nextInt
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -35,8 +36,16 @@ object Fakes {
       ),
       startTime = "${(14..20).random()}:00",
       elapsedMinutes = "${(0..90).random()}",
-      competition = competition(randomWordWithMaxChars(10)),
+      competition = competition(randomCompetition()),
     )
+  }
+
+  private fun randomCompetition(): String {
+    return if (Random.nextInt() % 2 == 0) {
+      "Premier League"
+    } else {
+      "Champions League"
+    }
   }
 
   fun generateMatchThread(): MatchThread {
@@ -77,7 +86,7 @@ object Fakes {
     }
 }
 
-private fun competition(name: String, id: Int = Random.nextInt()) = Competition(
+private fun competition(name: String, id: Int = 12) = Competition(
   name = name,
   id = id,
   emblemUrl = "https://crests.football-data.org/770.svg",
