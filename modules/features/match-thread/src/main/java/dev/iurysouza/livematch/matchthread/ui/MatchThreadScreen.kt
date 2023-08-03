@@ -19,9 +19,9 @@ import dev.iurysouza.livematch.designsystem.components.LottiePullToReveal
 import dev.iurysouza.livematch.matchthread.ui.components.CollapsibleToolbar
 import dev.iurysouza.livematch.matchthread.ui.components.MatchDescription
 import dev.iurysouza.livematch.matchthread.ui.components.MatchHeader
-import dev.iurysouza.livematch.matchthread.ui.components.isValueTrueForKey
-import dev.iurysouza.livematch.matchthread.ui.components.itemCommentList
-import dev.iurysouza.livematch.matchthread.ui.components.toggleValue
+import dev.iurysouza.livematch.matchthread.ui.components.comments.isValueTrueForKey
+import dev.iurysouza.livematch.matchthread.ui.components.comments.itemCommentList
+import dev.iurysouza.livematch.matchthread.ui.components.comments.toggleValue
 import dev.iurysouza.livematch.matchthread.models.MatchHeader
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewState
 import kotlinx.coroutines.launch
