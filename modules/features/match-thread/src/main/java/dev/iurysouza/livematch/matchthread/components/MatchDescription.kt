@@ -11,9 +11,9 @@ import dev.iurysouza.livematch.matchthread.models.MatchDescriptionState
 @Composable
 fun MatchDescription(state: MatchDescriptionState) {
   when (state) {
-    MatchDescriptionState.Loading -> FullScreenProgress()
+    MatchDescriptionState.Loading -> MatchDetails(isPlaceHolder = true)
     is MatchDescriptionState.Error -> ErrorScreen(msg = state.msg, isScrollable = false)
-    is MatchDescriptionState.Success -> MatchDetails(state.content, state.mediaList)
+    is MatchDescriptionState.Success -> MatchDetails(content = state.content, mediaItemList = state.mediaList)
   }
 }
 

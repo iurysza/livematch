@@ -37,6 +37,7 @@ import com.halilibo.richtext.ui.RichText
 import com.halilibo.richtext.ui.RichTextStyle
 import com.halilibo.richtext.ui.string.RichTextStringStyle
 import dev.iurysouza.livematch.designsystem.components.horizontalGradient
+import dev.iurysouza.livematch.designsystem.components.liveMatchPlaceHolder
 import dev.iurysouza.livematch.designsystem.components.roundedClip
 import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.designsystem.theme.Space.S100
@@ -49,29 +50,55 @@ import dev.iurysouza.livematch.matchthread.R
 import dev.iurysouza.livematch.matchthread.models.FakeFactory
 import dev.iurysouza.livematch.matchthread.models.MediaItem
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import timber.log.Timber
 
 @Composable
 fun MatchDetails(
-  content: String,
-  mediaItemList: ImmutableList<MediaItem>,
   modifier: Modifier = Modifier,
+  content: String = "",
+  mediaItemList: ImmutableList<MediaItem> = persistentListOf(),
+  isPlaceHolder: Boolean = false,
 ) {
   Column(
     modifier = modifier
       .fillMaxWidth()
       .background(MaterialTheme.colors.background),
   ) {
-    MatchDescription(content)
-    MediaCarousel(mediaItemList)
+    if (isPlaceHolder) {
+      MatchDescriptionPlaceHolder()
+      CarouselPlaceHolder()
+    } else {
+      MatchDescription(content)
+      MediaCarousel(mediaItemList)
+    }
+  }
+}
+
+@Composable
+private fun MatchDescriptionPlaceHolder() {
+  Column(modifier = Modifier.padding(S200)) {
+    Text(
+      modifier = Modifier
+        .padding(bottom = 4.dp)
+        .liveMatchPlaceHolder(500),
+      text = "HighlightHighlightssssHighlights",
+    )
+    Text(
+      modifier = Modifier
+        .liveMatchPlaceHolder(500),
+      text = "HighlightsHighlights",
+    )
   }
 }
 
 @Composable
 private fun MatchDescription(content: String) {
   RichText(
-    modifier = Modifier.padding(S100),
+    modifier = Modifier
+      .padding(horizontal = S200)
+      .padding(S100),
     style = RichTextStyle.Default.copy(
       stringStyle = RichTextStringStyle.Default.copy(
         italicStyle = SpanStyle(
@@ -101,12 +128,41 @@ private fun MediaCarousel(mediaItemList: ImmutableList<MediaItem>) {
   }
 }
 
+@Preview
+@Composable
+fun CarouselPlaceHolder() {
+  Column(
+    Modifier
+      .padding(vertical = S200)
+      .padding(bottom = S50)
+      .padding(horizontal = S200),
+  ) {
+    Text(
+      modifier = Modifier
+        .padding(bottom = S50)
+        .liveMatchPlaceHolder(500),
+      text = "Highlights",
+    )
+    LazyRow(
+      horizontalArrangement = Arrangement.spacedBy(S100),
+    ) {
+      items(FakeFactory.generateMediaList()) { item ->
+        Box(
+          modifier = Modifier
+            .size(S1000)
+            .liveMatchPlaceHolder(),
+        )
+      }
+    }
+  }
+}
+
 @Composable
 private fun GradientPaddedMediaCarousel(
   mediaItemList: ImmutableList<MediaItem>,
 ) {
   val context = LocalContext.current
-  Box() {
+  Box {
     val list = remember(mediaItemList) {
       val fakeItem = listOf(MediaItem("fake", "fake"))
       (fakeItem + mediaItemList + fakeItem).toImmutableList()
