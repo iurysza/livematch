@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.matchthread
+package dev.iurysouza.livematch.matchthread.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -16,12 +16,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import dev.iurysouza.livematch.designsystem.components.LottieAsset
 import dev.iurysouza.livematch.designsystem.components.LottiePullToReveal
-import dev.iurysouza.livematch.matchthread.components.CollapsibleToolbar
-import dev.iurysouza.livematch.matchthread.components.MatchDescription
-import dev.iurysouza.livematch.matchthread.components.MatchHeader
-import dev.iurysouza.livematch.matchthread.components.isValueTrueForKey
-import dev.iurysouza.livematch.matchthread.components.itemCommentList
-import dev.iurysouza.livematch.matchthread.components.toggleValue
+import dev.iurysouza.livematch.matchthread.ui.components.CollapsibleToolbar
+import dev.iurysouza.livematch.matchthread.ui.components.MatchDescription
+import dev.iurysouza.livematch.matchthread.ui.components.MatchHeader
+import dev.iurysouza.livematch.matchthread.ui.components.isValueTrueForKey
+import dev.iurysouza.livematch.matchthread.ui.components.itemCommentList
+import dev.iurysouza.livematch.matchthread.ui.components.toggleValue
 import dev.iurysouza.livematch.matchthread.models.MatchHeader
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewState
 import kotlinx.coroutines.launch

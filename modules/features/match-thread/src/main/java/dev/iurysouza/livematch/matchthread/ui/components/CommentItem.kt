@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.matchthread.components
+package dev.iurysouza.livematch.matchthread.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

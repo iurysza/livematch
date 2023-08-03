@@ -1,9 +1,8 @@
-package dev.iurysouza.livematch.matchthread.components
+package dev.iurysouza.livematch.matchthread.ui.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
-import dev.iurysouza.livematch.designsystem.components.FullScreenProgress
 import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.matchthread.models.FakeFactory
 import dev.iurysouza.livematch.matchthread.models.MatchDescriptionState

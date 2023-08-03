@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.matchthread.components
+package dev.iurysouza.livematch.matchthread.ui.components
 
 import android.content.Context
 import android.net.Uri

@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.matchthread.components
+package dev.iurysouza.livematch.matchthread.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
