@@ -62,7 +62,7 @@ fun Modifier.thenIf(
 
 fun Modifier.liveMatchPlaceHolder(duration: Int = 1700): Modifier = composed {
   this
-  .clip(RoundedCornerShape(8.dp))
+    .clip(RoundedCornerShape(8.dp))
     .placeholder(
       visible = true,
       color = MaterialTheme.colors.onSurface,

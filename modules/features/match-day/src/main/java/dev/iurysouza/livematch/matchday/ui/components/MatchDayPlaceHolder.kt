@@ -172,7 +172,6 @@ private fun TeamPlaceHolderPreview() = LiveMatchThemePreview {
   }
 }
 
-
 @Preview
 @Composable
 private fun PlaceHolderDividerPreview() = LiveMatchThemePreview {
