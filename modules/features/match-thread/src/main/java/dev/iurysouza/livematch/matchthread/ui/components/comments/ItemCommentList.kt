@@ -33,7 +33,7 @@ fun LazyListScope.itemCommentList(
       onToggleStateInit(initToggledCommentsState(expandedSectionMap, state.sectionList))
       state.sectionList.forEach { (_, event, comments) ->
         stickyHeader {
-          SectionHeader(
+          MatchEventSectionHeader(
             event = event,
             nestedCommentCount = comments.size,
             isExpanded = expandCommentsIf(event.description),

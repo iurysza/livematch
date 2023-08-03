@@ -40,7 +40,7 @@ import dev.iurysouza.livematch.matchthread.models.EventIcon
 import dev.iurysouza.livematch.matchthread.models.MatchEvent
 
 @Composable
-fun SectionHeader(
+fun MatchEventSectionHeader(
   modifier: Modifier = Modifier,
   event: MatchEvent,
   onClick: ((MatchEvent) -> Unit)?,
@@ -209,7 +209,7 @@ private fun MatchIconPreview() = LiveMatchThemePreview {
 @Composable
 @Preview
 private fun SectionHeaderWithNestedCommentsPreview() = LiveMatchThemePreview {
-  SectionHeader(
+  MatchEventSectionHeader(
     nestedCommentCount = 23,
     isExpanded = false,
     event = MatchEvent(
@@ -226,7 +226,7 @@ private fun SectionHeaderWithNestedCommentsPreview() = LiveMatchThemePreview {
 @Composable
 @Preview
 private fun SectionHeaderPreview() = LiveMatchThemePreview {
-  SectionHeader(
+  MatchEventSectionHeader(
     nestedCommentCount = 23,
     isExpanded = true,
     event = MatchEvent(
