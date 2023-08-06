@@ -16,6 +16,7 @@ import dev.iurysouza.livematch.footballdata.domain.models.Status
 import dev.iurysouza.livematch.footballinfo.domain.newmodel.Match
 import dev.iurysouza.livematch.matchday.R
 import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneId
@@ -100,15 +101,38 @@ private fun findValidMatchThread(
   return if (matchThreadEntity != null) matchEntity else null
 }
 
+private val ambiguousWords = listOf(
+  "Manchester",
+  "Borussia",
+  "United",
+  "City",
+  "Real",
+  "Arsenal",
+)
 private val teamNickNameDictionary = mapOf(
   "Paris Saint-Germain" to "PSG",
+  "Manchester United" to "Manchester Utd",
 )
 
+/**
+ * Checks if the given [title] contains a team name.
+ *
+ * @param title The title to check for the presence of a team name.
+ * @param teamName The team name to search for in the [title].
+ * @return `true` if the [title] contains any variations of the [teamName], `false` otherwise.
+ */
 private fun containsTeamName(title: String, teamName: String): Boolean {
+  val wordsSortedByLength = teamName.split(" ").sortedBy { it.length }.reversed()
   val wordsToCheck = buildList {
     add(teamName)
     teamNickNameDictionary[teamName]?.let { add(it) }
-    teamName.split(" ").maxByOrNull { it.length }?.let { add(it) }
+    wordsSortedByLength.firstOrNull()?.let { maxLengthWord ->
+      if (!ambiguousWords.contains(maxLengthWord)) {
+        add(maxLengthWord)
+      } else {
+        wordsSortedByLength.getOrNull(2)?.let { add(it) }
+      }
+    }
   }
   return wordsToCheck.any { title.contains(it) }
 }
@@ -213,13 +237,16 @@ fun MatchThread.toDestination() = Destination.MatchThread(
 
 @Suppress("MagicNumber")
 private fun MatchEntity.calculatePlayTime(): String {
-  val nowInMilli = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()
-  val matchStartTimeInMilli = utcDate.toInstant(ZoneOffset.UTC).toEpochMilli()
-  // to convert timeDifference from Millis to Minutes:
-  // millis -> seconds = divide by 1000
-  // seconds -> minutes = divide by 60
-  val diffMin = (nowInMilli - matchStartTimeInMilli) / 60_000
-  return "$diffMin'"
+  val now = ZonedDateTime.now(ZoneOffset.UTC)
+  val duration = Duration.between(utcDate, now)
+  val minutes = duration.toMinutes()
+  return "${
+    if (minutes > 50) {
+      minutes - 25
+    } else {
+      minutes
+    }
+  }'"
 }
 
 private fun Status.toText(matchEntity: MatchEntity, resources: ResourceProvider): String =
