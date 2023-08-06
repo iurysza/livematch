@@ -3,9 +3,7 @@ package dev.iurysouza.livematch.matchday.models
 import arrow.core.Either
 import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.common.navigation.Destination
-import dev.iurysouza.livematch.common.navigation.models.Competition as NavCompetition
 import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
-import dev.iurysouza.livematch.common.navigation.models.Team as NavTeam
 import dev.iurysouza.livematch.footballdata.domain.models.AreaEntity
 import dev.iurysouza.livematch.footballdata.domain.models.AwayTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.CompetitionEntity
@@ -20,10 +18,15 @@ import dev.iurysouza.livematch.matchday.R
 import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
+import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import dev.iurysouza.livematch.common.navigation.models.Competition as NavCompetition
+import dev.iurysouza.livematch.common.navigation.models.Team as NavTeam
 
 internal fun getValidMatchList(
   matchEntities: List<MatchEntity>,
@@ -68,9 +71,18 @@ private fun MatchEntity.toUiModel(resources: ResourceProvider) = MatchUiModel(
   ),
   homeTeam = toTeam(homeTeam, score, true),
   awayTeam = toTeam(awayTeam.asHomeTeam(), score, false),
-  startTime = utcDate.format(DateTimeFormatter.ofPattern("HH:mm")),
+  startTime = formatTime(utcDate),
   elapsedMinutes = status.toText(this, resources),
 )
+
+fun formatTime(utcDate: LocalDateTime): String {
+  val zoneId = ZoneId.systemDefault()  // get device's default timezone
+  val zonedUTCDate = ZonedDateTime.of(utcDate, ZoneId.of("UTC"))
+  val zonedLocalDate = zonedUTCDate.withZoneSameInstant(zoneId)  // converts date to local timezone
+  return zonedLocalDate.format(
+    DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault()),
+  )
+}
 
 private fun findValidMatchThread(
   matchId: String,
