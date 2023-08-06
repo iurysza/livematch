@@ -35,15 +35,15 @@ fun MatchThreadScreen(
   onRefresh: () -> Unit = {},
 ) {
   var expandedSectionMap by remember { mutableStateOf(mapOf<String, Boolean>()) }
-  val state = rememberLazyListState()
+  val listState = rememberLazyListState()
   val scope = rememberCoroutineScope()
   Column(modifier) {
-    val isCollapsed = remember { derivedStateOf { state.firstVisibleItemIndex > 0 } }
+    val isCollapsed = remember { derivedStateOf { listState.firstVisibleItemIndex > 0 } }
     CollapsibleToolbar(
       navigateUp = onNavigateUp,
       isCollapsed = isCollapsed.value,
       matchHeader = matchHeader,
-      onTap = { scope.launch { state.animateScrollToItem(0) } },
+      onTap = { scope.launch { listState.animateScrollToItem(0) } },
     )
     LottiePullToReveal(
       isRefreshing = uiState.isRefreshing,
@@ -51,7 +51,7 @@ fun MatchThreadScreen(
       lottieAsset = LottieAsset.FootballFans,
       content = {
         LazyColumn(
-          state = state,
+          state = listState,
           modifier = Modifier
             .background(MaterialTheme.colors.background)
             .fillMaxSize(),
