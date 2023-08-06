@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dev.iurysouza.livematch.designsystem.components.AnimatedCellExpansion
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
-import dev.iurysouza.livematch.designsystem.components.FullScreenProgress
 import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.matchthread.models.CommentItem
 import dev.iurysouza.livematch.matchthread.models.CommentSection
@@ -27,7 +26,14 @@ fun LazyListScope.itemCommentList(
   onSectionTapped: (String) -> Unit = {},
 ) {
   when (state) {
-    MatchCommentsState.Loading -> item { FullScreenProgress() }
+    MatchCommentsState.Loading -> {
+      FakeFactory.commentSection.forEach { (_, _, commentList) ->
+        stickyHeader { SectionPlaceHolder() }
+        items(commentList) { comment: CommentItem ->
+          CommentItemComponentPlaceHolder(comment)
+        }
+      }
+    }
     is MatchCommentsState.Error -> item { ErrorScreen(msg = state.msg, isScrollable = false) }
     is MatchCommentsState.Success -> {
       onToggleStateInit(initToggledCommentsState(expandedSectionMap, state.sectionList))
@@ -59,7 +65,7 @@ private fun ItemCommentListPreview() = LiveMatchThemePreview {
       .background(MaterialTheme.colors.background)
       .fillMaxSize(),
   ) {
-    itemCommentList(MatchCommentsState.Success(FakeFactory.generateCommentSection()))
+    itemCommentList(MatchCommentsState.Success(FakeFactory.commentSection))
   }
 }
 
