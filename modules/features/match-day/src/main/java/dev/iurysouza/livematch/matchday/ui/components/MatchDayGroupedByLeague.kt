@@ -14,6 +14,7 @@ import dev.iurysouza.livematch.designsystem.components.roundedClip
 import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.designsystem.theme.Space.S100
 import dev.iurysouza.livematch.designsystem.theme.Space.S200
+import dev.iurysouza.livematch.designsystem.theme.Space.S300
 import dev.iurysouza.livematch.matchday.models.Fakes
 import dev.iurysouza.livematch.matchday.models.MatchUiModel
 import kotlinx.collections.immutable.ImmutableList
@@ -39,7 +40,7 @@ internal fun MatchDayGroupedByLeague(
           Modifier
             .roundedClip()
             .clickable { onItemTap(matchItem) }
-            .padding(vertical = S100, horizontal = S200)
+            .padding(start = S300, end = S200, top = S100, bottom = S100)
             .fillMaxWidth(),
         ) {
           if (shouldUsePlaceHolder) PlaceHolderItem() else MatchItem(matchItem)

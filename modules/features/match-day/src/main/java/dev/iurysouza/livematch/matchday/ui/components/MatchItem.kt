@@ -4,8 +4,10 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -13,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -28,14 +31,17 @@ internal fun MatchItem(
   match: MatchUiModel,
   modifier: Modifier = Modifier,
 ) {
-  Row(modifier) {
+  Row(
+    modifier,
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
     MatchTime(
       startTime = match.startTime,
       elapsedMinutes = match.elapsedMinutes,
-      modifier = Modifier.weight(weight = .15f),
+      modifier = Modifier.wrapContentWidth(),
     )
     Column(
-      Modifier.weight(weight = .85f),
+      Modifier.fillMaxWidth(),
       verticalArrangement = Arrangement.Center,
     ) {
       Team(match.homeTeam)
@@ -58,6 +64,7 @@ fun MatchTime(
       text = startTime,
       textAlign = TextAlign.Center,
       color = MaterialTheme.colors.onPrimary,
+      modifier = Modifier.align(Alignment.CenterHorizontally),
     )
     Text(
       text = elapsedMinutes,
@@ -91,6 +98,8 @@ internal fun Team(
     val style = textStyle(team)
     Text(
       text = team.name,
+      maxLines = 1,
+      overflow = TextOverflow.Ellipsis,
       style = style,
       modifier = Modifier.weight(weight = .75f),
     )

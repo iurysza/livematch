@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import dev.iurysouza.livematch.designsystem.components.liveMatchPlaceHolder
 import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.designsystem.theme.Space.S100
+import dev.iurysouza.livematch.designsystem.theme.Space.S50
 import kotlin.random.Random
 import kotlin.random.nextInt
 
@@ -37,7 +38,7 @@ fun PlaceHolderDivider() {
     Spacer(
       modifier =
       Modifier
-        .size(4.dp),
+        .size(S50),
     )
     Box(
       modifier = Modifier
@@ -63,7 +64,7 @@ fun PlaceHolderItem(
       MatchTimePlaceHolder(
         startTime = "00:00",
         elapsedMinutes = "45'",
-        modifier = Modifier.padding(end = 4.dp),
+        modifier = Modifier.padding(end = S50),
       )
       TeamPlace(Modifier)
     }
@@ -103,7 +104,7 @@ private fun RowScope.TeamPlaceHolder() {
   Spacer(
     modifier =
     Modifier
-      .size(4.dp),
+      .size(S50),
   )
   Box(
     modifier = Modifier
@@ -139,7 +140,7 @@ fun MatchTimePlaceHolder(
   modifier: Modifier = Modifier,
 ) {
   Column(
-    modifier,
+    modifier.padding(start = S50),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     Text(
