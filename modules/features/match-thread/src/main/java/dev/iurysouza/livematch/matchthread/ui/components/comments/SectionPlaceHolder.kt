@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.iurysouza.livematch.designsystem.components.liveMatchPlaceHolder
@@ -28,9 +27,8 @@ import dev.iurysouza.livematch.designsystem.theme.Space.S150
 import dev.iurysouza.livematch.designsystem.theme.Space.S200
 import dev.iurysouza.livematch.designsystem.theme.Space.S50
 
-@Preview
 @Composable
-fun SectionPlaceHolder() = LiveMatchThemePreview {
+fun SectionPlaceHolder() {
   Row(
     modifier = Modifier
       .background(MaterialTheme.colors.background)
@@ -43,6 +41,11 @@ fun SectionPlaceHolder() = LiveMatchThemePreview {
       HeaderBody()
     }
   }
+}
+
+@Composable
+private fun SectionPlaceHolderPreview() = LiveMatchThemePreview {
+  SectionPlaceHolder()
 }
 
 @Composable
@@ -121,7 +124,7 @@ private fun RowScope.HeaderBody(
       .padding(start = S50)
       .padding(bottom = S200),
 
-  ) {
+    ) {
     Text(
       text = "Goal Japan 0, Colombia 1.  ",
       modifier = Modifier

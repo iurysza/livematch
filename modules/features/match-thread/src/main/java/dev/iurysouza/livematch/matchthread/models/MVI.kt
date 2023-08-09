@@ -7,7 +7,6 @@ import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
 import kotlinx.collections.immutable.ImmutableList
 
 data class MatchThreadViewState(
-  val matchThread: MatchThread? = null,
   val descriptionState: MatchDescriptionState = MatchDescriptionState.Loading,
   val commentSectionState: MatchCommentsState = MatchCommentsState.Loading,
   val isRefreshing: Boolean = false,
