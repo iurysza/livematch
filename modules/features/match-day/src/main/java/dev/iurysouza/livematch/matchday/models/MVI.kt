@@ -8,7 +8,6 @@ import kotlinx.collections.immutable.ImmutableList
 
 data class MatchDayViewState(
   val matchDayState: MatchDayState = MatchDayState.Loading,
-  val isSyncing: Boolean = false,
   val isRefreshing: Boolean = false,
 ) : ViewState
 
@@ -27,6 +26,7 @@ sealed interface MatchDayViewEffect : ViewSideEffect {
 
 sealed interface MatchDayViewEvent : ViewEvent {
   object Refresh : MatchDayViewEvent
+  data class ToggleLiveMode(val isOn: Boolean) : MatchDayViewEvent
   object GetLatestMatches : MatchDayViewEvent
   data class NavigateToMatch(val match: MatchUiModel) : MatchDayViewEvent
 }

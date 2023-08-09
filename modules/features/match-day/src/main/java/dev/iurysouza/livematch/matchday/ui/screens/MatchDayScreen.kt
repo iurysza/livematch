@@ -23,11 +23,12 @@ fun MatchDayScreen(
   modifier: Modifier = Modifier,
   onItemTap: (MatchUiModel) -> Unit = {},
   onRefresh: () -> Unit = {},
+  onToggleLiveMode: (Boolean) -> Unit = {},
 ) {
   Scaffold(
     modifier = modifier
       .fillMaxHeight(),
-    topBar = { MatchDayTopBar(uiState.isSyncing) },
+    topBar = { MatchDayTopBar(onToggle = onToggleLiveMode) },
   ) { paddingValues ->
     LottiePullToReveal(
       modifier = Modifier.padding(paddingValues),

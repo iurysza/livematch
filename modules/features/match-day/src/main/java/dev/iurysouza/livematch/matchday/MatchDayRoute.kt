@@ -10,6 +10,7 @@ import dev.iurysouza.livematch.designsystem.components.shortToast
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEffect.Error
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEffect.NavigateToMatchThread
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEffect.NavigationError
+import dev.iurysouza.livematch.matchday.models.MatchDayViewEvent
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEvent.GetLatestMatches
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEvent.NavigateToMatch
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEvent.Refresh
@@ -38,5 +39,6 @@ fun MatchDayRoute(
     uiState = uiState,
     onItemTap = { viewModel.handleEvent(NavigateToMatch(it)) },
     onRefresh = { viewModel.handleEvent(Refresh) },
+    onToggleLiveMode = { viewModel.handleEvent(MatchDayViewEvent.ToggleLiveMode(it)) },
   )
 }

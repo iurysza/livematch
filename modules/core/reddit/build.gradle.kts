@@ -26,7 +26,11 @@ android {
       buildConfigField(
         type = "String",
         name = "API_URL",
-        value = if (USE_MOCK_URL.toBoolean()) getMockUrlBasedOnDeviceType(project) else REDDIT_API_BASE_URL,
+        value = if (USE_MOCK_URL.toBoolean()) {
+          getMockUrlBasedOnDeviceType(project)
+        } else {
+          REDDIT_API_BASE_URL
+        },
       )
     }
   }

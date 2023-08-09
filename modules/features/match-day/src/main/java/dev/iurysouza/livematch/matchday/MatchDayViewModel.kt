@@ -9,6 +9,7 @@ import dev.iurysouza.livematch.common.MVIViewModel
 import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
+import dev.iurysouza.livematch.footballdata.domain.models.Status
 import dev.iurysouza.livematch.footballinfo.domain.FetchMatchesInfoUseCase
 import dev.iurysouza.livematch.matchday.models.MatchDayState
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEffect
@@ -45,12 +46,13 @@ class MatchDayViewModel @Inject constructor(
       is MatchDayViewEvent.GetLatestMatches -> onGetLatestMatches()
       is MatchDayViewEvent.Refresh -> onRefresh()
       is MatchDayViewEvent.NavigateToMatch -> onNavigateToMatch(event)
+      is MatchDayViewEvent.ToggleLiveMode -> filterList(onlyLiveMode = event.isOn)
     }
   }
 
   private fun onGetLatestMatches() = viewModelScope.launch {
     if (savedMatches.isEmpty()) {
-      setState { copy(matchDayState = MatchDayState.Loading, isSyncing = true) }
+      setState { copy(matchDayState = MatchDayState.Loading) }
       fetchRedditContent()
       fetchMatchData()
     } else {
@@ -104,13 +106,29 @@ class MatchDayViewModel @Inject constructor(
   }.fold(
     { error ->
       setEffect { MatchDayViewEffect.Error(error.toErrorMsg()) }
-      setState { copy(isSyncing = false) }
     },
     { matchThreads ->
       savedMatchThreads = matchThreads
-      setState { copy(isSyncing = false) }
     },
   )
+
+  private fun filterList(onlyLiveMode: Boolean = false) {
+    val matchList = getValidMatchList(
+      matchEntities = savedMatches.filter { if (onlyLiveMode) it.status == Status.IN_PLAY else true },
+      savedMatchThreads = savedMatchThreads,
+      resources = resourceProvider,
+    )
+    setState {
+      copy(
+        matchDayState = if (matchList.isEmpty()) {
+          MatchDayState.Empty
+        } else {
+          MatchDayState.Success(matchList)
+        },
+        isRefreshing = false,
+      )
+    }
+  }
 
   private fun updateMatchSuccessOrEmpty() {
     val matchList = getValidMatchList(savedMatches, savedMatchThreads, resourceProvider)
@@ -122,7 +140,6 @@ class MatchDayViewModel @Inject constructor(
           MatchDayState.Success(matchList)
         },
         isRefreshing = false,
-        isSyncing = false,
       )
     }
   }
