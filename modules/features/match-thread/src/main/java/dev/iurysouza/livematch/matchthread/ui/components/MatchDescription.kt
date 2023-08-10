@@ -12,7 +12,7 @@ fun MatchDescription(state: MatchDescriptionState) {
   when (state) {
     MatchDescriptionState.Loading -> MatchDetails(isPlaceHolder = true)
     is MatchDescriptionState.Error -> ErrorScreen(msg = state.msg, isScrollable = false)
-    is MatchDescriptionState.Success -> MatchDetails(content = state.content, mediaItemList = state.mediaList)
+    is MatchDescriptionState.Success -> MatchDetails(content = state.score, mediaItemList = state.mediaList)
   }
 }
 
@@ -21,7 +21,7 @@ fun MatchDescription(state: MatchDescriptionState) {
 private fun MatchDescriptionPreview() = LiveMatchThemePreview {
   MatchDescription(
     MatchDescriptionState.Success(
-      FakeFactory.generateMatchDescription,
+      score = FakeFactory.matchStatus,
       FakeFactory.generateMediaList(),
     ),
   )

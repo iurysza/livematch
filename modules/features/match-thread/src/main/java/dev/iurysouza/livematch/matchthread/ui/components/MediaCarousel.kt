@@ -9,11 +9,13 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -48,7 +50,9 @@ import dev.iurysouza.livematch.designsystem.theme.Space.S50
 import dev.iurysouza.livematch.designsystem.theme.Space.S800
 import dev.iurysouza.livematch.matchthread.R
 import dev.iurysouza.livematch.matchthread.models.FakeFactory
+import dev.iurysouza.livematch.matchthread.models.MatchStatus
 import dev.iurysouza.livematch.matchthread.models.MediaItem
+import dev.iurysouza.livematch.matchthread.models.Score
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -57,7 +61,7 @@ import timber.log.Timber
 @Composable
 fun MatchDetails(
   modifier: Modifier = Modifier,
-  content: String = "",
+  content: MatchStatus? = null,
   mediaItemList: ImmutableList<MediaItem> = persistentListOf(),
   isPlaceHolder: Boolean = false,
 ) {
@@ -70,7 +74,7 @@ fun MatchDetails(
       MatchDescriptionPlaceHolder()
       CarouselPlaceHolder()
     } else {
-      MatchDescription(content)
+      MatchDescription(content, modifier = Modifier.fillMaxWidth())
       MediaCarousel(mediaItemList)
     }
   }
@@ -93,21 +97,103 @@ private fun MatchDescriptionPlaceHolder() {
   }
 }
 
+@Preview
 @Composable
-private fun MatchDescription(content: String) {
-  RichText(
-    modifier = Modifier
-      .padding(horizontal = S200)
-      .padding(S100),
-    style = RichTextStyle.Default.copy(
-      stringStyle = RichTextStringStyle.Default.copy(
-        italicStyle = SpanStyle(
-          fontSize = 12.sp,
+private fun MatchDescriptionPreview() {
+  MatchDescription(content = FakeFactory.matchStatus)
+}
+
+@Preview
+@Composable
+private fun MatchDescriptionPreview2() {
+  MatchDescription(content = FakeFactory.emptyMatchStatus)
+
+}
+
+@Composable
+private fun MatchDescription(
+  content: MatchStatus?,
+  modifier: Modifier = Modifier,
+) {
+  content ?: return
+  if (content.homeScore.isEmpty() || content.awayScore.isEmpty()) {
+    RichText(
+      modifier = modifier
+        .padding(horizontal = S200)
+        .padding(S100),
+      style = RichTextStyle.Default.copy(
+        stringStyle = RichTextStringStyle.Default.copy(
+          italicStyle = SpanStyle(
+            fontSize = 12.sp,
+          ),
         ),
       ),
-    ),
+    ) {
+      Markdown(content.description)
+    }
+  } else {
+    Row(
+      modifier = Modifier.fillMaxWidth(),
+      horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+      TeamScore(content.homeScore)
+      TeamScore(content.awayScore, true)
+    }
+  }
+
+}
+
+@Composable
+private fun TeamScore(teamA: List<Score>, isReversed: Boolean = false) {
+  Column(
+    modifier = Modifier
+      .padding(horizontal = S200)
+      .padding(S100)
+      .wrapContentSize(),
   ) {
-    Markdown(content)
+    teamA.forEach { goal ->
+      if (isReversed) {
+        Row(
+          modifier = Modifier.fillMaxWidth(),
+          horizontalArrangement = Arrangement.End,
+        ) {
+          Text(
+            text = goal.player,
+            style = TextStyle(
+              fontSize = 12.sp,
+              color = MaterialTheme.colors.onPrimary,
+            ),
+          )
+          Text(
+            modifier = Modifier.padding(start = S100),
+            text = "${goal.minute}'",
+            style = TextStyle(
+              fontSize = 12.sp,
+              color = MaterialTheme.colors.onPrimary,
+            ),
+          )
+        }
+      } else {
+        Row(
+        ) {
+          Text(
+            text = "${goal.minute}'",
+            style = TextStyle(
+              fontSize = 12.sp,
+              color = MaterialTheme.colors.onPrimary,
+            ),
+          )
+          Text(
+            modifier = Modifier.padding(start = S100),
+            text = goal.player,
+            style = TextStyle(
+              fontSize = 12.sp,
+              color = MaterialTheme.colors.onPrimary,
+            ),
+          )
+        }
+      }
+    }
   }
 }
 
@@ -122,7 +208,7 @@ private fun MediaCarousel(mediaItemList: ImmutableList<MediaItem>) {
     Text(
       modifier = Modifier.padding(bottom = S50, start = S300),
       text = stringResource(R.string.highlights),
-      style = TextStyle(fontSize = 18.sp, color = MaterialTheme.colors.onPrimary),
+      style = TextStyle(fontSize = 15.sp, color = MaterialTheme.colors.onPrimary),
     )
     GradientPaddedMediaCarousel(mediaItemList)
   }
@@ -234,7 +320,7 @@ private fun MediaCard(
 @Composable
 fun MatchDetailsPreview() = LiveMatchThemePreview {
   MatchDetails(
-    content = FakeFactory.generateMatchDescription,
+    content = FakeFactory.matchStatus,
     mediaItemList = FakeFactory.generateMediaList(),
   )
 }

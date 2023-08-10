@@ -73,7 +73,12 @@ class MatchThreadViewModel @Inject constructor(
     .mapLeft { ViewError.CommentSectionParsingError(it.toString()) }
     .fold(
       {
-        setState { copy(commentSectionState = MatchCommentsState.Error(parseError(it))) }
+        setState {
+          copy(
+            commentSectionState = MatchCommentsState.Error(parseError(it)),
+            isRefreshing = false,
+          )
+        }
       },
       {
         setState {
@@ -102,7 +107,7 @@ class MatchThreadViewModel @Inject constructor(
       },
       { mediaList ->
         setState {
-          copy(descriptionState = MatchDescriptionState.Success(content, mediaList))
+          copy(descriptionState = MatchDescriptionState.Success(eventParser.parseContent(content), mediaList))
         }
       },
     )

@@ -7,6 +7,8 @@ import dev.iurysouza.livematch.matchthread.models.CommentItem
 import dev.iurysouza.livematch.matchthread.models.CommentSection
 import dev.iurysouza.livematch.matchthread.models.EventIcon
 import dev.iurysouza.livematch.matchthread.models.MatchEvent
+import dev.iurysouza.livematch.matchthread.models.MatchStatus
+import dev.iurysouza.livematch.matchthread.models.Score
 import dev.iurysouza.livematch.matchthread.models.ViewError
 import dev.iurysouza.livematch.reddit.domain.models.CommentsEntity
 import java.time.Duration
@@ -236,7 +238,52 @@ open class MatchEventParser {
       }.getOrNull()!!
     }
   }
+
+  fun parseContent(content: String): MatchStatus {
+    val scoreList = runCatching {
+      val scores = mutableListOf<List<Score>>()
+      val lines = content.trim('\n').split('*').filter { it.isNotBlank() }
+
+      lines.forEach { line ->
+        val parts = line.trim().split("scorers:")
+        val goalsList = parts[1].split(',').map { it.trim() }
+        val goals = mutableListOf<Score>()
+
+        goalsList.forEach { goalPart ->
+          runCatching {
+            // Splitting the string based on last occurrence of whitespace
+            val lastSpaceIndex = goalPart.lastIndexOf(' ')
+            val player = goalPart.substring(0, lastSpaceIndex).trim()
+            val timeList = goalPart.substring(lastSpaceIndex).trim()
+              .split(',')
+              .map { it.remove("'").trim() }
+
+            timeList.forEach { time ->
+              goals.add(Score(player = player, minute = time))
+            }
+          }.onFailure {
+            // in case the same player scores multiple goals
+            goals.add(
+              Score(
+                player = goals.last().player,
+                minute = goalPart.replace("'", ""),
+              ),
+            )
+          }
+        }
+        scores.add(goals)
+      }
+      scores
+    }.getOrNull()
+
+    return MatchStatus(
+      homeScore = scoreList?.getOrNull(0) ?: emptyList(),
+      awayScore = scoreList?.getOrNull(1) ?: emptyList(),
+      description = if (scoreList.isNullOrEmpty()) content else "",
+    )
+  }
 }
+
 
 /**
  * Matches 40' or 45+1

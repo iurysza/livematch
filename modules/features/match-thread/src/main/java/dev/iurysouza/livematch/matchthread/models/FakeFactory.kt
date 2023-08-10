@@ -1,9 +1,9 @@
 package dev.iurysouza.livematch.matchthread.models
 
-import kotlin.random.Random
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import kotlin.random.Random
 
 @Suppress("MagicNumber")
 object FakeFactory {
@@ -85,7 +85,38 @@ object FakeFactory {
     competitionLogo = "https://crests.football-data.org/770.svg",
   )
 
-  const val generateMatchDescription = """*RB Leipzig scorers: Willi Orban (6')
+  val emptyMatchStatus
+    get() = MatchStatus(
+      homeScore = emptyList(),
+      awayScore = emptyList(),
+      description = matchDescription,
+    )
+
+  val matchStatus
+    get() = MatchStatus(
+      homeScore = listOf(
+        Score(
+          player = "Kevin De Bruyne",
+          minute = "6",
+        ),
+        Score(
+          player = "Bernardo Silva",
+          minute = "56",
+        ),
+      ),
+      awayScore = listOf(
+        Score(
+          player = "Vini Jr",
+          minute = "44",
+        ),
+        Score(
+          player = "Rodrygo",
+          minute = "75",
+        ),
+      ),
+    )
+
+  private const val matchDescription = """*RB Leipzig scorers: Willi Orban (6')
     Dominik Szoboszlai (45')
     Amadou Haidara (84')*"""
 }
