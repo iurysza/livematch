@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
@@ -19,7 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,8 +39,8 @@ fun MatchHeader(matchHeader: MatchHeader) {
     verticalAlignment = Alignment.Bottom,
     horizontalArrangement = Arrangement.Center,
     modifier = Modifier
-      .padding(vertical = 32.dp)
       .background(MaterialTheme.colors.background)
+      .padding(vertical = 32.dp)
       .fillMaxWidth(),
   ) {
     HomeMatchHeader(
@@ -179,7 +180,13 @@ private fun Score(score: String, title: TextStyle) {
 
 @Composable
 private fun Team(team: String, style: TextStyle) {
-  Text(text = team, style = style.copy(fontSize = 16.sp, fontWeight = FontWeight.Bold))
+  Text(
+    modifier = Modifier.widthIn(max = 150.dp),
+    text = team,
+    maxLines = 1,
+    overflow = TextOverflow.Ellipsis,
+    style = TextStyle(fontSize = 16.sp, color = MaterialTheme.colors.onPrimary),
+  )
 }
 
 @Composable
@@ -187,15 +194,23 @@ fun TeamCrest(
   teamCrestUrl: String,
   modifier: Modifier = Modifier,
 ) {
-  AsyncImage(
-    modifier = modifier
-      .size(56.dp)
-      .clip(CircleShape)
-      .border(width = 2.dp, MaterialTheme.colors.onPrimary, CircleShape),
-    contentScale = ContentScale.Crop,
-    model = teamCrestUrl,
-    contentDescription = "teamCrest",
-  )
+  Box {
+    Box(
+      modifier = modifier
+        .size(56.dp)
+        .clip(CircleShape)
+        .background(MaterialTheme.colors.onPrimary),
+    )
+    AsyncImage(
+      modifier = modifier
+        .size(56.dp)
+        .clip(CircleShape)
+        .border(width = 2.dp, MaterialTheme.colors.onPrimary, CircleShape),
+      contentScale = ContentScale.Crop,
+      model = teamCrestUrl,
+      contentDescription = "teamCrest",
+    )
+  }
 }
 
 @Composable
