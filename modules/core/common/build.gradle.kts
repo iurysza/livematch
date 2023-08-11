@@ -43,7 +43,6 @@ dependencies {
   kapt(libs.squareup.moshi.kotlinCodegen)
 
   implementation(platform(libs.androidx.compose.bom))
-  implementation(libs.androidx.compose.material)
   implementation(libs.bundles.composeMinimal)
   debugImplementation(libs.androidx.compose.ui.uiTooling)
   implementation(libs.androidx.core.ktx)
