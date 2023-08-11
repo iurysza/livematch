@@ -162,13 +162,11 @@ private fun isMatchRelated(
 ): Boolean {
   return containsTeamName(title, homeTeam) || title.contains(awayTeam)
 }
-
-fun parseMatchScore(content: String): Pair<String?, String?> = runCatching{
-  val contentList = content.split("\n")
-  val (homeScore, awayScore) = contentList.first()
-    .substringAfter("[")
-    .substringBefore("]")
-    .split("-")
+fun parseMatchScore(content: String): Pair<String?, String?> = runCatching {
+  val pattern = "\\[([0-9]+)(-| – )([0-9]+)\\]".toRegex() // the updated regex pattern
+  val matchResults = pattern.find(content)
+  val homeScore = matchResults!!.groupValues[1]
+  val awayScore = matchResults.groupValues[3]
   homeScore to awayScore
 }.getOrElse { null to null }
 
