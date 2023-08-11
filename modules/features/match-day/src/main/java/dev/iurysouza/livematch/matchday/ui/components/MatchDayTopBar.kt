@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -15,9 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import dev.iurysouza.livematch.designsystem.theme.LiveMatchAssets
 import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
+import dev.iurysouza.livematch.designsystem.theme.Space.S100
 import dev.iurysouza.livematch.designsystem.theme.Space.S200
 import dev.iurysouza.livematch.designsystem.theme.Space.S300
+import dev.iurysouza.livematch.designsystem.theme.livematchassets.Clock
 import dev.iurysouza.livematch.matchday.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,8 +55,14 @@ fun MatchDayTopBar(
 
 @Preview
 @Composable
+private fun MatchDayTopBarUncheckedPreview() = LiveMatchThemePreview {
+  MatchDayTopBar(isChecked = false)
+}
+
+@Preview
+@Composable
 private fun MatchDayTopBarPreview() = LiveMatchThemePreview {
-  MatchDayTopBar()
+  MatchDayTopBar(isChecked = true)
 }
 
 @Composable
@@ -62,18 +72,21 @@ fun SwitcherButton(
 ) {
   Row {
     Switch(
+      modifier = Modifier.padding(end = S100),
       checked = isChecked,
       onCheckedChange = { onToggle(it) },
       colors = SwitchDefaults.colors(
-        checkedThumbColor = MaterialTheme.colorScheme.primary,
         uncheckedThumbColor = MaterialTheme.colorScheme.onPrimary,
         uncheckedTrackColor = MaterialTheme.colorScheme.onPrimary,
-        checkedTrackColor = MaterialTheme.colorScheme.primary,
+
+        checkedThumbColor = MaterialTheme.colorScheme.tertiary,
+        checkedTrackColor = MaterialTheme.colorScheme.tertiary,
+        checkedIconColor = MaterialTheme.colorScheme.primary,
       ),
       thumbContent = {
-        Text(
-          text = "🏟",
-          color = MaterialTheme.colorScheme.onPrimary,
+        Icon(
+          imageVector = LiveMatchAssets.Clock,
+          contentDescription = "Favorite Icon",
         )
       },
     )

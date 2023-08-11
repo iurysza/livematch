@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -70,7 +70,7 @@ fun LazyListScope.itemCommentList(
 private fun ItemCommentListPreview() = LiveMatchThemePreview {
   LazyColumn(
     modifier = Modifier
-      .background(MaterialTheme.colors.background)
+      .background(MaterialTheme.colorScheme.background)
       .fillMaxSize(),
   ) {
     itemCommentList(MatchCommentsState.Success(FakeFactory.commentSection))

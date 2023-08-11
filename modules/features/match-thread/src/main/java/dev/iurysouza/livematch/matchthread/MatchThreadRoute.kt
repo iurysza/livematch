@@ -1,6 +1,6 @@
 package dev.iurysouza.livematch.matchthread
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,7 +22,7 @@ fun MatchThreadRoute(
   viewModel: MatchThreadViewModel = hiltViewModel(),
   onNavigateUp: () -> Unit,
 ) {
-  SystemColors(navigationBarColor = MaterialTheme.colors.background)
+  SystemColors(navigationBarColor = MaterialTheme.colorScheme.background)
   val context = LocalContext.current
   LaunchedEffect(Unit) {
     viewModel.handleEvent(MatchThreadViewEvent.GetMatchComments(args.toParams()))

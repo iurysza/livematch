@@ -11,8 +11,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,7 +39,7 @@ fun MatchHeader(matchHeader: MatchHeader) {
     verticalAlignment = Alignment.Bottom,
     horizontalArrangement = Arrangement.Center,
     modifier = Modifier
-      .background(MaterialTheme.colors.background)
+      .background(MaterialTheme.colorScheme.background)
       .padding(vertical = 32.dp)
       .fillMaxWidth(),
   ) {
@@ -50,7 +50,7 @@ fun MatchHeader(matchHeader: MatchHeader) {
     )
     Text(
       text = "x",
-      style = TextStyle(color = MaterialTheme.colors.onPrimary),
+      style = TextStyle(color = MaterialTheme.colorScheme.onPrimary),
       modifier = Modifier
         .padding(horizontal = 8.dp)
         .padding(bottom = 16.dp),
@@ -151,7 +151,7 @@ private fun HeaderContent(
     constraintSet = constraintSet,
     modifier = Modifier.wrapContentSize(),
   ) {
-    val title = TextStyle(color = MaterialTheme.colors.onPrimary)
+    val title = TextStyle(color = MaterialTheme.colorScheme.onPrimary)
     Box(
       modifier = Modifier
         .layoutId(CONSTRAINT_NAME)
@@ -184,7 +184,7 @@ private fun Team(team: String, style: TextStyle) {
     text = team,
     maxLines = 1,
     overflow = TextOverflow.Ellipsis,
-    style = TextStyle(fontSize = 16.sp, color = MaterialTheme.colors.onPrimary),
+    style = TextStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onPrimary),
   )
 }
 
@@ -198,13 +198,13 @@ fun TeamCrest(
       modifier = modifier
         .size(56.dp)
         .clip(CircleShape)
-        .background(MaterialTheme.colors.onPrimary),
+        .background(MaterialTheme.colorScheme.onPrimary),
     )
     AsyncImage(
       modifier = modifier
         .size(56.dp)
         .clip(CircleShape)
-        .border(width = 2.dp, MaterialTheme.colors.onPrimary, CircleShape),
+        .border(width = 2.dp, MaterialTheme.colorScheme.onPrimary, CircleShape),
       contentScale = ContentScale.Crop,
       model = teamCrestUrl,
       contentDescription = "teamCrest",

@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,12 +46,12 @@ fun CommentItemComponent(
     modifier = modifier
       .padding(vertical = S100)
       .padding(start = S800, end = S100)
-      .background(MaterialTheme.colors.primary),
+      .background(MaterialTheme.colorScheme.primary),
   ) {
     Column(
       modifier = Modifier
         .padding(start = S50)
-        .background(MaterialTheme.colors.background)
+        .background(MaterialTheme.colorScheme.background)
         .padding(S50),
     ) {
       CommentHeader(commentItem)
@@ -71,7 +71,7 @@ private fun CommentHeader(
   ) {
     val style = TextStyle(
       fontSize = 12.sp,
-      color = MaterialTheme.colors.onSurface,
+      color = MaterialTheme.colorScheme.onSurface,
       fontWeight = FontWeight.Normal,
     )
     FlairImage(comment.flairUrl, comment.flairName)
@@ -94,7 +94,7 @@ private fun CommentHeader(
       text = comment.score,
       style = style.copy(
         fontWeight = FontWeight.Normal,
-        color = MaterialTheme.colors.primary,
+        color = MaterialTheme.colorScheme.primary,
       ),
     )
     Text(
@@ -130,7 +130,7 @@ private fun CommentBody(content: String) {
     WithStyle(
       style = RichTextStyle(
         stringStyle = RichTextStringStyle(
-          linkStyle = SpanStyle(color = MaterialTheme.colors.primary),
+          linkStyle = SpanStyle(color = MaterialTheme.colorScheme.primary),
         ),
       ),
     ) {

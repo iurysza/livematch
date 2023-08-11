@@ -40,7 +40,7 @@ fun LeagueDivider(
       modifier = Modifier
         .wrapContentWidth(Alignment.Start)
         .padding(horizontal = S100, vertical = S200),
-      style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface),
+      style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
     )
   }
 }

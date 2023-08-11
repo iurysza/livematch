@@ -23,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -109,7 +108,7 @@ private fun CommentCounterIndicator(
     Box(
       modifier = modifier
         .size(S300)
-        .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(10.dp)),
+        .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(10.dp)),
     ) {
       Text(
         modifier = Modifier.align(Alignment.Center),

@@ -16,10 +16,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -49,7 +49,7 @@ fun CollapsibleToolbar(
     verticalAlignment = Alignment.CenterVertically,
     modifier = Modifier
       .height(56.dp)
-      .background(MaterialTheme.colors.background),
+      .background(MaterialTheme.colorScheme.background),
 
   ) {
     IconButton(
@@ -57,7 +57,7 @@ fun CollapsibleToolbar(
     ) {
       Icon(
         imageVector = Icons.Filled.ArrowBack,
-        tint = MaterialTheme.colors.onPrimary,
+        tint = MaterialTheme.colorScheme.onPrimary,
         contentDescription = stringResource(R.string.icon_description),
       )
     }
@@ -95,7 +95,7 @@ private fun Score(
           modifier = Modifier.wrapContentWidth(),
           horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-          val style = TextStyle(color = MaterialTheme.colors.onPrimary, fontSize = 16.sp)
+          val style = TextStyle(color = MaterialTheme.colorScheme.onPrimary, fontSize = 16.sp)
           Text(text = matchHeader.homeTeam.score, style = style)
           Text(text = "x", style = style)
           Text(text = matchHeader.awayTeam.score, style = style)

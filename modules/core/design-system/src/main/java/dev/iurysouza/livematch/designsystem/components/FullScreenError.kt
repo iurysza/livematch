@@ -1,7 +1,7 @@
 package dev.iurysouza.livematch.designsystem.components
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,8 +16,8 @@ fun ErrorScreen(
   AppColumn(modifier, isScrollable) {
     Text(
       text = msg,
-      style = MaterialTheme.typography.h6,
-      color = MaterialTheme.colors.onPrimary,
+      style = MaterialTheme.typography.displaySmall,
+      color = MaterialTheme.colorScheme.onPrimary,
     )
   }
 }

@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,7 +32,7 @@ import dev.iurysouza.livematch.designsystem.theme.Space.S50
 fun SectionPlaceHolder() {
   Row(
     modifier = Modifier
-      .background(MaterialTheme.colors.background)
+      .background(MaterialTheme.colorScheme.background)
       .padding(horizontal = S150)
       .fillMaxWidth(),
     verticalAlignment = Alignment.CenterVertically,
@@ -53,7 +53,7 @@ private fun SectionPlaceHolderPreview() = LiveMatchThemePreview {
 @Composable
 private fun Timeline() {
   Column(
-    Modifier.background(MaterialTheme.colors.background),
+    Modifier.background(MaterialTheme.colorScheme.background),
   ) {
     Column(
       Modifier.align(Alignment.CenterHorizontally),
@@ -64,7 +64,7 @@ private fun Timeline() {
           .align(Alignment.CenterHorizontally)
           .liveMatchPlaceHolder(),
         fontSize = 12.sp,
-        color = MaterialTheme.colors.onPrimary,
+        color = MaterialTheme.colorScheme.onPrimary,
         text = "00:00",
       )
       MatchEventIcon(
@@ -73,7 +73,7 @@ private fun Timeline() {
     }
     Line(
       modifier = Modifier.padding(top = 8.dp),
-      color = MaterialTheme.colors.onBackground,
+      color = MaterialTheme.colorScheme.onBackground,
     )
   }
 }
@@ -82,18 +82,18 @@ private fun Timeline() {
 private fun MatchEventIcon(
   modifier: Modifier = Modifier,
 ) {
-  val tint = MaterialTheme.colors.onPrimary
+  val tint = MaterialTheme.colorScheme.onPrimary
   Box(
     modifier = modifier
       .background(tint, CircleShape)
       .padding(2.dp)
-      .background(MaterialTheme.colors.background, CircleShape)
+      .background(MaterialTheme.colorScheme.background, CircleShape)
       .padding(S50),
   ) {
     Box(
       modifier = Modifier
         .size(S200)
-        .background(MaterialTheme.colors.background)
+        .background(MaterialTheme.colorScheme.background)
         .liveMatchPlaceHolder(),
     )
   }
@@ -132,13 +132,13 @@ private fun RowScope.HeaderBody(
       modifier = Modifier
         .padding(bottom = 4.dp)
         .liveMatchPlaceHolder(),
-      style = TextStyle(color = MaterialTheme.colors.onBackground),
+      style = TextStyle(color = MaterialTheme.colorScheme.onBackground),
     )
     Text(
       text = "Goal Japan 0, Colombia 1.  Goal Japan 0, Colombia 1.",
       modifier = Modifier
         .liveMatchPlaceHolder(),
-      style = TextStyle(color = MaterialTheme.colors.onBackground),
+      style = TextStyle(color = MaterialTheme.colorScheme.onBackground),
     )
   }
 }

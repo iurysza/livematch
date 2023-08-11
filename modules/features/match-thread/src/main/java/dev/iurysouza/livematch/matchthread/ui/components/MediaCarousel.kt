@@ -19,8 +19,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -68,7 +68,7 @@ fun MatchDetails(
   Column(
     modifier = modifier
       .fillMaxWidth()
-      .background(MaterialTheme.colors.background),
+      .background(MaterialTheme.colorScheme.background),
   ) {
     if (isPlaceHolder) {
       MatchDescriptionPlaceHolder()
@@ -161,7 +161,7 @@ private fun TeamScore(teamA: List<Score>, isReversed: Boolean = false) {
             text = goal.player,
             style = TextStyle(
               fontSize = 12.sp,
-              color = MaterialTheme.colors.onPrimary,
+              color = MaterialTheme.colorScheme.onPrimary,
             ),
           )
           Text(
@@ -169,7 +169,7 @@ private fun TeamScore(teamA: List<Score>, isReversed: Boolean = false) {
             text = "${goal.minute}'",
             style = TextStyle(
               fontSize = 12.sp,
-              color = MaterialTheme.colors.onPrimary,
+              color = MaterialTheme.colorScheme.onPrimary,
             ),
           )
         }
@@ -180,7 +180,7 @@ private fun TeamScore(teamA: List<Score>, isReversed: Boolean = false) {
             text = "${goal.minute}'",
             style = TextStyle(
               fontSize = 12.sp,
-              color = MaterialTheme.colors.onPrimary,
+              color = MaterialTheme.colorScheme.onPrimary,
             ),
           )
           Text(
@@ -188,7 +188,7 @@ private fun TeamScore(teamA: List<Score>, isReversed: Boolean = false) {
             text = goal.player,
             style = TextStyle(
               fontSize = 12.sp,
-              color = MaterialTheme.colors.onPrimary,
+              color = MaterialTheme.colorScheme.onPrimary,
             ),
           )
         }
@@ -208,7 +208,7 @@ private fun MediaCarousel(mediaItemList: ImmutableList<MediaItem>) {
     Text(
       modifier = Modifier.padding(bottom = S50, start = S300),
       text = stringResource(R.string.highlights),
-      style = TextStyle(fontSize = 15.sp, color = MaterialTheme.colors.onPrimary),
+      style = TextStyle(fontSize = 15.sp, color = MaterialTheme.colorScheme.onPrimary),
     )
     GradientPaddedMediaCarousel(mediaItemList)
   }
@@ -268,8 +268,8 @@ private fun GradientPaddedMediaCarousel(
         }
       }
     }
-    val colors = listOf(
-      MaterialTheme.colors.background,
+    val colorScheme = listOf(
+      MaterialTheme.colorScheme.background,
       Color.Transparent,
       Color.Transparent,
     )
@@ -278,14 +278,14 @@ private fun GradientPaddedMediaCarousel(
         .height(S1000)
         .width(S800)
         .align(Alignment.CenterStart)
-        .horizontalGradient(colors = colors),
+        .horizontalGradient(colorScheme),
     )
     Box(
       Modifier
         .size(S1000)
         .width(S800)
         .align(Alignment.CenterEnd)
-        .horizontalGradient(colors = colors.reversed()),
+        .horizontalGradient(colorScheme.reversed()),
     )
   }
 }
@@ -299,7 +299,7 @@ private fun MediaCard(
   val isDarkTheme = isSystemInDarkTheme()
   Box(
     modifier
-      .background(MaterialTheme.colors.secondaryVariant, RoundedCornerShape(10.dp))
+      .background(MaterialTheme.colorScheme.tertiary, RoundedCornerShape(10.dp))
       .roundedClip()
       .clickable { context.launchBrowserTabWith(isDarkTheme, item.url) }
       .padding(S100),
@@ -309,7 +309,7 @@ private fun MediaCard(
       Modifier.align(Alignment.Center),
       style = TextStyle(
         fontSize = 9.sp,
-        color = MaterialTheme.colors.onPrimary,
+        color = MaterialTheme.colorScheme.onPrimary,
         fontWeight = FontWeight.Bold,
       ),
     )
