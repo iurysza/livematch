@@ -28,7 +28,12 @@ fun MatchDayScreen(
   Scaffold(
     modifier = modifier
       .fillMaxHeight(),
-    topBar = { MatchDayTopBar(onToggle = onToggleLiveMode) },
+    topBar = {
+      MatchDayTopBar(
+        isChecked = uiState.isLiveMode,
+        onToggle = onToggleLiveMode,
+      )
+    },
   ) { paddingValues ->
     LottiePullToReveal(
       modifier = Modifier.padding(paddingValues),

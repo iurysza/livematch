@@ -108,9 +108,9 @@ fun AwayMatchHeader(
   score: String,
 ) {
   val constraintSet = ConstraintSet {
-    val nameConstraint = createRefFor("name")
-    val scoreConstraint = createRefFor("score")
-    val crestConstraint = createRefFor("crest")
+    val nameConstraint = createRefFor(CONSTRAINT_NAME)
+    val scoreConstraint = createRefFor(CONSTRAINT_SCORE)
+    val crestConstraint = createRefFor(CONSTRAINT_CREST)
     constrain(nameConstraint) {
       top.linkTo(parent.top)
       start.linkTo(parent.start)
@@ -154,19 +154,18 @@ private fun HeaderContent(
     val title = TextStyle(color = MaterialTheme.colors.onPrimary)
     Box(
       modifier = Modifier
-        .layoutId("name")
+        .layoutId(CONSTRAINT_NAME)
         .padding(bottom = 8.dp),
     ) {
       Team(team = team, title)
     }
     Box(
-      modifier = Modifier.layoutId("crest"),
+      modifier = Modifier.layoutId(CONSTRAINT_CREST),
     ) {
       TeamCrest(teamCrestUrl = teamCrestUrl)
     }
     Box(
-      modifier = modifier
-        .layoutId("score"),
+      modifier = modifier.layoutId(CONSTRAINT_SCORE),
     ) {
       Score(score = score, title)
     }
@@ -212,6 +211,10 @@ fun TeamCrest(
     )
   }
 }
+
+private const val CONSTRAINT_NAME = "name"
+private const val CONSTRAINT_CREST = "crest"
+private const val CONSTRAINT_SCORE = "score"
 
 @Composable
 @Preview

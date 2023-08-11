@@ -9,7 +9,6 @@ import dev.iurysouza.livematch.common.MVIViewModel
 import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
-import dev.iurysouza.livematch.footballdata.domain.models.Status
 import dev.iurysouza.livematch.footballinfo.domain.FetchMatchesInfoUseCase
 import dev.iurysouza.livematch.matchday.models.MatchDayState
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEffect
@@ -46,7 +45,7 @@ class MatchDayViewModel @Inject constructor(
       is MatchDayViewEvent.GetLatestMatches -> onGetLatestMatches()
       is MatchDayViewEvent.Refresh -> onRefresh()
       is MatchDayViewEvent.NavigateToMatch -> onNavigateToMatch(event)
-      is MatchDayViewEvent.ToggleLiveMode -> filterList(onlyLiveMode = event.isOn)
+      is MatchDayViewEvent.ToggleLiveMode -> filterList(isLiveMode = event.isLiveMode)
     }
   }
 
@@ -112,26 +111,18 @@ class MatchDayViewModel @Inject constructor(
     },
   )
 
-  private fun filterList(onlyLiveMode: Boolean = false) {
-    val matchList = getValidMatchList(
-      matchEntities = savedMatches.filter { if (onlyLiveMode) it.status == Status.IN_PLAY else true },
-      savedMatchThreads = savedMatchThreads,
-      resources = resourceProvider,
-    )
-    setState {
-      copy(
-        matchDayState = if (matchList.isEmpty()) {
-          MatchDayState.Empty
-        } else {
-          MatchDayState.Success(matchList)
-        },
-        isRefreshing = false,
-      )
-    }
+  private fun filterList(isLiveMode: Boolean = false) {
+    setState { copy(isLiveMode = isLiveMode) }
+    updateMatchSuccessOrEmpty()
   }
 
   private fun updateMatchSuccessOrEmpty() {
-    val matchList = getValidMatchList(savedMatches, savedMatchThreads, resourceProvider)
+    val matchList = getValidMatchList(
+      matchEntities = savedMatches,
+      savedMatchThreads = savedMatchThreads,
+      resources = resourceProvider,
+      isLiveMode = viewState.value.isLiveMode,
+    )
     setState {
       copy(
         matchDayState = if (matchList.isEmpty()) {

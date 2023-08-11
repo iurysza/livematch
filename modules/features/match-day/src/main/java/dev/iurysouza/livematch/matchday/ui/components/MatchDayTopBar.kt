@@ -8,10 +8,6 @@ import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -25,6 +21,7 @@ import dev.iurysouza.livematch.matchday.R
 @Composable
 fun MatchDayTopBar(
   modifier: Modifier = Modifier,
+  isChecked: Boolean = false,
   onToggle: (Boolean) -> Unit = {},
 ) {
   TopAppBar(
@@ -43,7 +40,7 @@ fun MatchDayTopBar(
     },
     backgroundColor = MaterialTheme.colors.background,
     actions = {
-      SwitcherButton(onToggle)
+      SwitcherButton(isChecked = isChecked, onToggle)
     },
   )
 }
@@ -55,15 +52,13 @@ private fun MatchDayTopBarPreview() = LiveMatchThemePreview {
 }
 
 @Composable
-fun SwitcherButton(onToggle: (Boolean) -> Unit) {
-  var isChecked by remember { mutableStateOf(false) }
-
+fun SwitcherButton(
+  isChecked: Boolean,
+  onToggle: (Boolean) -> Unit,
+) {
   Switch(
     checked = isChecked,
-    onCheckedChange = {
-      onToggle(it)
-      isChecked = it
-    },
+    onCheckedChange = { onToggle(it) },
     colors = SwitchDefaults.colors(
       checkedThumbColor = MaterialTheme.colors.primary,
       uncheckedThumbColor = MaterialTheme.colors.onPrimary,
