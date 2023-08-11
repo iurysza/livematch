@@ -3,7 +3,9 @@ package dev.iurysouza.livematch.matchday.models
 import arrow.core.Either
 import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.common.navigation.Destination
+import dev.iurysouza.livematch.common.navigation.models.Competition as NavCompetition
 import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
+import dev.iurysouza.livematch.common.navigation.models.Team as NavTeam
 import dev.iurysouza.livematch.footballdata.domain.models.AreaEntity
 import dev.iurysouza.livematch.footballdata.domain.models.AwayTeamEntity
 import dev.iurysouza.livematch.footballdata.domain.models.CompetitionEntity
@@ -26,8 +28,6 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import dev.iurysouza.livematch.common.navigation.models.Competition as NavCompetition
-import dev.iurysouza.livematch.common.navigation.models.Team as NavTeam
 
 internal fun getValidMatchList(
   matchEntities: List<MatchEntity>,
@@ -91,9 +91,9 @@ private fun MatchEntity.toUiModel(
 )
 
 fun formatTime(utcDate: LocalDateTime): String {
-  val zoneId = ZoneId.systemDefault()  // get device's default timezone
+  val zoneId = ZoneId.systemDefault() // get device's default timezone
   val zonedUTCDate = ZonedDateTime.of(utcDate, ZoneId.of("UTC"))
-  val zonedLocalDate = zonedUTCDate.withZoneSameInstant(zoneId)  // converts date to local timezone
+  val zonedLocalDate = zonedUTCDate.withZoneSameInstant(zoneId) // converts date to local timezone
   return zonedLocalDate.format(
     DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault()),
   )
@@ -270,11 +270,11 @@ private fun MatchEntity.calculatePlayTime(): String {
   val duration = Duration.between(utcDate, now)
   val minutes = duration.toMinutes()
   return "${
-    if (minutes > 50) {
-      minutes - 25
-    } else {
-      minutes
-    }
+  if (minutes > 50) {
+    minutes - 25
+  } else {
+    minutes
+  }
   }'"
 }
 

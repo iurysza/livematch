@@ -107,7 +107,6 @@ private fun MatchDescriptionPreview() {
 @Composable
 private fun MatchDescriptionPreview2() {
   MatchDescription(content = FakeFactory.emptyMatchStatus)
-
 }
 
 @Composable
@@ -140,7 +139,6 @@ private fun MatchDescription(
       TeamScore(content.awayScore, true)
     }
   }
-
 }
 
 @Composable
@@ -174,8 +172,7 @@ private fun TeamScore(teamA: List<Score>, isReversed: Boolean = false) {
           )
         }
       } else {
-        Row(
-        ) {
+        Row() {
           Text(
             text = "${goal.minute}'",
             style = TextStyle(

@@ -28,6 +28,26 @@ class MatchEventParserTest : BehaviorSpec(
         }
       }
     }
+    given("another test") {
+      val content =
+        "*Manchester City scorers: Erling Haaland (4', 36')*"
+
+      `when`("parse content is called") {
+        val result = MatchEventParser().parseContent(content)
+        then("it should return a valid MatchStatus object") {
+          result shouldBe MatchStatus(
+            homeScore = listOf(
+              Score(minute = "70", player = "Gabriel Mercado"),
+              Score(minute = "78", player = "Alan Patrick"),
+            ),
+            awayScore = listOf(
+              Score(minute = "90", player = "Robert Rojas"),
+            ),
+            description = "",
+          )
+        }
+      }
+    }
     given("1 to 1 score, each player scoring once") {
       val content =
         "\n*Internacional scorers: Gabriel Mercado 70', Alan Patrick 78'*\n\n*River Plate scorers: Robert Rojas 90'*\n\n"

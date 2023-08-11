@@ -288,7 +288,6 @@ open class MatchEventParser {
   }
 }
 
-
 /**
  * Matches 40' or 45+1
  */

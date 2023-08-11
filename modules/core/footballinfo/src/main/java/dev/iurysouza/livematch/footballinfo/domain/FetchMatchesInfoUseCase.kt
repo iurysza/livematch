@@ -38,8 +38,8 @@ class FetchMatchesInfoUseCase @Inject constructor(
     41,
     *(45..48).toList().toTypedArray(),
     // Spain
-    140,  // League
-    143,  // Cup
+    140, // League
+    143, // Cup
     // France
     61, // League
     65, // Cup
@@ -62,7 +62,6 @@ class FetchMatchesInfoUseCase @Inject constructor(
     88,
     90,
   )
-
 
   companion object {
     private val DATE_PATTERN = DateTimeFormatter.ofPattern("yyyy-MM-dd")

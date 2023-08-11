@@ -10,7 +10,6 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import com.halilibo.richtext.ui.RichTextThemeIntegration
 
-
 private val DarkColorPalette = darkColorScheme(
   primary = AppAccent1Dark,
   secondary = AppAccent2Dark,

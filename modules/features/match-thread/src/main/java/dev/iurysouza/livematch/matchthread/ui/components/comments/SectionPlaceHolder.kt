@@ -126,7 +126,7 @@ private fun RowScope.HeaderBody(
       .padding(start = S50)
       .padding(bottom = S200),
 
-    ) {
+  ) {
     Text(
       text = "Goal Japan 0, Colombia 1.  ",
       modifier = Modifier
