@@ -2,6 +2,7 @@ package dev.iurysouza.livematch.matchthread.ui.components.comments
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
@@ -9,6 +10,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import dev.iurysouza.livematch.designsystem.components.AnimatedCellExpansion
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
 import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
@@ -34,7 +36,13 @@ fun LazyListScope.itemCommentList(
         }
       }
     }
-    is MatchCommentsState.Error -> item { ErrorScreen(msg = state.msg, isScrollable = false) }
+    is MatchCommentsState.Error -> item {
+      ErrorScreen(
+        msg = state.msg,
+        isScrollable = false,
+        modifier = Modifier.height(300.dp),
+      )
+    }
     is MatchCommentsState.Success -> {
       onToggleStateInit(initToggledCommentsState(expandedSectionMap, state.sectionList))
       state.sectionList.forEach { (_, event, comments) ->

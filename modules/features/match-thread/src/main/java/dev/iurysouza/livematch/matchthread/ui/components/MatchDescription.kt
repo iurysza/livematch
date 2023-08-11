@@ -1,7 +1,10 @@
 package dev.iurysouza.livematch.matchthread.ui.components
 
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
 import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.matchthread.models.FakeFactory
@@ -11,8 +14,12 @@ import dev.iurysouza.livematch.matchthread.models.MatchDescriptionState
 fun MatchDescription(state: MatchDescriptionState) {
   when (state) {
     MatchDescriptionState.Loading -> MatchDetails(isPlaceHolder = true)
-    is MatchDescriptionState.Error -> ErrorScreen(msg = state.msg, isScrollable = false)
     is MatchDescriptionState.Success -> MatchDetails(content = state.score, mediaItemList = state.mediaList)
+    is MatchDescriptionState.Error -> ErrorScreen(
+      msg = state.msg,
+      isScrollable = false,
+      modifier = Modifier.height(300.dp),
+    )
   }
 }
 

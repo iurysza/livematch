@@ -20,7 +20,6 @@ fun AppColumn(
   Column(
     modifier = modifier
       .fillMaxSize()
-      .gradientBackground()
       .thenIf(isScrollable) { verticalScroll(rememberScrollState()) },
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
