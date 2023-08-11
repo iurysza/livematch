@@ -92,7 +92,6 @@ private fun RowScope.HeaderBody(
     style = if (event.keyEvent) {
       TextStyle(
         color = MaterialTheme.colors.onPrimary,
-        fontWeight = FontWeight.Bold,
       )
     } else {
       TextStyle(color = MaterialTheme.colors.onBackground)

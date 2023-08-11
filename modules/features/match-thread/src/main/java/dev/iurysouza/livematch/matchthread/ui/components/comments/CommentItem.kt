@@ -69,30 +69,30 @@ private fun CommentHeader(
     verticalAlignment = Alignment.CenterVertically,
     modifier = modifier.fillMaxWidth(),
   ) {
-    val authorStyle = TextStyle(
+    val style = TextStyle(
       fontSize = 12.sp,
       color = MaterialTheme.colors.onSurface,
-      fontWeight = FontWeight.Bold,
+      fontWeight = FontWeight.Normal,
     )
     FlairImage(comment.flairUrl, comment.flairName)
     Text(
       text = comment.author,
-      fontWeight = FontWeight.Bold,
-      style = authorStyle,
+      fontWeight = FontWeight.Normal,
+      style = style,
     )
     Text(
       text = " • ",
-      style = authorStyle,
+      style = style,
     )
     Text(
       text = stringResource(id = R.string.minutes, comment.relativeTime),
-      style = authorStyle.copy(fontWeight = FontWeight.Normal),
+      style = style.copy(fontWeight = FontWeight.Normal),
     )
     Spacer(Modifier.weight(1f))
     Text(
       modifier = Modifier.wrapContentSize(),
       text = comment.score,
-      style = authorStyle.copy(
+      style = style.copy(
         fontWeight = FontWeight.Normal,
         color = MaterialTheme.colors.primary,
       ),
@@ -100,7 +100,7 @@ private fun CommentHeader(
     Text(
       modifier = Modifier.wrapContentSize(),
       text = " pts",
-      style = authorStyle.copy(fontWeight = FontWeight.Normal),
+      style = style.copy(fontWeight = FontWeight.Normal),
     )
   }
 }
