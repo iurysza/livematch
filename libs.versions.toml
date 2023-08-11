@@ -6,6 +6,7 @@ androidxActivity = "1.7.2"
 androidxAppCompat = "1.6.1"
 androidxBrowser = "1.5.0"
 androidxComposeBom = "2023.06.01"
+materialCompose = "1.1.1"
 androidxCompose = "1.4.3"
 androidxConstraintlayoutCompose = "1.0.1"
 androidxCore = "1.10.1"
@@ -54,6 +55,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 androidx-browser-browser = { group = "androidx.browser", name = "browser", version.ref = "androidxBrowser" }
 
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "materialCompose" }
 androidx-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "androidxCompose" }
 androidx-compose-ui-core = { group = "androidx.compose.ui", name = "ui", version.ref = "androidxCompose" }
 androidx-compose-ui-testJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "testJunit4" }
