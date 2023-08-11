@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -44,7 +44,7 @@ fun PullToReveal(
   content: @Composable () -> Unit,
   modifier: Modifier = Modifier,
   refreshTriggerDistance: Dp = 120.dp,
-  revealedComponentBackgroundColor: Color = MaterialTheme.colors.secondaryVariant,
+  revealedComponentBackgroundColor: Color = MaterialTheme.colorScheme.tertiary,
 ) {
   val pullState = rememberSwipeRefreshState(isRefreshing = isRefreshing)
   var offset by remember { mutableStateOf(0) }
@@ -97,7 +97,7 @@ fun PullToReveal(
             .clip(RoundedCornerShape(animatedCornerRadius))
             .fillMaxSize()
             .shadow(4.dp)
-            .background(MaterialTheme.colors.surface),
+            .background(MaterialTheme.colorScheme.surface),
         ) { content() }
       }
     }

@@ -2,8 +2,8 @@ package dev.iurysouza.livematch.matchday.ui.screens
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,7 +19,7 @@ fun EmptyMatchDay(modifier: Modifier = Modifier) {
   AppColumn(modifier = modifier) {
     Text(
       text = stringResource(R.string.empty_match_day),
-      color = MaterialTheme.colors.onPrimary,
+      color = MaterialTheme.colorScheme.onPrimary,
       modifier = Modifier
         .fillMaxSize()
         .padding(16.dp),

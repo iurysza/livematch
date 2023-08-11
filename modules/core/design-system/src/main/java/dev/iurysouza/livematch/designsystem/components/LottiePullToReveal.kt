@@ -2,7 +2,7 @@ package dev.iurysouza.livematch.designsystem.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,7 +23,7 @@ fun LottiePullToReveal(
   content: @Composable () -> Unit,
   lottieAsset: LottieAsset,
   modifier: Modifier = Modifier,
-  revealedComponentBackgroundColor: Color = MaterialTheme.colors.secondaryVariant,
+  revealedComponentBackgroundColor: Color = MaterialTheme.colorScheme.tertiary,
 ) {
   PullToReveal(
     modifier = modifier,

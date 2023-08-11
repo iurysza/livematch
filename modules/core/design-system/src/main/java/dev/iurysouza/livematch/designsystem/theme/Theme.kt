@@ -1,33 +1,38 @@
 package dev.iurysouza.livematch.designsystem.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import com.halilibo.richtext.ui.RichTextThemeIntegration
 
-private val DarkColorPalette = darkColors(
+
+private val DarkColorPalette = darkColorScheme(
   primary = AppAccent1Dark,
-  primaryVariant = AppAccent2Dark,
+  secondary = AppAccent2Dark,
+//  primaryVariant = AppAccent2Dark,
   background = AppBackgroundDark,
   onPrimary = AppText1Dark,
   onBackground = AppText2Dark,
   onSurface = AppText3Dark,
-  secondaryVariant = AppSecondaryDark,
+  tertiary = AppSecondaryDark,
+//  secondaryVariant = AppSecondaryDark,
 )
 
-private val LightColorPalette = lightColors(
+private val LightColorPalette = lightColorScheme(
   primary = AppAccent1Light,
-  primaryVariant = AppAccent2Light,
+  secondary = AppAccent2Light,
+//  primaryVariant = AppAccent2Light,
   background = AppBackgroundLight,
   onPrimary = AppText1Light,
   onBackground = AppText2Light,
   onSurface = AppText3Light,
-  secondaryVariant = AppSecondaryLight,
+  tertiary = AppSecondaryLight,
+//  secondaryVariant = AppSecondaryLight,
 )
 
 @Composable
@@ -50,11 +55,11 @@ fun LivematchTheme(
   }
 
   MaterialTheme(
-    colors = colors,
+    colorScheme = colors,
     typography = Typography(),
-    shapes = Shapes,
+//    shapes = Shapes,
   ) {
-    val textColor = MaterialTheme.colors.onBackground
+    val textColor = MaterialTheme.colorScheme.onBackground
 
     RichTextThemeIntegration(
       textStyle = { TextStyle(color = textColor) },

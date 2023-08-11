@@ -75,8 +75,8 @@ internal fun createMatchThreadFrom(
 
 private fun MatchEntity.toUiModel(
   resources: ResourceProvider,
-  homeScore: String,
-  awayScore: String,
+  homeScore: String?,
+  awayScore: String?,
 ) = MatchUiModel(
   id = id.toString(),
   competition = Competition(
@@ -163,14 +163,14 @@ private fun isMatchRelated(
   return containsTeamName(title, homeTeam) || title.contains(awayTeam)
 }
 
-fun parseMatchScore(content: String): Pair<String, String> {
+fun parseMatchScore(content: String): Pair<String?, String?> = runCatching{
   val contentList = content.split("\n")
   val (homeScore, awayScore) = contentList.first()
     .substringAfter("[")
     .substringBefore("]")
     .split("-")
-  return homeScore to awayScore
-}
+  homeScore to awayScore
+}.getOrElse { null to null }
 
 private fun buildMatchThreadWith(
   matchThread: MatchThreadEntity,

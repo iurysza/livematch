@@ -1,6 +1,6 @@
 package dev.iurysouza.livematch.navigation
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import dev.iurysouza.livematch.R
@@ -27,8 +27,8 @@ fun LiveMatchNavHost() {
     transitionSpec = SlideTransitionSpec,
   ) { screen ->
     SystemColors(
-      systemBarColor = MaterialTheme.colors.background,
-      navigationBarColor = MaterialTheme.colors.secondaryVariant,
+      systemBarColor = MaterialTheme.colorScheme.background,
+      navigationBarColor = MaterialTheme.colorScheme.tertiary,
     )
     when (screen) {
       is Destination.MatchDay -> MatchDayRoute { navController.navigate(it) }

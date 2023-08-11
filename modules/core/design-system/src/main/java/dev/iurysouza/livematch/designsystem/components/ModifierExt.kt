@@ -6,7 +6,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -24,8 +24,8 @@ fun Modifier.gradientBackground(
   orientation: GradientOrientation = GradientOrientation.Vertical,
 ): Modifier = composed {
   val colorList = colors ?: listOf(
-    MaterialTheme.colors.background,
-    MaterialTheme.colors.secondaryVariant,
+    MaterialTheme.colorScheme.background,
+    MaterialTheme.colorScheme.tertiary,
   )
   background(
     brush = when (orientation) {
@@ -65,7 +65,7 @@ fun Modifier.liveMatchPlaceHolder(duration: Int = 1700): Modifier = composed {
     .clip(RoundedCornerShape(8.dp))
     .placeholder(
       visible = true,
-      color = MaterialTheme.colors.onSurface,
+      color = MaterialTheme.colorScheme.onSurface,
       highlight = PlaceholderHighlight.shimmer(
         highlightColor = Color.White.copy(alpha = 0.5f),
         progressForMaxAlpha = 0.5f,

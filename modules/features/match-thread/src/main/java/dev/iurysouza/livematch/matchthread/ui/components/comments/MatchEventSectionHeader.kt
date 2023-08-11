@@ -15,9 +15,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,7 +49,7 @@ fun MatchEventSectionHeader(
 ) {
   Row(
     modifier = modifier
-      .background(MaterialTheme.colors.background)
+      .background(MaterialTheme.colorScheme.background)
       .thenIf(onClick != null) {
         padding(horizontal = S100)
           .roundedClip()
@@ -91,10 +91,10 @@ private fun RowScope.HeaderBody(
       .align(Alignment.CenterVertically),
     style = if (event.keyEvent) {
       TextStyle(
-        color = MaterialTheme.colors.onPrimary,
+        color = MaterialTheme.colorScheme.onPrimary,
       )
     } else {
-      TextStyle(color = MaterialTheme.colors.onBackground)
+      TextStyle(color = MaterialTheme.colorScheme.onBackground)
     },
   )
 }
@@ -109,7 +109,7 @@ private fun CommentCounterIndicator(
     Box(
       modifier = modifier
         .size(S300)
-        .background(MaterialTheme.colors.primaryVariant, RoundedCornerShape(10.dp)),
+        .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(10.dp)),
     ) {
       Text(
         modifier = Modifier.align(Alignment.Center),
@@ -127,7 +127,7 @@ private fun CommentCounterIndicator(
 @Composable
 fun Timeline(modifier: Modifier = Modifier, icon: EventIcon, time: String, isKeyEvent: Boolean) {
   Column(
-    modifier.background(MaterialTheme.colors.background),
+    modifier.background(MaterialTheme.colorScheme.background),
   ) {
     Column(
       Modifier.align(Alignment.CenterHorizontally),
@@ -135,7 +135,7 @@ fun Timeline(modifier: Modifier = Modifier, icon: EventIcon, time: String, isKey
       Text(
         modifier = Modifier.align(Alignment.CenterHorizontally),
         fontSize = 12.sp,
-        color = MaterialTheme.colors.onPrimary,
+        color = MaterialTheme.colorScheme.onPrimary,
         text = time,
       )
       MatchEventIcon(
@@ -146,7 +146,7 @@ fun Timeline(modifier: Modifier = Modifier, icon: EventIcon, time: String, isKey
     }
     Line(
       modifier = Modifier.padding(top = 8.dp),
-      color = MaterialTheme.colors.onBackground,
+      color = MaterialTheme.colorScheme.onBackground,
     )
   }
 }
@@ -172,15 +172,16 @@ private fun MatchEventIcon(
   isKeyEvent: Boolean,
 ) {
   val tint = if (isKeyEvent) {
-    MaterialTheme.colors.primaryVariant
+    // get material theme color scheme primary tone
+    MaterialTheme.colorScheme.secondary
   } else {
-    MaterialTheme.colors.onPrimary
+    MaterialTheme.colorScheme.onPrimary
   }
   Box(
     modifier = modifier
       .background(tint, CircleShape)
       .padding(2.dp)
-      .background(MaterialTheme.colors.background, CircleShape)
+      .background(MaterialTheme.colorScheme.background, CircleShape)
       .padding(S50),
   ) {
     Icon(

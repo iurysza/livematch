@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,16 +63,16 @@ fun MatchTime(
     Text(
       text = startTime,
       textAlign = TextAlign.Center,
-      color = MaterialTheme.colors.onPrimary,
+      color = MaterialTheme.colorScheme.onPrimary,
       modifier = Modifier.align(Alignment.CenterHorizontally),
     )
     Text(
       text = elapsedMinutes,
       textAlign = TextAlign.Center,
       color = if (elapsedMinutes.contains("'")) {
-        MaterialTheme.colors.primary
+        MaterialTheme.colorScheme.primary
       } else {
-        MaterialTheme.colors.onPrimary
+        MaterialTheme.colorScheme.onPrimary
       },
     )
   }
@@ -118,13 +118,13 @@ private fun textStyle(team: Team): TextStyle {
     TextStyle(
       fontSize = 19.sp,
       textAlign = TextAlign.Left,
-      color = MaterialTheme.colors.onPrimary,
+      color = MaterialTheme.colorScheme.onPrimary,
     )
   } else {
     TextStyle(
       fontSize = 19.sp,
       textAlign = TextAlign.Left,
-      color = MaterialTheme.colors.onSurface,
+      color = MaterialTheme.colorScheme.onSurface,
     )
   }
   return style
