@@ -35,13 +35,12 @@ fun LiveMatchThemePreview(
   darkTheme: Boolean = true,
   content: @Composable () -> Unit,
 ) {
-  LivematchTheme(darkTheme = darkTheme, isPreview = true, content = content)
+  LivematchTheme(darkTheme = darkTheme, content = content)
 }
 
 @Composable
 fun LivematchTheme(
   darkTheme: Boolean = isSystemInDarkTheme(),
-  isPreview: Boolean = false,
   content: @Composable () -> Unit,
 ) {
   val colors = if (darkTheme) {
