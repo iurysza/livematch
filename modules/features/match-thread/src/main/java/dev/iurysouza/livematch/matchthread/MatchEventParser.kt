@@ -242,7 +242,7 @@ open class MatchEventParser {
   fun parseContent(content: String): MatchStatus {
     val scoreList = runCatching {
       val scores = mutableListOf<List<Score>>()
-      val lines = content.trim('\n').split('*').filter { it.isNotBlank() }
+      val lines = content.remove("Pen").trim('\n').split('*').filter { it.isNotBlank() }
 
       lines.forEach { line ->
         val parts = line.trim().split("scorers:")

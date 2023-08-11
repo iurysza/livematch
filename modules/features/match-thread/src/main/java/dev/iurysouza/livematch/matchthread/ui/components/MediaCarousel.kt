@@ -116,7 +116,7 @@ private fun MatchDescription(
   modifier: Modifier = Modifier,
 ) {
   content ?: return
-  if (content.homeScore.isEmpty() || content.awayScore.isEmpty()) {
+  if (content.homeScore.isEmpty() && content.awayScore.isEmpty()) {
     RichText(
       modifier = modifier
         .padding(horizontal = S200)
