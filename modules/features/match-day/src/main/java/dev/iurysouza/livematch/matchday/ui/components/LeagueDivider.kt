@@ -5,18 +5,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
-import coil.compose.AsyncImage
+import dev.iurysouza.livematch.designsystem.components.TeamCrest
 import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.designsystem.theme.Space.S100
 import dev.iurysouza.livematch.designsystem.theme.Space.S200
+import dev.iurysouza.livematch.designsystem.theme.Space.S300
 import dev.iurysouza.livematch.matchday.models.Competition
 
 @Composable
@@ -28,12 +27,10 @@ fun LeagueDivider(
     modifier.fillMaxWidth(),
     verticalAlignment = Alignment.CenterVertically,
   ) {
-    AsyncImage(
-      modifier = Modifier
-        .clip(CircleShape)
-        .size(S200),
-      model = competition.emblemUrl,
-      contentDescription = "${competition.name} emblem",
+    TeamCrest(
+      teamCrestUrl = competition.emblemUrl,
+      modifier = Modifier.size(S300),
+      backgroundColor = MaterialTheme.colorScheme.onSurface
     )
     Text(
       text = competition.name.uppercase(),

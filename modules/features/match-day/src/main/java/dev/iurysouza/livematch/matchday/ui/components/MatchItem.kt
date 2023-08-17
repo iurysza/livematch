@@ -17,11 +17,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import dev.iurysouza.livematch.designsystem.components.roundedClip
-import dev.iurysouza.livematch.designsystem.theme.Space.S300
-import dev.iurysouza.livematch.designsystem.theme.Space.S50
+import dev.iurysouza.livematch.designsystem.components.TeamCrest
+import dev.iurysouza.livematch.designsystem.theme.Space
+import dev.iurysouza.livematch.designsystem.theme.Space.S100
 import dev.iurysouza.livematch.matchday.models.Competition
 import dev.iurysouza.livematch.matchday.models.MatchUiModel
 import dev.iurysouza.livematch.matchday.models.Team
@@ -42,7 +42,7 @@ internal fun MatchItem(
     )
     Column(
       Modifier.fillMaxWidth(),
-      verticalArrangement = Arrangement.Center,
+      verticalArrangement = Arrangement.SpaceBetween,
     ) {
       Team(match.homeTeam)
       Team(match.awayTeam)
@@ -64,7 +64,9 @@ fun MatchTime(
       text = startTime,
       textAlign = TextAlign.Center,
       color = MaterialTheme.colorScheme.onPrimary,
-      modifier = Modifier.align(Alignment.CenterHorizontally),
+      modifier = Modifier
+        .align(Alignment.CenterHorizontally)
+        .padding(bottom = 4.dp),
     )
     Text(
       text = elapsedMinutes,
@@ -87,14 +89,19 @@ internal fun Team(
     verticalAlignment = Alignment.CenterVertically,
     modifier = modifier,
   ) {
-    AsyncImage(
-      modifier = Modifier
-        .size(S300)
-        .roundedClip()
-        .padding(S50),
-      model = team.crestUrl,
-      contentDescription = "$team.name crest",
-    )
+    team.crestUrl?.let { url ->
+      TeamCrest(
+        teamCrestUrl = url,
+        modifier = Modifier
+          .padding(horizontal = S100)
+          .size(Space.S300),
+        backgroundColor = if (team.isAhead) {
+          MaterialTheme.colorScheme.onPrimary
+        } else {
+          MaterialTheme.colorScheme.onSurface
+        },
+      )
+    }
     val style = textStyle(team)
     Text(
       text = team.name,

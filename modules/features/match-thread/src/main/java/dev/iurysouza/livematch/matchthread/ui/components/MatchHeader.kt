@@ -1,23 +1,18 @@
 package dev.iurysouza.livematch.matchthread.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
@@ -26,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
-import coil.compose.AsyncImage
+import dev.iurysouza.livematch.designsystem.components.TeamCrest
 import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.matchthread.models.FakeFactory
 import dev.iurysouza.livematch.matchthread.models.MatchHeader
@@ -186,30 +181,6 @@ private fun Team(team: String, style: TextStyle) {
     overflow = TextOverflow.Ellipsis,
     style = TextStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onPrimary),
   )
-}
-
-@Composable
-fun TeamCrest(
-  teamCrestUrl: String,
-  modifier: Modifier = Modifier,
-) {
-  Box {
-    Box(
-      modifier = modifier
-        .size(56.dp)
-        .clip(CircleShape)
-        .background(MaterialTheme.colorScheme.onPrimary),
-    )
-    AsyncImage(
-      modifier = modifier
-        .size(56.dp)
-        .clip(CircleShape)
-        .border(width = 2.dp, MaterialTheme.colorScheme.onPrimary, CircleShape),
-      contentScale = ContentScale.Crop,
-      model = teamCrestUrl,
-      contentDescription = "teamCrest",
-    )
-  }
 }
 
 private const val CONSTRAINT_NAME = "name"

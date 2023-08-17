@@ -3,8 +3,6 @@ package dev.iurysouza.livematch.matchday.ui.screens
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
@@ -25,18 +23,15 @@ fun MatchDayScreen(
   onRefresh: () -> Unit = {},
   onToggleLiveMode: (Boolean) -> Unit = {},
 ) {
-  Scaffold(
+  Column(
     modifier = modifier
       .fillMaxHeight(),
-    topBar = {
-      MatchDayTopBar(
-        isChecked = uiState.isLiveMode,
-        onToggle = onToggleLiveMode,
-      )
-    },
-  ) { paddingValues ->
+  ) {
+    MatchDayTopBar(
+      isChecked = uiState.isLiveMode,
+      onToggle = onToggleLiveMode,
+    )
     LottiePullToReveal(
-      modifier = Modifier.padding(paddingValues),
       isRefreshing = uiState.isRefreshing,
       onRefresh = onRefresh,
       lottieAsset = LottieAsset.FootballFans,
