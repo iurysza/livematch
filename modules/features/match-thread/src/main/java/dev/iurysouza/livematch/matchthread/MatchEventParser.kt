@@ -50,7 +50,7 @@ open class MatchEventParser {
         MatchEvent(
           relativeTime = "0",
           icon = EventIcon.KickOff,
-          description = "Kick Off!\n",
+          description = "\nKick Off!\n",
           keyEvent = false,
         ),
       )
@@ -59,7 +59,7 @@ open class MatchEventParser {
         MatchEvent(
           relativeTime = "300",
           icon = EventIcon.FinalWhistle,
-          description = "Last Comments\n",
+          description = "\nLast Comments\n",
           keyEvent = false,
         ),
       )
@@ -124,7 +124,8 @@ open class MatchEventParser {
         body = comment.body,
         flairUrl = comment.flairUrl,
         flairName = comment.flairText.remove(":"),
-        relativeTime = calculateRelativeTime(comment.created, matchStartTime),
+        relativeTime = comment.created.toUTCLocalDateTime().calculatePlayTime(matchStartTime).toInt(),
+//        calculateRelativeTime(comment.created, matchStartTime),
         score = comment.score.toString(),
       )
     }.sortedBy { it.relativeTime }
@@ -158,6 +159,18 @@ open class MatchEventParser {
     matchTime.toUTCLocalDateTime(),
     commentTime.toUTCLocalDateTime(),
   ).toMinutes().toInt()
+
+  private fun LocalDateTime.calculatePlayTime(matchTime: Long): String {
+    val duration = Duration.between(matchTime.toUTCLocalDateTime(), this)
+    val minutes = duration.toMinutes()
+    return "${
+    if (minutes > 50) {
+      minutes - 25
+    } else {
+      minutes
+    }
+    }"
+  }
 
   private fun Long.toUTCLocalDateTime() =
     LocalDateTime.ofInstant(Instant.ofEpochSecond(this), ZoneId.systemDefault())

@@ -92,7 +92,7 @@ class FetchMatchesInfoUseCase @Inject constructor(
    * | 556 | Supercopa de España | Spain |
    *
    */
-  val topLeagues = mutableSetOf(
+  private val topLeagues = mutableSetOf(
     // International Competitions
     *(1..13).toList().toTypedArray(),
     *(15..19).toList().toTypedArray(),
