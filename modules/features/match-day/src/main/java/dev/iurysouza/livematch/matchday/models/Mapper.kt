@@ -84,8 +84,20 @@ private fun MatchEntity.toUiModel(
     name = competition.name,
     emblemUrl = competition.emblem,
   ),
-  homeTeam = toTeam(homeTeam, score, true, homeScore),
-  awayTeam = toTeam(awayTeam.asHomeTeam(), score, false, awayScore),
+  homeTeam = toTeam(
+    score = score,
+    isHome = true,
+    parsedScore = homeScore,
+    crest = homeTeam.crest,
+    name = homeTeam.name,
+  ),
+  awayTeam = toTeam(
+    score = score,
+    isHome = false,
+    parsedScore = awayScore,
+    crest = awayTeam.crest,
+    name = awayTeam.name,
+  ),
   startTime = formatTime(utcDate),
   elapsedMinutes = status.toText(this, resources),
 )
@@ -162,6 +174,7 @@ private fun isMatchRelated(
 ): Boolean {
   return containsTeamName(title, homeTeam) || title.contains(awayTeam)
 }
+
 fun parseMatchScore(content: String): Pair<String?, String?> = runCatching {
   val pattern = "\\[([0-9]+)(-| – )([0-9]+)\\]".toRegex() // the updated regex pattern
   val matchResults = pattern.find(content)
@@ -180,8 +193,20 @@ private fun buildMatchThreadWith(
     title = matchThread.title,
     content = matchThread.content,
     startTime = matchThread.createdAt,
-    homeTeam = toTeam(matchEntity.homeTeam, matchEntity.score, true, homeScore),
-    awayTeam = toTeam(matchEntity.awayTeam.asHomeTeam(), matchEntity.score, false, awayScore),
+    homeTeam = toTeam(
+      score = matchEntity.score,
+      isHome = true,
+      parsedScore = homeScore,
+      crest = matchEntity.homeTeam.crest,
+      name = matchEntity.homeTeam.name,
+    ),
+    awayTeam = toTeam(
+      score = matchEntity.score,
+      isHome = false,
+      parsedScore = awayScore,
+      crest = matchEntity.awayTeam.crest,
+      name = matchEntity.awayTeam.name,
+    ),
     refereeList = matchEntity.referees.map { it.name },
     competition = Competition(
       id = matchEntity.competition.id,
@@ -192,41 +217,37 @@ private fun buildMatchThreadWith(
 }
 
 private fun toTeam(
-  homeTeam: HomeTeamEntity,
   score: ScoreEntity,
   isHome: Boolean,
   parsedScore: String? = null,
+  crest: String,
+  name: String,
 ): Team {
-  val validHomeScore = if (score.fullTime == null) {
-    score.halfTime?.home?.toString() ?: "0"
-  } else {
-    score.fullTime?.home?.toString() ?: "0"
-  }
+  val (validHomeScore, validAwayScore) = computeScore(score)
 
-  val validAwayScore = if (score.fullTime == null) {
-    score.halfTime?.away?.toString() ?: "0"
-  } else {
-    score.fullTime?.away?.toString() ?: "0"
-  }
+  val teamScore = parsedScore?.toIntOrNull()
+    ?: if (isHome) validHomeScore else validAwayScore
 
-  val teamScore = if (isHome) {
-    parsedScore ?: validHomeScore
-  } else {
-    parsedScore ?: validAwayScore
-  }
-
-  val isHomeAhead = validHomeScore.toInt() > validAwayScore.toInt()
-  val isAwayAhead = validAwayScore.toInt() > validHomeScore.toInt()
-
-  val isTeamAhead = if (isHome) isHomeAhead else isAwayAhead
-
+  // Figuring out if the team is ahead or not.
+  val opponentScore = if (isHome) validAwayScore else validHomeScore
+  val isTeamAhead = teamScore > opponentScore
   return Team(
-    crestUrl = homeTeam.crest,
-    name = homeTeam.name,
-    score = teamScore,
+    crestUrl = crest,
+    name = name,
+    score = teamScore.toString(),
     isAhead = isTeamAhead,
     isHomeTeam = isHome,
   )
+}
+
+private fun computeScore(score: ScoreEntity): Pair<Int, Int> {
+  val halfTimeScore = score.halfTime ?: return 0 to 0
+  val fullTimeScore = score.fullTime
+
+  val validHomeScore = fullTimeScore?.home ?: halfTimeScore.home ?: 0
+  val validAwayScore = fullTimeScore?.away ?: halfTimeScore.away ?: 0
+
+  return validHomeScore to validAwayScore
 }
 
 private fun AwayTeamEntity.asHomeTeam() = HomeTeamEntity(
