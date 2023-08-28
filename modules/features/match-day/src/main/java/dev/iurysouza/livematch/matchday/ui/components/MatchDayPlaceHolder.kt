@@ -28,8 +28,8 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 
 @Composable
-fun PlaceHolderDivider() {
-  Row(Modifier.padding(vertical = 16.dp)) {
+fun PlaceHolderDivider(modifier: Modifier = Modifier) {
+  Row(modifier.padding(vertical = 16.dp)) {
     Box(
       modifier = Modifier
         .size(30.dp)
@@ -140,7 +140,7 @@ fun MatchTimePlaceHolder(
   modifier: Modifier = Modifier,
 ) {
   Column(
-    modifier.padding(start = S50),
+    modifier.padding(start = S100),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     Text(

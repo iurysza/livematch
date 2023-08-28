@@ -30,7 +30,7 @@ fun LeagueDivider(
     TeamCrest(
       teamCrestUrl = competition.emblemUrl,
       modifier = Modifier.size(S300),
-      backgroundColor = MaterialTheme.colorScheme.onSurface
+      backgroundColor = MaterialTheme.colorScheme.onSurface,
     )
     Text(
       text = competition.name.uppercase(),

@@ -13,8 +13,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import dev.iurysouza.livematch.designsystem.components.roundedClip
 import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.designsystem.theme.Space.S100
+import dev.iurysouza.livematch.designsystem.theme.Space.S150
 import dev.iurysouza.livematch.designsystem.theme.Space.S200
-import dev.iurysouza.livematch.designsystem.theme.Space.S300
 import dev.iurysouza.livematch.matchday.models.Fakes
 import dev.iurysouza.livematch.matchday.models.MatchUiModel
 import kotlinx.collections.immutable.ImmutableList
@@ -28,20 +28,27 @@ internal fun MatchDayGroupedByLeague(
 ) {
   LazyColumn(
     modifier = modifier
-      .fillMaxHeight()
-      .padding(horizontal = S200),
+      .fillMaxHeight(),
   ) {
     matchList.groupBy { it.competition }.forEach { (competition, matchItemList) ->
       item {
-        if (shouldUsePlaceHolder) PlaceHolderDivider() else LeagueDivider(competition, Modifier)
+        if (shouldUsePlaceHolder) {
+          PlaceHolderDivider(Modifier.padding(horizontal = S200))
+        } else {
+          LeagueDivider(
+            competition = competition,
+            modifier = Modifier.padding(horizontal = S200),
+          )
+        }
       }
       itemsIndexed(matchItemList) { _, matchItem ->
         Column(
           Modifier
+            .padding(horizontal = S100)
+            .fillMaxWidth()
             .roundedClip()
             .clickable { onItemTap(matchItem) }
-            .padding(start = S300, end = S200, top = S100, bottom = S100)
-            .fillMaxWidth(),
+            .padding(horizontal = S200, vertical = S150),
         ) {
           if (shouldUsePlaceHolder) PlaceHolderItem() else MatchItem(matchItem)
         }

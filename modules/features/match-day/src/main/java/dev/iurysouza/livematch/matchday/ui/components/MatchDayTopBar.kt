@@ -36,9 +36,8 @@ fun MatchDayTopBar(
       .background(MaterialTheme.colorScheme.background)
       .padding(horizontal = 16.dp)
       .fillMaxWidth()
-      .height(56.dp)
-  )
-  {
+      .height(56.dp),
+  ) {
     Spacer(modifier = Modifier.padding(24.dp))
     Text(
       text = stringResource(R.string.app_name),
