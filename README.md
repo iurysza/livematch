@@ -96,6 +96,7 @@ graph LR
   match-day --> design-system
   match-day --> reddit
   match-thread --> common
+  match-thread --> footballinfo
   match-thread --> footballdata
   match-thread --> design-system
   match-thread --> reddit
@@ -124,6 +125,7 @@ in `./mockwebserver-docker-img/initializerJson.json`.
 # Static Analysis
 
 You can run `ktlintFormat` and `detektCheck` to check code style. CI is WIP.
+
 
 # Building
 
