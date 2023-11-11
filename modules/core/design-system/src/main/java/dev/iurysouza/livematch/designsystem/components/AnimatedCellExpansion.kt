@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
@@ -22,9 +23,9 @@ fun AnimatedCellExpansion(
     modifier = modifier.background(MaterialTheme.colorScheme.background),
     transitionSpec = {
       if (targetState) {
-        fadeIn() with fadeOut() // fadeOut animation if targetState changes to false
+        fadeIn() togetherWith fadeOut() // fadeOut animation if targetState changes to false
       } else {
-        fadeIn() with shrinkVertically() // fadeOut animation if targetState changes to false
+        fadeIn() togetherWith shrinkVertically() // fadeOut animation if targetState changes to false
       }
     },
     label = "AnimatedCellExpansion",

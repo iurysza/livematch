@@ -1,6 +1,6 @@
 package dev.iurysouza.livematch.navigation
 
-import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.with
 import dev.iurysouza.livematch.common.navigation.Destination
@@ -14,9 +14,9 @@ internal val SlideTransitionSpec: NavTransitionScope.(
 ) -> ContentTransform =
   { action, _, _ ->
     val direction = if (action == NavAction.Pop) {
-      AnimatedContentScope.SlideDirection.End
+      AnimatedContentTransitionScope.SlideDirection.End
     } else {
-      AnimatedContentScope.SlideDirection.Start
+      AnimatedContentTransitionScope.SlideDirection.Start
     }
     slideIntoContainer(direction) with slideOutOfContainer(direction)
   }

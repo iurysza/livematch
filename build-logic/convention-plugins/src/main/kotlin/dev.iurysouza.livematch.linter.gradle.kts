@@ -14,7 +14,7 @@ allprojects {
     plugin("io.gitlab.arturbosch.detekt")
   }
   detekt {
-    config = rootProject.files("config/detekt/detekt.yml")
+    config.setFrom(rootProject.files("config/detekt/detekt.yml"))
   }
   dependencies {
     detektPlugins("io.nlopez.compose.rules:detekt:${Versions.detektComposePlugin}")

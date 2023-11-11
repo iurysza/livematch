@@ -7,9 +7,9 @@ object Versions {
   val javaTarget = JavaVersion.VERSION_18
 
   object Android {
-    const val compileSdk = 33
+    const val compileSdk = 34
     const val minSdk = 26
-    const val targetSdk = 33
+    const val targetSdk = 34
     const val versionCode = 1
     const val versionName = "0.1.0"
   }
