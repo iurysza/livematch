@@ -15,6 +15,7 @@ android {
 }
 
 dependencies {
+  implementation(project(ProjectModule.WebViewToNativePlayer))
   implementation(project(ProjectModule.MatchThread))
   implementation(project(ProjectModule.MatchDay))
   implementation(project(ProjectModule.DesignSystem))

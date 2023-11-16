@@ -1,18 +1,25 @@
 package dev.iurysouza.livematch.webviewtonativeplayer.detector
 
 import java.util.Locale
+import timber.log.Timber
 
 object SharedUtils {
-  val userAgent = """Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"""
+  val userAgent =
+    """Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36"""
   private val videoRegex =
     """\.(mp4|mp4v|mpv|m1v|m4v|mpg|mpg2|mpeg|xvid|webm|3gp|avi|mov|mkv|ogg|ogv|ogm|m3u8|mpd|ism(?:[vc]|/manifest)?)(?:[?#]|$)""".toRegex(
+      RegexOption.IGNORE_CASE,
+    )
+
+  val fallbackVideoRegex =
+    """filename=.*\.(mp4|mp4v|mpv|m1v|m4v|mpg|mpg2|mpeg|xvid|webm|3gp|avi|mov|mkv|ogg|ogv|ogm|m3u8|mpd|ism(?:[vc]|/manifest)?)(?:&|$)""".toRegex(
       RegexOption.IGNORE_CASE,
     )
 
   fun getVideoMimeType(uri: String?): String? {
     if (uri == null) return null
 
-    val matchResult = videoRegex.find(uri)
+    val matchResult = videoRegex.find(uri) ?: fallbackVideoRegex.find(uri)
     val fileExtension = matchResult?.groupValues?.get(1) ?: return null
 
     return when (fileExtension.lowercase(Locale.getDefault())) {
@@ -29,7 +36,10 @@ object SharedUtils {
       "m3u8" -> "application/x-mpegURL"
       "mpd" -> "application/dash+xml"
       "ism", "ism/manifest", "ismv", "ismc" -> "application/vnd.ms-sstr+xml"
-      else -> null
+      else -> {
+        Timber.d("Unknown video mime type for $fileExtension")
+        null
+      }
     }
   }
 }

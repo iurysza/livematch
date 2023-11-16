@@ -8,12 +8,12 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.media3.common.MediaItem
 
-class VideoDetectorWebViewClient(
-  val onVideoDetected: (VideoInfo) -> Unit,
+internal class VideoDetectorWebViewClient(
+  val onVideoDetectionFinished: (Set<VideoInfo>) -> Unit,
 ) : DownloadListener, WebViewClient() {
 
+  private var videoInfoSet = setOf<VideoInfo>()
   override fun onLoadResource(view: WebView?, url: String) {
     processUrl(url, view)
   }
@@ -28,6 +28,14 @@ class VideoDetectorWebViewClient(
     val url: String = request.url.toString()
     processUrl(url, view)
     return false
+  }
+
+  override fun onPageFinished(view: WebView?, url: String?) {
+    super.onPageFinished(view, url)
+    if (videoInfoSet.isNotEmpty()) {
+      onVideoDetectionFinished(videoInfoSet)
+    }
+    videoInfoSet = setOf()
   }
 
   @Deprecated("Deprecated in Java")
@@ -46,7 +54,19 @@ class VideoDetectorWebViewClient(
   private fun processUrl(uri: String, view: WebView?) {
     val looper = view?.webViewLooper ?: return
     val mimeType = SharedUtils.getVideoMimeType(uri) ?: return
-    Handler(looper).post { onVideoDetected(VideoInfo(uri, mimeType, view.url)) }
+    Handler(looper).post {
+      videoInfoSet += VideoInfo(
+        uri = uri.getHigherQualityVideo(),
+        mimeType = mimeType,
+        referer = view.url,
+      )
+    }
+  }
+
+  private fun String.getHigherQualityVideo() = if (contains("DASH_96")) {
+    replace("_96", "_480")
+  } else {
+    this
   }
 
   override fun onDownloadStart(
@@ -79,13 +99,5 @@ data class VideoInfo(
     }
   }
 
-  override fun toString() = uri
-
-  fun asMediaItem() = MediaItem
-    .Builder()
-    .setUri(uri).apply {
-      if (mimeType.isNotBlank()) {
-        setMimeType(mimeType)
-      }
-    }.build()
+  override fun toString() = "VideoInfo(uri='$uri', mimeType='$mimeType', referer='$referer)\n"
 }

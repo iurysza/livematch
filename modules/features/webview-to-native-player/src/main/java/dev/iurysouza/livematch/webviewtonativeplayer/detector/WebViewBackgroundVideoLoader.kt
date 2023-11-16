@@ -6,18 +6,23 @@ import android.webkit.WebView
 import timber.log.Timber
 
 @SuppressLint("SetJavaScriptEnabled")
-class BackgroundVideoLoader(
+class WebViewBackgroundVideoLoader(
   private val webView: WebView,
-  private val videoDetectorListener: VideoDetectorListener,
-) {
+) : BackgroundVideoLoader {
+  private var videoDetectorListener: VideoDetectionListener? = null
+  override fun setVideoDetectorListener(listener: VideoDetectionListener) {
+    videoDetectorListener = listener
+  }
 
-  private var videoInfoSet = setOf<VideoInfo>()
+  override suspend fun fetchVideoFileFromPage(url: String): VideoInfo? {
+    TODO("Not yet implemented")
+  }
+
   private val client: VideoDetectorWebViewClient by lazy {
     VideoDetectorWebViewClient(
-      onVideoDetected = { video ->
-        videoInfoSet += video
-        Timber.e("videoInfoSet: $videoInfoSet")
-        videoDetectorListener.onVideoDetected(video)
+      onVideoDetectionFinished = { videoSet ->
+        Timber.d("VideoDetectionFinished: $videoSet")
+        videoDetectorListener?.onVideoDetected(videoSet)
       },
     )
   }
@@ -37,12 +42,20 @@ class BackgroundVideoLoader(
     }
   }
 
-  fun fetchVideoFrom(url: String) {
+  override fun fetchVideoFrom(url: String) {
     webView.loadUrl(url)
   }
 
+
 }
 
-interface VideoDetectorListener {
-  fun onVideoDetected(video: VideoInfo)
+interface VideoDetectionListener {
+  fun onVideoDetected(videos: Set<VideoInfo>)
+}
+
+interface BackgroundVideoLoader {
+  fun setVideoDetectorListener(listener: VideoDetectionListener)
+  suspend fun fetchVideoFileFromPage(url: String): VideoInfo?
+  fun fetchVideoFrom(url: String)
+
 }

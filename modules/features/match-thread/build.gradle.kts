@@ -11,6 +11,7 @@ android {
 }
 
 dependencies {
+  implementation(project(ProjectModule.WebViewToNativePlayer))
   implementation(project(ProjectModule.Common))
   implementation(project(ProjectModule.FootballInfo))
   implementation(project(ProjectModule.FootballData))

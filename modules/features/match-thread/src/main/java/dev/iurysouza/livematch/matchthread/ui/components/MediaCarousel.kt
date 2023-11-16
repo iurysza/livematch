@@ -22,7 +22,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -65,6 +68,17 @@ fun MatchDetails(
   mediaItemList: ImmutableList<MediaItem> = persistentListOf(),
   isPlaceHolder: Boolean = false,
 ) {
+  var showBottomSheet: Boolean by remember { mutableStateOf(false) }
+  var item: MediaItem? by remember { mutableStateOf(null) }
+  if (showBottomSheet) {
+    BottomSheet(
+      mediaItem = item!!,
+      onDismiss = {
+        showBottomSheet = false
+      },
+    )
+  }
+
   Column(
     modifier = modifier
       .fillMaxWidth()
@@ -75,7 +89,13 @@ fun MatchDetails(
       CarouselPlaceHolder()
     } else {
       MatchDescription(content, modifier = Modifier.fillMaxWidth())
-      MediaCarousel(mediaItemList)
+      MediaCarousel(
+        mediaItemList = mediaItemList,
+        onItemTap = { mediaItem ->
+          item = mediaItem
+          showBottomSheet = true
+        },
+      )
     }
   }
 }
@@ -195,7 +215,10 @@ private fun TeamScore(teamA: List<Score>, isReversed: Boolean = false) {
 }
 
 @Composable
-private fun MediaCarousel(mediaItemList: ImmutableList<MediaItem>) {
+private fun MediaCarousel(
+  mediaItemList: ImmutableList<MediaItem>,
+  onItemTap: (MediaItem) -> Unit = {},
+) {
   if (mediaItemList.isEmpty()) return
   Column(
     Modifier
@@ -207,7 +230,7 @@ private fun MediaCarousel(mediaItemList: ImmutableList<MediaItem>) {
       text = stringResource(R.string.highlights),
       style = TextStyle(fontSize = 15.sp, color = MaterialTheme.colorScheme.onPrimary),
     )
-    GradientPaddedMediaCarousel(mediaItemList)
+    GradientPaddedMediaCarousel(mediaItemList, onItemTap)
   }
 }
 
@@ -243,6 +266,7 @@ fun CarouselPlaceHolder() {
 @Composable
 private fun GradientPaddedMediaCarousel(
   mediaItemList: ImmutableList<MediaItem>,
+  onItemTap: (MediaItem) -> Unit = {},
 ) {
   val context = LocalContext.current
   Box {
@@ -261,6 +285,7 @@ private fun GradientPaddedMediaCarousel(
             modifier = Modifier.size(S1000),
             context = context,
             item = item,
+            onItemTap = { onItemTap(item) },
           )
         }
       }
@@ -292,13 +317,17 @@ private fun MediaCard(
   modifier: Modifier = Modifier,
   context: Context,
   item: MediaItem,
+  onItemTap: (MediaItem) -> Unit = {},
 ) {
   val isDarkTheme = isSystemInDarkTheme()
   Box(
     modifier
       .background(MaterialTheme.colorScheme.tertiary, RoundedCornerShape(10.dp))
       .roundedClip()
-      .clickable { context.launchBrowserTabWith(isDarkTheme, item.url) }
+      .clickable {
+//        context.launchBrowserTabWith(isDarkTheme, item.url)
+        onItemTap(item)
+      }
       .padding(S100),
   ) {
     Text(

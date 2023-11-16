@@ -2,13 +2,13 @@ package dev.iurysouza.livematch.webviewtonativeplayer.player
 
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.ui.PlayerView
-import dev.iurysouza.livematch.webviewtonativeplayer.detector.VideoDetectorListener
+import dev.iurysouza.livematch.webviewtonativeplayer.detector.VideoDetectionListener
 import dev.iurysouza.livematch.webviewtonativeplayer.detector.VideoInfo
 
 @UnstableApi
-class VideoPlayer(
+class NativeVideoPlayer(
   private val localPlayerView: PlayerView,
-) : PlayerManager.QueuePositionListener, VideoDetectorListener {
+) : PlayerManager.QueuePositionListener, VideoDetectionListener {
 
   private var playerManager: PlayerManager? = null
 
@@ -32,7 +32,19 @@ class VideoPlayer(
   override fun onQueuePositionChanged(previousIndex: Int, newIndex: Int) {
   }
 
-  override fun onVideoDetected(video: VideoInfo) {
-    playerManager?.addItem(video)
+  fun playVideo(videoInfo: VideoInfo) {
+    playerManager?.addItems(setOf(videoInfo))
+  }
+
+  override fun onVideoDetected(videos: Set<VideoInfo>) {
+    playerManager?.addItems(videos)
+  }
+
+  fun pause() {
+    playerManager?.pause()
+  }
+
+  fun play() {
+    playerManager?.play()
   }
 }

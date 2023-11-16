@@ -47,5 +47,6 @@ dependencies {
   implementation("androidx.media3:media3-exoplayer-hls:$libVersionAndroidxMedia3")
   implementation("androidx.media3:media3-exoplayer-smoothstreaming:$libVersionAndroidxMedia3")
   implementation("androidx.media3:media3-ui:$libVersionAndroidxMedia3")
-
+  implementation ("org.jsoup:jsoup:1.12.1")
+  implementation(libs.squareup.okhttp.loggingInterceptor)
 }

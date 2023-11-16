@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.media3.common.C
+import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
@@ -94,11 +95,11 @@ class PlayerManager(
   /**
    * Appends `sample` to the media queue.
    *
-   * @param sample The [VideoInfo] to append.
+   * @param videoSet The [VideoInfo] to append.
    */
-  fun addItem(sample: VideoInfo) {
-    mediaQueue!!.add(sample)
-    concatenatingMediaSource!!.addMediaSource(buildMediaSource(sample))
+  fun addItems(videoSet: Set<VideoInfo>) {
+    mediaQueue?.addAll(videoSet)
+    concatenatingMediaSource?.addMediaSources(videoSet.map { buildMediaSource(it) })
   }
 
   val mediaQueueSize: Int
@@ -113,8 +114,10 @@ class PlayerManager(
    * @param position The index of the item.
    * @return The item at the given index in the media queue.
    */
-  fun getItem(position: Int): VideoInfo? {
-    return if (position >= 0 && mediaQueueSize > position) mediaQueue!![position] else null
+  fun getItem(position: Int): VideoInfo? = if (position in 0 until mediaQueueSize) {
+    mediaQueue!![position]
+  } else {
+    null
   }
 
   /**
@@ -147,12 +150,10 @@ class PlayerManager(
     mediaQueue!!.add(toIndex, mediaQueue!!.removeAt(fromIndex))
 
     // Index update.
-    if (fromIndex == currentItemIndex) {
-      maybeSetCurrentItemAndNotify(toIndex)
-    } else if (fromIndex < currentItemIndex && toIndex >= currentItemIndex) {
-      maybeSetCurrentItemAndNotify(currentItemIndex - 1)
-    } else if (fromIndex > currentItemIndex && toIndex <= currentItemIndex) {
-      maybeSetCurrentItemAndNotify(currentItemIndex + 1)
+    when {
+      fromIndex == currentItemIndex -> maybeSetCurrentItemAndNotify(toIndex)
+      currentItemIndex in (fromIndex + 1)..toIndex -> maybeSetCurrentItemAndNotify(currentItemIndex - 1)
+      currentItemIndex in toIndex until fromIndex -> maybeSetCurrentItemAndNotify(currentItemIndex + 1)
     }
     return true
   }
@@ -322,12 +323,31 @@ class PlayerManager(
 
   private fun buildMediaSource(video: VideoInfo): MediaSource {
     val dsFactory = requireNotNull(dataSourceFactory) { "dataSourceFactory must not be null" }
-    val mediaItem = video.asMediaItem()
+    val mediaItem = with(video) {
+      MediaItem
+        .Builder()
+        .setUri(uri).apply {
+          if (mimeType.isNotBlank()) {
+            setMimeType(mimeType)
+          }
+        }.build()
+    }
+
     return when (video.mimeType) {
       MimeTypes.APPLICATION_M3U8 -> HlsMediaSource.Factory(dsFactory).createMediaSource(mediaItem)
       MimeTypes.APPLICATION_MPD -> DashMediaSource.Factory(dsFactory).createMediaSource(mediaItem)
       MimeTypes.APPLICATION_SS -> SsMediaSource.Factory(dsFactory).createMediaSource(mediaItem)
       else -> ProgressiveMediaSource.Factory(dsFactory).createMediaSource(mediaItem)
     }
+  }
+
+  fun pause() {
+    currentPlayer?.pause()
+    Timber.v("Pausing player")
+  }
+
+  fun play() {
+    Timber.v("Playing content")
+    currentPlayer?.play()
   }
 }
