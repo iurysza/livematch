@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.webviewtonativeplayer.detector
+package dev.iurysouza.livematch.webviewtonativeplayer.videoscrapper
 
 import android.net.Uri
 

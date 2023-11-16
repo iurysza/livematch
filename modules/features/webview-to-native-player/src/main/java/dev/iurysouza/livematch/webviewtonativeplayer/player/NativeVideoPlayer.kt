@@ -2,7 +2,7 @@ package dev.iurysouza.livematch.webviewtonativeplayer.player
 
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.ui.PlayerView
-import dev.iurysouza.livematch.webviewtonativeplayer.detector.VideoInfo
+import dev.iurysouza.livematch.webviewtonativeplayer.videoscrapper.VideoInfo
 
 @UnstableApi
 internal class NativeVideoPlayer(

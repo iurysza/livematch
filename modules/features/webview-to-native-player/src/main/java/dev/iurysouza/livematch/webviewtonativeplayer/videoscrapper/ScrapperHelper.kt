@@ -1,9 +1,9 @@
-package dev.iurysouza.livematch.webviewtonativeplayer.detector
+package dev.iurysouza.livematch.webviewtonativeplayer.videoscrapper
 
 import java.util.Locale
 import timber.log.Timber
 
-internal object SharedUtils {
+internal object ScrapperHelper {
   val userAgent =
     """Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36"""
   private val videoRegex =
@@ -11,7 +11,7 @@ internal object SharedUtils {
       RegexOption.IGNORE_CASE,
     )
 
-  val fallbackVideoRegex =
+  private val fallbackVideoRegex =
     """filename=.*\.(mp4|mp4v|mpv|m1v|m4v|mpg|mpg2|mpeg|xvid|webm|3gp|avi|mov|mkv|ogg|ogv|ogm|m3u8|mpd|ism(?:[vc]|/manifest)?)(?:&|$)""".toRegex(
       RegexOption.IGNORE_CASE,
     )

@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.webviewtonativeplayer.detector
+package dev.iurysouza.livematch.webviewtonativeplayer.videoscrapper
 
 import arrow.core.Either
 import arrow.core.flatMap
@@ -6,7 +6,7 @@ import org.json.JSONObject
 import org.jsoup.Jsoup
 import timber.log.Timber
 
-internal class RedditVideoUriExtractor(
+internal class RedditVideoUriScrapper(
   private val httpClient: HttpClient = OkHttpCoroutineClient,
 ) : VideoUriExtractor {
   override suspend fun fetchVideoFileFromPage(url: String): Either<Exception, VideoInfo> {
@@ -18,7 +18,7 @@ internal class RedditVideoUriExtractor(
   }
 
   private fun validateMimeType(it: String?) = Either
-    .catch { it!! to SharedUtils.getVideoMimeType(it)!! }
+    .catch { it!! to ScrapperHelper.getVideoMimeType(it)!! }
     .mapLeft { Exception("Invalid mime type", it) }
 
   private fun extractVideoFromResponse(body: String) = Either.catch {

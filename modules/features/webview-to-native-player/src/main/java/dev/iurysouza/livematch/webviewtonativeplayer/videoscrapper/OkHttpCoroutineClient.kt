@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.webviewtonativeplayer.detector
+package dev.iurysouza.livematch.webviewtonativeplayer.videoscrapper
 
 import dev.iurysouza.livematch.webviewtonativeplayer.BuildConfig
 import java.io.IOException
@@ -60,7 +60,7 @@ internal object OkHttpCoroutineClient : HttpClient {
           Interceptor { chain ->
             val originalRequest = chain.request()
             val requestWithUserAgent: Request = originalRequest.newBuilder()
-              .header("User-Agent", SharedUtils.userAgent)
+              .header("User-Agent", ScrapperHelper.userAgent)
               .build()
             chain.proceed(requestWithUserAgent)
           },

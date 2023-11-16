@@ -12,10 +12,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import androidx.media3.common.util.UnstableApi
-import dev.iurysouza.livematch.webviewtonativeplayer.detector.RedditVideoUriExtractor
-import dev.iurysouza.livematch.webviewtonativeplayer.detector.VideoUriExtractor
 import dev.iurysouza.livematch.webviewtonativeplayer.player.NativeVideoPlayer
+import dev.iurysouza.livematch.webviewtonativeplayer.videoscrapper.RedditVideoUriScrapper
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -26,9 +24,9 @@ class NativeVideoPlayerView(
   attrs: AttributeSet? = null,
 ) : FrameLayout(context, attrs), LifecycleEventObserver {
 
-  private val activity by lazy { context.getActivity() as? ComponentActivity? }
-  private val player: NativeVideoPlayer by lazy { NativeVideoPlayer(findViewById(R.id.player_view)) }
-  private val videoUriExtractor: VideoUriExtractor by lazy { RedditVideoUriExtractor() }
+  private val activity by lazy { context.getActivity() }
+  private val videoUriExtractor by lazy { RedditVideoUriScrapper() }
+  private val player by lazy { NativeVideoPlayer(findViewById(R.id.player_view)) }
 
   init {
     LayoutInflater.from(context).inflate(R.layout.native_video_player_view_activity, this, true)
@@ -55,7 +53,6 @@ class NativeVideoPlayerView(
     }
   }
 
-  @UnstableApi
   override fun
     onDetachedFromWindow() {
     super.onDetachedFromWindow()
@@ -63,11 +60,11 @@ class NativeVideoPlayerView(
     player.onRelease()
   }
 
-  private fun Context?.getActivity(): Activity? {
+  private fun Context?.getActivity(): ComponentActivity? {
     var c = this
     while (c is ContextWrapper) {
       if (c is Activity) {
-        return c
+        return c as ComponentActivity?
       }
       c = c.baseContext
     }

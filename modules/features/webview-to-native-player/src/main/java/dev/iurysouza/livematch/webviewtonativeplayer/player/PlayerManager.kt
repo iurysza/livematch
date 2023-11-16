@@ -26,8 +26,8 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.util.EventLogger
 import androidx.media3.ui.PlayerView
-import dev.iurysouza.livematch.webviewtonativeplayer.detector.SharedUtils
-import dev.iurysouza.livematch.webviewtonativeplayer.detector.VideoInfo
+import dev.iurysouza.livematch.webviewtonativeplayer.videoscrapper.ScrapperHelper
+import dev.iurysouza.livematch.webviewtonativeplayer.videoscrapper.VideoInfo
 import timber.log.Timber
 
 @UnstableApi
@@ -69,7 +69,7 @@ internal class PlayerManager(
     concatenatingMediaSource = ConcatenatingMediaSource()
     exoPlayer = buildExoPlayer(playerView!!.context)
     playerView?.player = exoPlayer
-    dataSourceFactory = DefaultHttpDataSource.Factory().setUserAgent(SharedUtils.userAgent)
+    dataSourceFactory = DefaultHttpDataSource.Factory().setUserAgent(ScrapperHelper.userAgent)
     currentItemIndex = C.INDEX_UNSET
     playbackMode = PlaybackMode.NORMAL
     setCurrentPlayer(exoPlayer!!)
