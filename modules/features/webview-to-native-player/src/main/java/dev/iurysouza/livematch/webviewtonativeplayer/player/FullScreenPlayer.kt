@@ -7,7 +7,7 @@ import androidx.media3.ui.PlayerView.FullscreenButtonClickListener
 import com.google.android.material.R.style
 import dev.iurysouza.livematch.webviewtonativeplayer.R
 
-class FullScreenPlayer(
+internal class FullScreenPlayer(
   private val playerView: PlayerView,
 ) : FullscreenButtonClickListener {
   private var isFullScreen = false

@@ -1,7 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 plugins {
-  id("dev.iurysouza.livematch.android-library")
+  id("dev.iurysouza.livematch.android-library-nokapt")
   id("org.jetbrains.kotlin.android")
 }
 
@@ -17,11 +17,9 @@ dependencies {
   implementation(project(ProjectModule.Common))
 
   implementation(libs.bundles.arrow)
-  implementation(libs.google.dagger.hilt.android)
   implementation("androidx.appcompat:appcompat:1.6.1")
   implementation("com.google.android.material:material:1.10.0")
   implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-  kapt(libs.google.dagger.hilt.androidCompiler)
 
   implementation(platform(libs.androidx.compose.bom))
 
@@ -33,8 +31,6 @@ dependencies {
   implementation(libs.androidx.lifecycle.runtimeKtx)
   implementation(libs.androidx.lifecycle.viewModelKtx)
 
-  implementation(libs.androidx.navigation.compose)
-  implementation(libs.androidx.hilt.navigation.compose)
 
   implementation(libs.google.acompanist.systemuicontroller)
   implementation(libs.google.acompanist.navigation.animation)

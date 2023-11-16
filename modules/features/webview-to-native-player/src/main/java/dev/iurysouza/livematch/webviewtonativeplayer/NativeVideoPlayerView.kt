@@ -13,45 +13,45 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.util.UnstableApi
-import dev.iurysouza.livematch.webviewtonativeplayer.detector.BackgroundVideoLoader
-import dev.iurysouza.livematch.webviewtonativeplayer.detector.OkHTTPVideoLoader
+import dev.iurysouza.livematch.webviewtonativeplayer.detector.RedditVideoUriExtractor
+import dev.iurysouza.livematch.webviewtonativeplayer.detector.VideoUriExtractor
 import dev.iurysouza.livematch.webviewtonativeplayer.player.NativeVideoPlayer
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @SuppressLint("ViewConstructor", "UnsafeOptInUsageError")
 class NativeVideoPlayerView(
-  private val initUrl: String,
+  private val pageUrl: String,
   context: Context,
   attrs: AttributeSet? = null,
 ) : FrameLayout(context, attrs), LifecycleEventObserver {
 
-  private var player: NativeVideoPlayer? = null
   private val activity by lazy { context.getActivity() as? ComponentActivity? }
-  private var backgroundVideoLoader: BackgroundVideoLoader = OkHTTPVideoLoader()
+  private val player: NativeVideoPlayer by lazy { NativeVideoPlayer(findViewById(R.id.player_view)) }
+  private val videoUriExtractor: VideoUriExtractor by lazy { RedditVideoUriExtractor() }
+
+  init {
+    LayoutInflater.from(context).inflate(R.layout.native_video_player_view_activity, this, true)
+  }
+
   override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
     Timber.v("NativeVideo LifecycleObserver: $event")
     when (event) {
-      Lifecycle.Event.ON_PAUSE -> player?.pause()
-      Lifecycle.Event.ON_RESUME -> player?.play()
+      Lifecycle.Event.ON_PAUSE -> player.pause()
+      Lifecycle.Event.ON_RESUME -> player.play()
       else -> { /* do nothing */
       }
     }
   }
 
-  init {
-    LayoutInflater.from(context).inflate(R.layout.native_video_player_view_activity, this, true)
-    player = NativeVideoPlayer(findViewById(R.id.player_view))
-  }
-
-
   override fun onAttachedToWindow() {
     super.onAttachedToWindow()
     activity?.lifecycle?.addObserver(this)
     activity?.lifecycleScope?.launch {
-      backgroundVideoLoader.fetchVideoFileFromPage(initUrl)?.let { videoUrl ->
-        player?.playVideo(videoUrl)
-      }
+      videoUriExtractor.fetchVideoFileFromPage(pageUrl).fold(
+        ifLeft = { Timber.e(it, "Error fetching video url") },
+        ifRight = { videoUrl -> player.playVideo(videoUrl) },
+      )
     }
   }
 
@@ -59,9 +59,8 @@ class NativeVideoPlayerView(
   override fun
     onDetachedFromWindow() {
     super.onDetachedFromWindow()
-    player?.onRelease()
     activity?.lifecycle?.removeObserver(this)
-
+    player.onRelease()
   }
 
   private fun Context?.getActivity(): Activity? {

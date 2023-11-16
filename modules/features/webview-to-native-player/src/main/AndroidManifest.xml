@@ -2,15 +2,4 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
   <uses-permission android:name="android.permission.INTERNET" />
-
-  <application android:usesCleartextTraffic="true">
-    <activity
-      android:name=".WebViewActivity"
-      android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-      android:exported="true"
-      android:launchMode="standard"
-      android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-      android:windowSoftInputMode="stateHidden|adjustResize" />
-  </application>
-
 </manifest>

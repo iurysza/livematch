@@ -32,7 +32,7 @@ import timber.log.Timber
 
 @UnstableApi
 /** Manages players and an internal media queue  */
-class PlayerManager(
+internal class PlayerManager(
   private var queuePositionListener: QueuePositionListener?,
   private var playerView: PlayerView?,
   private var fullScreenManager: FullScreenPlayer?,
@@ -95,11 +95,11 @@ class PlayerManager(
   /**
    * Appends `sample` to the media queue.
    *
-   * @param videoSet The [VideoInfo] to append.
+   * @param video The [VideoInfo] to append.
    */
-  fun addItems(videoSet: Set<VideoInfo>) {
-    mediaQueue?.addAll(videoSet)
-    concatenatingMediaSource?.addMediaSources(videoSet.map { buildMediaSource(it) })
+  fun addItem(video: VideoInfo) {
+    mediaQueue?.add(video)
+    concatenatingMediaSource?.addMediaSource(buildMediaSource(video))
   }
 
   val mediaQueueSize: Int
