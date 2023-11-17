@@ -19,17 +19,18 @@ import timber.log.Timber
 
 @SuppressLint("ViewConstructor", "UnsafeOptInUsageError")
 class NativeVideoPlayerView(
-  private val pageUrl: String,
   context: Context,
+  private val pageUrl: String,
+  listener: NativePlayerListener? = null,
   attrs: AttributeSet? = null,
 ) : FrameLayout(context, attrs), LifecycleEventObserver {
 
   private val activity by lazy { context.getActivity() }
   private val videoUriExtractor by lazy { RedditVideoUriScrapper() }
-  private val player by lazy { NativeVideoPlayer(findViewById(R.id.player_view)) }
+  private val player by lazy { NativeVideoPlayer(findViewById(R.id.player_view), listener) }
 
   init {
-    LayoutInflater.from(context).inflate(R.layout.native_video_player_view_activity, this, true)
+    LayoutInflater.from(context).inflate(R.layout.native_video_player_view, this, true)
   }
 
   override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {

@@ -1,6 +1,8 @@
 package dev.iurysouza.livematch.webviewtonativeplayer.player
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import androidx.media3.common.C
@@ -14,6 +16,7 @@ import androidx.media3.common.Player.TimelineChangeReason
 import androidx.media3.common.Timeline
 import androidx.media3.common.util.Clock
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.common.util.Util
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.analytics.DefaultAnalyticsCollector
@@ -26,6 +29,7 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.util.EventLogger
 import androidx.media3.ui.PlayerView
+import dev.iurysouza.livematch.webviewtonativeplayer.NativePlayerListener
 import dev.iurysouza.livematch.webviewtonativeplayer.videoscrapper.ScrapperHelper
 import dev.iurysouza.livematch.webviewtonativeplayer.videoscrapper.VideoInfo
 import timber.log.Timber
@@ -33,19 +37,14 @@ import timber.log.Timber
 @UnstableApi
 /** Manages players and an internal media queue  */
 internal class PlayerManager(
-  private var queuePositionListener: QueuePositionListener?,
   private var playerView: PlayerView?,
   private var fullScreenManager: FullScreenPlayer?,
+  private val playerManagerListener: NativePlayerListener? = null,
 ) : Player.Listener {
   /**
    * Listener for changes in the media queue playback position.
    */
-  interface QueuePositionListener {
-    /**
-     * Called when the currently played item of the media queue changes.
-     */
-    fun onQueuePositionChanged(previousIndex: Int, newIndex: Int)
-  }
+
 
   private var mediaQueue: ArrayList<VideoInfo>?
   private var concatenatingMediaSource: ConcatenatingMediaSource?
@@ -63,6 +62,23 @@ internal class PlayerManager(
   }
 
   private var playbackMode: PlaybackMode
+  override fun onAvailableCommandsChanged(availableCommands: Player.Commands) {
+    super.onAvailableCommandsChanged(availableCommands)
+    Timber.e("Available commands: $availableCommands")
+    if (availableCommands.contains(Player.COMMAND_SEEK_BACK) || availableCommands.contains(Player.COMMAND_PLAY_PAUSE) ){
+      Handler(Looper.getMainLooper()).postDelayed(
+        {
+          Timber.e("Starting playback")
+          if (Util.handlePlayButtonAction(currentPlayer)) {
+            playerManagerListener?.onPlayerReady()
+          } else {
+            playerManagerListener?.onPlayerError()
+          }
+        },
+        5000,
+      )
+    }
+  }
 
   init {
     mediaQueue = ArrayList()
@@ -79,18 +95,6 @@ internal class PlayerManager(
     .setTrackSelector(DefaultTrackSelector(playerView!!.context))
     .setAnalyticsCollector(DefaultAnalyticsCollector(Clock.DEFAULT).apply { addListener(EventLogger()) })
     .build().also { it.addListener(this) }
-
-  // ===========================================================================
-  // Queue manipulation methods.
-  // ===========================================================================
-  /**
-   * Plays a specified queue item in the current player.
-   *
-   * @param itemIndex The index of the item to play.
-   */
-  fun selectQueueItem(itemIndex: Int) {
-    setCurrentItem(itemIndex, C.TIME_UNSET, true)
-  }
 
   /**
    * Appends `sample` to the media queue.
@@ -120,44 +124,6 @@ internal class PlayerManager(
     null
   }
 
-  /**
-   * Removes the item at the given index from the media queue.
-   *
-   * @param itemIndex The index of the item to remove.
-   * @return Whether the removal was successful.
-   */
-  fun removeItem(itemIndex: Int): Boolean {
-    concatenatingMediaSource!!.removeMediaSource(itemIndex)
-    mediaQueue!!.removeAt(itemIndex)
-    if (itemIndex == currentItemIndex && itemIndex == mediaQueue!!.size) {
-      maybeSetCurrentItemAndNotify(C.INDEX_UNSET)
-    } else if (itemIndex < currentItemIndex) {
-      maybeSetCurrentItemAndNotify(currentItemIndex - 1)
-    }
-    return true
-  }
-
-  /**
-   * Moves an item within the queue.
-   *
-   * @param fromIndex The index of the item to move.
-   * @param toIndex The target index of the item in the queue.
-   * @return Whether the item move was successful.
-   */
-  fun moveItem(fromIndex: Int, toIndex: Int): Boolean {
-    // Player update.
-    concatenatingMediaSource!!.moveMediaSource(fromIndex, toIndex)
-    mediaQueue!!.add(toIndex, mediaQueue!!.removeAt(fromIndex))
-
-    // Index update.
-    when {
-      fromIndex == currentItemIndex -> maybeSetCurrentItemAndNotify(toIndex)
-      currentItemIndex in (fromIndex + 1)..toIndex -> maybeSetCurrentItemAndNotify(currentItemIndex - 1)
-      currentItemIndex in toIndex until fromIndex -> maybeSetCurrentItemAndNotify(currentItemIndex + 1)
-    }
-    return true
-  }
-
 
   fun getPlaybackMode(): PlaybackMode {
     return playbackMode
@@ -182,7 +148,6 @@ internal class PlayerManager(
       fullScreenManager?.release()
       mediaQueue!!.clear()
       concatenatingMediaSource!!.clear()
-      queuePositionListener = null
       mediaQueue = null
       concatenatingMediaSource = null
       dataSourceFactory = null
@@ -240,7 +205,7 @@ internal class PlayerManager(
   }
 
   override fun onPlayerError(error: PlaybackException) {
-    Timber.e("PlayerManager", "onPlayerError: $error", error.cause)
+    Timber.e(error, "Something went wrong with the player")
   }
 
   private fun updateCurrentItemIndex() {
@@ -284,6 +249,7 @@ internal class PlayerManager(
     exoPlayer?.setMediaSource(concatenatingMediaSource!!)
     exoPlayer?.prepare()
     this.currentPlayer = currentPlayer
+    exoPlayer?.addListener(this)
 
     // Playback transition.
     if (windowIndex != C.INDEX_UNSET) {
@@ -306,9 +272,7 @@ internal class PlayerManager(
 
   private fun maybeSetCurrentItemAndNotify(currentItemIndex: Int) {
     if (this.currentItemIndex != currentItemIndex) {
-      val oldIndex = this.currentItemIndex
       this.currentItemIndex = currentItemIndex
-      queuePositionListener!!.onQueuePositionChanged(oldIndex, currentItemIndex)
       if (currentItemIndex != C.INDEX_UNSET) {
         setHttpRequestHeaders(currentItemIndex)
       }
@@ -351,3 +315,4 @@ internal class PlayerManager(
     currentPlayer?.play()
   }
 }
+

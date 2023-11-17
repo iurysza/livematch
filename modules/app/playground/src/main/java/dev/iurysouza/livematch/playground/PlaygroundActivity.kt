@@ -21,7 +21,7 @@ class PlaygroundActivity : ComponentActivity() {
 
   private val item = MediaItem(
     title = "New video",
-    url = "https://reddit.com/r/soccer/comments/17vzpje/eduardo_camavinga_injured_his_knee_in_training/",
+    url = "https://reddit.com/r/soccer/comments/17x48ae/luis_diazs_father_reacting_to_him_scoring_against/",
   )
 
   override fun onCreate(savedInstanceState: Bundle?) {
