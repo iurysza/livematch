@@ -80,3 +80,6 @@ internal object OkHttpCoroutineClient : HttpClient {
   }
 }
 
+internal interface HttpClient {
+  suspend fun loadUrl(url: String): String?
+}
