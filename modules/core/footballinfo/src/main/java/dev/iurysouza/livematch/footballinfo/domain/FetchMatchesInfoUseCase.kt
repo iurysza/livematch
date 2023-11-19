@@ -44,6 +44,7 @@ class FetchMatchesInfoUseCase @Inject constructor(
    * | 4 | UEFA European Championship | International (Europe) |
    * | 5 | UEFA Nations League | International (Europe) |
    * | 6 | CAF Africa Cup of Nations | International (Africa) |
+   * | 960 | Euro Championship - Qualification | International (Europe) |
    * | 8 |  World Cup - Women	 | International (World) |
    * | 9 | CONMEBOL Copa America | International (South America) |
    * | 10 | Friendlies | International (World) |
@@ -99,6 +100,7 @@ class FetchMatchesInfoUseCase @Inject constructor(
     21,
     22,
     *(29..37).toList().toTypedArray(),
+    960,
 //    667, friendlies clubs (smaller teams)
     // England
     39,
