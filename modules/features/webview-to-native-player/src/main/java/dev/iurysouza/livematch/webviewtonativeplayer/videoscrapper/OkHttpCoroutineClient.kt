@@ -21,6 +21,7 @@ internal object OkHttpCoroutineClient : HttpClient {
   private const val isVerboseLogging: Boolean = false
   override suspend fun loadUrl(url: String): String? = withContext(Dispatchers.IO) {
     try {
+      Timber.v("Loading page url: $url")
       val call = okHttpClient(isVerboseLogging).newCall(Request.Builder().url(url).build())
       val response = suspendCancellableCoroutine<Response> { continuation ->
         continuation.invokeOnCancellation {

@@ -27,6 +27,7 @@ dependencies {
   implementation(libs.androidx.appcompat)
   debugImplementation(libs.androidx.compose.ui.uiTooling)
 
+  implementation(libs.androidx.compose.material3)
   implementation(libs.google.dagger.hilt.android)
   kapt(libs.google.dagger.hilt.androidCompiler)
 

@@ -68,13 +68,12 @@ fun MatchDetails(
   mediaItemList: ImmutableList<MediaItem> = persistentListOf(),
   isPlaceHolder: Boolean = false,
 ) {
-  var showBottomSheet: Boolean by remember { mutableStateOf(false) }
   var item: MediaItem? by remember { mutableStateOf(null) }
-  if (showBottomSheet) {
-    BottomSheet(
+  item?.let {
+    MediaDetailBottomSheet(
       mediaItem = item!!,
       onDismiss = {
-        showBottomSheet = false
+        item = null
       },
     )
   }
@@ -93,7 +92,6 @@ fun MatchDetails(
         mediaItemList = mediaItemList,
         onItemTap = { mediaItem ->
           item = mediaItem
-          showBottomSheet = true
         },
       )
     }

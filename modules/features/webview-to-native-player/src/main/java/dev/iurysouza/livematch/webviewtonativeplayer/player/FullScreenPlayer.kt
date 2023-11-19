@@ -1,10 +1,10 @@
 package dev.iurysouza.livematch.webviewtonativeplayer.player
 
 import android.app.Dialog
+import android.content.res.Resources
 import android.view.ViewGroup
 import androidx.media3.ui.PlayerView
 import androidx.media3.ui.PlayerView.FullscreenButtonClickListener
-import com.google.android.material.R.style
 import dev.iurysouza.livematch.webviewtonativeplayer.R
 
 internal class FullScreenPlayer(
@@ -40,6 +40,15 @@ internal class FullScreenPlayer(
   }
 
   private fun openFullscreenDialog() {
+    val height = Resources.getSystem().displayMetrics.heightPixels
+    val width = height * 9 / 16
+
+    val innerParams: ViewGroup.LayoutParams = playerView.layoutParams
+    innerParams.height = height
+    innerParams.width = width
+    playerView.layoutParams = innerParams
+
+
     val parent = playerView.parent as ViewGroup
     parent.removeView(playerView)
 
@@ -51,6 +60,13 @@ internal class FullScreenPlayer(
   }
 
   private fun closeFullscreenDialog() {
+    val width = Resources.getSystem().displayMetrics.widthPixels
+    val height = width * 9 / 16
+
+    val innerParams: ViewGroup.LayoutParams = playerView.layoutParams
+    innerParams.height = height
+    innerParams.width = width
+
     (playerView.parent as ViewGroup).removeView(playerView)
 
     parentView?.addView(playerView)

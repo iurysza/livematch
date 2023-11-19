@@ -9,13 +9,12 @@ import timber.log.Timber
 internal class RedditVideoUriScrapper(
   private val httpClient: HttpClient = OkHttpCoroutineClient,
 ) : VideoUriExtractor {
-  override suspend fun fetchVideoFileFromPage(url: String): Either<Exception, VideoInfo> {
-    return Either.catch { httpClient.loadUrl(url)!! }.mapLeft { e -> Exception("Failed to load url", e) }
+  override suspend fun fetchVideoFileFromPage(url: String): Either<Exception, VideoInfo> =
+    Either.catch { httpClient.loadUrl(url)!! }.mapLeft { e -> Exception("Failed to load url", e) }
       .flatMap { body -> extractVideoFromResponse(body) }
       .flatMap { validateMimeType(it) }
       .map { (videoUrl, mimeType) -> VideoInfo(videoUrl, mimeType, url) }
       .tap { Timber.v("Video detected: $it") }
-  }
 
   private fun validateMimeType(it: String?) = Either
     .catch { it!! to ScrapperHelper.getVideoMimeType(it)!! }

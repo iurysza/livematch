@@ -20,7 +20,9 @@
       android:id="@+id/player_view"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      app:repeat_toggle_modes="all|one" />
+      app:controller_layout_id="@layout/custom_player_controls_layout"
+      app:repeat_toggle_modes="all|one"
+      app:resize_mode="zoom" />
   </FrameLayout>
 
 

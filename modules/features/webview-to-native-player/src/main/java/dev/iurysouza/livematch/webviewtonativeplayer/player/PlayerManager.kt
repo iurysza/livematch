@@ -1,14 +1,15 @@
 package dev.iurysouza.livematch.webviewtonativeplayer.player
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
 import androidx.media3.common.PlaybackException
+import androidx.media3.common.PlaybackParameters
 import androidx.media3.common.Player
 import androidx.media3.common.Player.DiscontinuityReason
 import androidx.media3.common.Player.PlayWhenReadyChangeReason
@@ -29,17 +30,20 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.util.EventLogger
 import androidx.media3.ui.PlayerView
-import dev.iurysouza.livematch.webviewtonativeplayer.NativePlayerListener
+import androidx.media3.ui.PlayerView.SHOW_BUFFERING_WHEN_PLAYING
+import dev.iurysouza.livematch.webviewtonativeplayer.NativePlayerEvent
+import dev.iurysouza.livematch.webviewtonativeplayer.NativeVideoPlayerView
 import dev.iurysouza.livematch.webviewtonativeplayer.videoscrapper.ScrapperHelper
 import dev.iurysouza.livematch.webviewtonativeplayer.videoscrapper.VideoInfo
 import timber.log.Timber
+import androidx.media3.ui.R as Media3R
 
 @UnstableApi
 /** Manages players and an internal media queue  */
 internal class PlayerManager(
   private var playerView: PlayerView?,
   private var fullScreenManager: FullScreenPlayer?,
-  private val playerManagerListener: NativePlayerListener? = null,
+  private val playerManagerListener: NativeVideoPlayerView.EventListener? = null,
 ) : Player.Listener {
   /**
    * Listener for changes in the media queue playback position.
@@ -64,19 +68,18 @@ internal class PlayerManager(
   private var playbackMode: PlaybackMode
   override fun onAvailableCommandsChanged(availableCommands: Player.Commands) {
     super.onAvailableCommandsChanged(availableCommands)
-    Timber.e("Available commands: $availableCommands")
-    if (availableCommands.contains(Player.COMMAND_SEEK_BACK) || availableCommands.contains(Player.COMMAND_PLAY_PAUSE) ){
-      Handler(Looper.getMainLooper()).postDelayed(
-        {
-          Timber.e("Starting playback")
-          if (Util.handlePlayButtonAction(currentPlayer)) {
-            playerManagerListener?.onPlayerReady()
-          } else {
-            playerManagerListener?.onPlayerError()
-          }
-        },
-        5000,
-      )
+    if (availableCommands.contains(Player.COMMAND_PREPARE)) {
+      playerManagerListener?.onEvent(NativePlayerEvent.Ready)
+      Util.handlePlayButtonAction(currentPlayer)
+      Timber.v("Video prepared, starting playback...")
+    }
+  }
+
+  override fun onEvents(player: Player, events: Player.Events) {
+    super.onEvents(player, events)
+    if (events.contains(Player.EVENT_RENDERED_FIRST_FRAME)) {
+      Timber.v("Playback started")
+      playerManagerListener?.onEvent(NativePlayerEvent.Playing)
     }
   }
 
@@ -89,6 +92,27 @@ internal class PlayerManager(
     currentItemIndex = C.INDEX_UNSET
     playbackMode = PlaybackMode.NORMAL
     setCurrentPlayer(exoPlayer!!)
+    exoPlayer?.addListener(this)
+    playerView?.apply {
+      setRepeatToggleModes(Player.REPEAT_MODE_ONE)
+      setShowBuffering(SHOW_BUFFERING_WHEN_PLAYING)
+      playerView?.findViewById<ImageButton>(Media3R.id.exo_playback_speed)?.setOnClickListener {
+        togglePlaybackSpeed(exoPlayer!!, it as ImageButton)
+        playerView?.hideController()
+      }
+    }
+  }
+
+
+  private fun togglePlaybackSpeed(player: ExoPlayer, imageButton: ImageButton) {
+    val speed = if (player.playbackParameters.speed == 1f) {
+      imageButton.setImageDrawable(AppCompatResources.getDrawable(imageButton.context, Media3R.drawable.exo_icon_play))
+      0.5f
+    } else {
+      imageButton.setImageDrawable(AppCompatResources.getDrawable(imageButton.context, Media3R.drawable.exo_ic_speed))
+      1f
+    }
+    player.playbackParameters = PlaybackParameters(speed)
   }
 
   private fun buildExoPlayer(context: Context) = ExoPlayer.Builder(context)
@@ -205,6 +229,7 @@ internal class PlayerManager(
   }
 
   override fun onPlayerError(error: PlaybackException) {
+    playerManagerListener?.onEvent(NativePlayerEvent.Error.Unknown(error))
     Timber.e(error, "Something went wrong with the player")
   }
 
@@ -307,12 +332,9 @@ internal class PlayerManager(
 
   fun pause() {
     currentPlayer?.pause()
-    Timber.v("Pausing player")
   }
 
   fun play() {
-    Timber.v("Playing content")
     currentPlayer?.play()
   }
 }
-
