@@ -98,10 +98,6 @@ internal class PlayerManager(
       exoPlayer?.togglePlaybackSpeed(it)
       hideController()
     }
-    findViewById<ImageButton>(Media3R.id.exo_play_pause)?.setOnClickListener {
-      Util.handlePlayPauseButtonAction(currentPlayer)
-      hideController()
-    }
   }
 
 
