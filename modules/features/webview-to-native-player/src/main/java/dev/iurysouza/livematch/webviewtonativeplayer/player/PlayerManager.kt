@@ -1,9 +1,14 @@
 package dev.iurysouza.livematch.webviewtonativeplayer.player
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
@@ -69,14 +74,29 @@ internal class PlayerManager(
   override fun onAvailableCommandsChanged(availableCommands: Player.Commands) {
     super.onAvailableCommandsChanged(availableCommands)
     if (availableCommands.contains(Player.COMMAND_PREPARE)) {
-      playerManagerListener?.onEvent(NativePlayerEvent.Ready)
-      Util.handlePlayButtonAction(currentPlayer)
+      playerManagerListener?.onEvent(NativePlayerEvent.Playing)
+//      Util.handlePlayButtonAction(currentPlayer)
       Timber.v("Video prepared, starting playback...")
+      playerView?.showController()
     }
   }
 
   override fun onEvents(player: Player, events: Player.Events) {
     super.onEvents(player, events)
+    events
+    if (events.contains(Player.EVENT_PLAYBACK_STATE_CHANGED)) {
+      Timber.e(">>>>>>>>>>>>>>>>>>>>>>>>>>>>PLAYBACK CHANGED}")
+    }
+    if (events.contains(Player.EVENT_TIMELINE_CHANGED)) {
+      Handler(Looper.getMainLooper()).postDelayed(
+        {
+//      Util.handlePlayButtonAction(currentPlayer)
+        },
+        1500,
+      )
+
+
+    }
     if (events.contains(Player.EVENT_RENDERED_FIRST_FRAME)) {
       Timber.v("Playback started")
       playerManagerListener?.onEvent(NativePlayerEvent.Playing)
@@ -93,26 +113,40 @@ internal class PlayerManager(
     playbackMode = PlaybackMode.NORMAL
     setCurrentPlayer(exoPlayer!!)
     exoPlayer?.addListener(this)
-    playerView?.apply {
-      setRepeatToggleModes(Player.REPEAT_MODE_ONE)
-      setShowBuffering(SHOW_BUFFERING_WHEN_PLAYING)
-      playerView?.findViewById<ImageButton>(Media3R.id.exo_playback_speed)?.setOnClickListener {
-        togglePlaybackSpeed(exoPlayer!!, it as ImageButton)
-        playerView?.hideController()
-      }
+    setupCustomControllerBehavior()
+  }
+
+  private fun setupCustomControllerBehavior() = playerView?.apply {
+    setRepeatToggleModes(Player.REPEAT_MODE_ALL)
+    setShowBuffering(SHOW_BUFFERING_WHEN_PLAYING)
+    findViewById<ImageButton>(Media3R.id.exo_playback_speed)?.setOnClickListener {
+      exoPlayer?.togglePlaybackSpeed(it)
+      hideController()
+    }
+    findViewById<ImageButton>(Media3R.id.exo_play_pause)?.setOnClickListener {
+      Util.handlePlayPauseButtonAction(currentPlayer)
+      hideController()
     }
   }
 
 
-  private fun togglePlaybackSpeed(player: ExoPlayer, imageButton: ImageButton) {
-    val speed = if (player.playbackParameters.speed == 1f) {
+  private fun setSpinnerColor() {
+    val color = "#F8E94D"
+    val bar = playerView?.findViewById<ProgressBar>(Media3R.id.exo_buffering)
+    bar?.indeterminateDrawable?.setColorFilter(Color.parseColor(color), PorterDuff.Mode.MULTIPLY)
+  }
+
+
+  private fun ExoPlayer.togglePlaybackSpeed(imageButton: View) {
+    if (imageButton !is ImageButton) return
+    val speed = if (playbackParameters.speed == 1f) {
       imageButton.setImageDrawable(AppCompatResources.getDrawable(imageButton.context, Media3R.drawable.exo_icon_play))
       0.5f
     } else {
       imageButton.setImageDrawable(AppCompatResources.getDrawable(imageButton.context, Media3R.drawable.exo_ic_speed))
       1f
     }
-    player.playbackParameters = PlaybackParameters(speed)
+    playbackParameters = PlaybackParameters(speed)
   }
 
   private fun buildExoPlayer(context: Context) = ExoPlayer.Builder(context)
@@ -128,6 +162,7 @@ internal class PlayerManager(
   fun addItem(video: VideoInfo) {
     mediaQueue?.add(video)
     concatenatingMediaSource?.addMediaSource(buildMediaSource(video))
+    setSpinnerColor()
   }
 
   val mediaQueueSize: Int
@@ -224,8 +259,20 @@ internal class PlayerManager(
     updateCurrentItemIndex()
   }
 
+  var counter = 0
   override fun onTimelineChanged(timeline: Timeline, reason: @TimelineChangeReason Int) {
     updateCurrentItemIndex()
+    if (counter < 1) {
+      counter++
+      return
+    }
+    Handler(Looper.getMainLooper()).postDelayed(
+      {
+        Timber.e(">>>>>>>>>>>>>>>>>>>>>>>>>>>>Starting playback for real")
+        Util.handlePlayButtonAction(currentPlayer)
+      },
+      5000,
+    )
   }
 
   override fun onPlayerError(error: PlaybackException) {
@@ -278,21 +325,14 @@ internal class PlayerManager(
 
     // Playback transition.
     if (windowIndex != C.INDEX_UNSET) {
-      setCurrentItem(windowIndex, playbackPositionMs, true)
+      setCurrentItem(windowIndex, playbackPositionMs)
     }
   }
 
-  /**
-   * Starts playback of the item at the given position.
-   *
-   * @param itemIndex The index of the item to play.
-   * @param positionMs The position at which playback should start.
-   * @param playWhenReady Whether the player should proceed when ready to do so.
-   */
-  private fun setCurrentItem(itemIndex: Int, positionMs: Long, playWhenReady: Boolean) {
+  private fun setCurrentItem(itemIndex: Int, positionMs: Long) {
     maybeSetCurrentItemAndNotify(itemIndex)
     currentPlayer!!.seekTo(itemIndex, positionMs)
-    currentPlayer!!.playWhenReady = playWhenReady
+    currentPlayer!!.playWhenReady = true
   }
 
   private fun maybeSetCurrentItemAndNotify(currentItemIndex: Int) {

@@ -33,7 +33,7 @@ class PlaygroundActivity : ComponentActivity() {
 
   private var item = MediaItem(
     title = "New video",
-    url = "https://www.reddit.com/r/soccer/comments/17xs6ta/collision_between_marcus_rashford_and_trent/",
+    url = "https://dubz.live/c/ddbb29 ",
   )
 
   override fun onCreate(savedInstanceState: Bundle?) {

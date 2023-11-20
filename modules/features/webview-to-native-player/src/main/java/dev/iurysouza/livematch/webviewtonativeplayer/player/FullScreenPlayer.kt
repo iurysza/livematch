@@ -1,5 +1,6 @@
 package dev.iurysouza.livematch.webviewtonativeplayer.player
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.res.Resources
 import android.view.ViewGroup
@@ -26,12 +27,15 @@ internal class FullScreenPlayer(
     playerView.setFullscreenButtonClickListener(this)
   }
 
+  @SuppressLint("UnsafeOptInUsageError")
   override fun onFullscreenButtonClick(
     isFullScreen: Boolean,
   ) = if (isFullScreen) {
+    playerView.hideController()
     openFullscreenDialog()
   } else {
     closeFullscreenDialog()
+    playerView.hideController()
   }
 
   fun release() {
