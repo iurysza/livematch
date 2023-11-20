@@ -13,6 +13,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +28,8 @@ import dev.iurysouza.livematch.designsystem.components.thenIf
 import dev.iurysouza.livematch.matchthread.models.MediaItem
 import dev.iurysouza.livematch.webviewtonativeplayer.NativePlayerEvent
 import dev.iurysouza.livematch.webviewtonativeplayer.NativeVideoPlayerView
+import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
+import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,9 +37,13 @@ fun HighlightBottomSheet(
   modifier: Modifier = Modifier,
   mediaItem: MediaItem,
   onDismiss: () -> Unit = {},
+  viewModel: FakeHighlightCommentsViewModel = hiltViewModel(),
 ) {
   val sheetState = rememberModalBottomSheetState()
-
+  val uiState by remember(viewModel.viewState) { viewModel.viewState }
+  LaunchedEffect(Random.nextLong()) {
+    viewModel.handleEvent(HighlightsViewEvent.GetLatestComments)
+  }
   ModalBottomSheet(
     onDismissRequest = { onDismiss() },
     sheetState = sheetState,
@@ -44,8 +51,10 @@ fun HighlightBottomSheet(
     containerColor = MaterialTheme.colorScheme.background,
   ) {
     NativeVideoPlayer(modifier, mediaItem.title, mediaItem.url)
+    HighlightsComments(uiState.commentSectionState)
   }
 }
+
 
 @Composable
 private fun NativeVideoPlayer(

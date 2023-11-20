@@ -40,16 +40,7 @@ class PlaygroundActivity : ComponentActivity() {
     super.onCreate(savedInstanceState)
     setContent {
       LivematchTheme {
-        var showBottomSheet: Boolean by remember { mutableStateOf(true) }
-//        MatchDayScreen(
-//          modifier = Modifier.clickable {
-//            showBottomSheet = true
-//          },
-//          uiState = MatchDayViewState(
-//            matchDayState = MatchDayState.Success(Fakes.generateMatchList()),
-//            isRefreshing = false,
-//          ),
-//        )
+        var showBottomSheet: Boolean by remember { mutableStateOf(false) }
         Box(
           modifier = Modifier
             .fillMaxSize()
