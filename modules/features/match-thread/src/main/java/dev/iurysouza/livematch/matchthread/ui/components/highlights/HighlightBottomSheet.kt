@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.matchthread.ui.components
+package dev.iurysouza.livematch.matchthread.ui.components.highlights
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +30,7 @@ import dev.iurysouza.livematch.webviewtonativeplayer.NativeVideoPlayerView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MediaDetailBottomSheet(
+fun HighlightBottomSheet(
   modifier: Modifier = Modifier,
   mediaItem: MediaItem,
   onDismiss: () -> Unit = {},

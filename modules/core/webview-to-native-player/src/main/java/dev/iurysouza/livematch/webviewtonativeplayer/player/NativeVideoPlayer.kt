@@ -15,7 +15,7 @@ import timber.log.Timber
 
 @UnstableApi
 internal class NativeVideoPlayer(
-  private val lifecycleCoroutineScope: CoroutineScope,
+  private val lifecycleCoroutineScope: CoroutineScope?,
   private val localPlayerView: PlayerView,
   private val thumbnail: ImageView,
   private val playButton: ImageView,
@@ -62,7 +62,7 @@ internal class NativeVideoPlayer(
   }
 
   fun playVideo(pageUrl: String) {
-    lifecycleCoroutineScope.launch {
+    lifecycleCoroutineScope?.launch {
       handleVideoThumbnail(pageUrl)
       videoUriExtractor.fetchVideoDataFromPage(pageUrl).fold(
         ifLeft = { listener?.onEvent(NativePlayerEvent.Error.VideoScrapingFailed) },

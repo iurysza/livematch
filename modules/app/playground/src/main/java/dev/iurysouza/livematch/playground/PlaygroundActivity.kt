@@ -27,7 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
 import dev.iurysouza.livematch.matchthread.models.MediaItem
-import dev.iurysouza.livematch.matchthread.ui.components.MediaDetailBottomSheet
+import dev.iurysouza.livematch.matchthread.ui.components.highlights.HighlightBottomSheet
 
 class PlaygroundActivity : ComponentActivity() {
 
@@ -63,7 +63,7 @@ class PlaygroundActivity : ComponentActivity() {
               item = item.copy(url = it)
             }
             if (showBottomSheet) {
-              MediaDetailBottomSheet(
+              HighlightBottomSheet(
                 mediaItem = item,
                 onDismiss = {
                   showBottomSheet = false
