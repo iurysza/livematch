@@ -19,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
@@ -69,7 +68,7 @@ private fun NativeVideoPlayer(
       )
     } else {
       Box {
-        PlaceHolder(isVideoPlaying = isVideoPlaying, isVideoError = isVideoError)
+        PlaceHolder(isVideoReady = isVideoReady, isVideoError = isVideoError)
         AndroidView(
           factory = {
             NativeVideoPlayerView(
@@ -77,7 +76,10 @@ private fun NativeVideoPlayer(
               pageUrl = pageUrl,
               eventListener = { event ->
                 when (event) {
-                  NativePlayerEvent.Ready -> isVideoReady = true
+                  NativePlayerEvent.Ready -> {
+                    isVideoReady = true
+                  }
+
                   is NativePlayerEvent.Error -> {
                     isVideoError = true
                   }
@@ -91,10 +93,10 @@ private fun NativeVideoPlayer(
           },
           modifier = Modifier
             .fillMaxWidth()
-            .thenIf(!isVideoPlaying) {
+            .thenIf(!isVideoReady) {
               size(0.dp)
             }
-            .thenIf(isVideoPlaying) {
+            .thenIf(isVideoReady) {
               aspectRatio(16f / 9f)
             },
         )
@@ -109,7 +111,7 @@ private fun VideoTitle(
 ) {
   Text(
     text = title,
-    color = Color.White,
+    color = MaterialTheme.colorScheme.onPrimary,
     modifier = Modifier
       .padding(horizontal = 16.dp)
       .padding(bottom = 16.dp),
@@ -117,8 +119,8 @@ private fun VideoTitle(
 }
 
 @Composable
-private fun PlaceHolder(isVideoPlaying: Boolean, isVideoError: Boolean) {
-  if (!isVideoPlaying && !isVideoError) {
+private fun PlaceHolder(isVideoReady: Boolean, isVideoError: Boolean) {
+  if (!isVideoReady && !isVideoError) {
     Box(
       modifier = Modifier
         .fillMaxWidth()

@@ -3,8 +3,6 @@ package dev.iurysouza.livematch.webviewtonativeplayer.player
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -48,13 +46,13 @@ import androidx.media3.ui.R as Media3R
 internal class PlayerManager(
   private var playerView: PlayerView?,
   private var fullScreenManager: FullScreenPlayer?,
-  private val playerManagerListener: NativeVideoPlayerView.EventListener? = null,
 ) : Player.Listener {
   /**
    * Listener for changes in the media queue playback position.
    */
 
 
+  private var listeners = mutableListOf<NativeVideoPlayerView.EventListener>()
   private var mediaQueue: ArrayList<VideoInfo>?
   private var concatenatingMediaSource: ConcatenatingMediaSource?
   private var exoPlayer: ExoPlayer?
@@ -74,32 +72,9 @@ internal class PlayerManager(
   override fun onAvailableCommandsChanged(availableCommands: Player.Commands) {
     super.onAvailableCommandsChanged(availableCommands)
     if (availableCommands.contains(Player.COMMAND_PREPARE)) {
-      playerManagerListener?.onEvent(NativePlayerEvent.Playing)
-//      Util.handlePlayButtonAction(currentPlayer)
-      Timber.v("Video prepared, starting playback...")
+      listeners.forEach { it.onEvent(NativePlayerEvent.Ready) }
+      Timber.v("Video prepared")
       playerView?.showController()
-    }
-  }
-
-  override fun onEvents(player: Player, events: Player.Events) {
-    super.onEvents(player, events)
-    events
-    if (events.contains(Player.EVENT_PLAYBACK_STATE_CHANGED)) {
-      Timber.e(">>>>>>>>>>>>>>>>>>>>>>>>>>>>PLAYBACK CHANGED}")
-    }
-    if (events.contains(Player.EVENT_TIMELINE_CHANGED)) {
-      Handler(Looper.getMainLooper()).postDelayed(
-        {
-//      Util.handlePlayButtonAction(currentPlayer)
-        },
-        1500,
-      )
-
-
-    }
-    if (events.contains(Player.EVENT_RENDERED_FIRST_FRAME)) {
-      Timber.v("Playback started")
-      playerManagerListener?.onEvent(NativePlayerEvent.Playing)
     }
   }
 
@@ -259,24 +234,12 @@ internal class PlayerManager(
     updateCurrentItemIndex()
   }
 
-  var counter = 0
   override fun onTimelineChanged(timeline: Timeline, reason: @TimelineChangeReason Int) {
     updateCurrentItemIndex()
-    if (counter < 1) {
-      counter++
-      return
-    }
-    Handler(Looper.getMainLooper()).postDelayed(
-      {
-        Timber.e(">>>>>>>>>>>>>>>>>>>>>>>>>>>>Starting playback for real")
-        Util.handlePlayButtonAction(currentPlayer)
-      },
-      5000,
-    )
   }
 
   override fun onPlayerError(error: PlaybackException) {
-    playerManagerListener?.onEvent(NativePlayerEvent.Error.Unknown(error))
+    listeners.forEach { it.onEvent(NativePlayerEvent.Error.Unknown(error)) }
     Timber.e(error, "Something went wrong with the player")
   }
 
@@ -376,5 +339,16 @@ internal class PlayerManager(
 
   fun play() {
     currentPlayer?.play()
+  }
+
+  fun forcePlay() {
+    Util.handlePlayButtonAction(currentPlayer)
+    playerView?.hideController()
+    Timber.v("Playback started")
+    listeners.forEach { it.onEvent(NativePlayerEvent.Playing) }
+  }
+
+  fun addListener(listener: NativeVideoPlayerView.EventListener) {
+    listeners.add(listener)
   }
 }

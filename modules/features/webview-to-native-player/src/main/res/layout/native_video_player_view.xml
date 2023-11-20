@@ -23,6 +23,20 @@
       app:controller_layout_id="@layout/custom_player_controls_layout"
       app:repeat_toggle_modes="all|one"
       app:resize_mode="zoom" />
+
+    <ImageView
+      android:id="@+id/player_thumbnail"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent" />
+
+    <ImageView
+      android:id="@+id/player_play_button"
+      android:layout_width="64dp"
+      android:visibility="gone"
+      tools:visibility="visible"
+      android:layout_height="64dp"
+      android:layout_gravity="center"
+      android:src="@drawable/exo_styled_controls_play" />
   </FrameLayout>
 
 

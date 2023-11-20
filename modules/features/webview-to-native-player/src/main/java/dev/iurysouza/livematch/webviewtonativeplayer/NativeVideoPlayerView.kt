@@ -27,6 +27,8 @@ class NativeVideoPlayerView(
     NativeVideoPlayer(
       activity.lifecycleScope,
       findViewById(R.id.player_view),
+      findViewById(R.id.player_thumbnail),
+      findViewById(R.id.player_play_button),
       eventListener,
     )
   }

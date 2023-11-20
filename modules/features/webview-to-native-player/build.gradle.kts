@@ -43,6 +43,8 @@ dependencies {
   implementation("androidx.media3:media3-exoplayer-hls:$libVersionAndroidxMedia3")
   implementation("androidx.media3:media3-exoplayer-smoothstreaming:$libVersionAndroidxMedia3")
   implementation("androidx.media3:media3-ui:$libVersionAndroidxMedia3")
-  implementation("org.jsoup:jsoup:1.12.1")
+  implementation("org.jsoup:jsoup:1.14.3")
   implementation(libs.squareup.okhttp.loggingInterceptor)
+  implementation("com.github.lukasroberts:AndroidLinkView:1.0.1")
+  implementation("io.coil-kt:coil:2.2.2")
 }

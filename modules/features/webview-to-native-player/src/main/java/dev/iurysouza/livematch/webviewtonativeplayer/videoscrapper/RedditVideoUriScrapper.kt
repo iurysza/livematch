@@ -29,7 +29,7 @@ internal class RedditVideoUriScrapper(
     val redditPlayer = Jsoup.parse(html).selectFirst("shreddit-player")
 
     return try {
-      val permutations = JSONObject(redditPlayer.attr("packaged-media-json"))
+      val permutations = JSONObject(redditPlayer!!.attr("packaged-media-json"))
         .getJSONObject("playbackMp4s")
         .getJSONArray("permutations")
 
@@ -50,7 +50,7 @@ internal class RedditVideoUriScrapper(
       selectedUrl
     } catch (e: Exception) {
       Timber.e(e, "Error parsing packagedMediaJson, falling back to preview attribute.")
-      redditPlayer.attr("preview").replace("DASH_96", "DASH_480")
+      redditPlayer!!.attr("preview").replace("DASH_96", "DASH_480")
     }
   }
 
