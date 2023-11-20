@@ -2,7 +2,7 @@ package dev.iurysouza.livematch.webviewtonativeplayer.videoscrapper
 
 import android.net.Uri
 
-internal data class VideoInfo(
+internal data class VideoData(
   val uri: String,
   val mimeType: String,
   val referer: String?,
@@ -19,6 +19,4 @@ internal data class VideoInfo(
       reqHeadersMap["origin"] = origin
     }
   }
-
-  override fun toString() = "VideoInfo(uri='$uri', mimeType='$mimeType', referer='$referer)\n"
 }

@@ -1,5 +1,6 @@
 package dev.iurysouza.livematch.webviewtonativeplayer.videoscrapper
 
+import arrow.core.Either
 import dev.iurysouza.livematch.webviewtonativeplayer.BuildConfig
 import java.io.IOException
 import kotlin.coroutines.resume
@@ -19,14 +20,12 @@ import timber.log.Timber
 internal object OkHttpCoroutineClient : HttpClient {
 
   private const val isVerboseLogging: Boolean = false
-  override suspend fun loadUrl(url: String): String? = withContext(Dispatchers.IO) {
-    try {
-      Timber.v("Loading page url: $url")
+  override suspend fun loadUrl(url: String): Either<Exception, String> = Either.catch {
+    return@catch withContext(Dispatchers.IO) {
+      Timber.v("Loading page content: $url")
       val call = okHttpClient(isVerboseLogging).newCall(Request.Builder().url(url).build())
-      val response = suspendCancellableCoroutine<Response> { continuation ->
-        continuation.invokeOnCancellation {
-          call.cancel()
-        }
+      val response = suspendCancellableCoroutine { continuation ->
+        continuation.invokeOnCancellation { call.cancel() }
 
         call.enqueue(
           object : Callback {
@@ -46,12 +45,9 @@ internal object OkHttpCoroutineClient : HttpClient {
           },
         )
       }
-      return@withContext response.body?.string()
-    } catch (ex: Exception) {
-      Timber.e(ex, "Failed to run request")
-      null
+      response.body!!.string()
     }
-  }
+  }.mapLeft { e -> Exception("Failed to load url", e) }
 
 
   private val okHttpClient: (Boolean) -> OkHttpClient by lazy {
@@ -82,5 +78,5 @@ internal object OkHttpCoroutineClient : HttpClient {
 }
 
 internal interface HttpClient {
-  suspend fun loadUrl(url: String): String?
+  suspend fun loadUrl(url: String): Either<Exception, String>
 }

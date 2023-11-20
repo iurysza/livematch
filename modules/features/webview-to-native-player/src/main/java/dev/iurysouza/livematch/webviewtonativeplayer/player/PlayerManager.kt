@@ -37,7 +37,7 @@ import androidx.media3.ui.PlayerView.SHOW_BUFFERING_WHEN_PLAYING
 import dev.iurysouza.livematch.webviewtonativeplayer.NativePlayerEvent
 import dev.iurysouza.livematch.webviewtonativeplayer.NativeVideoPlayerView
 import dev.iurysouza.livematch.webviewtonativeplayer.videoscrapper.ScrapperHelper
-import dev.iurysouza.livematch.webviewtonativeplayer.videoscrapper.VideoInfo
+import dev.iurysouza.livematch.webviewtonativeplayer.videoscrapper.VideoData
 import timber.log.Timber
 import androidx.media3.ui.R as Media3R
 
@@ -53,7 +53,7 @@ internal class PlayerManager(
 
 
   private var listeners = mutableListOf<NativeVideoPlayerView.EventListener>()
-  private var mediaQueue: ArrayList<VideoInfo>?
+  private var mediaQueue: ArrayList<VideoData>?
   private var concatenatingMediaSource: ConcatenatingMediaSource?
   private var exoPlayer: ExoPlayer?
   private var dataSourceFactory: DefaultHttpDataSource.Factory?
@@ -128,9 +128,9 @@ internal class PlayerManager(
   /**
    * Appends `sample` to the media queue.
    *
-   * @param video The [VideoInfo] to append.
+   * @param video The [VideoData] to append.
    */
-  fun addItem(video: VideoInfo) {
+  fun addItem(video: VideoData) {
     mediaQueue?.add(video)
     concatenatingMediaSource?.addMediaSource(buildMediaSource(video))
     setSpinnerColor()
@@ -148,7 +148,7 @@ internal class PlayerManager(
    * @param position The index of the item.
    * @return The item at the given index in the media queue.
    */
-  fun getItem(position: Int): VideoInfo? = if (position in 0 until mediaQueueSize) {
+  fun getItem(position: Int): VideoData? = if (position in 0 until mediaQueueSize) {
     mediaQueue!![position]
   } else {
     null
@@ -309,7 +309,7 @@ internal class PlayerManager(
     dataSourceFactory!!.setDefaultRequestProperties(sample.reqHeadersMap)
   }
 
-  private fun buildMediaSource(video: VideoInfo): MediaSource {
+  private fun buildMediaSource(video: VideoData): MediaSource {
     val dsFactory = requireNotNull(dataSourceFactory) { "dataSourceFactory must not be null" }
     val mediaItem = with(video) {
       MediaItem

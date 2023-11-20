@@ -64,15 +64,15 @@ internal class NativeVideoPlayer(
   fun playVideo(pageUrl: String) {
     lifecycleCoroutineScope.launch {
       handleVideoThumbnail(pageUrl)
-      videoUriExtractor.fetchVideoFileFromPage(pageUrl).fold(
+      videoUriExtractor.fetchVideoDataFromPage(pageUrl).fold(
         ifLeft = { listener?.onEvent(NativePlayerEvent.Error.VideoScrapingFailed) },
-        ifRight = { videoInfo -> playerManager?.addItem(videoInfo) },
+        ifRight = { videoData -> playerManager?.addItem(videoData) },
       )
     }
   }
 
-  private suspend fun handleVideoThumbnail(videoInfo: String) {
-    metaDataProvider.startFetchingMetadataAsync(URL(videoInfo))
+  private suspend fun handleVideoThumbnail(url: String) {
+    metaDataProvider.startFetchingMetadataAsync(URL(url))
       .onFailure {
         Timber.e(it, "Failed to fetch metadata")
       }
