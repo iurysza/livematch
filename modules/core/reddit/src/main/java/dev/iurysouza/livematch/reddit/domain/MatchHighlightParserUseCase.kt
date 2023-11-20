@@ -19,6 +19,7 @@ class MatchHighlightParserUseCase {
         MediaEntity(
           title = parseTitle(it),
           url = it.html!!,
+          id = it.parentId,
         )
       }
   }.mapLeft { MappingError(it.message.toString()) }

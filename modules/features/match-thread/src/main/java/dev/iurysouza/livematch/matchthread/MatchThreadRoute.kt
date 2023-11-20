@@ -13,7 +13,8 @@ import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEffect.Error
 import dev.iurysouza.livematch.matchthread.models.MatchThreadViewEvent
 import dev.iurysouza.livematch.matchthread.models.toMatchHeader
 import dev.iurysouza.livematch.matchthread.models.toParams
-import dev.iurysouza.livematch.matchthread.ui.MatchThreadScreen
+import dev.iurysouza.livematch.matchthread.ui.screens.matchthread.MatchThreadScreen
+import dev.iurysouza.livematch.matchthread.ui.screens.matchthread.MatchThreadViewModel
 import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
 
 @Composable

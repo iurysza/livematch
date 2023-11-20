@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.matchthread.ui
+package dev.iurysouza.livematch.matchthread.ui.screens.matchthread
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

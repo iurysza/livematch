@@ -32,9 +32,9 @@ import dev.iurysouza.livematch.matchthread.models.FakeFactory
 import dev.iurysouza.livematch.matchthread.models.MatchStatus
 import dev.iurysouza.livematch.matchthread.models.MediaItem
 import dev.iurysouza.livematch.matchthread.models.Score
-import dev.iurysouza.livematch.matchthread.ui.components.highlights.HighlightBottomSheet
 import dev.iurysouza.livematch.matchthread.ui.components.highlights.HighlightCarousel
 import dev.iurysouza.livematch.matchthread.ui.components.highlights.HighlightPlaceHolder
+import dev.iurysouza.livematch.matchthread.ui.screens.highlights.HighlightBottomSheetScreen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -47,14 +47,11 @@ fun MatchDetails(
 ) {
   var item: MediaItem? by remember { mutableStateOf(null) }
   item?.let {
-    HighlightBottomSheet(
+    HighlightBottomSheetScreen(
       mediaItem = item!!,
-      onDismiss = {
-        item = null
-      },
+      onDismiss = { item = null },
     )
   }
-
   Column(
     modifier = modifier
       .fillMaxWidth()

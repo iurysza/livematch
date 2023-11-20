@@ -21,6 +21,7 @@ data class MatchThread(
 data class MediaItem(
   val title: String,
   val url: String,
+  val id: String,
 )
 
 @JsonClass(generateAdapter = true)
@@ -50,7 +51,7 @@ data class MatchEvent(
 @JsonClass(generateAdapter = true)
 data class CommentItem(
   val author: String,
-  val relativeTime: Int,
+  val relativeTime: Int?,
   val body: String,
   val score: String,
   val flairUrl: String?,
@@ -72,5 +73,6 @@ fun List<MediaEntity>.toUi() = map {
   MediaItem(
     title = it.title,
     url = it.url,
+    id = it.id,
   )
 }.toImmutableList()

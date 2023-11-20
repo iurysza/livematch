@@ -7,12 +7,11 @@ import dev.iurysouza.livematch.matchthread.models.CommentItem
 import kotlinx.collections.immutable.ImmutableList
 
 sealed interface HighlightsViewEvent : ViewEvent {
-  object GetLatestComments : HighlightsViewEvent
+  data class GetLatestComments(val id: String) : HighlightsViewEvent
 }
 
 data class HighlightsViewState(
   val commentSectionState: HighlightsCommentsViewState = HighlightsCommentsViewState.Loading,
-  val isRefreshing: Boolean = false,
 ) : ViewState
 
 sealed interface HighlightsCommentsViewState {

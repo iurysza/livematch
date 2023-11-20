@@ -26,14 +26,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import dev.iurysouza.livematch.designsystem.theme.LivematchTheme
+import dev.iurysouza.livematch.matchthread.models.FakeFactory
 import dev.iurysouza.livematch.matchthread.models.MediaItem
 import dev.iurysouza.livematch.matchthread.ui.components.highlights.HighlightBottomSheet
+import dev.iurysouza.livematch.matchthread.ui.components.highlights.HighlightsCommentsViewState
+import dev.iurysouza.livematch.matchthread.ui.components.highlights.HighlightsViewState
+import kotlinx.collections.immutable.toImmutableList
 
 class PlaygroundActivity : ComponentActivity() {
 
   private var item = MediaItem(
     title = "New video",
     url = "https://dubz.live/c/ddbb29 ",
+    id = "17z6ud2",
   )
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,10 +60,14 @@ class PlaygroundActivity : ComponentActivity() {
             }
             if (showBottomSheet) {
               HighlightBottomSheet(
+                modifier = Modifier,
+                onDismiss = {},
                 mediaItem = item,
-                onDismiss = {
-                  showBottomSheet = false
-                },
+                uiState = HighlightsViewState(
+                  HighlightsCommentsViewState.Success(
+                    FakeFactory.commentSection.flatMap { it.commentList }.toImmutableList(),
+                  ),
+                ),
               )
             }
           }

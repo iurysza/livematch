@@ -1,4 +1,4 @@
-package dev.iurysouza.livematch.matchthread
+package dev.iurysouza.livematch.matchthread.ui.screens.matchthread
 
 import androidx.lifecycle.viewModelScope
 import arrow.core.continuations.either
@@ -8,6 +8,8 @@ import dev.iurysouza.livematch.common.DomainError
 import dev.iurysouza.livematch.common.MVIViewModel
 import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.common.ResourceProvider
+import dev.iurysouza.livematch.matchthread.MatchEventParser
+import dev.iurysouza.livematch.matchthread.R
 import dev.iurysouza.livematch.matchthread.models.MatchCommentsState
 import dev.iurysouza.livematch.matchthread.models.MatchDescriptionState
 import dev.iurysouza.livematch.matchthread.models.MatchEvent

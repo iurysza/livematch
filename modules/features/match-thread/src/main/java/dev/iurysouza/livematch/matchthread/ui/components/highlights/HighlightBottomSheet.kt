@@ -1,25 +1,26 @@
 package dev.iurysouza.livematch.matchthread.ui.components.highlights
 
+
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import dev.iurysouza.livematch.designsystem.components.ErrorScreen
@@ -28,29 +29,27 @@ import dev.iurysouza.livematch.designsystem.components.thenIf
 import dev.iurysouza.livematch.matchthread.models.MediaItem
 import dev.iurysouza.livematch.webviewtonativeplayer.NativePlayerEvent
 import dev.iurysouza.livematch.webviewtonativeplayer.NativeVideoPlayerView
-import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
-import kotlin.random.Random
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 fun HighlightBottomSheet(
-  modifier: Modifier = Modifier,
+  modifier: Modifier,
   mediaItem: MediaItem,
+  uiState: HighlightsViewState,
   onDismiss: () -> Unit = {},
-  viewModel: FakeHighlightCommentsViewModel = hiltViewModel(),
 ) {
   val sheetState = rememberModalBottomSheetState()
-  val uiState by remember(viewModel.viewState) { viewModel.viewState }
-  LaunchedEffect(Random.nextLong()) {
-    viewModel.handleEvent(HighlightsViewEvent.GetLatestComments)
-  }
+
   ModalBottomSheet(
     onDismissRequest = { onDismiss() },
     sheetState = sheetState,
-    dragHandle = { BottomSheetDefaults.DragHandle() },
+    tonalElevation = 16.dp,
     containerColor = MaterialTheme.colorScheme.background,
   ) {
-    NativeVideoPlayer(modifier, mediaItem.title, mediaItem.url)
+    NativeVideoPlayer(
+      modifier.padding(horizontal = 16.dp, vertical = 20.dp),
+      mediaItem.title, mediaItem.url,
+    )
     HighlightsComments(uiState.commentSectionState)
   }
 }
@@ -101,6 +100,7 @@ private fun NativeVideoPlayer(
             )
           },
           modifier = Modifier
+            .clip(RoundedCornerShape(8.dp))
             .fillMaxWidth()
             .thenIf(!isVideoReady) {
               size(0.dp)

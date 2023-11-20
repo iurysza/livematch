@@ -64,8 +64,9 @@ object FakeFactory {
   fun generateMediaList(): ImmutableList<MediaItem> {
     return (0..10).map {
       MediaItem(
-        url = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/1039.png",
         title = "Media $it",
+        url = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/1039.png",
+        id = Random.nextInt(1, 99).toString(),
       )
     }.toImmutableList()
   }

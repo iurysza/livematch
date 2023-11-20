@@ -85,7 +85,7 @@ private fun CommentHeader(
       style = style,
     )
     Text(
-      text = stringResource(id = R.string.minutes, comment.relativeTime),
+      text = comment.relativeTime?.let { stringResource(id = R.string.minutes, comment.relativeTime) } ?: "",
       style = style.copy(fontWeight = FontWeight.Normal),
     )
     Spacer(Modifier.weight(1f))

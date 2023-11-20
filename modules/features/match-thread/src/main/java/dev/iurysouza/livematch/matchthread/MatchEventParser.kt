@@ -114,7 +114,7 @@ open class MatchEventParser {
 
   fun createEventSecionsWithComments(
     commentList: List<CommentsEntity>,
-    matchStartTime: Long,
+    matchStartTime: Long?,
     matchEvents: List<MatchEvent>,
     isRefreshing: Boolean,
   ): Either<Any, List<CommentSection>> = catch {
@@ -124,7 +124,9 @@ open class MatchEventParser {
         body = comment.body,
         flairUrl = comment.flairUrl,
         flairName = comment.flairText.remove(":"),
-        relativeTime = comment.created.toUTCLocalDateTime().calculatePlayTime(matchStartTime).toInt(),
+        relativeTime = matchStartTime?.let {
+          comment.created.toUTCLocalDateTime().calculatePlayTime(matchStartTime).toInt()
+        },
 //        calculateRelativeTime(comment.created, matchStartTime),
         score = comment.score.toString(),
       )
@@ -201,14 +203,14 @@ open class MatchEventParser {
 
         while (eventStack.isNotEmpty() && commentStack.isNotEmpty()) {
           var lastEventTime = eventStack.last().relativeTime()
-          var lastCommentTime = commentStack.last().relativeTime
+          var lastCommentTime = commentStack.last().relativeTime!!
 
           val sectionComments = mutableListOf<CommentItem>()
 
           while (lastEventTime <= lastCommentTime && commentStack.size > 1) {
             sectionComments.add(commentStack.last())
             commentStack.removeLast()
-            lastCommentTime = commentStack.last().relativeTime
+            lastCommentTime = commentStack.last().relativeTime!!
             lastEventTime = eventStack.last().relativeTime()
           }
           commentSectionList.add(

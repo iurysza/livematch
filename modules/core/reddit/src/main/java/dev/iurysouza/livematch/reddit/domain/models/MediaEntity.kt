@@ -9,4 +9,5 @@ import kotlinx.parcelize.Parcelize
 data class MediaEntity(
   val title: String,
   val url: String,
+  val id: String,
 ) : Parcelable

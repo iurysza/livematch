@@ -100,7 +100,7 @@ private fun GradientPaddedMediaCarousel(
 ) {
   Box {
     val list = remember(mediaItemList) {
-      val fakeItem = listOf(MediaItem("fake", "fake"))
+      val fakeItem = listOf(MediaItem("fake", "fake", "fake"))
       (fakeItem + mediaItemList + fakeItem).toImmutableList()
     }
     LazyRow(
