@@ -22,7 +22,7 @@
       android:layout_height="match_parent"
       app:controller_layout_id="@layout/custom_player_controls_layout"
       app:repeat_toggle_modes="all|one"
-      app:resize_mode="zoom" />
+      app:resize_mode="fit" />
 
     <ImageView
       android:id="@+id/player_thumbnail"
