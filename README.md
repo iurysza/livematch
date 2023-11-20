@@ -83,6 +83,7 @@ graph LR
     footballdata
     footballinfo
     reddit
+    webview-to-native-player
   end
   subgraph features
     match-day
@@ -95,15 +96,18 @@ graph LR
   match-day --> footballdata
   match-day --> design-system
   match-day --> reddit
+  match-thread --> webview-to-native-player
   match-thread --> common
   match-thread --> footballinfo
   match-thread --> footballdata
   match-thread --> design-system
   match-thread --> reddit
+  playground --> webview-to-native-player
   playground --> match-thread
   playground --> match-day
   playground --> design-system
   reddit --> common
+  webview-to-native-player --> common
   main --> match-thread
   main --> match-day
   main --> design-system

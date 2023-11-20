@@ -24,7 +24,7 @@ sealed class ProjectModule(val path: String) {
   object MatchThread : ProjectModule(":features:match-thread")
   object MatchDay : ProjectModule(":features:match-day")
   object DesignSystem : ProjectModule(":core:design-system")
-  object WebViewToNativePlayer : ProjectModule(":features:webview-to-native-player")
+  object WebViewToNativePlayer : ProjectModule(":core:webview-to-native-player")
   object Common : ProjectModule(":core:common")
   object FootballInfo : ProjectModule(":core:footballinfo")
   object FootballData : ProjectModule(":core:footballdata")
