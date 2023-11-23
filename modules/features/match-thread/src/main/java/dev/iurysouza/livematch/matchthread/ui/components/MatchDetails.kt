@@ -48,7 +48,7 @@ fun MatchDetails(
   var item: MediaItem? by remember { mutableStateOf(null) }
   item?.let {
     HighlightBottomSheetScreen(
-      mediaItem = item!!,
+      mediaItem = it,
       onDismiss = { item = null },
     )
   }

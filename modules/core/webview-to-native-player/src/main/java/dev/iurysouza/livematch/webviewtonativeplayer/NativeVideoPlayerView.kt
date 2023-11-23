@@ -84,7 +84,6 @@ sealed interface NativePlayerEvent {
     object VideoScrapingFailed : Error
 
     object VideoPlaybackFailed : Error
-    data class Unknown(val exception: Exception) :
-      Error
+    data class Unknown(val exception: Exception) : Error
   }
 }

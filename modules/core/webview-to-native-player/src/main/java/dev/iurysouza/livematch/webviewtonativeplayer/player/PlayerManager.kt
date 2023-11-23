@@ -73,8 +73,14 @@ internal class PlayerManager(
     super.onAvailableCommandsChanged(availableCommands)
     if (availableCommands.contains(Player.COMMAND_PREPARE)) {
       listeners.forEach { it.onEvent(NativePlayerEvent.Ready) }
-      Timber.v("Video prepared")
       playerView?.showController()
+    }
+  }
+
+  override fun onEvents(player: Player, events: Player.Events) {
+    super.onEvents(player, events)
+    if (events.contains(Player.EVENT_PLAY_WHEN_READY_CHANGED)) {
+      playerView?.hideController()
     }
   }
 
@@ -235,8 +241,8 @@ internal class PlayerManager(
   }
 
   override fun onPlayerError(error: PlaybackException) {
+    Timber.e(error, "OnEvent: Error")
     listeners.forEach { it.onEvent(NativePlayerEvent.Error.Unknown(error)) }
-    Timber.e(error, "Something went wrong with the player")
   }
 
   private fun updateCurrentItemIndex() {
@@ -340,7 +346,6 @@ internal class PlayerManager(
   fun forcePlay() {
     Util.handlePlayButtonAction(currentPlayer)
     playerView?.hideController()
-    Timber.v("Playback started")
     listeners.forEach { it.onEvent(NativePlayerEvent.Playing) }
   }
 

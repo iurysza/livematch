@@ -28,33 +28,31 @@ class HighlightCommentsViewModel @Inject constructor(
     }
   }
 
-  private fun getLatestComments(id: String) {
-    viewModelScope.launch {
-      setState { copy(commentSectionState = HighlightsCommentsViewState.Loading) }
-      either {
-        fetchMatchComments.execute(MatchId(id)).bind()
-      }.fold(
-        { setState { copy(commentSectionState = HighlightsCommentsViewState.Error(it.throwable?.message ?: "")) } },
-        { commentList ->
-          setState {
-            copy(
-              commentSectionState = HighlightsCommentsViewState.Success(
-                commentList.drop(1).map { comment ->
-                  CommentItem(
-                    author = comment.author,
-                    body = comment.body,
-                    flairUrl = comment.flairUrl,
-                    flairName = comment.flairText.remove(":"),
-                    relativeTime = null,
-                    score = comment.score.toString(),
-                  )
-                }.toImmutableList(),
-              ),
-            )
-          }
-        },
-      )
-    }
+  private fun getLatestComments(id: String) = viewModelScope.launch {
+    setState { copy(state = HighlightsCommentsViewState.Loading) }
+    either { fetchMatchComments.execute(MatchId(id)).bind() }.fold(
+      ifLeft = {
+        setState { copy(state = HighlightsCommentsViewState.Error(it.throwable?.message ?: "")) }
+      },
+      ifRight = { commentList ->
+        setState {
+          copy(
+            state = HighlightsCommentsViewState.Success(
+              commentList.drop(1).map { comment ->
+                CommentItem(
+                  author = comment.author,
+                  body = comment.body,
+                  flairUrl = comment.flairUrl,
+                  flairName = comment.flairText.remove(":"),
+                  relativeTime = null,
+                  score = comment.score.toString(),
+                )
+              }.toImmutableList(),
+            ),
+          )
+        }
+      },
+    )
   }
 }
 

@@ -83,14 +83,7 @@ internal class NativeVideoPlayer(
   }
 
   override fun onEvent(event: NativePlayerEvent) {
-    when (event) {
-      NativePlayerEvent.Ready -> playButton.visibility = ImageView.VISIBLE
-      is NativePlayerEvent.Error -> {
-        thumbnail.visibility = ImageView.VISIBLE
-        playButton.visibility = ImageView.VISIBLE
-      }
-
-      else -> {}
-    }
+    Timber.v("OnEvent: $event")
+    playButton.showIf(event !is NativePlayerEvent.Playing)
   }
 }

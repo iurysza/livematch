@@ -37,7 +37,7 @@ class PlaygroundActivity : ComponentActivity() {
 
   private var item = MediaItem(
     title = "New video",
-    url = "https://dubz.live/c/ddbb29 ",
+    url = "https://www.reddit.com/r/soccer/comments/1822bh7/a_better_angle_of_leandro_trossards_insane_skill/ ",
     id = "17z6ud2",
   )
 

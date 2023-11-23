@@ -10,9 +10,7 @@ sealed interface HighlightsViewEvent : ViewEvent {
   data class GetLatestComments(val id: String) : HighlightsViewEvent
 }
 
-data class HighlightsViewState(
-  val commentSectionState: HighlightsCommentsViewState = HighlightsCommentsViewState.Loading,
-) : ViewState
+data class HighlightsViewState(val state: HighlightsCommentsViewState = HighlightsCommentsViewState.Loading) : ViewState
 
 sealed interface HighlightsCommentsViewState {
   data class Success(val comments: ImmutableList<CommentItem>) : HighlightsCommentsViewState

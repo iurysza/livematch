@@ -29,9 +29,11 @@ import com.halilibo.richtext.ui.RichText
 import com.halilibo.richtext.ui.RichTextStyle
 import com.halilibo.richtext.ui.WithStyle
 import com.halilibo.richtext.ui.string.RichTextStringStyle
+import dev.iurysouza.livematch.designsystem.components.thenIf
 import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.designsystem.theme.Space.S100
 import dev.iurysouza.livematch.designsystem.theme.Space.S150
+import dev.iurysouza.livematch.designsystem.theme.Space.S300
 import dev.iurysouza.livematch.designsystem.theme.Space.S50
 import dev.iurysouza.livematch.designsystem.theme.Space.S800
 import dev.iurysouza.livematch.matchthread.R
@@ -45,7 +47,12 @@ fun CommentItemComponent(
   Row(
     modifier = modifier
       .padding(vertical = S100)
-      .padding(start = S800, end = S100)
+      .thenIf(commentItem.relativeTime == null) {
+        padding(horizontal = S300)
+      }
+      .thenIf(commentItem.relativeTime != null) {
+        padding(start = S800, end = S100)
+      }
       .background(MaterialTheme.colorScheme.primary),
   ) {
     Column(
