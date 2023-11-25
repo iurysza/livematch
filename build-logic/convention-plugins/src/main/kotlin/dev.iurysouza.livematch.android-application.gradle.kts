@@ -65,3 +65,12 @@ dependencies {
   implementation(findLibraryAlias(Lib.Timber))
   implementation(findLibraryAlias(Lib.NavigationReimagined))
 }
+
+tasks.register<Exec>("startMockWebServer") {
+  val mockwebserverPath = "${project.rootDir}/../mockwebserver-docker-img"
+  workingDir(mockwebserverPath)
+  doFirst {
+    println("Starting docker image at ${file(mockwebserverPath).absolutePath}")
+    commandLine("sh", "-c", "docker-compose up -d")
+  }
+}

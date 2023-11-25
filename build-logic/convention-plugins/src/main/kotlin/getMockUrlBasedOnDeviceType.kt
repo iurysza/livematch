@@ -21,7 +21,6 @@ fun getMockUrlBasedOnDeviceType(project: Project): String = runCatching {
     """"http://localhost:1080/""""
   }.also {
     println("App configured for running on device: $deviceName, using mockUrl: $it")
-    println("Don't forget to start mockserver docker image.")
     rootProj.extraProperties["mockUrl"] = it
     rootProj.extraProperties["isMockUrlConfigured"] = true
   }

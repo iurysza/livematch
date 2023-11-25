@@ -54,3 +54,11 @@ dependencies {
 }
 
 fun getLocalProperty(key: String) = gradleLocalProperties(rootDir).getProperty(key)
+afterEvaluate {
+  if (properties["USE_MOCK_URL"] == "true") {
+    println("Setting up mock server for debug build")
+    tasks.named("installDebug") {
+      dependsOn(tasks.named("startMockWebServer"))
+    }
+  }
+}
