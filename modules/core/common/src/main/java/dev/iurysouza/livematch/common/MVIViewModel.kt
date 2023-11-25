@@ -15,7 +15,9 @@ abstract class MVIViewModel<
   Event : ViewEvent,
   UiState : ViewState,
   Effect : ViewSideEffect,
-  > : ViewModel() {
+  >(
+  private val logLevel: Int = MVILogLevel.NONE,
+) : ViewModel() {
 
   private val initialState: UiState by lazy { setInitialState() }
   abstract fun setInitialState(): UiState
@@ -49,7 +51,9 @@ abstract class MVIViewModel<
    * @param event the event that is emitted by the UI
    */
   fun setEvent(event: Event) {
-    Timber.v("Event Set: $event")
+    if ((logLevel and MVILogLevel.EVENT) == MVILogLevel.EVENT || logLevel == MVILogLevel.ALL) {
+      Timber.v("Event Set: $event")
+    }
     viewModelScope.launch { _event.emit(event) }
   }
 
@@ -59,11 +63,18 @@ abstract class MVIViewModel<
    * @param reducer a function that takes the current view state and returns a new view state
    */
   protected fun setState(reducer: UiState.() -> UiState) {
-    Timber.v("State Updated: Previous State:\n${_viewState.value.toString().replace(",", "\n")}")
+    val stateLoggingEnabled = (logLevel and MVILogLevel.STATE) == MVILogLevel.STATE || logLevel == MVILogLevel.ALL
+    if (stateLoggingEnabled) {
+      Timber.v("State Updated: Previous State:\n${_viewState.value.prettyPrint()}")
+    }
     val newState = viewState.value.reducer()
-    Timber.v("State Update - New state:\n${newState.toString().replace(",", "\n")}")
+    if (stateLoggingEnabled) {
+      Timber.v("State Update - New state:\n${newState.prettyPrint()}")
+    }
     _viewState.value = newState
   }
+
+  private fun Any.prettyPrint() = toString().replace(",", "\n")
 
   private fun subscribeToEvents() {
     viewModelScope.launch {
@@ -74,12 +85,19 @@ abstract class MVIViewModel<
   }
 
   open fun handleEvent(event: Event) {
-    Timber.v("Event Handled: $event")
+    if ((logLevel and MVILogLevel.EVENT) == MVILogLevel.EVENT || logLevel == MVILogLevel.ALL) {
+      Timber.v("Event Handled: $event")
+    }
   }
 
   protected fun setEffect(builder: () -> Effect) {
     val effectValue = builder()
-    viewModelScope.launch { _effect.emit(effectValue) }
+    viewModelScope.launch {
+      if ((logLevel and MVILogLevel.EFFECT) == MVILogLevel.EFFECT || logLevel == MVILogLevel.ALL) {
+        Timber.v("Effect Set: $effectValue")
+      }
+      _effect.emit(effectValue)
+    }
   }
 }
 
@@ -88,3 +106,11 @@ interface ViewState
 interface ViewEvent
 
 interface ViewSideEffect
+
+object MVILogLevel {
+  const val NONE = 0
+  const val EVENT = 1 shl 0 // 1
+  const val STATE = 1 shl 1 // 2
+  const val EFFECT = 1 shl 2 // 4
+  const val ALL = EVENT or STATE or EFFECT // 7
+}

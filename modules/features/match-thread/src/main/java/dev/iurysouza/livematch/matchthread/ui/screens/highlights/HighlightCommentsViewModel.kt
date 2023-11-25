@@ -3,6 +3,7 @@ package dev.iurysouza.livematch.matchthread.ui.screens.highlights
 import androidx.lifecycle.viewModelScope
 import arrow.core.continuations.either
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.iurysouza.livematch.common.MVILogLevel
 import dev.iurysouza.livematch.common.MVIViewModel
 import dev.iurysouza.livematch.matchthread.models.CommentItem
 import dev.iurysouza.livematch.matchthread.ui.components.highlights.HighlightsCommentsViewState
@@ -18,7 +19,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class HighlightCommentsViewModel @Inject constructor(
   private val fetchMatchComments: FetchMatchCommentsUseCase,
-) : MVIViewModel<HighlightsViewEvent, HighlightsViewState, HighlightsViewEffect>() {
+) : MVIViewModel<HighlightsViewEvent, HighlightsViewState, HighlightsViewEffect>(MVILogLevel.ALL) {
   override fun setInitialState(): HighlightsViewState = HighlightsViewState(HighlightsCommentsViewState.Loading)
 
   override fun handleEvent(event: HighlightsViewEvent) {
