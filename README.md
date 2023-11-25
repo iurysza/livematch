@@ -88,7 +88,8 @@ easy-er to maintain.
 ```mermaid
 %%{
   init: {
-    'theme': 'neutral'
+    'theme': 'base',
+	'themeVariables': {"primaryTextColor":"#fff","primaryColor":"#5a4f7c","primaryBorderColor":"#5a4f7c","lineColor":"#f5a623","tertiaryColor":"#40375c","fontSize":"11px"}
   }
 }%%
 
@@ -133,7 +134,6 @@ graph LR
   main --> design-system
   main --> common
 ```
-
 # Testing with mock-web-server:
 
 You can use mockwebserver `docker` image to run quickly run and test app in a controlled environment.
@@ -160,10 +160,6 @@ keyAlias=# The key alias
 keyPassword=# The key password
 storeFile=# The Path to your keystore
 storePassword=# The keystore password
-```
-
-CLIENT_ID=# Your Reddit client id
-FOOTBALL_KEY=# The API key for football-data.org
 ```
 
 # Adding SVG icons
