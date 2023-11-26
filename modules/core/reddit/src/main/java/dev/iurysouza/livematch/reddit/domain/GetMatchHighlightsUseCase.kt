@@ -13,17 +13,31 @@ class GetMatchHighlightsUseCase @Inject constructor(
   private val networkDataSource: RedditNetworkDataSource,
   private val matchHighlightParserUseCase: MatchHighlightParserUseCase,
 ) {
-
   suspend fun execute(matchTitle: MatchTitle): Either<DomainError, List<MediaEntity>> = either {
-    networkDataSource.searchFor(
-      subreddit = "soccer",
-      query = """flair:media OR flair:Mirror""",
-      sortBy = "hot",
-      timePeriod = "day",
-      restrictedToSubreddit = true,
-      limit = 100,
-    ).flatMap { response -> response.matchHighlightEntities() }
-      .flatMap { matchHighlightParserUseCase.getMatchHighlights(it, matchTitle) }
-      .bind()
+    var after: String? = null
+
+    fetchData(
+      matchTitle = matchTitle,
+      onRequestFinished = { after = it },
+    ).bind().plus(
+      fetchData(matchTitle, after).bind(),
+    )
   }
+
+  private suspend fun fetchData(
+    matchTitle: MatchTitle,
+    after: String? = null,
+    onRequestFinished: (String?) -> Unit = {},
+  ): Either<DomainError, List<MediaEntity>> = networkDataSource.searchFor(
+    subreddit = "soccer",
+    query = """flair:media OR flair:Mirror""",
+    sortBy = "new",
+    timePeriod = "week",
+    after = after,
+    limit = if (after == null) 100 else null,
+    restrictedToSubreddit = true,
+  )
+    .tap { onRequestFinished(it.data.after) }
+    .flatMap { response -> response.matchHighlightEntities() }
+    .flatMap { matchHighlightParserUseCase.getMatchHighlights(it, matchTitle) }
 }
