@@ -3,6 +3,7 @@ package dev.iurysouza.livematch.footballinfo.domain
 import arrow.core.Either
 import arrow.core.continuations.either
 import dev.iurysouza.livematch.common.DomainError
+import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.footballinfo.domain.newmodel.Match
 import java.time.LocalDate
 import java.time.ZoneOffset
@@ -14,9 +15,24 @@ import javax.inject.Singleton
 class FetchMatchesInfoUseCase @Inject constructor(
   private val networkDataSource: FootballInfoSource,
 ) {
-  suspend fun execute(topLeaguesOnly: Boolean): Either<DomainError, List<Match>> = either {
+  suspend fun execute(): Either<DomainError, List<Match>> = either {
+    val today = LocalDate.now(ZoneOffset.UTC)
+
+    fetchMatches(
+      date = today.minusDays(1),
+    ).bind().plus(
+      fetchMatches(
+        date = today,
+      ).bind(),
+    )
+  }
+
+  private suspend fun fetchMatches(
+    date: LocalDate,
+    topLeaguesOnly: Boolean = true,
+  ): Either<NetworkError, List<Match>> =
     networkDataSource.fetchLatestMatches(
-      date = LocalDate.now(ZoneOffset.UTC).format(DATE_PATTERN),
+      date = date.format(DATE_PATTERN),
     ).map {
       it.response.filter { match ->
         if (topLeaguesOnly) {
@@ -32,8 +48,7 @@ class FetchMatchesInfoUseCase @Inject constructor(
           true
         }
       }
-    }.bind()
-  }
+    }
 
   /**
    * | Championship Id | Championship Name | Location |

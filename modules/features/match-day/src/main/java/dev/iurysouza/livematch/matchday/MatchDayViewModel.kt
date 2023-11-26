@@ -81,7 +81,7 @@ class MatchDayViewModel @Inject constructor(
   }
 
   private suspend fun fetchMatchData() = either {
-    fetch.execute(topLeaguesOnly = true).bind()
+    fetch.execute().bind()
   }.mapLeft { it.toErrorMsg() }
     .map { it.toMatchEntity() }
     .fold(
