@@ -27,6 +27,7 @@ interface RedditApi {
     @Query("restrict_sr") restrictToSubreddit: Boolean,
     @Query("raw_json") rawJson: Int? = 1,
     @Query("limit") limit: Int? = null,
+    @Query("after") after: String? = null,
   ): EnvelopedSubmissionListing
 
   @GET("/comments/{submissionId}/.json")

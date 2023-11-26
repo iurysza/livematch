@@ -29,6 +29,7 @@ class StubNetworkDatasource(
     timePeriod: String,
     restrictedToSubreddit: Boolean,
     limit: Int?,
+    after: String?,
   ): Either<NetworkError, EnvelopedSubmissionListing> = TODO("Not yet implemented")
 }
 

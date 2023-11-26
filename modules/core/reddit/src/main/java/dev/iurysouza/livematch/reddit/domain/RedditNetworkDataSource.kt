@@ -15,6 +15,7 @@ interface RedditNetworkDataSource {
     timePeriod: String,
     restrictedToSubreddit: Boolean,
     limit: Int? = null,
+    after: String? = null,
   ): Either<NetworkError, EnvelopedSubmissionListing>
 
   suspend fun getAccessToken(): Either<NetworkError, AccessTokenResponse>
