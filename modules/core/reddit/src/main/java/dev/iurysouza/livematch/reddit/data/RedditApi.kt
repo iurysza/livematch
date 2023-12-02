@@ -37,8 +37,9 @@ interface RedditApi {
     @Query("context") focusedCommentParentsNum: Int? = null,
     @Query("sort") sorting: String = HOT,
     @Query("limit") limit: Long? = null,
-    @Query("depth") depth: Int? = 1,
+    @Query("depth") depth: Int? = 4,
     @Query("raw_json") rawJson: Int? = null,
+    @Query("after") after: String? = null,
   ): List<EnvelopedContributionListing>
 
   companion object {

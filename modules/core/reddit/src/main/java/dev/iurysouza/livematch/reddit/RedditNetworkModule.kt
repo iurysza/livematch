@@ -135,7 +135,9 @@ object RedditNetworkModule {
     .addConverterFactory(factory)
     .callbackExecutor(dispatcherProvider.io().asExecutor())
     .client(
-      okHttpClient.newBuilder().addInterceptor(authInterceptor).build(),
+      okHttpClient.newBuilder()
+        .addInterceptor(NullRepliesInterceptor)
+        .addInterceptor(authInterceptor).build(),
     )
 
   @Provides

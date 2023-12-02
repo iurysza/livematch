@@ -20,7 +20,12 @@ class StubNetworkDatasource(
   override suspend fun getCommentsForSubmission(
     id: String,
     sortBy: String,
-  ): Either<NetworkError, List<EnvelopedContributionListing>> = TODO("Not yet implemented")
+    limit: Int?,
+    after: String?,
+  ): Either<NetworkError, List<EnvelopedContributionListing>> {
+    TODO("Not yet implemented")
+  }
+
 
   override suspend fun searchFor(
     subreddit: String,

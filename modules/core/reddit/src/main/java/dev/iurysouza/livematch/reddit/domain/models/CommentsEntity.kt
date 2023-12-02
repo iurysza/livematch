@@ -10,4 +10,5 @@ data class CommentsEntity(
   val score: Int,
   val bodyHtml: String,
   val created: Long,
+  val replies: List<CommentsEntity>,
 )

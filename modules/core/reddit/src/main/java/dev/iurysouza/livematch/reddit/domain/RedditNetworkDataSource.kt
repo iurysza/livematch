@@ -23,5 +23,7 @@ interface RedditNetworkDataSource {
   suspend fun getCommentsForSubmission(
     id: String,
     sortBy: String,
+    limit: Int? = null,
+    after: String? = null,
   ): Either<NetworkError, List<EnvelopedContributionListing>>
 }

@@ -3,6 +3,7 @@ package dev.iurysouza.livematch.fakes
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import dev.iurysouza.livematch.reddit.BuildConfig
+import dev.iurysouza.livematch.reddit.NullRepliesInterceptor
 import dev.iurysouza.livematch.reddit.PolyJsonAdapterFactory
 import dev.iurysouza.livematch.reddit.data.RedditApi
 import dev.iurysouza.livematch.reddit.data.models.entities.PremiumSubreddit
@@ -33,11 +34,12 @@ object FakeRedditApi {
     val username = BuildConfig.CLIENT_ID
     val password = ""
     val credentials = "Basic ${
-    Base64.getEncoder().encodeToString(
-      "$username:$password".toByteArray(),
-    )
+      Base64.getEncoder().encodeToString(
+        "$username:$password".toByteArray(),
+      )
     }"
     val okhttpClient = OkHttpClient.Builder()
+      .addInterceptor(NullRepliesInterceptor)
       .addInterceptor { chain ->
         chain.proceed(
           chain.request()

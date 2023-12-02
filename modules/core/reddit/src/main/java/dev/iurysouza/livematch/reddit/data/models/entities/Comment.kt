@@ -12,6 +12,7 @@ import dev.iurysouza.livematch.reddit.data.models.entities.base.Saveable
 import dev.iurysouza.livematch.reddit.data.models.entities.base.Votable
 import dev.iurysouza.livematch.reddit.data.models.entities.commons.FlairRichtext
 import dev.iurysouza.livematch.reddit.data.models.entities.commons.Gildings
+import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedCommentDataListing
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -210,12 +211,12 @@ data class Comment(
   @Json(name = "permalink")
   val permalink: String,
 
-//    @Json(name = "replies")
-//    val repliesRaw: EnvelopedCommentDataListing?,
+  @Json(name = "replies")
+  val repliesRaw: EnvelopedCommentDataListing?,
 
-//    @Transient
-//    override var replies: List<CommentData>? =
-//        repliesRaw?.data?.children?.map { it.data }?.toList(),
+  @Transient
+  override var replies: List<CommentData>? =
+    repliesRaw?.data?.children?.map { it.data }?.toList(),
 
   @Transient
   override val parentFullname: String = parentId,
@@ -232,7 +233,7 @@ data class Comment(
   @Json(name = "subreddit_name_prefixed")
   val subredditNamePrefixed: String,
 
-) : CommentData, Votable, Saveable, Created, Editable, Distinguishable, Gildable, Replyable {
+  ) : CommentData, Votable, Saveable, Created, Editable, Distinguishable, Gildable, Replyable {
 
   override val hasReplies: Boolean
     get() {

@@ -3,6 +3,7 @@ package dev.iurysouza.livematch.reddit.domain
 import arrow.core.Either
 import dev.iurysouza.livematch.common.MappingError
 import dev.iurysouza.livematch.reddit.data.models.entities.Comment
+import dev.iurysouza.livematch.reddit.data.models.entities.base.CommentData
 import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedCommentData
 import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedContributionListing
 import dev.iurysouza.livematch.reddit.data.models.responses.EnvelopedSubmissionListing
@@ -16,8 +17,12 @@ fun List<EnvelopedContributionListing>.toCommentsEntity(): Either<MappingError, 
   (last().data as Listing<EnvelopedCommentData>).children
     .map { it.data }
     .toList()
-    .filterIsInstance<Comment>()
-    .map {
+    .toEntity()
+}.mapLeft { MappingError(it.message) }
+
+fun List<CommentData>?.toEntity(): List<CommentsEntity> {
+  return this?.filterIsInstance<Comment>()
+    ?.map {
       val flair = it.authorFlairRichtext?.firstOrNull()
       CommentsEntity(
         id = it.id,
@@ -29,9 +34,10 @@ fun List<EnvelopedContributionListing>.toCommentsEntity(): Either<MappingError, 
         score = it.score,
         bodyHtml = it.bodyHtml,
         created = it.createdUtc,
+        replies = it.replies.toEntity(),
       )
-    }
-}.mapLeft { MappingError(it.message) }
+    } ?: emptyList()
+}
 
 fun EnvelopedSubmissionListing.matchHighlightEntities(): Either<MappingError, List<MatchHighlightEntity>> =
   Either.catch {

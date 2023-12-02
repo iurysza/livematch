@@ -23,7 +23,7 @@ interface CommentData : Contribution {
 
   val hasReplies: Boolean
 
-//    val replies: List<CommentData>?
+  val replies: List<CommentData>?
 
   val repliesSize: Int
 }
