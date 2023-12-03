@@ -8,8 +8,8 @@ import dev.iurysouza.livematch.common.DomainError
 import dev.iurysouza.livematch.common.MVIViewModel
 import dev.iurysouza.livematch.common.NetworkError
 import dev.iurysouza.livematch.common.ResourceProvider
-import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
 import dev.iurysouza.livematch.footballinfo.domain.FetchMatchesInfoUseCase
+import dev.iurysouza.livematch.footballinfo.domain.models.MatchEntity
 import dev.iurysouza.livematch.matchday.models.MatchDayState
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEffect
 import dev.iurysouza.livematch.matchday.models.MatchDayViewEvent
@@ -17,7 +17,6 @@ import dev.iurysouza.livematch.matchday.models.MatchDayViewState
 import dev.iurysouza.livematch.matchday.models.createMatchThreadFrom
 import dev.iurysouza.livematch.matchday.models.getValidMatchList
 import dev.iurysouza.livematch.matchday.models.toDestination
-import dev.iurysouza.livematch.matchday.models.toMatchEntity
 import dev.iurysouza.livematch.reddit.domain.FetchLatestMatchThreadsForTodayUseCase
 import dev.iurysouza.livematch.reddit.domain.RefreshTokenIfNeededUseCase
 import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
@@ -83,7 +82,6 @@ class MatchDayViewModel @Inject constructor(
   private suspend fun fetchMatchData() = either {
     fetch.execute().bind()
   }.mapLeft { it.toErrorMsg() }
-    .map { it.toMatchEntity() }
     .fold(
       { errorMsg ->
         setState {

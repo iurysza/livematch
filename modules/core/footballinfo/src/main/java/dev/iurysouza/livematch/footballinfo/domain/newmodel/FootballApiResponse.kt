@@ -5,12 +5,9 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class FootballApiResponse(
-  val errors: List<Any>,
   @Json(name = "get")
   val reqPath: String?,
   val paging: Paging,
-  @Json(name = "parameters")
-  val reqParam: Parameters?,
   val response: List<Match>,
   val results: Int,
 )
@@ -39,6 +36,7 @@ data class Match(
   val league: League,
   val score: Score,
   val teams: Teams,
+  val events: List<Event>?,
 )
 
 @JsonClass(generateAdapter = true)
@@ -136,4 +134,34 @@ data class Parameters(
 data class Penalty(
   val away: Int?,
   val home: Int?,
+)
+
+@JsonClass(generateAdapter = true)
+data class Event(
+  val time: Time?,
+  val team: Team?,
+  val player: Player?,
+  val assist: Player?,
+  val type: String?,
+  val detail: String?,
+  val comments: String?,
+)
+
+@JsonClass(generateAdapter = true)
+data class Time(
+  val elapsed: Int,
+  val extra: Int?,
+)
+
+@JsonClass(generateAdapter = true)
+data class Team(
+  val id: Int?,
+  val name: String?,
+  @Json(name = "logo") val logoUrl: String?,
+)
+
+@JsonClass(generateAdapter = true)
+data class Player(
+  val id: Int?,
+  val name: String?,
 )
