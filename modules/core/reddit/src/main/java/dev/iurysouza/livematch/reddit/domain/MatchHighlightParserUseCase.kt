@@ -14,7 +14,13 @@ class MatchHighlightParserUseCase {
   ): Either<DomainError, List<MediaEntity>> = Either.catch {
     matchMedias
       .sortedBy { it.createdAt }
-      .filter { media -> isMediaRelatedToTeams(media, matchTitle) }
+      .filter { media ->
+        isMediaRelatedToTeams(
+          media.title,
+          matchTitle.homeTeam,
+          matchTitle.awayTeam,
+        )
+      }
       .map {
         MediaEntity(
           title = parseTitle(it),
@@ -25,10 +31,15 @@ class MatchHighlightParserUseCase {
   }.mapLeft { MappingError(it.message.toString()) }
 
   private fun isMediaRelatedToTeams(
-    media: MatchHighlightEntity,
-    matchTitle: MatchTitle,
-  ): Boolean = containsTeamName(media.title ?: "", matchTitle.homeTeam) ||
-    containsTeamName(media.title ?: "", matchTitle.awayTeam)
+    mediaTitle: String?,
+    homeTeam: String,
+    awayTeam: String,
+  ): Boolean {
+    return (NameChecker.containsTeamName(mediaTitle!!, homeTeam) ||
+      NameChecker.containsTeamName(mediaTitle, awayTeam)) &&
+      // reject U21, U17, U19, etc
+      !mediaTitle.contains("U\\d+".toRegex())
+  }
 
   private fun parseTitle(media: MatchHighlightEntity): String {
     if (media.title!!.contains("href")) {
@@ -62,4 +73,55 @@ class MatchHighlightParserUseCase {
   private val teamNickNameDictionary = mapOf(
     "Paris Saint-Germain" to "PSG",
   )
+}
+
+object NameChecker {
+  private val ambiguousWords = listOf(
+    "Borussia",
+    "United",
+    "City",
+    "Real",
+    "Arsenal",
+  )
+  private val teamNickNameDictionary = mapOf(
+    "Paris Saint-Germain" to "PSG",
+    "Manchester United" to "Manchester Utd",
+  )
+
+  private val reverseDictionary = teamNickNameDictionary.entries.associate { (key, value) ->
+    value to key
+  }
+
+
+  /**
+   * Checks if the given [title] contains a team name.
+   *
+   * @param title The title to check for the presence of a team name.
+   * @param teamName The team name to search for in the [title].
+   * @return `true` if the [title] contains any variations of the [teamName], `false` otherwise.
+   */
+  fun containsTeamName(title: String, teamName: String): Boolean {
+    val wordsSortedByLength = teamName.split(" ").sortedBy { it.length }.reversed()
+    val wordsToCheck = buildList {
+      add(teamName)
+      reverseDictionary[teamName]?.let { add(it) }
+      teamNickNameDictionary[teamName]?.let { add(it) }
+      wordsSortedByLength.firstOrNull()?.let { maxLengthWord ->
+        if (!ambiguousWords.contains(maxLengthWord)) {
+          add(maxLengthWord)
+        } else {
+          wordsSortedByLength.getOrNull(1)?.let { add(it) }
+        }
+      }
+    }
+    return wordsToCheck.any { title.contains(it) }
+  }
+
+  fun isMatchRelated(
+    homeTeam: String,
+    awayTeam: String,
+    title: String,
+  ): Boolean {
+    return containsTeamName(title, homeTeam) && containsTeamName(title, awayTeam)
+  }
 }
