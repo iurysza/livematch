@@ -15,13 +15,17 @@ class GetMatchHighlightsUseCase @Inject constructor(
 ) {
   suspend fun execute(matchTitle: MatchTitle): Either<DomainError, List<MediaEntity>> = either {
     var after: String? = null
-
-    fetchData(
-      matchTitle = matchTitle,
-      onRequestFinished = { after = it },
-    ).bind().plus(
-      fetchData(matchTitle, after).bind(),
-    )
+    buildList {
+      repeat(2) {
+        addAll(
+          fetchData(
+            matchTitle = matchTitle,
+            after = after,
+            onRequestFinished = { after = it },
+          ).bind(),
+        )
+      }
+    }
   }
 
   private suspend fun fetchData(
@@ -34,7 +38,7 @@ class GetMatchHighlightsUseCase @Inject constructor(
     sortBy = "new",
     timePeriod = "week",
     after = after,
-    limit = if (after == null) 100 else null,
+    limit = 100,
     restrictedToSubreddit = true,
   )
     .tap { onRequestFinished(it.data.after) }
