@@ -3,31 +3,21 @@ package dev.iurysouza.livematch.matchday.models
 import arrow.core.Either
 import dev.iurysouza.livematch.common.ResourceProvider
 import dev.iurysouza.livematch.common.navigation.Destination
-import dev.iurysouza.livematch.common.navigation.models.Competition as NavCompetition
 import dev.iurysouza.livematch.common.navigation.models.MatchThreadArgs
-import dev.iurysouza.livematch.common.navigation.models.Team as NavTeam
-import dev.iurysouza.livematch.footballdata.domain.models.AreaEntity
-import dev.iurysouza.livematch.footballdata.domain.models.AwayTeamEntity
-import dev.iurysouza.livematch.footballdata.domain.models.CompetitionEntity
-import dev.iurysouza.livematch.footballdata.domain.models.HalfEntity
-import dev.iurysouza.livematch.footballdata.domain.models.HomeTeamEntity
-import dev.iurysouza.livematch.footballdata.domain.models.MatchEntity
-import dev.iurysouza.livematch.footballdata.domain.models.RefereeEntity
-import dev.iurysouza.livematch.footballdata.domain.models.ScoreEntity
-import dev.iurysouza.livematch.footballdata.domain.models.Status
-import dev.iurysouza.livematch.footballinfo.domain.newmodel.Match
+import dev.iurysouza.livematch.footballinfo.domain.models.MatchEntity
+import dev.iurysouza.livematch.footballinfo.domain.models.ScoreEntity
+import dev.iurysouza.livematch.footballinfo.domain.models.Status
 import dev.iurysouza.livematch.matchday.R
 import dev.iurysouza.livematch.reddit.domain.models.MatchThreadEntity
-import java.time.Duration
 import java.time.LocalDateTime
-import java.time.OffsetDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import dev.iurysouza.livematch.common.navigation.models.Competition as NavCompetition
+import dev.iurysouza.livematch.common.navigation.models.Team as NavTeam
 
 internal fun getValidMatchList(
   matchEntities: List<MatchEntity>,
@@ -36,7 +26,7 @@ internal fun getValidMatchList(
   isLiveMode: Boolean,
 ): ImmutableList<MatchUiModel> = matchEntities.filter {
   if (isLiveMode) {
-    it.status == Status.IN_PLAY || it.status == Status.PAUSED
+    it.status is Status.InPlay || it.status == Status.HalfTime
   } else {
     true
   }
@@ -58,7 +48,7 @@ internal fun createMatchThreadFrom(
 ) = Either.catch {
   val matchEntity = matchList.first { it.id.toString() == matchId }
   val matchThreadEntity = matchThreadList.first { matchThread ->
-    isMatchRelated(
+    NameChecker.isMatchRelated(
       homeTeam = matchEntity.homeTeam.name,
       awayTeam = matchEntity.awayTeam.name,
       title = matchThread.title,
@@ -99,7 +89,7 @@ private fun MatchEntity.toUiModel(
     name = awayTeam.name,
   ),
   startTime = formatTime(utcDate),
-  elapsedMinutes = status.toText(this, resources),
+  elapsedMinutes = status.toText(resources),
 )
 
 fun formatTime(utcDate: LocalDateTime): String {
@@ -118,7 +108,7 @@ private fun findValidMatchThread(
 ): Pair<MatchEntity, MatchThreadEntity>? {
   val matchEntity = matchList.first { it.id.toString() == matchId }
   val matchThreadEntity = matchThreadList.find { matchThread ->
-    isMatchRelated(
+    NameChecker.isMatchRelated(
       homeTeam = matchEntity.homeTeam.name,
       awayTeam = matchEntity.awayTeam.name,
       title = matchThread.title,
@@ -131,49 +121,6 @@ private fun findValidMatchThread(
   }
 }
 
-private val ambiguousWords = listOf(
-  "Manchester",
-  "Borussia",
-  "United",
-  "City",
-  "Real",
-  "Arsenal",
-)
-private val teamNickNameDictionary = mapOf(
-  "Paris Saint-Germain" to "PSG",
-  "Manchester United" to "Manchester Utd",
-)
-
-/**
- * Checks if the given [title] contains a team name.
- *
- * @param title The title to check for the presence of a team name.
- * @param teamName The team name to search for in the [title].
- * @return `true` if the [title] contains any variations of the [teamName], `false` otherwise.
- */
-private fun containsTeamName(title: String, teamName: String): Boolean {
-  val wordsSortedByLength = teamName.split(" ").sortedBy { it.length }.reversed()
-  val wordsToCheck = buildList {
-    add(teamName)
-    teamNickNameDictionary[teamName]?.let { add(it) }
-    wordsSortedByLength.firstOrNull()?.let { maxLengthWord ->
-      if (!ambiguousWords.contains(maxLengthWord)) {
-        add(maxLengthWord)
-      } else {
-        wordsSortedByLength.getOrNull(2)?.let { add(it) }
-      }
-    }
-  }
-  return wordsToCheck.any { title.contains(it) }
-}
-
-private fun isMatchRelated(
-  homeTeam: String,
-  awayTeam: String,
-  title: String,
-): Boolean {
-  return containsTeamName(title, homeTeam) || title.contains(awayTeam)
-}
 
 fun parseMatchScore(content: String): Pair<String?, String?> = runCatching {
   val pattern = "\\[([0-9]+)(-| – )([0-9]+)\\]".toRegex() // the updated regex pattern
@@ -250,12 +197,6 @@ private fun computeScore(score: ScoreEntity): Pair<Int, Int> {
   return validHomeScore to validAwayScore
 }
 
-private fun AwayTeamEntity.asHomeTeam() = HomeTeamEntity(
-  crest = crest,
-  id = id,
-  name = name,
-)
-
 fun MatchThread.toDestination() = Destination.MatchThread(
   matchThread = MatchThreadArgs(
     id = id,
@@ -285,76 +226,62 @@ fun MatchThread.toDestination() = Destination.MatchThread(
   ),
 )
 
-@Suppress("MagicNumber")
-private fun MatchEntity.calculatePlayTime(): String {
-  val now = ZonedDateTime.now(ZoneOffset.UTC)
-  val duration = Duration.between(utcDate, now)
-  val minutes = duration.toMinutes()
-  return "${
-  if (minutes > 50) {
-    minutes - 25
-  } else {
-    minutes
-  }
-  }'"
-}
-
-private fun Status.toText(matchEntity: MatchEntity, resources: ResourceProvider): String =
+private fun Status.toText(resources: ResourceProvider): String =
   when (this) {
-    Status.FINISHED -> resources.getString(R.string.match_status_finished)
-    Status.IN_PLAY -> matchEntity.calculatePlayTime()
-    Status.PAUSED -> resources.getString(R.string.match_status_paused)
-    Status.TIMED -> resources.getString(R.string.match_status_timed)
+    Status.Finished -> resources.getString(R.string.match_status_finished)
+    is Status.InPlay -> "$time'"
+    Status.HalfTime -> resources.getString(R.string.match_status_paused)
+    Status.Invalid -> resources.getString(R.string.match_status_timed)
   }
 
-fun List<Match>.toMatchEntity(): List<MatchEntity> {
-  return map { match ->
-    val toLocalDateTime: LocalDateTime = OffsetDateTime.parse(match.fixture.date).toLocalDateTime()
-    MatchEntity(
-      id = match.fixture.id,
-      area = AreaEntity(
-        name = match.league.country,
-        flagUrl = match.league.flag,
-      ),
-      score = ScoreEntity(
-        duration = null,
-        fullTime = HalfEntity(
-          home = match.score.fulltime.home,
-          away = match.score.fulltime.away,
-        ),
-        halfTime = HalfEntity(
-          home = match.score.halftime.home,
-          away = match.score.halftime.away,
-        ),
-        winner = if (match.teams.home.winner == true) match.teams.home.name else match.teams.away.name,
-      ),
-      status = when (match.fixture.status.short) {
-        "FT" -> Status.FINISHED
-        "HT" -> Status.PAUSED
-        "2H" -> Status.IN_PLAY
-        else -> Status.TIMED
-      },
-      utcDate = toLocalDateTime,
-      awayTeam = AwayTeamEntity(
-        crest = match.teams.away.logo,
-        id = match.teams.away.id,
-        name = match.teams.away.name,
-      ),
-      homeTeam = HomeTeamEntity(
-        crest = match.teams.home.logo,
-        id = match.teams.home.id,
-        name = match.teams.home.name,
-      ),
-      matchday = null, // This field is not available in `Match`
-      lastUpdated = LocalDateTime.now(), // This field is not available in `Match`, use the current time instead
-      competition = CompetitionEntity(
-        name = match.league.name,
-        id = match.league.id,
-        emblem = match.league.logo,
-      ),
-      referees = match.fixture.referee?.let {
-        listOf(RefereeEntity(it, ""))
-      } ?: emptyList(), // This field is not available in `Match`
-    )
+
+object NameChecker {
+  private val ambiguousWords = listOf(
+    "Manchester",
+    "Borussia",
+    "United",
+    "City",
+    "Real",
+    "Arsenal",
+  )
+  private val teamNickNameDictionary = mapOf(
+    "Paris Saint-Germain" to "PSG",
+    "Manchester United" to "Manchester Utd",
+  )
+
+  private val reverseDictionary = teamNickNameDictionary.entries.associate { (key, value) ->
+    value to key
+  }
+
+
+  /**
+   * Checks if the given [title] contains a team name.
+   *
+   * @param title The title to check for the presence of a team name.
+   * @param teamName The team name to search for in the [title].
+   * @return `true` if the [title] contains any variations of the [teamName], `false` otherwise.
+   */
+  private fun containsTeamName(title: String, teamName: String): Boolean {
+    val wordsSortedByLength = teamName.split(" ").sortedBy { it.length }.reversed()
+    val wordsToCheck = buildList {
+      add(teamName)
+      teamNickNameDictionary[teamName]?.let { add(it) }
+      wordsSortedByLength.firstOrNull()?.let { maxLengthWord ->
+        if (!ambiguousWords.contains(maxLengthWord)) {
+          add(maxLengthWord)
+        } else {
+          wordsSortedByLength.getOrNull(2)?.let { add(it) }
+        }
+      }
+    }
+    return wordsToCheck.any { title.contains(it) }
+  }
+
+  fun isMatchRelated(
+    homeTeam: String,
+    awayTeam: String,
+    title: String,
+  ): Boolean {
+    return containsTeamName(title, homeTeam) || containsTeamName(title, awayTeam)
   }
 }

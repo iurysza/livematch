@@ -17,58 +17,58 @@ import dev.iurysouza.livematch.footballinfo.domain.newmodel.Time
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 
-internal fun List<Match>.toMatchEntity(): List<MatchEntity> {
-  return map { match ->
-    val toLocalDateTime: LocalDateTime = OffsetDateTime.parse(match.fixture.date).toLocalDateTime()
-    MatchEntity(
-      id = match.fixture.id,
-      area = AreaEntity(
-        name = match.league.country,
-        flagUrl = match.league.flag,
-      ),
-      score = ScoreEntity(
-        duration = null,
-        fullTime = HalfEntity(
-          home = match.score.fulltime.home,
-          away = match.score.fulltime.away,
+internal fun List<Match>.toMatchEntity(): List<MatchEntity> =
+  filter { it.fixture.status.short != "NS" }
+    .map { match ->
+      val toLocalDateTime: LocalDateTime = OffsetDateTime.parse(match.fixture.date).toLocalDateTime()
+      MatchEntity(
+        id = match.fixture.id,
+        area = AreaEntity(
+          name = match.league.country,
+          flagUrl = match.league.flag,
         ),
-        halfTime = HalfEntity(
-          home = match.score.halftime.home,
-          away = match.score.halftime.away,
+        score = ScoreEntity(
+          duration = null,
+          fullTime = HalfEntity(
+            home = match.score.fulltime.home,
+            away = match.score.fulltime.away,
+          ),
+          halfTime = HalfEntity(
+            home = match.score.halftime.home,
+            away = match.score.halftime.away,
+          ),
+          winner = if (match.teams.home.winner == true) match.teams.home.name else match.teams.away.name,
         ),
-        winner = if (match.teams.home.winner == true) match.teams.home.name else match.teams.away.name,
-      ),
-      status = when (match.fixture.status.short) {
-        "FT" -> Status.FINISHED
-        "HT" -> Status.PAUSED
-        "2H" -> Status.IN_PLAY
-        else -> Status.TIMED
-      },
-      utcDate = toLocalDateTime,
-      awayTeam = AwayTeamEntity(
-        crest = match.teams.away.logo,
-        id = match.teams.away.id,
-        name = match.teams.away.name,
-      ),
-      homeTeam = HomeTeamEntity(
-        crest = match.teams.home.logo,
-        id = match.teams.home.id,
-        name = match.teams.home.name,
-      ),
-      matchday = null,
-      lastUpdated = LocalDateTime.now(),
-      competition = CompetitionEntity(
-        name = match.league.name,
-        id = match.league.id,
-        emblem = match.league.logo,
-      ),
-      referees = match.fixture.referee?.let {
-        listOf(RefereeEntity(it, ""))
-      } ?: emptyList(),
-      eventList = match.events?.toMatchEvent() ?: emptyList(),
-    )
-  }
-}
+        status = when (match.fixture.status.short) {
+          "FT" -> Status.Finished
+          "HT" -> Status.HalfTime
+          "2H", "1H" -> Status.InPlay(match.fixture.status.elapsed.toString())
+          else -> Status.Invalid
+        },
+        utcDate = toLocalDateTime,
+        awayTeam = AwayTeamEntity(
+          crest = match.teams.away.logo,
+          id = match.teams.away.id,
+          name = match.teams.away.name,
+        ),
+        homeTeam = HomeTeamEntity(
+          crest = match.teams.home.logo,
+          id = match.teams.home.id,
+          name = match.teams.home.name,
+        ),
+        matchday = null,
+        lastUpdated = LocalDateTime.now(),
+        competition = CompetitionEntity(
+          name = match.league.name,
+          id = match.league.id,
+          emblem = match.league.logo,
+        ),
+        referees = match.fixture.referee?.let {
+          listOf(RefereeEntity(it, ""))
+        } ?: emptyList(),
+        eventList = match.events?.toMatchEvent() ?: emptyList(),
+      )
+    }
 
 
 sealed class MatchEvent(

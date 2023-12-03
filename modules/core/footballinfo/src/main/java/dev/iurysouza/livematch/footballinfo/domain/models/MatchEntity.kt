@@ -67,8 +67,11 @@ data class HalfEntity(
   val home: Int?,
 )
 
-enum class Status {
-  IN_PLAY, PAUSED, TIMED, FINISHED,
+sealed interface Status {
+  data class InPlay(val time: String) : Status
+  object HalfTime : Status
+  object Invalid : Status
+  object Finished : Status
 }
 
 
