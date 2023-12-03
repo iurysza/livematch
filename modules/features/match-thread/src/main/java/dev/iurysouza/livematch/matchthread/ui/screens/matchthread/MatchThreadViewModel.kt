@@ -71,7 +71,7 @@ class MatchThreadViewModel @Inject constructor(
     }
   }
     .mapLeft { mapErrorMsg(it) }
-    .flatMap { eventParser.createEventSecionsWithComments(it, params.startTime, matchEvents, isRefreshing) }
+    .flatMap { eventParser.createEventSectionsWithComments(it, params.startTime, matchEvents, isRefreshing) }
     .mapLeft { ViewError.CommentSectionParsingError(it.toString()) }
     .fold(
       {
