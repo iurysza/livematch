@@ -30,7 +30,6 @@ dependencyResolutionManagement {
 rootProject.name = "modules"
 include("core:reddit")
 include("core:footballinfo")
-include("core:footballdata")
 include("core:design-system")
 include("core:common")
 include("features:match-thread")

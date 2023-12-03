@@ -27,6 +27,5 @@ sealed class ProjectModule(val path: String) {
   object WebViewToNativePlayer : ProjectModule(":core:webview-to-native-player")
   object Common : ProjectModule(":core:common")
   object FootballInfo : ProjectModule(":core:footballinfo")
-  object FootballData : ProjectModule(":core:footballdata")
   object Reddit : ProjectModule(":core:reddit")
 }

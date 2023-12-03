@@ -101,7 +101,6 @@ graph LR
   subgraph core
     common
     design-system
-    footballdata
     footballinfo
     reddit
     webview-to-native-player
@@ -111,16 +110,13 @@ graph LR
     match-thread
   end
   footballinfo --> common
-  footballdata --> common
   match-day --> common
   match-day --> footballinfo
-  match-day --> footballdata
   match-day --> design-system
   match-day --> reddit
   match-thread --> webview-to-native-player
   match-thread --> common
   match-thread --> footballinfo
-  match-thread --> footballdata
   match-thread --> design-system
   match-thread --> reddit
   playground --> webview-to-native-player
