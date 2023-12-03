@@ -1,6 +1,7 @@
 package dev.iurysouza.livematch.matchthread.ui.components.highlights
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -26,7 +27,10 @@ fun HighlightsComments(commentSectionState: HighlightsCommentsViewState) {
         is HighlightsCommentsViewState.Success -> {
           commentSectionState.comments.forEach { comment ->
             item {
-              CommentItemComponent(comment)
+              Column {
+                CommentItemComponent(comment)
+                comment.replies.forEach { nestedComment -> CommentItemComponent(nestedComment) }
+              }
             }
           }
         }

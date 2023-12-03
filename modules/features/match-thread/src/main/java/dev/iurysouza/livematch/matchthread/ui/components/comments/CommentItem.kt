@@ -13,14 +13,17 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -34,16 +37,23 @@ import dev.iurysouza.livematch.designsystem.theme.LiveMatchThemePreview
 import dev.iurysouza.livematch.designsystem.theme.Space.S100
 import dev.iurysouza.livematch.designsystem.theme.Space.S150
 import dev.iurysouza.livematch.designsystem.theme.Space.S300
+import dev.iurysouza.livematch.designsystem.theme.Space.S400
 import dev.iurysouza.livematch.designsystem.theme.Space.S50
-import dev.iurysouza.livematch.designsystem.theme.Space.S800
+import dev.iurysouza.livematch.designsystem.theme.Space.S500
+import dev.iurysouza.livematch.designsystem.theme.Space.S600
 import dev.iurysouza.livematch.matchthread.R
 import dev.iurysouza.livematch.matchthread.models.CommentItem
+
 
 @Composable
 fun CommentItemComponent(
   commentItem: CommentItem,
   modifier: Modifier = Modifier,
 ) {
+  val indentationLine = getIndentationLine(
+    depth = commentItem.nestedLevel,
+    backgroundColor = MaterialTheme.colorScheme.background,
+  )
   Row(
     modifier = modifier
       .padding(vertical = S100)
@@ -51,9 +61,9 @@ fun CommentItemComponent(
         padding(horizontal = S300)
       }
       .thenIf(commentItem.relativeTime != null) {
-        padding(start = S800, end = S100)
+        padding(start = S500 + 4.dp + indentationLine.depth, end = S100)
       }
-      .background(MaterialTheme.colorScheme.primary),
+      .background(indentationLine.color),
   ) {
     Column(
       modifier = Modifier
@@ -157,6 +167,48 @@ private fun CommentItemComponentPreview() = LiveMatchThemePreview {
       score = "11",
       flairUrl = "https://styles.redditmedia.com/t5_2qjfi/styles/image_widget_purple2x/1q9q3q9q9qj61/",
       flairName = "Federer",
+      nestedLevel = 1,
     ),
+  )
+}
+
+@Composable
+private fun getIndentationLine(depth: Int, backgroundColor: Color): CommentIndentationLine = remember(depth) {
+  when (depth) {
+    0 -> CommentIndentationLine.Depth0(backgroundColor)
+    1 -> CommentIndentationLine.Depth1
+    2 -> CommentIndentationLine.Depth2
+    3 -> CommentIndentationLine.Depth3
+    else -> CommentIndentationLine.Depth4
+  }
+}
+
+private sealed class CommentIndentationLine(
+  val color: Color,
+  val depth: Dp,
+) {
+  data class Depth0(private val backgroundColor: Color) : CommentIndentationLine(
+    color = backgroundColor,
+    depth = 0.dp,
+  )
+
+  object Depth1 : CommentIndentationLine(
+    color = Color(0xFFFFE100),
+    depth = S300,
+  )
+
+  object Depth2 : CommentIndentationLine(
+    color = Color(0xFF475BC3),
+    depth = S400,
+  )
+
+  object Depth3 : CommentIndentationLine(
+    color = Color(0xFFFF006F),
+    depth = S500,
+  )
+
+  object Depth4 : CommentIndentationLine(
+    color = Color(0xFF14BD89),
+    depth = S600,
   )
 }

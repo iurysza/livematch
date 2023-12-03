@@ -1,6 +1,7 @@
 package dev.iurysouza.livematch.matchthread.ui.components.comments
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -36,6 +37,7 @@ fun LazyListScope.itemCommentList(
         }
       }
     }
+
     is MatchCommentsState.Error -> item {
       ErrorScreen(
         msg = state.msg,
@@ -43,6 +45,7 @@ fun LazyListScope.itemCommentList(
         modifier = Modifier.height(300.dp),
       )
     }
+
     is MatchCommentsState.Success -> {
       onToggleStateInit(initToggledCommentsState(expandedSectionMap, state.sectionList))
       state.sectionList.forEach { (_, event, comments) ->
@@ -57,7 +60,12 @@ fun LazyListScope.itemCommentList(
         items(comments) { comment: CommentItem ->
           AnimatedCellExpansion(
             showContentIf = { expandCommentsIf(event.description) },
-            content = { CommentItemComponent(comment) },
+            content = {
+              Column {
+                CommentItemComponent(comment)
+                comment.replies.forEach { nestedComment -> CommentItemComponent(nestedComment) }
+              }
+            },
           )
         }
       }
@@ -93,7 +101,7 @@ private fun initToggledCommentsState(
   if (expandedSectionMap.isNotEmpty()) return expandedSectionMap
 
   val sectionToggleMap: MutableMap<String, Boolean> = mutableMapOf()
-  commentSections.forEach { (_, event) ->
+  commentSections.forEach { (comment, event) ->
     sectionToggleMap[event.description] = defaultToggleState
   }
 

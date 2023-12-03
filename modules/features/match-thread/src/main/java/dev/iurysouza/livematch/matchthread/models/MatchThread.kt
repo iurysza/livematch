@@ -56,6 +56,8 @@ data class CommentItem(
   val score: String,
   val flairUrl: String?,
   val flairName: String,
+  val replies: List<CommentItem> = emptyList(),
+  val nestedLevel: Int = 0,
 )
 
 sealed class ViewError(val message: String) {

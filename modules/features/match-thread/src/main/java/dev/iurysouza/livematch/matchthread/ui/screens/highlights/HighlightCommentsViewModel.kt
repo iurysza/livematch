@@ -5,7 +5,7 @@ import arrow.core.continuations.either
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.iurysouza.livematch.common.MVILogLevel
 import dev.iurysouza.livematch.common.MVIViewModel
-import dev.iurysouza.livematch.matchthread.models.CommentItem
+import dev.iurysouza.livematch.matchthread.toCommentItem
 import dev.iurysouza.livematch.matchthread.ui.components.highlights.HighlightsCommentsViewState
 import dev.iurysouza.livematch.matchthread.ui.components.highlights.HighlightsViewEffect
 import dev.iurysouza.livematch.matchthread.ui.components.highlights.HighlightsViewEvent
@@ -39,16 +39,7 @@ class HighlightCommentsViewModel @Inject constructor(
         setState {
           copy(
             state = HighlightsCommentsViewState.Success(
-              commentList.drop(1).map { comment ->
-                CommentItem(
-                  author = comment.author,
-                  body = comment.body,
-                  flairUrl = comment.flairUrl,
-                  flairName = comment.flairText.remove(":"),
-                  relativeTime = null,
-                  score = comment.score.toString(),
-                )
-              }.toImmutableList(),
+              commentList.drop(1).toCommentItem().toImmutableList(),
             ),
           )
         }

@@ -11,10 +11,6 @@ import dev.iurysouza.livematch.matchthread.models.MatchStatus
 import dev.iurysouza.livematch.matchthread.models.Score
 import dev.iurysouza.livematch.matchthread.models.ViewError
 import dev.iurysouza.livematch.reddit.domain.models.CommentsEntity
-import java.time.Duration
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
 import kotlinx.collections.immutable.toImmutableList
 import timber.log.Timber
 
@@ -110,27 +106,14 @@ open class MatchEventParser {
     return Pair(isKeyEvent, finalDescription)
   }
 
-  private fun String.remove(text: String): String = replace(text, "")
 
-  fun createEventSecionsWithComments(
+  fun createEventSectionsWithComments(
     commentList: List<CommentsEntity>,
     matchStartTime: Long?,
     matchEvents: List<MatchEvent>,
     isRefreshing: Boolean,
   ): Either<Any, List<CommentSection>> = catch {
-    commentList.map { comment ->
-      CommentItem(
-        author = comment.author,
-        body = comment.body,
-        flairUrl = comment.flairUrl,
-        flairName = comment.flairText.remove(":"),
-        relativeTime = matchStartTime?.let {
-          comment.created.toUTCLocalDateTime().calculatePlayTime(matchStartTime).toInt()
-        },
-//        calculateRelativeTime(comment.created, matchStartTime),
-        score = comment.score.toString(),
-      )
-    }.sortedBy { it.relativeTime }
+    commentList.toCommentItem(matchStartTime)
   }
     .mapLeft { ViewError.CommentItemParsingError(it.toString()) }
     .flatMap { commentItemList ->
@@ -153,29 +136,6 @@ open class MatchEventParser {
         }
       }
     }
-
-  private fun calculateRelativeTime(
-    commentTime: Long,
-    matchTime: Long,
-  ): Int = Duration.between(
-    matchTime.toUTCLocalDateTime(),
-    commentTime.toUTCLocalDateTime(),
-  ).toMinutes().toInt()
-
-  private fun LocalDateTime.calculatePlayTime(matchTime: Long): String {
-    val duration = Duration.between(matchTime.toUTCLocalDateTime(), this)
-    val minutes = duration.toMinutes()
-    return "${
-    if (minutes > 50) {
-      minutes - 25
-    } else {
-      minutes
-    }
-    }"
-  }
-
-  private fun Long.toUTCLocalDateTime() =
-    LocalDateTime.ofInstant(Instant.ofEpochSecond(this), ZoneId.systemDefault())
 
   private fun toCommentSectionListEvents(
     commentList: List<CommentItem>,
