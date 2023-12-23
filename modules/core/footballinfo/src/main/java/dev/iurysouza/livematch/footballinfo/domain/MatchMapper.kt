@@ -146,7 +146,7 @@ enum class CardType {
 }
 
 enum class VarType {
-  GoalCancelled, OffsideGoal, PenaltyConfirmed
+  GoalCancelled, OffsideGoal, PenaltyConfirmed, Foul
 }
 
 fun List<Event>.toMatchEvent(): List<MatchEvent> {
@@ -191,6 +191,7 @@ fun List<Event>.toMatchEvent(): List<MatchEvent> {
         detail = when (event.detail) {
           "Goal Cancelled" -> VarType.GoalCancelled
           "Goal Disallowed - offside" -> VarType.OffsideGoal
+          "Goal Disallowed - Foul" -> VarType.Foul
           "Penalty Confirmed" -> VarType.PenaltyConfirmed
           else -> throw IllegalArgumentException("Unknown var detail: ${event.detail}")
         },
