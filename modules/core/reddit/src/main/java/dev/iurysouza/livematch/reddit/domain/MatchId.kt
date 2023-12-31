@@ -1,6 +1,7 @@
 package dev.iurysouza.livematch.reddit.domain
 
-data class MatchTitle(
+data class MatchParams(
+  val pages: Int,
   val homeTeam: String,
   val awayTeam: String,
 )

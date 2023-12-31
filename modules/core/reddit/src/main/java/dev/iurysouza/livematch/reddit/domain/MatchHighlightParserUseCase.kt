@@ -9,16 +9,16 @@ import dev.iurysouza.livematch.reddit.domain.models.MediaEntity
 class MatchHighlightParserUseCase {
 
   fun getMatchHighlights(
-    matchMedias: List<MatchHighlightEntity>,
-    matchTitle: MatchTitle,
+      matchMedias: List<MatchHighlightEntity>,
+      matchParams: MatchParams,
   ): Either<DomainError, List<MediaEntity>> = Either.catch {
     matchMedias
       .sortedBy { it.createdAt }
       .filter { media ->
         isMediaRelatedToTeams(
           media.title,
-          matchTitle.homeTeam,
-          matchTitle.awayTeam,
+          matchParams.homeTeam,
+          matchParams.awayTeam,
         )
       }
       .map {

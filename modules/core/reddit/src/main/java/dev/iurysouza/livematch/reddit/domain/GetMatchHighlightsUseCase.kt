@@ -13,13 +13,13 @@ class GetMatchHighlightsUseCase @Inject constructor(
   private val networkDataSource: RedditNetworkDataSource,
   private val matchHighlightParserUseCase: MatchHighlightParserUseCase,
 ) {
-  suspend fun execute(matchTitle: MatchTitle): Either<DomainError, List<MediaEntity>> = either {
+  suspend fun execute(matchParams: MatchParams): Either<DomainError, List<MediaEntity>> = either {
     var after: String? = null
     buildList {
-      repeat(2) {
+      repeat(matchParams.pages) {
         addAll(
           fetchData(
-            matchTitle = matchTitle,
+            matchParams = matchParams,
             after = after,
             onRequestFinished = { after = it },
           ).bind(),
@@ -29,7 +29,7 @@ class GetMatchHighlightsUseCase @Inject constructor(
   }
 
   private suspend fun fetchData(
-    matchTitle: MatchTitle,
+    matchParams: MatchParams,
     after: String? = null,
     onRequestFinished: (String?) -> Unit = {},
   ): Either<DomainError, List<MediaEntity>> = networkDataSource.searchFor(
@@ -43,5 +43,5 @@ class GetMatchHighlightsUseCase @Inject constructor(
   )
     .tap { onRequestFinished(it.data.after) }
     .flatMap { response -> response.matchHighlightEntities() }
-    .flatMap { matchHighlightParserUseCase.getMatchHighlights(it, matchTitle) }
+    .flatMap { matchHighlightParserUseCase.getMatchHighlights(it, matchParams) }
 }

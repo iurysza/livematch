@@ -23,7 +23,7 @@ import dev.iurysouza.livematch.reddit.domain.FetchMatchCommentsUseCase
 import dev.iurysouza.livematch.reddit.domain.FetchNewCommentsUseCase
 import dev.iurysouza.livematch.reddit.domain.GetMatchHighlightsUseCase
 import dev.iurysouza.livematch.reddit.domain.MatchId
-import dev.iurysouza.livematch.reddit.domain.MatchTitle
+import dev.iurysouza.livematch.reddit.domain.MatchParams
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
@@ -98,7 +98,11 @@ class MatchThreadViewModel @Inject constructor(
   ) = either {
     setState { copy(descriptionState = MatchDescriptionState.Loading) }
     fetchMatchHighlightsUseCase.execute(
-      MatchTitle(params.homeTeam, params.awayTeam),
+      MatchParams(
+        pages = 1,
+        homeTeam = params.homeTeam,
+        awayTeam = params.awayTeam,
+      ),
     ).bind()
   }
     .mapLeft { mapErrorMsg(it) }
