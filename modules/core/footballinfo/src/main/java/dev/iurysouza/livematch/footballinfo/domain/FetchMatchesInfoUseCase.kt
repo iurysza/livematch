@@ -37,7 +37,7 @@ class FetchMatchesInfoUseCase @Inject constructor(
   }.filter { match ->
     // filter out FA Cup Qualifiers
     if (match.league.id == 45) {
-      match.league.round == "Third Round Proper"
+      match.league.round == "3rd Round"
     } else {
       true
     }
